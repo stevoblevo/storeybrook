@@ -1,0 +1,605 @@
+{
+ "title": "Storeybrook",
+ "namespace": "Storeybrook",
+ "fonts": [
+  "https://fonts.googleapis.com/css2?family=DynaPuff:wdth,wght@75..100,400..700&family=Alegreya:ital,wght@0,400..800;1,400..800&family=Andika:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400..700&family=IM+Fell+English:ital@0;1&family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Zen+Maru+Gothic:wght@400;500;700&display=swap"
+ ],
+ "artifact": "https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe",
+ "repo": "https://github.com/stevoblevo/storeybrook",
+ "sibling": {
+  "name": "Depthfield",
+  "url": "https://stevoblevo.github.io/depthfield/"
+ },
+ "themes": [
+  {
+   "id": "daylight",
+   "name": "Meta Daylight"
+  },
+  {
+   "id": "knight",
+   "name": "Knight Night"
+  },
+  {
+   "id": "inkblot",
+   "name": "Ink Blot"
+  },
+  {
+   "id": "comix",
+   "name": "Comix"
+  },
+  {
+   "id": "origami",
+   "name": "Origami"
+  },
+  {
+   "id": "skein",
+   "name": "Skein silk"
+  }
+ ],
+ "readme": "project/README.md",
+ "sections": [
+  {
+   "path": "project/01-paper.md",
+   "title": "Paper"
+  },
+  {
+   "path": "project/02-looks.md",
+   "title": "Looks"
+  },
+  {
+   "path": "project/03-color.md",
+   "title": "Color"
+  },
+  {
+   "path": "project/04-type.md",
+   "title": "Type"
+  },
+  {
+   "path": "project/05-layout.md",
+   "title": "Layout"
+  },
+  {
+   "path": "project/06-motion.md",
+   "title": "Motion"
+  },
+  {
+   "path": "project/07-iconography.md",
+   "title": "Iconography"
+  },
+  {
+   "path": "project/08-writing.md",
+   "title": "Writing"
+  },
+  {
+   "path": "project/09-sound.md",
+   "title": "Sound and reading aloud"
+  },
+  {
+   "path": "project/10-progression.md",
+   "title": "Rewards and progression"
+  },
+  {
+   "path": "project/11-devices.md",
+   "title": "Devices"
+  },
+  {
+   "path": "project/12-accessibility.md",
+   "title": "Accessibility"
+  },
+  {
+   "path": "project/13-code.md",
+   "title": "Code"
+  },
+  {
+   "path": "project/14-governance.md",
+   "title": "Governance"
+  },
+  {
+   "path": "project/15-play.md",
+   "title": "Play"
+  }
+ ],
+ "cover": {
+  "name": "Cover",
+  "group": "Other",
+  "height": 288,
+  "preview": "project/components/Cover/preview.html"
+ },
+ "groups": [
+  "Story",
+  "Transitions",
+  "Play",
+  "Actions",
+  "Shelf",
+  "Inputs",
+  "Overlays",
+  "Rewards",
+  "Paper",
+  "Navigation"
+ ],
+ "components": [
+  {
+   "name": "Balloon",
+   "group": "Story",
+   "height": 250,
+   "preview": "project/components/Balloon/preview.html",
+   "readme": "project/components/Balloon/README.md",
+   "summary": "Speech balloons for characters: a rounded balloon with an inked tail, a thought cloud, and a Comix shout."
+  },
+  {
+   "name": "Caption",
+   "group": "Story",
+   "height": 130,
+   "preview": "project/components/Caption/preview.html",
+   "readme": "project/components/Caption/README.md",
+   "summary": "The narrator's box over a picture: a slip of `surface` paper set a little askew, in the story face, with an optional speaker."
+  },
+  {
+   "name": "Panels",
+   "group": "Story",
+   "height": 250,
+   "preview": "project/components/Panels/preview.html",
+   "readme": "project/components/Panels/README.md",
+   "summary": "Comic panels: a grid of inked frames with captions, halftone and sound effects."
+  },
+  {
+   "name": "Prose",
+   "group": "Story",
+   "height": 290,
+   "preview": "project/components/Prose/preview.html",
+   "readme": "project/components/Prose/README.md",
+   "summary": "Story text and its marks: the lede, the body at the reading measure, a drop cap, ink links and the owner's handwritten note."
+  },
+  {
+   "name": "Reader",
+   "group": "Story",
+   "height": 240,
+   "preview": "project/components/Reader/preview.html",
+   "readme": "project/components/Reader/README.md",
+   "summary": "The read-aloud bar: a play button, the chapter's title, the voice in use and a meter, bound to the text it reads."
+  },
+  {
+   "name": "Blot",
+   "group": "Transitions",
+   "height": 320,
+   "preview": "project/components/Blot/preview.html",
+   "readme": "project/components/Blot/README.md",
+   "summary": "An ink blot opens from the middle of an element to reveal it: for a new look, a found thing, the first picture of a chapter."
+  },
+  {
+   "name": "Fold",
+   "group": "Transitions",
+   "height": 290,
+   "preview": "project/components/Fold/preview.html",
+   "readme": "project/components/Fold/README.md",
+   "summary": "A view folds away like paper to show the next one underneath: the top half folds down over the bottom, then the folded sheet drops away."
+  },
+  {
+   "name": "Brook",
+   "group": "Play",
+   "height": 410,
+   "preview": "project/components/Brook/preview.html",
+   "readme": "project/components/Brook/README.md",
+   "summary": "The map of a game: a meandering watercolor brook with stepping stones that are scenes, chapters or mini-games."
+  },
+  {
+   "name": "Creature",
+   "group": "Play",
+   "height": 380,
+   "preview": "project/components/Creature/preview.html",
+   "readme": "project/components/Creature/README.md",
+   "summary": "Saelion: a bunny, a tree octopus and a butterfly pixie at once, which grows from an egg."
+  },
+  {
+   "name": "Button",
+   "group": "Actions",
+   "height": 190,
+   "preview": "project/components/Button/preview.html",
+   "readme": "project/components/Button/README.md",
+   "summary": "Pill-shaped actions in the interface face; one primary per view, in `accent`."
+  },
+  {
+   "name": "Seal",
+   "group": "Actions",
+   "height": 170,
+   "preview": "project/components/Seal/preview.html",
+   "readme": "project/components/Seal/README.md",
+   "summary": "A wax seal in `accent` for the one press that begins or keeps something: begin the book, sign it, keep this."
+  },
+  {
+   "name": "Chip",
+   "group": "Shelf",
+   "height": 90,
+   "preview": "project/components/Chip/preview.html",
+   "readme": "project/components/Chip/README.md",
+   "summary": "A small tag with a dot and a word, in one of five categorical colors: what kind of game, how long, what it needs."
+  },
+  {
+   "name": "Shelf",
+   "group": "Shelf",
+   "height": 450,
+   "preview": "project/components/Shelf/preview.html",
+   "readme": "project/components/Shelf/README.md",
+   "summary": "The 99\u00a2 Shelf: game covers standing on a copper board, scrolling sideways, each with a price tag on a string."
+  },
+  {
+   "name": "Choice",
+   "group": "Inputs",
+   "height": 230,
+   "preview": "project/components/Choice/preview.html",
+   "readme": "project/components/Choice/README.md",
+   "summary": "A row of pill-shaped radio choices for picking one of a few: who reads, the pace, how hard."
+  },
+  {
+   "name": "Looks",
+   "group": "Inputs",
+   "height": 340,
+   "preview": "project/components/Looks/preview.html",
+   "readme": "project/components/Looks/README.md",
+   "summary": "The look picker: one button per look, each showing that look's paper, two of its pigments and its display face."
+  },
+  {
+   "name": "Slider",
+   "group": "Inputs",
+   "height": 130,
+   "preview": "project/components/Slider/preview.html",
+   "readme": "project/components/Slider/README.md",
+   "summary": "A range on a copper thread with an `accent` bead, for one continuous setting: reading speed, space, volume."
+  },
+  {
+   "name": "Toggle",
+   "group": "Inputs",
+   "height": 110,
+   "preview": "project/components/Toggle/preview.html",
+   "readme": "project/components/Toggle/README.md",
+   "summary": "An on/off switch: a folded-paper tab sliding in a track."
+  },
+  {
+   "name": "Dialog",
+   "group": "Overlays",
+   "height": 310,
+   "preview": "project/components/Dialog/preview.html",
+   "readme": "project/components/Dialog/README.md",
+   "summary": "A sheet that asks one question over a veiled page: a title in the display face, a sentence or two in the story face, and two buttons."
+  },
+  {
+   "name": "Drawer",
+   "group": "Overlays",
+   "height": 350,
+   "preview": "project/components/Drawer/preview.html",
+   "readme": "project/components/Drawer/README.md",
+   "summary": "A side sheet from the right for a book's contents, settings or the album."
+  },
+  {
+   "name": "Toast",
+   "group": "Overlays",
+   "height": 160,
+   "preview": "project/components/Toast/preview.html",
+   "readme": "project/components/Toast/README.md",
+   "summary": "A short message on a slip of sun-washed paper at the top of the screen: a reward, an unlock, a hint."
+  },
+  {
+   "name": "Jar",
+   "group": "Rewards",
+   "height": 150,
+   "preview": "project/components/Jar/preview.html",
+   "readme": "project/components/Jar/README.md",
+   "summary": "The nougat jar: the count of every nougat a person has earned, filling toward a cap."
+  },
+  {
+   "name": "Lock",
+   "group": "Rewards",
+   "height": 340,
+   "preview": "project/components/Lock/preview.html",
+   "readme": "project/components/Lock/README.md",
+   "summary": "A striped cover over something that is not open yet."
+  },
+  {
+   "name": "Sticker",
+   "group": "Rewards",
+   "height": 220,
+   "preview": "project/components/Sticker/preview.html",
+   "readme": "project/components/Sticker/README.md",
+   "summary": "Stickers for things found and places opened, kept in an album."
+  },
+  {
+   "name": "Page",
+   "group": "Paper",
+   "height": 350,
+   "preview": "project/components/Page/preview.html",
+   "readme": "project/components/Page/README.md",
+   "summary": "One book page: `page` with long fibres, a deckled edge and `shadow-page`, `size-page` wide, with a folio."
+  },
+  {
+   "name": "Sheet",
+   "group": "Paper",
+   "height": 230,
+   "preview": "project/components/Sheet/preview.html",
+   "readme": "project/components/Sheet/README.md",
+   "summary": "A sheet of `page` laid on the paper: a deckled edge, the paper's grain, `shadow-page`, held down with washi tape at up to two corners."
+  },
+  {
+   "name": "Spread",
+   "group": "Paper",
+   "height": 230,
+   "preview": "project/components/Spread/preview.html",
+   "readme": "project/components/Spread/README.md",
+   "summary": "Two pages open like a book, with a gutter shadow down the middle; pages turn with a leaf."
+  },
+  {
+   "name": "Washes",
+   "group": "Paper",
+   "height": 230,
+   "preview": "project/components/Washes/preview.html",
+   "readme": "project/components/Washes/README.md",
+   "summary": "Watercolor fields that bleed, mix and granulate: the only way large color arrives on the page."
+  },
+  {
+   "name": "Tabs",
+   "group": "Navigation",
+   "height": 330,
+   "preview": "project/components/Tabs/preview.html",
+   "readme": "project/components/Tabs/README.md",
+   "summary": "Chapter tabs on the edge of the book: the open one is a `page` tab with an `accent` bar, pulled out from the stack."
+  }
+ ],
+ "assets": [
+  {
+   "name": "Creature",
+   "tile": "m",
+   "readme": "project/assets/Creature/README.md",
+   "files": [
+    {
+     "name": "saelion-egg.svg",
+     "path": "project/assets/Creature/saelion-egg.svg"
+    },
+    {
+     "name": "saelion-kit.svg",
+     "path": "project/assets/Creature/saelion-kit.svg"
+    },
+    {
+     "name": "saelion-bun.svg",
+     "path": "project/assets/Creature/saelion-bun.svg"
+    },
+    {
+     "name": "saelion-sprite.svg",
+     "path": "project/assets/Creature/saelion-sprite.svg"
+    },
+    {
+     "name": "saelion-saelion.svg",
+     "path": "project/assets/Creature/saelion-saelion.svg"
+    },
+    {
+     "name": "saelion-sleepy.svg",
+     "path": "project/assets/Creature/saelion-sleepy.svg"
+    },
+    {
+     "name": "bunny.svg",
+     "path": "project/assets/Creature/bunny.svg"
+    },
+    {
+     "name": "octopus.svg",
+     "path": "project/assets/Creature/octopus.svg"
+    },
+    {
+     "name": "pixie.svg",
+     "path": "project/assets/Creature/pixie.svg"
+    }
+   ]
+  },
+  {
+   "name": "Nougat",
+   "tile": "s",
+   "readme": "project/assets/Nougat/README.md",
+   "files": [
+    {
+     "name": "nougat-3.svg",
+     "path": "project/assets/Nougat/nougat-3.svg"
+    },
+    {
+     "name": "nougat-7.svg",
+     "path": "project/assets/Nougat/nougat-7.svg"
+    },
+    {
+     "name": "nougat-11.svg",
+     "path": "project/assets/Nougat/nougat-11.svg"
+    },
+    {
+     "name": "jar-empty.svg",
+     "path": "project/assets/Nougat/jar-empty.svg"
+    },
+    {
+     "name": "jar-half.svg",
+     "path": "project/assets/Nougat/jar-half.svg"
+    },
+    {
+     "name": "jar-full.svg",
+     "path": "project/assets/Nougat/jar-full.svg"
+    }
+   ]
+  },
+  {
+   "name": "Icons",
+   "tile": "xs",
+   "readme": "project/assets/Icons/README.md",
+   "files": [
+    {
+     "name": "play.svg",
+     "path": "project/assets/Icons/play.svg"
+    },
+    {
+     "name": "pause.svg",
+     "path": "project/assets/Icons/pause.svg"
+    },
+    {
+     "name": "stop.svg",
+     "path": "project/assets/Icons/stop.svg"
+    },
+    {
+     "name": "voice.svg",
+     "path": "project/assets/Icons/voice.svg"
+    },
+    {
+     "name": "book.svg",
+     "path": "project/assets/Icons/book.svg"
+    },
+    {
+     "name": "music.svg",
+     "path": "project/assets/Icons/music.svg"
+    },
+    {
+     "name": "hum.svg",
+     "path": "project/assets/Icons/hum.svg"
+    },
+    {
+     "name": "next.svg",
+     "path": "project/assets/Icons/next.svg"
+    },
+    {
+     "name": "prev.svg",
+     "path": "project/assets/Icons/prev.svg"
+    },
+    {
+     "name": "up.svg",
+     "path": "project/assets/Icons/up.svg"
+    },
+    {
+     "name": "down.svg",
+     "path": "project/assets/Icons/down.svg"
+    },
+    {
+     "name": "home.svg",
+     "path": "project/assets/Icons/home.svg"
+    },
+    {
+     "name": "menu.svg",
+     "path": "project/assets/Icons/menu.svg"
+    },
+    {
+     "name": "close.svg",
+     "path": "project/assets/Icons/close.svg"
+    },
+    {
+     "name": "map.svg",
+     "path": "project/assets/Icons/map.svg"
+    },
+    {
+     "name": "lock.svg",
+     "path": "project/assets/Icons/lock.svg"
+    },
+    {
+     "name": "key.svg",
+     "path": "project/assets/Icons/key.svg"
+    },
+    {
+     "name": "check.svg",
+     "path": "project/assets/Icons/check.svg"
+    },
+    {
+     "name": "star.svg",
+     "path": "project/assets/Icons/star.svg"
+    },
+    {
+     "name": "sparkle.svg",
+     "path": "project/assets/Icons/sparkle.svg"
+    },
+    {
+     "name": "nougat.svg",
+     "path": "project/assets/Icons/nougat.svg"
+    },
+    {
+     "name": "jar.svg",
+     "path": "project/assets/Icons/jar.svg"
+    },
+    {
+     "name": "sticker.svg",
+     "path": "project/assets/Icons/sticker.svg"
+    },
+    {
+     "name": "gift.svg",
+     "path": "project/assets/Icons/gift.svg"
+    },
+    {
+     "name": "heart.svg",
+     "path": "project/assets/Icons/heart.svg"
+    },
+    {
+     "name": "egg.svg",
+     "path": "project/assets/Icons/egg.svg"
+    },
+    {
+     "name": "stone.svg",
+     "path": "project/assets/Icons/stone.svg"
+    },
+    {
+     "name": "brook.svg",
+     "path": "project/assets/Icons/brook.svg"
+    },
+    {
+     "name": "sun.svg",
+     "path": "project/assets/Icons/sun.svg"
+    },
+    {
+     "name": "moon.svg",
+     "path": "project/assets/Icons/moon.svg"
+    },
+    {
+     "name": "leaf.svg",
+     "path": "project/assets/Icons/leaf.svg"
+    },
+    {
+     "name": "bunny.svg",
+     "path": "project/assets/Icons/bunny.svg"
+    },
+    {
+     "name": "eye.svg",
+     "path": "project/assets/Icons/eye.svg"
+    },
+    {
+     "name": "look.svg",
+     "path": "project/assets/Icons/look.svg"
+    },
+    {
+     "name": "ink.svg",
+     "path": "project/assets/Icons/ink.svg"
+    },
+    {
+     "name": "comix.svg",
+     "path": "project/assets/Icons/comix.svg"
+    },
+    {
+     "name": "origami.svg",
+     "path": "project/assets/Icons/origami.svg"
+    },
+    {
+     "name": "skein.svg",
+     "path": "project/assets/Icons/skein.svg"
+    },
+    {
+     "name": "gamepad.svg",
+     "path": "project/assets/Icons/gamepad.svg"
+    },
+    {
+     "name": "tv.svg",
+     "path": "project/assets/Icons/tv.svg"
+    },
+    {
+     "name": "tap.svg",
+     "path": "project/assets/Icons/tap.svg"
+    },
+    {
+     "name": "drag.svg",
+     "path": "project/assets/Icons/drag.svg"
+    },
+    {
+     "name": "info.svg",
+     "path": "project/assets/Icons/info.svg"
+    },
+    {
+     "name": "alert.svg",
+     "path": "project/assets/Icons/alert.svg"
+    }
+   ]
+  }
+ ]
+}
