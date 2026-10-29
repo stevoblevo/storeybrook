@@ -1,0 +1,467 @@
+{
+  "v": 3,
+  "assetGroups": {
+    "Creature": {
+      "files": {
+        "bunny.svg": {
+          "blob": "f635641f991dcd17e7fc241c67936a0e",
+          "name": "bunny.svg",
+          "size": 1911,
+          "type": "image/svg+xml"
+        },
+        "octopus.svg": {
+          "blob": "6d5744a677bd840ffd599b23ce12c636",
+          "name": "octopus.svg",
+          "size": 2903,
+          "type": "image/svg+xml"
+        },
+        "pixie.svg": {
+          "blob": "e8b73bdb2d5cbea5413591fa9abfd68f",
+          "name": "pixie.svg",
+          "size": 2065,
+          "type": "image/svg+xml"
+        },
+        "saelion-bun.svg": {
+          "blob": "d355319c3809e0b65eb08357b083b2b2",
+          "name": "saelion-bun.svg",
+          "size": 2676,
+          "type": "image/svg+xml"
+        },
+        "saelion-egg.svg": {
+          "blob": "89015c895d81b3b4b2ef43e9f10abea6",
+          "name": "saelion-egg.svg",
+          "size": 936,
+          "type": "image/svg+xml"
+        },
+        "saelion-kit.svg": {
+          "blob": "44c4bba591c21b409f0932664b581e0c",
+          "name": "saelion-kit.svg",
+          "size": 2030,
+          "type": "image/svg+xml"
+        },
+        "saelion-saelion.svg": {
+          "blob": "5442cc0c7bad5cc6d592f8fca6544e5c",
+          "name": "saelion-saelion.svg",
+          "size": 4564,
+          "type": "image/svg+xml"
+        },
+        "saelion-sleepy.svg": {
+          "blob": "4effb5003fc9f6fafef38057ed73ec79",
+          "name": "saelion-sleepy.svg",
+          "size": 4192,
+          "type": "image/svg+xml"
+        },
+        "saelion-sprite.svg": {
+          "blob": "f0fa7ea0c4484bf5ec6e0518acc35959",
+          "name": "saelion-sprite.svg",
+          "size": 3545,
+          "type": "image/svg+xml"
+        }
+      },
+      "name": "Creature",
+      "order": [
+        "saelion-egg.svg",
+        "saelion-kit.svg",
+        "saelion-bun.svg",
+        "saelion-sprite.svg",
+        "saelion-saelion.svg",
+        "saelion-sleepy.svg",
+        "bunny.svg",
+        "octopus.svg",
+        "pixie.svg"
+      ],
+      "tile": "m"
+    },
+    "Icons": {
+      "files": {
+        "alert.svg": {
+          "blob": "ddf7edb6d9f1871aee6c5817f98e8e5a",
+          "name": "alert.svg",
+          "size": 241,
+          "type": "image/svg+xml"
+        },
+        "book.svg": {
+          "blob": "a05ddb80d1569d3fd54d20a085a7740d",
+          "name": "book.svg",
+          "size": 296,
+          "type": "image/svg+xml"
+        },
+        "brook.svg": {
+          "blob": "5890bf3babf62f7ebb52383e32013381",
+          "name": "brook.svg",
+          "size": 258,
+          "type": "image/svg+xml"
+        },
+        "bunny.svg": {
+          "blob": "ab017b00d477e2caf6cd1989a3ece819",
+          "name": "bunny.svg",
+          "size": 411,
+          "type": "image/svg+xml"
+        },
+        "check.svg": {
+          "blob": "ad8d3522803aea3947abab44ab1dbd90",
+          "name": "check.svg",
+          "size": 217,
+          "type": "image/svg+xml"
+        },
+        "close.svg": {
+          "blob": "31947c62b37457b0e86c0b0d2a60d915",
+          "name": "close.svg",
+          "size": 215,
+          "type": "image/svg+xml"
+        },
+        "comix.svg": {
+          "blob": "9c4185439bb2b6bd32cfd6e2feec9b95",
+          "name": "comix.svg",
+          "size": 333,
+          "type": "image/svg+xml"
+        },
+        "down.svg": {
+          "blob": "aff748321ffb439308e6b6c36d8adc78",
+          "name": "down.svg",
+          "size": 213,
+          "type": "image/svg+xml"
+        },
+        "drag.svg": {
+          "blob": "5c5c95c6603bbec033f5cae7096842ff",
+          "name": "drag.svg",
+          "size": 331,
+          "type": "image/svg+xml"
+        },
+        "egg.svg": {
+          "blob": "d2fed3dc9f229c2197ad89c954c4ef49",
+          "name": "egg.svg",
+          "size": 288,
+          "type": "image/svg+xml"
+        },
+        "eye.svg": {
+          "blob": "cfa2af348360afbe6d4dd7b01af1579d",
+          "name": "eye.svg",
+          "size": 293,
+          "type": "image/svg+xml"
+        },
+        "gamepad.svg": {
+          "blob": "e55cb7724baa714fc51af2682a68768e",
+          "name": "gamepad.svg",
+          "size": 443,
+          "type": "image/svg+xml"
+        },
+        "gift.svg": {
+          "blob": "0eb93f3ae3e48e78aa281bdb92d726f3",
+          "name": "gift.svg",
+          "size": 362,
+          "type": "image/svg+xml"
+        },
+        "heart.svg": {
+          "blob": "e44628208f2cf3aac37bdd7429142cbf",
+          "name": "heart.svg",
+          "size": 274,
+          "type": "image/svg+xml"
+        },
+        "home.svg": {
+          "blob": "8395c7592e5777c1a244e398f2d7dcbd",
+          "name": "home.svg",
+          "size": 253,
+          "type": "image/svg+xml"
+        },
+        "hum.svg": {
+          "blob": "86d8ec964291645abc8a8c99cd4d4d79",
+          "name": "hum.svg",
+          "size": 284,
+          "type": "image/svg+xml"
+        },
+        "info.svg": {
+          "blob": "4412a82f6462c2e871faa3eb6669e51c",
+          "name": "info.svg",
+          "size": 248,
+          "type": "image/svg+xml"
+        },
+        "ink.svg": {
+          "blob": "42ac699369c511158b49636349ea23a2",
+          "name": "ink.svg",
+          "size": 309,
+          "type": "image/svg+xml"
+        },
+        "jar.svg": {
+          "blob": "d882638acc87a2af30d3d39e5097a043",
+          "name": "jar.svg",
+          "size": 329,
+          "type": "image/svg+xml"
+        },
+        "key.svg": {
+          "blob": "e46ebd1b6a5509ff424f49ed1e85d275",
+          "name": "key.svg",
+          "size": 254,
+          "type": "image/svg+xml"
+        },
+        "leaf.svg": {
+          "blob": "1b5dddaabc889d4c088eda7c21229831",
+          "name": "leaf.svg",
+          "size": 264,
+          "type": "image/svg+xml"
+        },
+        "lock.svg": {
+          "blob": "6a875f3262e22093cccd274fae40b18e",
+          "name": "lock.svg",
+          "size": 331,
+          "type": "image/svg+xml"
+        },
+        "look.svg": {
+          "blob": "03cab0b2ee229bc7b6fd22e67885e6c0",
+          "name": "look.svg",
+          "size": 270,
+          "type": "image/svg+xml"
+        },
+        "map.svg": {
+          "blob": "35d6b22656c3a27965948605d26a4457",
+          "name": "map.svg",
+          "size": 261,
+          "type": "image/svg+xml"
+        },
+        "menu.svg": {
+          "blob": "a82e3bfd82a1d3947742599bd0176afc",
+          "name": "menu.svg",
+          "size": 218,
+          "type": "image/svg+xml"
+        },
+        "moon.svg": {
+          "blob": "580f45db5f679c05b493fda403ca61b1",
+          "name": "moon.svg",
+          "size": 246,
+          "type": "image/svg+xml"
+        },
+        "music.svg": {
+          "blob": "d2387d7054c9f46f6f2f44c5f6798351",
+          "name": "music.svg",
+          "size": 281,
+          "type": "image/svg+xml"
+        },
+        "next.svg": {
+          "blob": "f99ebb13b5906f25be552bb9168b5da9",
+          "name": "next.svg",
+          "size": 213,
+          "type": "image/svg+xml"
+        },
+        "nougat.svg": {
+          "blob": "f9eeee36839e916bfc2de1212a03c460",
+          "name": "nougat.svg",
+          "size": 375,
+          "type": "image/svg+xml"
+        },
+        "origami.svg": {
+          "blob": "774295bab4c8bda71e0b3ebfb5e9749b",
+          "name": "origami.svg",
+          "size": 274,
+          "type": "image/svg+xml"
+        },
+        "pause.svg": {
+          "blob": "9e47824812a1f2bd0d3915fd471bce6c",
+          "name": "pause.svg",
+          "size": 235,
+          "type": "image/svg+xml"
+        },
+        "play.svg": {
+          "blob": "0948dd482c34a6817b8c8f2526d40f9c",
+          "name": "play.svg",
+          "size": 243,
+          "type": "image/svg+xml"
+        },
+        "prev.svg": {
+          "blob": "0f1e5b969a1bc4d74e6702972f29de15",
+          "name": "prev.svg",
+          "size": 213,
+          "type": "image/svg+xml"
+        },
+        "skein.svg": {
+          "blob": "cb119d31e68edf45a057a05801ebd70a",
+          "name": "skein.svg",
+          "size": 285,
+          "type": "image/svg+xml"
+        },
+        "sparkle.svg": {
+          "blob": "0816d0818abd7d6e7fc49effbd648014",
+          "name": "sparkle.svg",
+          "size": 382,
+          "type": "image/svg+xml"
+        },
+        "star.svg": {
+          "blob": "2232d1d7cfce564d91b470706884ba1f",
+          "name": "star.svg",
+          "size": 263,
+          "type": "image/svg+xml"
+        },
+        "sticker.svg": {
+          "blob": "21f59ce7a4e244d5da0c7f05678d9785",
+          "name": "sticker.svg",
+          "size": 251,
+          "type": "image/svg+xml"
+        },
+        "stone.svg": {
+          "blob": "0b09df0ad7057a5f194eb29ae63bab1e",
+          "name": "stone.svg",
+          "size": 299,
+          "type": "image/svg+xml"
+        },
+        "stop.svg": {
+          "blob": "2b536f3cca60bd450c4174811d19eae0",
+          "name": "stop.svg",
+          "size": 265,
+          "type": "image/svg+xml"
+        },
+        "sun.svg": {
+          "blob": "1c08cf66451807a568ce47a7f950f26f",
+          "name": "sun.svg",
+          "size": 313,
+          "type": "image/svg+xml"
+        },
+        "tap.svg": {
+          "blob": "18a92fc66dfe32d24bca00d5b635d04d",
+          "name": "tap.svg",
+          "size": 333,
+          "type": "image/svg+xml"
+        },
+        "tv.svg": {
+          "blob": "7d390f4499f2a0adb9c64703a8542e8a",
+          "name": "tv.svg",
+          "size": 268,
+          "type": "image/svg+xml"
+        },
+        "up.svg": {
+          "blob": "79ecc8823dda1248fbf39ee2c96a5006",
+          "name": "up.svg",
+          "size": 213,
+          "type": "image/svg+xml"
+        },
+        "voice.svg": {
+          "blob": "0da378e85e7f00bfdbb1bc3fa24cab3d",
+          "name": "voice.svg",
+          "size": 289,
+          "type": "image/svg+xml"
+        }
+      },
+      "name": "Icons",
+      "order": [
+        "play.svg",
+        "pause.svg",
+        "stop.svg",
+        "voice.svg",
+        "book.svg",
+        "music.svg",
+        "hum.svg",
+        "next.svg",
+        "prev.svg",
+        "up.svg",
+        "down.svg",
+        "home.svg",
+        "menu.svg",
+        "close.svg",
+        "map.svg",
+        "lock.svg",
+        "key.svg",
+        "check.svg",
+        "star.svg",
+        "sparkle.svg",
+        "nougat.svg",
+        "jar.svg",
+        "sticker.svg",
+        "gift.svg",
+        "heart.svg",
+        "egg.svg",
+        "stone.svg",
+        "brook.svg",
+        "sun.svg",
+        "moon.svg",
+        "leaf.svg",
+        "bunny.svg",
+        "eye.svg",
+        "look.svg",
+        "ink.svg",
+        "comix.svg",
+        "origami.svg",
+        "skein.svg",
+        "gamepad.svg",
+        "tv.svg",
+        "tap.svg",
+        "drag.svg",
+        "info.svg",
+        "alert.svg"
+      ],
+      "tile": "xs"
+    },
+    "Nougat": {
+      "files": {
+        "jar-empty.svg": {
+          "blob": "265999cd15d159778c0a76e7282a8504",
+          "name": "jar-empty.svg",
+          "size": 954,
+          "type": "image/svg+xml"
+        },
+        "jar-full.svg": {
+          "blob": "cc9095a77cee7baaa2b7322b8d39a223",
+          "name": "jar-full.svg",
+          "size": 953,
+          "type": "image/svg+xml"
+        },
+        "jar-half.svg": {
+          "blob": "d09787256a3e8f9b12b89ea2193769f3",
+          "name": "jar-half.svg",
+          "size": 953,
+          "type": "image/svg+xml"
+        },
+        "nougat-11.svg": {
+          "blob": "87e7e5e5784ce36bb7fb21e1fda231f5",
+          "name": "nougat-11.svg",
+          "size": 1420,
+          "type": "image/svg+xml"
+        },
+        "nougat-3.svg": {
+          "blob": "10432416971139996d5496978c7ff013",
+          "name": "nougat-3.svg",
+          "size": 1421,
+          "type": "image/svg+xml"
+        },
+        "nougat-7.svg": {
+          "blob": "6177e14c68d97d9a5ad336f79c3cb874",
+          "name": "nougat-7.svg",
+          "size": 1422,
+          "type": "image/svg+xml"
+        }
+      },
+      "name": "Nougat",
+      "order": [
+        "nougat-3.svg",
+        "nougat-7.svg",
+        "nougat-11.svg",
+        "jar-empty.svg",
+        "jar-half.svg",
+        "jar-full.svg"
+      ],
+      "tile": "s"
+    }
+  },
+  "blobs": {},
+  "createdOnFiles": {
+    "at": "2026-10-27T07:10:19Z",
+    "v": 1
+  },
+  "docs": {
+    "readme": "project/README.md",
+    "sections": []
+  },
+  "groups": [
+    "Creature",
+    "Nougat",
+    "Icons"
+  ],
+  "lastChange": {
+    "by": "Bleve",
+    "at": "2026-10-27T19:41:11Z",
+    "via": "Claude",
+    "note": "Storeybrook 1.1.0: the creature's chimera hide (hide: \"chimera\"), shipped in AND SO 7 and the 99¢ Shelf; locked stones dim their face, so their labels stay readable."
+  },
+  "layout": "files",
+  "libraries": [],
+  "namespace": "Storeybrook",
+  "sections": {},
+  "title": "Storeybrook"
+}
