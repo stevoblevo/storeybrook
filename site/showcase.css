@@ -102,8 +102,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 76px; }
 .sc-panel-creature { position: absolute; right: 18px; bottom: 6px; --cw: 120px; }
 .sc-panel-creature--big { --cw: 170px; right: 32px; }
 .sc-panel-creature--left { right: auto; left: 22px; }
-.sc-comix__end { display: grid; align-content: space-between; }
-.sc-comix__cta { position: relative; z-index: 2; display: flex; justify-content: center; margin: var(--space-5) 0 var(--space-4); }
+.sc-comix__end { display: flex; align-items: flex-end; justify-content: center; padding-top: 72px; }
+.sc-comix__cta { position: relative; z-index: 2; display: flex; justify-content: center; margin: 0 0 var(--space-5); }
 @media (max-width: 760px) { .sc-comix { --cols: 1 !important; } .sc-comix .sb-panel--wide { grid-column: auto; } }
 
 /* 5 · Origami: the cutting mat and the maker */
