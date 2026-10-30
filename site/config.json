@@ -1,5 +1,52 @@
 {
  "artifact": "https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe",
  "repo": "https://github.com/stevoblevo/storeybrook",
- "sibling": {"name": "Depthfield", "url": "https://stevoblevo.github.io/depthfield/"}
+ "sibling": {
+  "name": "Depthfield",
+  "url": "https://stevoblevo.github.io/depthfield/"
+ },
+ "styleLabel": "Look",
+ "themeGroups": [
+  {
+   "name": "Looks",
+   "themes": [
+    "daylight",
+    "knight",
+    "inkblot",
+    "comix",
+    "origami",
+    "skein"
+   ]
+  }
+ ],
+ "modes": [
+  {
+   "name": "Density",
+   "attr": "data-density",
+   "default": "regular",
+   "options": [
+    {
+     "value": "regular",
+     "name": "Regular"
+    },
+    {
+     "value": "kid",
+     "name": "Kid"
+    },
+    {
+     "value": "tv",
+     "name": "TV"
+    }
+   ]
+  }
+ ],
+ "bodyClass": "sb-body",
+ "cardClass": "sb-grain",
+ "styleIntro": "Six looks fill the same token names with their own paper, pigments, inks, fonts, edges and motion; Meta Daylight comes first.",
+ "shellVars": {
+  "--s-kicker-font": "var(--sb-ui)",
+  "--s-kicker-size": "14px",
+  "--s-kicker-case": "none",
+  "--s-kicker-track": "0"
+ }
 }

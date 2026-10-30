@@ -1,9 +1,52 @@
 {
  "title": "Storeybrook",
  "namespace": "Storeybrook",
- "fonts": [
-  "https://fonts.googleapis.com/css2?family=DynaPuff:wdth,wght@75..100,400..700&family=Alegreya:ital,wght@0,400..800;1,400..800&family=Andika:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400..700&family=IM+Fell+English:ital@0;1&family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Zen+Maru+Gothic:wght@400;500;700&display=swap"
- ],
+ "style": {
+  "label": "Look",
+  "groups": [
+   {
+    "name": "Looks",
+    "themes": [
+     "daylight",
+     "knight",
+     "inkblot",
+     "comix",
+     "origami",
+     "skein"
+    ]
+   }
+  ],
+  "modes": [
+   {
+    "name": "Density",
+    "attr": "data-density",
+    "default": "regular",
+    "options": [
+     {
+      "value": "regular",
+      "name": "Regular"
+     },
+     {
+      "value": "kid",
+      "name": "Kid"
+     },
+     {
+      "value": "tv",
+      "name": "TV"
+     }
+    ]
+   }
+  ],
+  "bodyClass": "sb-body",
+  "cardClass": "sb-grain",
+  "shellVars": {
+   "--s-kicker-font": "var(--sb-ui)",
+   "--s-kicker-size": "14px",
+   "--s-kicker-case": "none",
+   "--s-kicker-track": "0"
+  },
+  "intro": "Six looks fill the same token names with their own paper, pigments, inks, fonts, edges and motion; Meta Daylight comes first."
+ },
  "artifact": "https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe",
  "repo": "https://github.com/stevoblevo/storeybrook",
  "sibling": {
