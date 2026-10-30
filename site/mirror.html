@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" data-theme="daylight" class="sb-root">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Storeybrook · mirror window</title>
+<link rel="stylesheet" href="../project/tokens.css">
+<link rel="stylesheet" href="../project/components/bundle.css">
+<script>
+  /* The look and density come from the address, so every window shows the same page in its own skin. */
+  (function () {
+    var q = new URLSearchParams(location.search), r = document.documentElement;
+    if (q.get('look')) r.setAttribute('data-theme', q.get('look'));
+    if (q.get('density')) r.setAttribute('data-density', q.get('density'));
+  })();
+</script>
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  .m { position: relative; z-index: 1; height: 100%; box-sizing: border-box; display: grid; gap: var(--space-4) var(--space-6);
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr);
+    padding: clamp(20px, 5vh, 72px) clamp(20px, 5vw, 96px) clamp(16px, 3vh, 40px); }
+  .m-copy { align-self: end; }
+  .m-copy .display-l { font-size: clamp(2.4rem, 7vw, 6rem); margin: 0 0 var(--space-3); }
+  .m-copy .sb-lede { margin: 0 0 var(--space-5); max-width: 30ch; }
+  .m-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; }
+  .m-art { align-self: end; justify-self: center; width: min(100%, 34vh); --cw: 100%; }
+  .m-brook { grid-column: 1 / -1; min-height: 0; height: 100%; }
+  @media (max-aspect-ratio: 4/5) {
+    .m { grid-template-columns: 1fr; grid-template-rows: auto auto minmax(0, 1fr); }
+    .m-art { width: min(52vw, 26vh); grid-row: 1; }
+  }
+</style>
+</head>
+<body class="sb-body">
+<div class="sb-washes" aria-hidden="true">
+  <i class="sb-wash sb-wash--sky sb-wash--band" style="top:-12%;--h:34%"></i>
+  <i class="sb-sun" style="--w:12%;right:7%;top:6%"></i>
+  <i class="sb-wash sb-wash--rose" style="--w:28%;left:-8%;top:44%"></i>
+  <i class="sb-wash sb-wash--meadow sb-wash--band" style="bottom:-16%;--h:32%"></i>
+</div>
+<main class="m">
+  <div class="m-copy">
+    <h1 class="display-l">Little games</h1>
+    <p class="sb-lede">The brook went on without asking, so Dora went with it.</p>
+    <p class="m-actions">
+      <button class="sb-btn sb-btn--primary sb-btn--lg" type="button" tabindex="-1">Play this one</button>
+      <button class="sb-btn sb-btn--secondary" type="button" tabindex="-1"><span data-sb-icon="voice"></span>Read it to me</button>
+    </p>
+  </div>
+  <div class="m-art" data-sb-creature='{"form":"saelion","stage":3}'></div>
+  <div class="m-brook" data-sb-brook='{"seed":5,"stones":[{"id":"porch","label":"The porch","state":"done"},{"id":"doll","label":"Wake the doll","sub":"you are here","state":"current","mark":"2"},{"id":"far","label":"The far stone","state":"open","mark":"3"},{"id":"home","label":"Home","state":"locked","sub":"2 more","why":"Walk two more stones to open Home."}]}'></div>
+</main>
+<button class="sb-jar sb-jar--fixed" data-cap="30" type="button" tabindex="-1"></button>
+<script src="../project/components/bundle.js"></script>
+<script>if (window.Storeybrook) { Storeybrook.init(); Storeybrook.rewards.paint(); }</script>
+</body>
+</html>

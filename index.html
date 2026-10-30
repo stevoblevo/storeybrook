@@ -1,41 +1,252 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="daylight" class="sb-root">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Design system</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Storeybrook — six looks, one book</title>
+<meta name="description" content="Storeybrook, a light-first design system for storybook pages and little games, shown in all six of its looks: Meta Daylight, Knight Night, Ink Blot, Comix, Origami and Skein silk.">
+<script>/* old docs links (#/…) live at docs.html now */ if (/^#\//.test(location.hash)) location.replace('docs.html' + location.search + location.hash);</script>
 <link rel="stylesheet" href="project/tokens.css">
 <link rel="stylesheet" href="site/hooks.css">
 <link rel="stylesheet" href="project/components/bundle.css">
-<link rel="stylesheet" href="site/app.css">
-<script src="site/vendor/marked.min.js"></script>
-<script src="site/vendor/purify.min.js"></script>
+<link rel="stylesheet" href="site/showcase.css">
 </head>
-<body class="shell">
-<a class="skip" href="#main">Skip to content</a>
-<header class="bar">
-  <a class="brand" href="#/" id="brand">…</a>
-  <nav class="tabs" aria-label="Sections">
-    <a href="#/" data-tab="overview">Overview</a>
-    <a href="#/book" data-tab="book">Brand book</a>
-    <a href="#/tokens" data-tab="tokens">Tokens</a>
-    <a href="#/components" data-tab="components">Components</a>
-    <a href="#/assets" data-tab="assets">Assets</a>
+<body class="sb-body sb-no-js sc-page">
+<a class="sc-skip" href="#look-daylight">Skip to the book</a>
+
+<header class="sc-bar">
+  <a class="sc-brand" href="#look-daylight">Storeybrook</a>
+  <nav class="sc-nav" aria-label="Looks">
+    <a href="#look-daylight" data-scene-link="daylight"><i data-theme="daylight" aria-hidden="true"></i>Meta Daylight</a>
+    <a href="#look-knight" data-scene-link="knight"><i data-theme="knight" aria-hidden="true"></i>Knight Night</a>
+    <a href="#look-inkblot" data-scene-link="inkblot"><i data-theme="inkblot" aria-hidden="true"></i>Ink Blot</a>
+    <a href="#look-comix" data-scene-link="comix"><i data-theme="comix" aria-hidden="true"></i>Comix</a>
+    <a href="#look-origami" data-scene-link="origami"><i data-theme="origami" aria-hidden="true"></i>Origami</a>
+    <a href="#look-skein" data-scene-link="skein"><i data-theme="skein" aria-hidden="true"></i>Skein silk</a>
   </nav>
-  <div class="tools">
-    <button type="button" class="style-btn" id="style-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="style-panel">
-      <span class="style-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span class="style-k" id="style-k">Style</span>
-      <span class="style-name" id="style-name">…</span>
-      <svg class="caret" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button type="button" class="face" id="face" hidden></button>
-    <a class="ext" id="repo" href="#" rel="noopener">GitHub</a>
-  </div>
+  <a class="sb-btn sb-btn--secondary sb-btn--sm sc-docs" href="docs.html"><span data-sb-icon="book"></span>Docs</a>
 </header>
-<div class="style-panel" id="style-panel" role="dialog" aria-labelledby="style-panel-h" hidden></div>
-<main id="main" tabindex="-1"><p class="loading">Loading…</p></main>
-<footer class="foot" id="foot"></footer>
-<script src="site/app.js"></script>
+
+<button class="sb-jar sb-jar--fixed" data-cap="30" type="button" id="jar"></button>
+
+<main>
+
+<!-- ============ 1 · Meta Daylight: the front page ============ -->
+<section class="sc sb-grain" data-theme="daylight" data-scene="daylight" id="look-daylight" aria-labelledby="h-daylight">
+  <div class="sb-washes" aria-hidden="true">
+    <i class="sb-wash sb-wash--sky sb-wash--band sb-bloom" style="top:-10%;--h:36%"></i>
+    <i class="sb-sun" style="--w:10%;right:8%;top:7%"></i>
+    <i class="sb-wash sb-wash--rose sb-bloom" style="--w:24%;left:-7%;top:40%"></i>
+    <i class="sb-wash sb-wash--sun" style="--w:20%;left:56%;top:26%;--ar:1.6"></i>
+    <i class="sb-wash sb-wash--brook" style="--w:30%;right:-6%;top:58%;--ar:2.2"></i>
+    <i class="sb-wash sb-wash--meadow sb-wash--band" style="bottom:-14%;--h:30%"></i>
+  </div>
+  <div class="sc-in sc-front">
+    <div class="sc-front__copy">
+      <p class="sc-label"><span data-sb-icon="sun" data-size="20"></span>Look one of six · Meta Daylight · watercolor on north-light paper</p>
+      <h1 class="display-xl" id="h-daylight">Storeybrook</h1>
+      <p class="sb-lede" id="front-lede">A book on a table with a game folded inside it. Walk down the brook and the paper changes under you: six looks, one set of words, one page.</p>
+      <div class="sc-actions">
+        <a class="sb-btn sb-btn--primary sb-btn--lg" href="#look-knight">Walk the brook</a>
+        <button class="sb-btn sb-btn--secondary" type="button" data-sc-read="#front-lede"><span data-sb-icon="voice"></span>Read it to me</button>
+        <a class="sb-btn sb-btn--quiet" href="docs.html">Skip to the docs</a>
+      </div>
+    </div>
+    <div class="sc-front__art" data-sb-creature='{"form":"saelion","stage":4,"hide":"chimera","label":"Saelion, fully grown"}'></div>
+  </div>
+  <div class="sc-in">
+    <div class="sc-map-head"><p class="sb-note">the brook is the map. every stone is a look.</p></div>
+    <div class="sc-front__brook" id="front-brook"></div>
+  </div>
+
+  <div class="sc-in sc-shelf-wrap">
+    <h2 class="display-m">The shelf</h2>
+    <p class="sb-lede sc-narrow">Every look as a cover, each one printed in its own inks. They are free to take down and read.</p>
+    <div class="sb-shelf">
+      <a class="sb-cover" data-theme="daylight" href="#look-daylight" style="--tilt:-1deg"><span class="sb-price__string" aria-hidden="true"></span><span class="sb-price sb-price--free"><span class="sb-price__amount">Free</span><span class="sb-price__each">to read</span></span><span class="sb-cover__art"><span class="sb-washes"><i class="sb-wash sb-wash--sky sb-wash--band" style="top:-20%;--h:70%"></i><i class="sb-wash sb-wash--rose" style="--w:60%;left:30%;top:40%"></i></span><span class="sc-cover-creature" data-sb-creature='{"form":"saelion","stage":4}'></span></span><span class="sb-cover__body"><span class="sb-cover__title">Meta Daylight</span><span class="sb-cover__line">Watercolor on north-light paper. Landings, shelves and the brook.</span><span class="sb-cover__meta"><span class="sb-chip sb-chip--sky">Default</span><span class="sb-chip sb-chip--rose">Story</span></span></span></a>
+      <a class="sb-cover" data-theme="knight" href="#look-knight" style="--tilt:1deg"><span class="sb-price__string" aria-hidden="true"></span><span class="sb-price sb-price--free"><span class="sb-price__amount">Free</span><span class="sb-price__each">to read</span></span><span class="sb-cover__art"><span class="sb-washes"><i class="sb-wash sb-wash--brook sb-wash--band" style="top:-20%;--h:70%"></i><i class="sb-sun" style="--w:18%;right:10%;top:10%"></i></span><span class="sc-cover-creature" data-sb-creature='{"form":"saelion","stage":3,"mood":"sleepy"}'></span></span><span class="sb-cover__body"><span class="sb-cover__title">Knight Night</span><span class="sb-cover__line">A cobalt paper theatre by candle, for bedtime.</span><span class="sb-cover__meta"><span class="sb-chip sb-chip--sun">Evening</span><span class="sb-chip sb-chip--lilac">Quiet</span></span></span></a>
+      <a class="sb-cover" data-theme="inkblot" href="#look-inkblot" style="--tilt:-0.5deg"><span class="sb-price__string" aria-hidden="true"></span><span class="sb-price sb-price--free"><span class="sb-price__amount">Free</span><span class="sb-price__each">to print</span></span><span class="sb-cover__art"><span class="sb-washes"><i class="sb-wash sb-wash--sky" style="--w:70%;left:10%;top:10%"></i></span><span class="sc-cover-creature" data-sb-creature='{"form":"octopus"}'></span></span><span class="sb-cover__body"><span class="sb-cover__title">Ink Blot</span><span class="sb-cover__line">Black ink for e-ink slates and paper.</span><span class="sb-cover__meta"><span class="sb-chip sb-chip--sea">No motion</span><span class="sb-chip sb-chip--sky">Print</span></span></span></a>
+      <a class="sb-cover" data-theme="comix" href="#look-comix" style="--tilt:1.5deg"><span class="sb-price__string" aria-hidden="true"></span><span class="sb-price sb-price--free"><span class="sb-price__amount">Free</span><span class="sb-price__each">to read</span></span><span class="sb-cover__art"><span class="sb-washes"><i class="sb-wash sb-wash--sun sb-wash--band" style="top:-10%;--h:80%"></i></span><span class="sc-cover-creature" data-sb-creature='{"form":"bunny","mood":"surprised"}'></span></span><span class="sb-cover__body"><span class="sb-cover__title">Comix</span><span class="sb-cover__line">Halftone, panels and balloons. The loud chapters.</span><span class="sb-cover__meta"><span class="sb-chip sb-chip--rose">Loud</span><span class="sb-chip sb-chip--sun">Title cards</span></span></span></a>
+      <a class="sb-cover" data-theme="origami" href="#look-origami" style="--tilt:-1deg"><span class="sb-price__string" aria-hidden="true"></span><span class="sb-price sb-price--free"><span class="sb-price__amount">Free</span><span class="sb-price__each">to fold</span></span><span class="sb-cover__art"><span class="sb-washes"><i class="sb-wash sb-wash--meadow" style="--w:70%;left:20%;top:30%"></i></span><span class="sc-cover-creature" data-sb-creature='{"form":"saelion","stage":1}'></span></span><span class="sb-cover__body"><span class="sb-cover__title">Origami</span><span class="sb-cover__line">Folded paper on a cutting mat, for making things.</span><span class="sb-cover__meta"><span class="sb-chip sb-chip--sea">Editors</span><span class="sb-chip sb-chip--lilac">Settings</span></span></span></a>
+      <a class="sb-cover" data-theme="skein" href="#look-skein" style="--tilt:0.8deg"><span class="sb-price__string" aria-hidden="true"></span><span class="sb-price sb-price--free"><span class="sb-price__amount">Free</span><span class="sb-price__each">to keep</span></span><span class="sb-cover__art"><span class="sb-washes"><i class="sb-wash sb-wash--rose sb-wash--band" style="top:-20%;--h:80%"></i></span><span class="sc-cover-creature" data-sb-creature='{"form":"pixie"}'></span></span><span class="sb-cover__body"><span class="sb-cover__title">Skein silk</span><span class="sb-cover__line">Silk, copper thread and lace. Keepsakes and the album.</span><span class="sb-cover__meta"><span class="sb-chip sb-chip--rose">Album</span><span class="sb-chip sb-chip--lilac">The doll</span></span></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · Knight Night: bedtime ============ -->
+<section class="sc sb-grain" data-theme="knight" data-scene="knight" id="look-knight" aria-labelledby="h-knight">
+  <div class="sb-washes" aria-hidden="true">
+    <i class="sb-wash sb-wash--brook sb-wash--band" style="top:-18%;--h:40%"></i>
+    <i class="sb-sun" style="--w:7%;right:12%;top:9%"></i>
+    <i class="sb-wash sb-wash--sun" style="--w:26%;right:2%;top:2%"></i>
+    <i class="sb-wash sb-wash--rose" style="--w:22%;left:-8%;bottom:6%"></i>
+  </div>
+  <div class="sc-in">
+    <header class="sc-head">
+      <p class="sc-label"><span data-sb-icon="moon" data-size="20"></span>Look two · Knight Night · a cobalt paper theatre by candle</p>
+      <h2 class="display-l" id="h-knight">Bedtime at the brook</h2>
+      <p class="sb-lede sc-narrow">The same pages after dark. The candle is the accent, the washes glow instead of stain, and every story can be read aloud with the words lighting as they go.</p>
+    </header>
+    <div class="sc-knight">
+      <div class="sc-knight__book">
+        <div class="sb-reader" data-sb-read="#bedtime">
+          <button class="sb-btn sb-btn--primary sb-btn--icon sb-reader__play" aria-label="Read it to me"></button>
+          <div class="sb-reader__info"><span class="sb-reader__title">Bedtime at the brook</span><span class="sb-reader__voice"></span><span class="sb-reader__meter"><i></i></span></div>
+        </div>
+        <article class="sb-page sb-page--right" id="bedtime">
+          <div class="sb-prose">
+            <p><span class="sb-dropcap">W</span>hen the candle was lit, the brook got quieter, the way brooks do when they think someone is listening. Saelion curled up on the far stone with all five arms tucked in and one wing over her nose.</p>
+            <p>The nougats in the jar settled with a small sound, like a sigh in a sweet shop. Somewhere upstream a frog was practising one note, and getting it wrong in the same place every time.</p>
+            <p>“Tomorrow,” said Saelion, to nobody in particular, “I will be a bunny for the whole morning.” Then she fell asleep, and the candle kept the rest of the story for her.</p>
+          </div>
+          <span class="sb-page__folio">12</span>
+        </article>
+      </div>
+      <div class="sc-knight__sleep">
+        <div class="sc-sleeper" data-sb-creature='{"form":"saelion","stage":4,"mood":"sleepy","label":"Saelion, asleep"}'></div>
+        <p class="sb-note">lights out at the far stone</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 · Ink Blot: e-ink and print ============ -->
+<section class="sc sb-grain sc--ink" data-theme="inkblot" data-scene="inkblot" id="look-inkblot" aria-labelledby="h-inkblot">
+  <div class="sc-in sc-ink">
+    <header class="sc-head sc-ink__head">
+      <p class="sc-label"><span data-sb-icon="ink" data-size="20"></span>Look three · Ink Blot · black ink, e-ink and print</p>
+      <h2 class="display-l" id="h-inkblot">Nothing moves, everything reads</h2>
+      <p class="sb-lede">For e-ink slates, for paper, and for anyone who wants no colour and no motion. Every pigment turns to ink, washes become stipple, and the brook becomes a dotted line.</p>
+      <fieldset class="sb-choice"><legend>Who reads</legend><label><input type="radio" name="ink-who" checked><span>Moira</span></label><label><input type="radio" name="ink-who"><span>Orla</span></label><label><input type="radio" name="ink-who"><span>You</span></label></fieldset>
+      <p class="sc-actions"><button class="sb-btn sb-btn--secondary" type="button" id="ink-print"><span data-sb-icon="book"></span>Print the slate</button></p>
+    </header>
+    <figure class="sc-slate" aria-label="An e-ink slate showing a book">
+      <div class="sc-slate__screen">
+        <div class="sb-spread" data-sb-spread id="ink-spread" aria-label="The far stone">
+          <article class="sb-page"><h3 class="display-s">Chapter two</h3><div class="sb-prose"><p>Nobody had walked to the far stone in years, so the moss had made itself at home.</p></div><span class="sb-page__folio">7</span></article>
+          <article class="sb-page sb-page--lined"><p class="sb-note">things the brook said</p><div class="sb-prose"><p>plink. plonk. a fish.</p></div><span class="sb-page__folio">8</span></article>
+          <article class="sb-page"><div class="sb-prose"><p>Dora took the long way round, past the porch stone and the one that wobbled, because the long way had better things to look at.</p></div><span class="sb-page__folio">9</span></article>
+          <article class="sb-page"><div class="sb-prose"><p>At the far stone there was a jar, and the jar was nearly empty. That was the good part. It meant there was room.</p></div><span class="sb-page__folio">10</span></article>
+        </div>
+      </div>
+      <figcaption class="sc-slate__bar">
+        <button class="sb-btn sb-btn--quiet sb-btn--sm" type="button" data-sc-turn="prev"><span data-sb-icon="prev"></span>Back a page</button>
+        <span class="small">e-ink slate</span>
+        <button class="sb-btn sb-btn--quiet sb-btn--sm" type="button" data-sc-turn="next">Turn the page<span data-sb-icon="next"></span></button>
+      </figcaption>
+    </figure>
+    <div class="sc-ink__brook" id="ink-brook" aria-label="The map, in ink"></div>
+  </div>
+</section>
+
+<!-- ============ 4 · Comix: the loud chapter ============ -->
+<section class="sc sb-grain" data-theme="comix" data-scene="comix" id="look-comix" aria-labelledby="h-comix">
+  <div class="sc-in">
+    <header class="sc-head sc-comix__head">
+      <p class="sc-label"><span data-sb-icon="comix" data-size="20"></span>Look four · Comix · halftone, panels and balloons</p>
+      <h2 class="display-l" id="h-comix">The nougat heist</h2>
+      <p class="sb-lede sc-narrow">The loud chapters, title cards and sound effects. The one look where an exclamation mark is at home.</p>
+    </header>
+    <div class="sb-panels sc-comix" style="--cols:3">
+      <div class="sb-panel sb-panel--dots"><p class="sb-panel__cap">Meanwhile, under the stones…</p><div class="sc-panel-creature sc-panel-creature--left" data-sb-creature='{"form":"octopus","mood":"happy"}'></div><span class="sb-panel__sfx" style="right:14px;bottom:12px">PLUNK</span></div>
+      <div class="sb-panel sb-panel--wide" style="background:var(--wash-sky)"><p class="sb-balloon sb-balloon--shout" style="position:absolute;left:22px;top:24px;margin:0">NOUGAT!</p><div class="sc-panel-creature sc-panel-creature--big" data-sb-creature='{"form":"saelion","stage":3,"mood":"surprised"}'></div></div>
+      <div class="sb-panel sb-panel--wide"><p class="sb-balloon" style="position:absolute;left:20px;top:20px;margin:0">Is that a nougat in the brook?</p><p class="sb-balloon sb-balloon--right" style="position:absolute;right:20px;top:92px;margin:0">It is a stone. Probably.</p><div class="sc-panel-creature sc-panel-creature--left" data-sb-creature='{"form":"bunny"}'></div><div class="sc-panel-creature" data-sb-creature='{"form":"pixie","mood":"surprised"}'></div></div>
+      <div class="sb-panel sb-panel--dots" style="background:var(--wash-sun)"><p class="sb-balloon sb-balloon--think" style="position:absolute;left:18px;top:20px;margin:0">it is warm from the sun</p><span class="sb-panel__sfx" style="left:16px;bottom:14px">SPLOOSH</span></div>
+      <div class="sb-panel sb-panel--wide sc-comix__end"><p class="sb-panel__cap">Later, at the jar.</p><p class="sc-comix__cta"><button class="sb-btn sb-btn--primary sb-btn--lg" type="button" data-sb-drop="3" data-sb-reason="the heist">Grab the nougats</button></p></div>
+      <div class="sb-panel"><p class="sb-panel__cap">The end. Probably.</p><span class="sb-panel__sfx" style="right:16px;bottom:14px">CLINK</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 · Origami: making things ============ -->
+<section class="sc sb-grain sc--origami" data-theme="origami" data-scene="origami" id="look-origami" aria-labelledby="h-origami">
+  <div class="sc-in">
+    <header class="sc-head">
+      <p class="sc-label"><span data-sb-icon="origami" data-size="20"></span>Look five · Origami · folded paper on a cutting mat</p>
+      <h2 class="display-l" id="h-origami">Fold your own brook</h2>
+      <p class="sb-lede sc-narrow">Origami is the look for making things: editors, level makers, settings. Change the controls and the map refolds; walk a stone and the creature grows.</p>
+    </header>
+    <div class="sc-maker">
+      <div class="sb-sheet sc-maker__controls">
+        <h3 class="title">Level maker</h3>
+        <label class="sb-slider"><span class="sb-slider__row"><span>Stones</span><output id="mk-n-out">5</output></span><input id="mk-n" type="range" min="3" max="8" step="1" value="5"></label>
+        <fieldset class="sb-choice"><legend>Each stone is a</legend><label><input type="radio" name="mk-kind" value="Story" checked><span>Story</span></label><label><input type="radio" name="mk-kind" value="Game"><span>Game</span></label><label><input type="radio" name="mk-kind" value="Song"><span>Song</span></label></fieldset>
+        <label class="sb-toggle"><input type="checkbox" id="mk-lock" checked><span class="sb-toggle__track"><span class="sb-toggle__thumb"></span></span>Lock the last stone</label>
+        <label class="sb-toggle"><input type="checkbox" id="mk-down"><span class="sb-toggle__track"><span class="sb-toggle__thumb"></span></span>Run the brook downhill</label>
+        <p class="sc-actions"><button class="sb-btn sb-btn--primary" type="button" id="mk-walk"><span data-sb-icon="stone"></span>Walk the next stone</button><button class="sb-btn sb-btn--quiet sb-btn--sm" type="button" id="mk-reset">Start over</button></p>
+      </div>
+      <div class="sb-sheet sc-maker__map">
+        <div class="sc-maker__brook" id="mk-brook"></div>
+        <div class="sc-maker__grow"><div class="sc-grower" id="mk-creature"></div><p class="small" id="mk-stage" aria-live="polite">An egg, for now.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 · Skein silk: the album ============ -->
+<section class="sc sb-grain" data-theme="skein" data-scene="skein" id="look-skein" aria-labelledby="h-skein">
+  <div class="sb-washes" aria-hidden="true">
+    <i class="sb-wash sb-wash--rose sb-wash--band" style="top:-16%;--h:34%"></i>
+    <i class="sb-wash sb-wash--meadow" style="--w:24%;right:-6%;bottom:4%"></i>
+  </div>
+  <div class="sc-in">
+    <header class="sc-head">
+      <p class="sc-label"><span data-sb-icon="skein" data-size="20"></span>Look six · Skein silk · silk, copper thread and lace</p>
+      <h2 class="display-l" id="h-skein">The album</h2>
+      <p class="sb-lede sc-narrow">For the doll’s chapters and the things you keep. Every look you walked through left a sticker here, and a nougat in the jar.</p>
+    </header>
+    <div class="sc-album">
+      <div class="sb-sheet sc-album__sheet">
+        <span class="sb-tape sb-tape--tl" aria-hidden="true"></span><span class="sb-tape sb-tape--br" aria-hidden="true"></span>
+        <div class="sb-album">
+          <div class="sb-sticker sb-sticker--locked" data-sb-sticker="look-daylight" style="--rot:-4deg"><span class="sb-sticker__art"><span data-sb-icon="sun" data-size="48"></span></span><span class="sb-sticker__name">daylight</span></div>
+          <div class="sb-sticker sb-sticker--locked" data-sb-sticker="look-knight" style="--rot:3deg"><span class="sb-sticker__art"><span data-sb-icon="moon" data-size="48"></span></span><span class="sb-sticker__name">by candle</span></div>
+          <div class="sb-sticker sb-sticker--locked" data-sb-sticker="look-inkblot" style="--rot:-2deg"><span class="sb-sticker__art"><span data-sb-icon="ink" data-size="48"></span></span><span class="sb-sticker__name">in ink</span></div>
+          <div class="sb-sticker sb-sticker--locked" data-sb-sticker="look-comix" style="--rot:5deg"><span class="sb-sticker__art"><span data-sb-icon="comix" data-size="48"></span></span><span class="sb-sticker__name">the heist</span></div>
+          <div class="sb-sticker sb-sticker--locked" data-sb-sticker="look-origami" style="--rot:-3deg"><span class="sb-sticker__art"><span data-sb-icon="origami" data-size="48"></span></span><span class="sb-sticker__name">folded</span></div>
+          <div class="sb-sticker sb-sticker--locked" data-sb-sticker="look-skein" style="--rot:2deg"><span class="sb-sticker__art"><span data-sb-icon="skein" data-size="48"></span></span><span class="sb-sticker__name">kept</span></div>
+        </div>
+        <p class="sb-note">for whoever finds this book</p>
+      </div>
+      <div class="sc-album__keep">
+        <div class="sc-keeper" data-sb-creature='{"form":"pixie","label":"Saelion as a butterfly pixie"}'></div>
+        <button class="sb-seal sb-seal--lg" type="button" id="keep" aria-label="Keep this album" data-sb-icon="heart" data-size="48"></button>
+        <p class="small sc-keep-line" id="keep-line" aria-live="polite">Press the seal to keep the album.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Mirror windows: one page, every window ============ -->
+<section class="sc sb-grain sc-mirrors" data-theme="daylight" id="mirrors" aria-labelledby="h-mirrors">
+  <div class="sc-in">
+    <header class="sc-head">
+      <p class="sc-label"><span data-sb-icon="tv" data-size="20"></span>Mirror windows · one state, every skin</p>
+      <h2 class="display-l" id="h-mirrors">The same page in every window</h2>
+      <p class="sb-lede sc-narrow">A look changes materials and fonts, never content, order or meaning. Here is one page open on six screens at once, from a phone to a television across the room.</p>
+    </header>
+    <div class="sc-desk">
+      <figure class="sc-device sc-device--tv" data-w="1920" data-h="1080" data-src="site/mirror.html?look=knight&amp;density=tv"><div class="sc-device__screen"></div><figcaption>TV across the room · Knight Night at TV density</figcaption></figure>
+      <figure class="sc-device sc-device--display" data-w="2560" data-h="1440" data-src="site/mirror.html?look=skein"><div class="sc-device__screen"></div><figcaption>5K display · Skein silk</figcaption></figure>
+      <figure class="sc-device sc-device--tablet" data-w="1024" data-h="768" data-src="site/mirror.html?look=daylight"><div class="sc-device__screen"></div><figcaption>4:3 tablet · Meta Daylight</figcaption></figure>
+      <figure class="sc-device sc-device--slate" data-w="620" data-h="827" data-src="site/mirror.html?look=inkblot"><div class="sc-device__screen"></div><figcaption>E-ink slate · Ink Blot</figcaption></figure>
+      <figure class="sc-device sc-device--fold" data-w="673" data-h="841" data-src="site/mirror.html?look=origami"><div class="sc-device__screen"></div><figcaption>Folding phone · Origami</figcaption></figure>
+      <figure class="sc-device sc-device--phone" data-w="390" data-h="844" data-src="site/mirror.html?look=comix"><div class="sc-device__screen"></div><figcaption>Phone · Comix</figcaption></figure>
+    </div>
+  </div>
+  <footer class="sc-in sc-foot">
+    <p class="sb-lede">Built with Storeybrook itself: its tokens, its stylesheet and its behaviour bundle, nothing else.</p>
+    <p class="sc-actions">
+      <a class="sb-btn sb-btn--primary" href="docs.html">Read the docs</a>
+      <a class="sb-btn sb-btn--secondary" href="https://github.com/stevoblevo/storeybrook">Source on GitHub</a>
+      <a class="sb-btn sb-btn--secondary" href="https://stevoblevo.github.io/depthfield/"><span data-sb-icon="moon"></span>Depthfield, the night counterpart</a>
+      <button class="sb-btn sb-btn--quiet" type="button" id="restart">Start the book again</button>
+    </p>
+  </footer>
+</section>
+
+</main>
+<script src="project/components/bundle.js"></script>
+<script src="site/showcase.js"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@ This repo is a read-only export of the Storeybrook design system (index format v
 
 The artifact is the source of truth. Opening that link requires access on claude.ai; everything needed to read the system is in this repo.
 
-**Live site:** <https://stevoblevo.github.io/storeybrook/> — the brand book, every token per theme, all components running live, and the assets, styled by the system itself.
+**Live site:** <https://stevoblevo.github.io/storeybrook/> is the showcase, one scene per look, each built for what that look is for: a front page with the brook as its map and a shelf of covers (Meta Daylight), a bedtime story read aloud (Knight Night), an e-ink slate you can print (Ink Blot), a comic (Comix), a level maker that refolds the brook (Origami), a sticker album (Skein silk), and mirror windows showing one page on six devices at once. The docs (brand book, tokens per theme, every component running live, assets) are at <https://stevoblevo.github.io/storeybrook/docs.html>. Both are built from the system's own files.
 
 ## Start here
 
@@ -47,7 +47,7 @@ project/
 
 ## The site
 
-`index.html` and `site/` make up the GitHub Pages site. The **Look** menu in the header switches the whole site, the cover and every live preview between the system's styles. Storeybrook also has a Density control (Regular, Kid, TV) that applies to the live previews. The choice is kept in the address (`?theme=…`), so a link opens in the same style, and picking a look inside a preview, such as Storeybrook's own Looks component, restyles the site too. It loads each preview the way the artifact does: `project/tokens.css`, `components/bundle.css` and `components/bundle.js` come first, and `<html data-theme>` is set to the theme picked in the header.
+`index.html` is the showcase (with `site/showcase.css` and `site/showcase.js`, plus `site/mirror.html` for the mirror windows). `docs.html` and the rest of `site/` make up the docs. The **Look** menu in the header switches the whole site, the cover and every live preview between the system's styles. Storeybrook also has a Density control (Regular, Kid, TV) that applies to the live previews. The choice is kept in the address (`?theme=…`), so a link opens in the same style, and picking a look inside a preview, such as Storeybrook's own Looks component, restyles the site too. It loads each preview the way the artifact does: `project/tokens.css`, `components/bundle.css` and `components/bundle.js` come first, and `<html data-theme>` is set to the theme picked in the header.
 
 - `project/tokens.css` is compiled from `project/tokens.json` by `site/build.py`, following the artifact's tokens.css rules: one `[data-theme]` block per theme, `--font-*` families, a class per type style.
 - `site/site.json` is the site's index (sections, components, assets, style groups), and `site/hooks.css` repeats the bundle's per-look defaults so a look can sit inside another (the style cards). Both are written by the same script from `site/config.json`.
