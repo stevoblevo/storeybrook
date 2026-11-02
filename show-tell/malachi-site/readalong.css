@@ -39,7 +39,7 @@ body[data-reading-layout] .chapter-stop { flex:1 1 4rem; min-width:48px; min-hei
 body[data-reading-layout] .trail-line { display:none; }
 body[data-reading-layout] .bottom-bar { flex-wrap:wrap; gap:.75rem; padding-bottom:max(1rem,env(safe-area-inset-bottom)); }
 body[data-reading-layout] .bottom-bar .baseline { line-height:1.5; }
-body[data-reading-layout] .reveal-note { position:relative; inset:auto; width:auto; max-width:40rem; margin:1rem auto; }
+body[data-reading-layout] .reveal-note { position:relative!important; transform:none; inset:auto; width:auto; max-width:40rem; margin:1rem auto; }
 body[data-reading-layout] .paper-dialog { overflow-wrap:anywhere; }
 body[data-reading-layout] .paper-dialog :is(.media-actions,.fs-dialog-actions,.reflection-choices,.fs-setting) { flex-wrap:wrap; }
 @media(max-width:750px) {

@@ -25,6 +25,8 @@ jobs:
       - name: Install pinned test library
         run: npm install --prefix "$RUNNER_TEMP/malachi-qa" --ignore-scripts --no-audit --no-fund playwright@1.64.1
       - name: Existing browser regressions
+        id: regressions
+        continue-on-error: true
         env:
           PLAYWRIGHT_MODULE: ${{ runner.temp }}/malachi-qa/node_modules/playwright/index.mjs
         run: node tests/show-tell/smoke.mjs
@@ -40,3 +42,6 @@ jobs:
           path: tests/malachi-visual/output/
           if-no-files-found: error
           retention-days: 30
+      - name: Enforce original regressions
+        if: always() && steps.regressions.outcome != 'success'
+        run: exit 1
