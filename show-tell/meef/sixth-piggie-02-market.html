@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sixth Piggie · Clue at the Market</title>
+<style>
+  :root{
+    --cream:#f7efe0; --cream-deep:#eedfc2; --ink:#46392c; --ink-soft:#8a7a64;
+    --blue:#5b7fa6; --blue-deep:#3f6288; --gold:#c9962e;
+    --sage:#7d9b76; --sage-deep:#5d7a57; --stone:#b9b2a4; --stone-deep:#8f887a;
+    --terra:#c07a4a; --awning:#d96b5a; --awning-cream:#fbf1dd;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(900px 420px at 50% -10%, #fdf8ec 0%, transparent 60%),
+      linear-gradient(180deg, #f3e8d2 0%, #e2cfae 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  .card{
+    width:min(580px, 100%); background:var(--cream); border-radius:10px;
+    box-shadow:0 2px 0 #d8c49a, 0 18px 44px rgba(120,85,40,.30);
+    overflow:hidden; position:relative;
+  }
+  .intro{ padding:1.6rem 1.6rem 0.4rem; text-align:center; }
+  .intro h1{ font-size:1.35rem; margin:.2rem 0 .4rem; font-weight:400; }
+  .intro p{ margin:0 auto; max-width:42ch; line-height:1.6; color:var(--ink-soft); font-size:.98rem; }
+  /* ---------- the market scene ---------- */
+  .scene{
+    margin:1.4rem 1.2rem 0; padding:0 0 1.2rem; position:relative;
+    background:linear-gradient(180deg, #fffaf0, var(--cream-deep));
+    border:2px solid #e0cda4; border-radius:14px;
+    box-shadow:inset 0 0 0 6px rgba(255,255,255,.35); overflow:hidden;
+  }
+  .awning{
+    height:34px;
+    background:repeating-linear-gradient(90deg, var(--awning) 0 34px, var(--awning-cream) 34px 68px);
+    border-bottom:2px solid #b85a48; position:relative;
+  }
+  .awning::after{
+    content:"Margo's stall · the harbour market"; position:absolute; left:0; right:0; top:8px;
+    text-align:center; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:#6b3a2e;
+  }
+  .toprow{ display:flex; gap:1rem; padding:1.1rem 1.1rem 0; align-items:flex-start; }
+  /* the well */
+  .well{ flex:0 0 118px; text-align:center; }
+  .well .stones{
+    width:104px; height:78px; margin:0 auto; border-radius:50%;
+    background:radial-gradient(circle at 50% 40%, #efe9db, #cfc7b4 70%);
+    border:3px solid var(--stone-deep);
+    box-shadow:0 5px 0 rgba(120,110,90,.35), inset 0 -10px 14px rgba(140,130,110,.45);
+    display:flex; align-items:center; justify-content:center; font-size:1.6rem;
+  }
+  .well p{ margin:.45rem 0 0; font-size:.72rem; letter-spacing:.08em; color:var(--ink-soft); }
+  .thread{
+    display:block; margin:.55rem auto 0; padding:.5rem .8rem; border:0; cursor:pointer;
+    background:linear-gradient(180deg, var(--blue), var(--blue-deep)); color:#f2f6fa;
+    border-radius:20px; font-family:inherit; font-size:.85rem;
+    box-shadow:0 3px 0 rgba(40,70,105,.4); min-height:44px;
+    -webkit-tap-highlight-color:transparent; transition:transform .25s ease;
+  }
+  .thread:hover{ transform:translateY(-2px); }
+  .thread:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .thread.glint{ background:linear-gradient(180deg, #e9c25a, #c9962e); color:#46392c; }
+  .thread-note{
+    margin:.5rem auto 0; max-width:26ch; font-style:italic; font-size:.9rem; line-height:1.5;
+    color:var(--ink-soft); min-height:1.5em; opacity:0; transition:opacity .8s ease;
+  }
+  .thread-note.show{ opacity:1; }
+  /* Pipkin, shopping */
+  .pipkin{ flex:1; text-align:center; padding-top:.3rem; }
+  .pipkin .pig{ font-size:2.4rem; line-height:1; display:block; transition:transform .6s ease; }
+  .pipkin.glance .pig{ transform:rotate(-8deg) translateX(-6px); }
+  .pipkin p{ margin:.45rem 0 0; font-size:.85rem; line-height:1.5; color:var(--ink-soft); }
+  .pipkin p b{ color:var(--ink); font-weight:400; }
+  /* ---------- the damp patch ---------- */
+  .patch{
+    margin:1.2rem 1.1rem 0; padding:1rem 1rem 1.1rem; position:relative;
+    background:radial-gradient(ellipse at 50% 40%, #d9c9a8, #c4ae85 75%);
+    border:1px solid #b39d72; border-radius:12px;
+  }
+  .patch h2{ font-size:.8rem; letter-spacing:.22em; text-transform:uppercase; color:#6b5a3e; margin:0 0 .9rem; font-weight:400; text-align:center; }
+  .apron{
+    display:block; margin:0 auto .9rem; padding:.8rem 1.1rem; border:0; cursor:pointer;
+    background:linear-gradient(180deg, #e8ddc8, #d5c5a3); color:var(--ink);
+    border:2px dashed #a08c66; border-radius:6px; font-family:inherit; font-size:1rem;
+    box-shadow:0 4px 0 rgba(140,115,70,.4); min-height:48px;
+    -webkit-tap-highlight-color:transparent; transition:transform .25s ease, opacity .6s ease;
+  }
+  .apron:hover{ transform:translateY(-2px); }
+  .apron:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .apron.lifted{ transform:translateY(-14px) rotate(-3deg); opacity:.55; }
+  .trail{ opacity:.25; transition:opacity .9s ease; }
+  .trail.found{ opacity:1; }
+  .prints{ display:flex; justify-content:center; gap:.5rem; align-items:center; flex-wrap:wrap; }
+  .print{
+    width:46px; height:46px; display:flex; align-items:center; justify-content:center;
+    border-radius:50%; background:rgba(90,70,45,.18); font-size:1.25rem; color:#5d4a2e;
+  }
+  .prints .arrow{ font-size:1.1rem; color:#6b5a3e; }
+  .turn{
+    display:flex; justify-content:center; gap:1rem; align-items:center; margin-top:.9rem; flex-wrap:wrap;
+  }
+  .sixth-print{
+    width:56px; height:56px; border:2px solid #8a7a64; border-radius:50%;
+    background:rgba(90,70,45,.18); cursor:pointer; font-size:1.4rem; color:#5d4a2e;
+    box-shadow:0 3px 0 rgba(90,70,45,.35); min-width:56px; min-height:56px;
+    -webkit-tap-highlight-color:transparent; transition:box-shadow .4s ease, background .4s ease, transform .4s ease;
+  }
+  .sixth-print:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .sixth-print.followed{
+    background:rgba(233,194,90,.55); box-shadow:0 0 0 4px rgba(201,150,46,.45), 0 3px 0 rgba(140,110,40,.4);
+    transform:rotate(-24deg);
+  }
+  .thyme{
+    text-align:center; font-size:.85rem; line-height:1.5; color:#4a5a42;
+    transition:transform .6s ease;
+  }
+  .thyme .sprig{ font-size:2rem; display:block; line-height:1.1; }
+  .thyme.sway{ transform:rotate(3deg) scale(1.06); }
+  .note{ text-align:center; padding:1rem 1.4rem 1.5rem; }
+  .note p{ margin:.3rem auto; max-width:44ch; line-height:1.6; color:var(--ink-soft); font-size:.95rem; }
+  .note p b{ color:var(--ink); font-weight:400; }
+  .unlock{
+    display:none; margin:1rem auto 0; padding:.9rem 1.1rem; max-width:44ch;
+    background:#fff8e2; border:1px solid var(--gold); border-radius:10px;
+    color:var(--ink); line-height:1.6; font-size:.98rem;
+  }
+  .unlock.show{ display:block; }
+  .reset{
+    margin:1rem auto 0; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font-family:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+    min-height:44px; padding:.4rem .8rem;
+  }
+  .reset:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:6px; }
+</style>
+</head>
+<body>
+<p class="kicker">The Sixth Piggie · A clue at the market</p>
+<main class="card">
+  <div class="intro">
+    <h1>Beside the well, beneath the apron.</h1>
+    <p>The market is busy, the narration is shopping, and nobody is counting.
+    But the damp patch by the well keeps a small, damp record. Lift the
+    apron, and follow the prints the way the pictures do.</p>
+  </div>
+
+  <div class="scene" aria-label="The harbour market by the well">
+    <div class="awning" aria-hidden="true"></div>
+    <div class="toprow">
+      <div class="well">
+        <div class="stones" aria-hidden="true">⛲</div>
+        <p>the well</p>
+        <button class="thread" type="button" id="thread" aria-pressed="false">🧵 A blue thread, caught on the lowest stone</button>
+        <p class="thread-note" id="threadNote" aria-live="polite">The same blue as the feast napkin. Caught, not lost.</p>
+      </div>
+      <div class="pipkin" id="pipkin">
+        <span class="pig" aria-hidden="true">🐷</span>
+        <p id="pipkinNote">Pipkin, mid-shopping, <b>looking at the market.</b> Baskets, buttons, seed packets — the usual.</p>
+      </div>
+    </div>
+
+    <div class="patch">
+      <h2>The damp patch</h2>
+      <button class="apron" type="button" id="apron" aria-pressed="false">🧺 The stallholder's hanging apron — lift it</button>
+      <div class="trail" id="trail">
+        <div class="prints" aria-label="Five hoofprints toward the market">
+          <span class="print" aria-hidden="true">🐾</span>
+          <span class="print" aria-hidden="true">🐾</span>
+          <span class="print" aria-hidden="true">🐾</span>
+          <span class="print" aria-hidden="true">🐾</span>
+          <span class="print" aria-hidden="true">🐾</span>
+          <span class="arrow" aria-hidden="true">→ to market</span>
+        </div>
+        <div class="turn">
+          <button class="sixth-print" type="button" id="sixthPrint" aria-label="The sixth hoofprint, turning toward the thyme">🐾</button>
+          <div class="thyme" id="thyme"><span class="sprig" aria-hidden="true">🌿</span>a clump of thyme, where the last print turns aside</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p id="marketNote">Lift the apron first — the prints are underneath it, the way
+    small things are. Then follow the print that <b>turns aside</b>.</p>
+    <div class="unlock" id="unlock" aria-live="polite">
+      🐾 Six prints crossed the damp patch. Five went to market. One turned
+      toward the thyme — and Pipkin, mid-shopping, <b>glanced after it</b>.
+      Nobody counted. That is the clue.
+    </div>
+    <button class="reset" type="button" id="reset">Walk the market again</button>
+  </div>
+</main>
+<script>
+  const apron = document.getElementById('apron');
+  const trail = document.getElementById('trail');
+  const sixth = document.getElementById('sixthPrint');
+  const thyme = document.getElementById('thyme');
+  const pipkin = document.getElementById('pipkin');
+  const pipkinNote = document.getElementById('pipkinNote');
+  const thread = document.getElementById('thread');
+  const threadNote = document.getElementById('threadNote');
+  const unlock = document.getElementById('unlock');
+  const note = document.getElementById('marketNote');
+  let apronLifted = false, sixthFollowed = false;
+
+  function check(){
+    if (apronLifted && sixthFollowed){
+      unlock.classList.add('show');
+      note.innerHTML = 'Apron lifted, print followed — <b>the clue is complete.</b> The market goes on, one print wider than before.';
+    } else {
+      unlock.classList.remove('show');
+    }
+  }
+  apron.addEventListener('click', () => {
+    apronLifted = !apronLifted;
+    apron.classList.toggle('lifted', apronLifted);
+    trail.classList.toggle('found', apronLifted);
+    apron.setAttribute('aria-pressed', String(apronLifted));
+    apron.textContent = apronLifted ? '🧺 The stallholder\'s hanging apron — lifted' : '🧺 The stallholder\'s hanging apron — lift it';
+    if (apronLifted && !sixthFollowed) note.innerHTML = 'Beneath the apron: <b>six small prints in the damp.</b> Five head to market. One turns aside — tap it.';
+    if (!apronLifted && !sixthFollowed) note.innerHTML = 'Lift the apron first — the prints are underneath it, the way small things are. Then follow the print that <b>turns aside</b>.';
+    check();
+  });
+  sixth.addEventListener('click', () => {
+    if (!apronLifted){
+      note.innerHTML = 'That print is still under the apron. <b>Lift the apron first</b>, and it will be waiting.';
+      return;
+    }
+    sixthFollowed = true;
+    sixth.classList.add('followed');
+    thyme.classList.add('sway');
+    pipkin.classList.add('glance');
+    pipkinNote.innerHTML = 'Pipkin, mid-shopping, <b>glancing toward the thyme.</b> Just for a moment. Then back to the baskets.';
+    if (!unlock.classList.contains('show')) note.innerHTML = 'The sixth print turns aside, toward the thyme — <b>not to market, like the rest.</b> And Pipkin noticed.';
+    check();
+  });
+  thread.addEventListener('click', () => {
+    const on = thread.classList.toggle('glint');
+    threadNote.classList.toggle('show', on);
+    thread.setAttribute('aria-pressed', String(on));
+    thread.textContent = on ? '🧵 A blue thread — glinting on the lowest stone' : '🧵 A blue thread, caught on the lowest stone';
+  });
+  document.getElementById('reset').addEventListener('click', () => {
+    apronLifted = false; sixthFollowed = false;
+    apron.classList.remove('lifted');
+    trail.classList.remove('found');
+    sixth.classList.remove('followed');
+    thyme.classList.remove('sway');
+    pipkin.classList.remove('glance');
+    apron.setAttribute('aria-pressed', 'false');
+    apron.textContent = '🧺 The stallholder\'s hanging apron — lift it';
+    pipkinNote.innerHTML = 'Pipkin, mid-shopping, <b>looking at the market.</b> Baskets, buttons, seed packets — the usual.';
+    note.innerHTML = 'Lift the apron first — the prints are underneath it, the way small things are. Then follow the print that <b>turns aside</b>.';
+    check();
+  });
+</script>
+</body>
+</html>

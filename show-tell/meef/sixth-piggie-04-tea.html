@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sixth Piggie · Clue at the Tea Party</title>
+<style>
+  :root{
+    --cream:#f7efe0; --cream-deep:#eedfc2; --ink:#46392c; --ink-soft:#8a7a64;
+    --blue:#5b7fa6; --blue-deep:#3f6288; --gold:#c9962e;
+    --sage:#7d9b76; --sage-deep:#5d7a57; --rose:#c98a7a; --linen:#efe6d2;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(900px 420px at 50% -10%, #fdf8ec 0%, transparent 60%),
+      linear-gradient(180deg, #f3e8d2 0%, #d9e2c4 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  .card{
+    width:min(580px, 100%); background:var(--cream); border-radius:10px;
+    box-shadow:0 2px 0 #d8c49a, 0 18px 44px rgba(120,85,40,.30);
+    overflow:hidden; position:relative;
+  }
+  .intro{ padding:1.6rem 1.6rem 0.4rem; text-align:center; }
+  .intro h1{ font-size:1.35rem; margin:.2rem 0 .4rem; font-weight:400; }
+  .intro p{ margin:0 auto; max-width:42ch; line-height:1.6; color:var(--ink-soft); font-size:.98rem; }
+  /* ---------- the tea table ---------- */
+  .scene{
+    margin:1.4rem 1.2rem 0; padding:1.1rem; position:relative;
+    background:linear-gradient(180deg, #fffaf0, var(--cream-deep));
+    border:2px solid #e0cda4; border-radius:14px;
+    box-shadow:inset 0 0 0 6px rgba(255,255,255,.35); overflow:hidden;
+  }
+  .willow{ text-align:center; font-size:.85rem; color:#5d6b5a; line-height:1.5; margin:0 0 1rem; }
+  .table{
+    background:linear-gradient(180deg, #fdf6e8, #f0dfba);
+    border:2px solid #c9b586; border-radius:12px; padding:1rem; text-align:center;
+    position:relative;
+  }
+  .table h2{ font-size:.8rem; letter-spacing:.22em; text-transform:uppercase; color:#6b5a3e; margin:0 0 .9rem; font-weight:400; }
+  .cups{ font-size:1.5rem; letter-spacing:.35em; line-height:1.8; }
+  .cups span{ display:inline-block; }
+  .teapot{ font-size:2rem; display:block; margin:.2rem 0 .4rem; }
+  .hem{
+    display:block; margin:1rem auto 0; padding:.7rem 1.1rem; border:0; cursor:pointer;
+    background:linear-gradient(180deg, #e8c9a8, #d9b58e); color:#46392c;
+    border:2px dashed #8a6a42; border-radius:6px; font-family:inherit; font-size:.95rem;
+    box-shadow:0 4px 0 rgba(140,100,50,.4); min-height:48px;
+    -webkit-tap-highlight-color:transparent; transition:transform .5s ease, opacity .5s ease;
+  }
+  .hem:hover{ transform:translateY(-2px); }
+  .hem:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .hem.lifted{ transform:translateY(-6px) rotate(-2deg); opacity:.65; }
+  /* ---------- the sixth chair ---------- */
+  .chair-row{ margin-top:1.1rem; text-align:center; }
+  .chair{
+    display:block; margin:0 auto; padding:1rem 1.2rem; border:0; cursor:pointer; width:min(340px, 100%);
+    background:linear-gradient(180deg, var(--linen), #e2d3b4); color:var(--ink);
+    border:2px solid #a08c66; border-radius:14px; font-family:inherit; font-size:1rem; line-height:1.5;
+    box-shadow:0 5px 0 rgba(140,115,70,.4); min-height:56px;
+    -webkit-tap-highlight-color:transparent; transition:transform .6s ease, box-shadow .6s ease, opacity .5s ease;
+  }
+  .chair:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .chair.hidden-chair{ opacity:.35; }
+  .chair.out{ transform:translateY(4px) rotate(1.5deg); box-shadow:0 1px 0 rgba(140,115,70,.4); opacity:1; }
+  .chair .small{ display:block; font-size:.85rem; color:var(--ink-soft); margin-top:.3rem; }
+  .steam{
+    margin:.8rem auto 0; font-size:1.4rem; opacity:0; transition:opacity 1s ease;
+  }
+  .steam.show{ opacity:1; }
+  .steam-note{
+    font-size:.85rem; font-style:italic; color:#5d6b5a; opacity:0; transition:opacity 1s ease; margin:.3rem 0 0;
+  }
+  .steam-note.show{ opacity:1; }
+  .ribbon{
+    display:block; margin:1rem auto 0; padding:.5rem .9rem; border:0; cursor:pointer;
+    background:linear-gradient(180deg, var(--blue), var(--blue-deep)); color:#f2f6fa;
+    border-radius:20px; font-family:inherit; font-size:.9rem;
+    box-shadow:0 3px 0 rgba(40,70,105,.4); min-height:44px;
+    -webkit-tap-highlight-color:transparent; transition:transform .25s ease;
+  }
+  .ribbon:hover{ transform:translateY(-2px); }
+  .ribbon:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .ribbon.glint{ background:linear-gradient(180deg, #e9c25a, #c9962e); color:#46392c; }
+  .ribbon-note{
+    margin:.5rem auto 0; max-width:30ch; font-style:italic; font-size:.9rem; line-height:1.5;
+    color:var(--ink-soft); min-height:1.5em; opacity:0; transition:opacity .8s ease;
+  }
+  .ribbon-note.show{ opacity:1; }
+  .note{ text-align:center; padding:1rem 1.4rem 1.5rem; }
+  .note p{ margin:.3rem auto; max-width:44ch; line-height:1.6; color:var(--ink-soft); font-size:.95rem; }
+  .note p b{ color:var(--ink); font-weight:400; }
+  .unlock{
+    display:none; margin:1rem auto 0; padding:.9rem 1.1rem; max-width:44ch;
+    background:#fff8e2; border:1px solid var(--gold); border-radius:10px;
+    color:var(--ink); line-height:1.6; font-size:.98rem;
+  }
+  .unlock.show{ display:block; }
+  .reset{
+    margin:1rem auto 0; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font-family:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+    min-height:44px; padding:.4rem .8rem;
+  }
+  .reset:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:6px; }
+</style>
+</head>
+<body>
+<p class="kicker">The Sixth Piggie · A clue at the tea party</p>
+<main class="card">
+  <div class="intro">
+    <h1>Five cups poured. One chair, tucked away.</h1>
+    <p>Under the willow, the tea party is already laid — five cups, one teapot,
+    and a tablecloth that hangs a little longer on one side than it should.
+    Lift the hem, and see what the table has been keeping.</p>
+  </div>
+
+  <div class="scene" aria-label="The tea party under the willow">
+    <p class="willow">🌿 beneath the willow, late afternoon 🌿<br>tea, and the smell of dusk roses</p>
+    <div class="table">
+      <h2>The tea table</h2>
+      <span class="teapot" aria-hidden="true">🫖</span>
+      <p class="cups" aria-label="Five teacups"><span>🍵</span><span>🍵</span><span>🍵</span><span>🍵</span><span>🍵</span></p>
+      <button class="hem" type="button" id="hem" aria-pressed="false">🫧 The tablecloth hem — lift it, gently</button>
+    </div>
+
+    <div class="chair-row">
+      <button class="chair hidden-chair" type="button" id="chair" aria-pressed="false">
+        🪑 A small chair, tucked behind the tablecloth
+        <span class="small" id="chairSmall">smaller than the rest, and pushed right back</span>
+      </button>
+      <p class="steam" id="steam" aria-hidden="true">🍵 〜</p>
+      <p class="steam-note" id="steamNote">a tiny cup, already poured — still warm</p>
+      <button class="ribbon" type="button" id="ribbon" aria-pressed="false">🎀 A blue ribbon, tied to the little chair's leg</button>
+      <p class="ribbon-note" id="ribbonNote" aria-live="polite">The same blue as the feast napkin, the thread on the well's lowest stone, and the thread in Hazel's unfinished pear. Four clues, one colour, one small guest.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <p id="tableNote">Lift the tablecloth hem first — the little chair is
+    behind it, the way small things are. Then draw it out.</p>
+    <div class="unlock" id="unlock" aria-live="polite">
+      🪑 The sixth chair slides out into the late light, and there it is: a
+      tiny cup, already poured and still warm, as if someone small had only
+      just stepped away to smell the roses. She was here for the tea, too —
+      the chair remembers, even when the counting forgets. Nobody names her.
+      That is the clue.
+    </div>
+    <button class="reset" type="button" id="reset">Lay the table again</button>
+  </div>
+</main>
+<script>
+  const hem = document.getElementById('hem');
+  const chair = document.getElementById('chair');
+  const chairSmall = document.getElementById('chairSmall');
+  const steam = document.getElementById('steam');
+  const steamNote = document.getElementById('steamNote');
+  const ribbon = document.getElementById('ribbon');
+  const ribbonNote = document.getElementById('ribbonNote');
+  const unlock = document.getElementById('unlock');
+  const note = document.getElementById('tableNote');
+  let hemLifted = false, chairOut = false;
+
+  function check(){
+    if (hemLifted && chairOut){
+      unlock.classList.add('show');
+      note.innerHTML = 'Hem lifted, chair drawn out — <b>the clue is complete.</b> The tea stays warm, and the chair stays kept.';
+    } else {
+      unlock.classList.remove('show');
+    }
+  }
+  hem.addEventListener('click', () => {
+    hemLifted = !hemLifted;
+    hem.classList.toggle('lifted', hemLifted);
+    hem.setAttribute('aria-pressed', String(hemLifted));
+    hem.textContent = hemLifted ? '🫧 The tablecloth hem — lifted' : '🫧 The tablecloth hem — lift it, gently';
+    chair.classList.toggle('hidden-chair', !hemLifted);
+    if (hemLifted && !chairOut) note.innerHTML = 'Behind the hem: <b>a small chair, pushed right back.</b> Draw it out into the light.';
+    if (!hemLifted && !chairOut) note.innerHTML = 'Lift the tablecloth hem first — the little chair is behind it, the way small things are. Then draw it out.';
+    check();
+  });
+  chair.addEventListener('click', () => {
+    if (!hemLifted){
+      note.innerHTML = 'The little chair is still behind the tablecloth. <b>Lift the hem first</b>, and it will be waiting.';
+      return;
+    }
+    chairOut = true;
+    chair.classList.add('out');
+    chair.setAttribute('aria-pressed', 'true');
+    chairSmall.textContent = 'drawn out — and a tiny cup, already poured, still warm';
+    steam.classList.add('show');
+    steamNote.classList.add('show');
+    if (!unlock.classList.contains('show')) note.innerHTML = 'The chair slides out, and there — <b>a tiny cup, still warm.</b> Someone small had only just stepped away.';
+    check();
+  });
+  ribbon.addEventListener('click', () => {
+    const on = ribbon.classList.toggle('glint');
+    ribbonNote.classList.toggle('show', on);
+    ribbon.setAttribute('aria-pressed', String(on));
+    ribbon.textContent = on ? '🎀 A blue ribbon — glinting on the little chair' : "🎀 A blue ribbon, tied to the little chair's leg";
+  });
+  document.getElementById('reset').addEventListener('click', () => {
+    hemLifted = false; chairOut = false;
+    hem.classList.remove('lifted');
+    chair.classList.remove('out');
+    chair.classList.add('hidden-chair');
+    steam.classList.remove('show');
+    steamNote.classList.remove('show');
+    hem.setAttribute('aria-pressed', 'false');
+    chair.setAttribute('aria-pressed', 'false');
+    hem.textContent = '🫧 The tablecloth hem — lift it, gently';
+    chairSmall.textContent = 'smaller than the rest, and pushed right back';
+    note.innerHTML = 'Lift the tablecloth hem first — the little chair is behind it, the way small things are. Then draw it out.';
+    check();
+  });
+</script>
+</body>
+</html>

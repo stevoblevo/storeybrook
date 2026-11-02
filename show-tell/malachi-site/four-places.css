@@ -1,0 +1,404 @@
+/* ============================================================
+   four-places.css — the site's own layer over vendor/four-styles.
+   Vendor files are copied unchanged (see TOOLKIT-PROVENANCE.md);
+   everything here is host styling keyed off the controller's own
+   contracts: body[data-fs-style], body[data-fs-theme],
+   body[data-density], body[data-fs-words], body[data-fs-reduced],
+   and #world[data-scene] (0/4 = supplied portrait, 1–3 = scenery).
+
+   Thesis: the four styles are four PLACES, not four accents.
+     gen4     Cinema   — the darkened room; listen by lantern light
+     gen2     Storybook— the book open on the table, in daylight
+     skeptic  Evidence — the record, open; what is the source?
+     semiotic Symbols  — the signs, by themselves: wind, crown, moon
+
+   Art rule (repo): the supplied Malachi portrait is never filtered,
+   blended or repainted. Image filters below apply ONLY to scenery
+   scenes (data-scene 1–3). Portrait scenes (0, 4) receive global
+   page ambience — shades, backdrop, vignette — and nothing else.
+   ============================================================ */
+
+/* ---------- place tokens ---------- */
+body[data-four-styles][data-fs-style="gen4"]{
+  --p-ground:#14100b; --p-ground-2:#1d1710; --p-ink:#f6ecd7; --p-muted:#b3a888;
+  --p-accent:#f0b060; --p-accent-2:#b98a4a; --p-line:#6b5a3e; --p-surface:#241c13;
+  --p-title-font:PaperSerif,Georgia,serif; --p-grain:.05; color-scheme:dark;
+}
+body[data-four-styles][data-fs-style="gen2"]{
+  --p-ground:#e9dcbc; --p-ground-2:#dfcfa6; --p-ink:#2f4232; --p-muted:#68755c;
+  --p-accent:#5c7247; --p-accent-2:#a35c33; --p-line:#b3a67f; --p-surface:#f4ead0;
+  --p-title-font:PaperSerif,Georgia,serif; --p-grain:.13; color-scheme:light;
+}
+body[data-four-styles][data-fs-style="skeptic"]{
+  --p-ground:#e9ebea; --p-ground-2:#dde1df; --p-ink:#17242b; --p-muted:#4c5c63;
+  --p-accent:#253c47; --p-accent-2:#1c5274; --p-line:#93a1a4; --p-surface:#fbfcfc;
+  --p-title-font:PaperSans,Arial,sans-serif; --p-grain:.03; color-scheme:light;
+}
+body[data-four-styles][data-fs-style="skeptic"][data-fs-theme="dark"]{
+  --p-ground:#131a1f; --p-ground-2:#1a232a; --p-ink:#e8eef0; --p-muted:#a9b8be;
+  --p-accent:#d4e3e9; --p-accent-2:#aed9ee; --p-line:#54676f; --p-surface:#202b33; color-scheme:dark;
+}
+body[data-four-styles][data-fs-style="semiotic"]{
+  --p-ground:#121b26; --p-ground-2:#182635; --p-ink:#ece5cf; --p-muted:#9aa79b;
+  --p-accent:#e3b34e; --p-accent-2:#6fa8a0; --p-line:#4d6070; --p-surface:#1b2938;
+  --p-title-font:PaperSans,Arial,sans-serif; --p-grain:.07; color-scheme:dark;
+}
+/* Cinema & Symbols are after-dark places: a light theme softens them
+   to dusk rather than inverting them. */
+body[data-four-styles][data-fs-style="gen4"][data-fs-theme="light"]{ --p-ground:#232b25; --p-ground-2:#2b352d; }
+body[data-four-styles][data-fs-style="semiotic"][data-fs-theme="light"]{ --p-ground:#1a2635; --p-ground-2:#22334a; }
+/* Storybook after dark: a dark room, and the page itself still lit.
+   Room chrome (outside .world) takes light ink on the dark ground;
+   inside .world the daylight tokens are re-declared, so the page and
+   everything on it keep reading as a lit sheet. (Review fix: dark ink
+   on the dark room was ~1.35:1.) */
+body[data-four-styles][data-fs-style="gen2"][data-fs-theme="dark"]{
+  --p-ground:#262b22; --p-ground-2:#2e3328; --p-line:#585f4a;
+  --p-ink:#ece2c6; --p-muted:#b5ad8e; --p-surface:#343a2d; --p-accent:#a9bf8a;
+}
+body[data-four-styles][data-fs-style="gen2"][data-fs-theme="dark"] .world{
+  --p-ground:#e9dcbc; --p-ground-2:#dfcfa6; --p-ink:#2f4232; --p-muted:#68755c;
+  --p-accent:#5c7247; --p-accent-2:#a35c33; --p-surface:#f4ead0; --p-line:#b3a67f;
+}
+
+/* ---------- shared chrome, re-skinned from the tokens ---------- */
+body[data-four-styles] .app{
+  background:linear-gradient(180deg,var(--p-ground-2),var(--p-ground) 34%);
+  transition:background-color .6s ease,color .6s ease;
+}
+body[data-four-styles] .topbar{ background:linear-gradient(var(--p-ground),transparent); }
+body[data-four-styles][data-fs-style="gen2"] .topbar,
+body[data-four-styles][data-fs-style="skeptic"] .topbar{ background:none; }
+body[data-four-styles] .world{ background:var(--p-ground); color:var(--p-ink); transition:background-color .6s ease,color .6s ease; }
+body[data-four-styles] .edition, body[data-four-styles] .baseline{ color:var(--p-muted); }
+body[data-four-styles] .baseline{ border-color:var(--p-line); }
+body[data-four-styles] .bottom-bar{ border-top-color:color-mix(in srgb,var(--p-line) 45%,transparent); }
+body[data-four-styles] :focus-visible{ outline:2px solid var(--p-accent)!important; outline-offset:2px; }
+
+/* wordmark: tint the folded-paper mark into each place (fills only) */
+body[data-four-styles] .wordmark svg path[fill="#dabb81"]{ fill:var(--p-accent); }
+body[data-four-styles] .wordmark svg path[fill="#ab9c7e"]{ fill:var(--p-line); }
+body[data-four-styles] .wordmark svg path[fill="#e6d5aa"]{ fill:var(--p-surface); }
+
+/* paper grain over the whole place, strength per place */
+body[data-four-styles] .app::before{
+  content:''; position:fixed; inset:0; z-index:60; pointer-events:none;
+  opacity:var(--p-grain); mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* scene shade follows the place, not one fixed dark */
+body[data-four-styles] .scene-shade{
+  background:
+    linear-gradient(90deg, var(--p-ground) 0%, color-mix(in srgb,var(--p-ground) 93%,transparent) 20%, color-mix(in srgb,var(--p-ground) 50%,transparent) 33%, transparent 52%),
+    linear-gradient(0deg, var(--p-ground) 0%, transparent 14%, transparent 88%, color-mix(in srgb,var(--p-ground) 45%,transparent) 100%);
+}
+@media(max-width:650px){
+  body[data-four-styles] .scene-shade{
+    background:linear-gradient(180deg, var(--p-ground) 0%, var(--p-ground) 22%, transparent 51%, transparent 89%, var(--p-ground) 100%);
+  }
+}
+
+/* type in the scene */
+body[data-four-styles] .scene-copy .df-chapter__title{
+  font-family:var(--p-title-font); color:var(--p-ink);
+  transition:color .5s ease;
+}
+body[data-four-styles] .scene-copy .df-chapter__title em{ color:var(--p-accent); }
+body[data-four-styles] .scene-copy .df-chapter__eyebrow{ color:var(--p-muted); }
+body[data-four-styles] .scene-lede{ color:color-mix(in srgb,var(--p-ink) 82%,var(--p-ground)); }
+body[data-four-styles] .attribution, body[data-four-styles] .attribution span{ color:var(--p-muted); }
+body[data-four-styles] .trail-invitation{ color:var(--p-accent); }
+body[data-four-styles] .trail-invitation span{ color:var(--p-muted); }
+body[data-four-styles] .art-credit{ color:var(--p-muted); }
+
+/* the begin button wears the place's accent */
+body[data-four-styles] .begin{
+  background:var(--p-accent); color:var(--p-ground);
+  box-shadow:2px 3px 0 color-mix(in srgb,var(--p-accent) 55%,#000);
+}
+body[data-four-styles][data-fs-style="gen2"] .begin,
+body[data-four-styles][data-fs-style="skeptic"] .begin{ color:var(--p-surface); }
+body[data-four-styles] .begin:hover{ background:color-mix(in srgb,var(--p-accent) 82%,#fff); }
+
+/* hotspots: a small lantern in every place */
+body[data-four-styles] .hotspot-mark{
+  border-color:color-mix(in srgb,var(--p-accent) 65%,transparent);
+  box-shadow:0 0 0 7px color-mix(in srgb,var(--p-accent) 8%,transparent), 0 0 35px color-mix(in srgb,var(--p-accent) 22%,transparent);
+}
+body[data-four-styles] .hotspot:hover .hotspot-mark,
+body[data-four-styles] .lantern-spot:hover .hotspot-mark{ background:var(--p-accent); color:var(--p-ground); }
+body[data-four-styles] .hotspot-label{ background:color-mix(in srgb,var(--p-ground) 78%,transparent); color:var(--p-ink); }
+
+/* journey stops */
+body[data-four-styles] .chapter-icon{
+  background:var(--p-surface); border-color:color-mix(in srgb,var(--p-line) 60%,transparent);
+  color:var(--p-muted);
+}
+body[data-four-styles] .chapter-stop{ color:var(--p-muted); }
+body[data-four-styles] .chapter-stop[aria-current="step"] .chapter-icon{ background:var(--p-accent); color:var(--p-ground); }
+body[data-four-styles] .chapter-stop[aria-current="step"]{ color:var(--p-accent)!important; }
+body[data-four-styles] .chapter-stop:hover .chapter-icon{ background:color-mix(in srgb,var(--p-accent) 45%,var(--p-surface)); color:var(--p-ink); }
+body[data-four-styles] .trail-line{ background:repeating-linear-gradient(90deg,var(--p-line) 0 3px,transparent 3px 9px); }
+body[data-four-styles] .next-step{ border-color:var(--p-line); color:var(--p-ink); }
+
+/* captions: one well, four readings (per-place rules below) */
+body[data-four-styles] .caption-well{
+  background:color-mix(in srgb,var(--p-ground) 88%,transparent);
+  border-color:color-mix(in srgb,var(--p-line) 40%,transparent); color:var(--p-ink);
+}
+body[data-four-styles] .caption-well span{ color:var(--p-muted); }
+
+/* dialogs stay a lit sheet of paper in dark places; per-place ink below */
+body[data-four-styles] .paper-dialog .note-label{ color:var(--p-accent-2); }
+/* …but the label sits on light paper, so dark places must hand the dialog
+   a darker accent-2, and focus inside a dialog needs a ring that reads
+   on paper, not the room's ring. (Review fix: labels were 1.5–2.6:1.) */
+body[data-four-styles][data-fs-style="gen4"] .paper-dialog{ --p-accent-2:#7a4f1c; }
+body[data-four-styles][data-fs-style="semiotic"] .paper-dialog{ --p-accent-2:#2c615a; }
+body[data-four-styles][data-fs-style="skeptic"][data-fs-theme="dark"] .paper-dialog{ --p-accent-2:#1c5274; }
+body[data-four-styles] .paper-dialog :focus-visible{ outline-color:var(--fs-focus,#5a3f12)!important; }
+
+/* settings: each style button carries its place's colour chip */
+body[data-four-styles] .fs-switch button::before{
+  content:''; flex:none; width:11px; height:11px; border-radius:50%; margin-right:2px;
+  background:var(--chip,#888); box-shadow:0 0 0 2px color-mix(in srgb,var(--chip,#888) 30%,transparent);
+}
+body[data-four-styles] .fs-switch button[data-fs-mode="gen4"]{ --chip:#e8c37e; }
+body[data-four-styles] .fs-switch button[data-fs-mode="gen2"]{ --chip:#5c7247; }
+body[data-four-styles] .fs-switch button[data-fs-mode="skeptic"]{ --chip:#7d99a6; }
+body[data-four-styles] .fs-switch button[data-fs-mode="semiotic"]{ --chip:#6fa8a0; }
+.fs-place-line{ font:italic 15px PaperSerif,Georgia,serif; color:#665b45; margin:2px 0 6px; min-height:1.4em; }
+
+/* ---------- the switch ritual: a paper veil + a place card ---------- */
+.fs-veil{
+  position:fixed; inset:0; z-index:4000; pointer-events:none;
+  opacity:0; visibility:hidden; transition:opacity .26s ease, visibility 0s linear .26s;
+  /* themed by the destination place (its tokens are live when the veil
+     shows) — a bright parchment flash in a dark room broke the mood and
+     risked photosensitivity. (Review fix, both lanes.) */
+  background:
+    radial-gradient(120% 90% at 50% 0%, var(--p-surface,#fff8e6) 0%, var(--p-ground-2,#e9dcbc) 55%, var(--p-ground,#d9c69c) 100%);
+}
+.fs-veil::after{ /* the crease */
+  content:''; position:absolute; top:0; bottom:0; left:50%; width:2px;
+  background:linear-gradient(180deg,transparent,#8a764e66 18%,#8a764e99 50%,#8a764e66 82%,transparent);
+  box-shadow:-14px 0 24px #8a764e33, 14px 0 24px #8a764e33;
+}
+.fs-veil.on{ opacity:1; visibility:visible; transition:opacity .26s ease; }
+.fs-placecard{
+  position:fixed; left:50%; bottom:26px; transform:translate(-50%,14px); z-index:4001;
+  pointer-events:none; opacity:0; transition:opacity .45s ease, transform .45s ease;
+  background:var(--p-surface,#f7efdb); color:var(--p-ink,#33382c); border:1px solid var(--p-line,#c9b98f); border-radius:3px;
+  box-shadow:0 14px 38px #0007, 2px 3px 0 #9b815a88; padding:12px 22px 13px; text-align:center;
+  font-family:PaperSans,Arial,sans-serif; max-width:min(88vw,430px);
+}
+.fs-placecard.on{ opacity:1; transform:translate(-50%,0); }
+.fs-placecard b{ display:block; font:italic 21px var(--p-title-font,PaperSerif,Georgia,serif); letter-spacing:-.4px; }
+.fs-placecard span{ font-size:12.5px; color:var(--p-muted,#6d6249); letter-spacing:.4px; }
+@media(prefers-reduced-motion:reduce){ .fs-veil,.fs-placecard{ transition:none!important; animation:none!important; } }
+/* the site's own Quiet / reduced-motion settings deserve the same kill
+   as the OS media query (previously only the JS still-branch knew). */
+body[data-fs-reduced="true"] :is(.fs-veil,.fs-placecard,.app,.world,.df-chapter__title),
+body[data-fs-quiet="true"] :is(.fs-veil,.fs-placecard,.app,.world,.df-chapter__title){ transition:none!important; }
+
+/* ============================================================
+   GEN4 · CINEMA — the darkened room; listen by lantern light
+   ============================================================ */
+body[data-four-styles][data-fs-style="gen4"] .backdrop{
+  background:
+    radial-gradient(ellipse 60% 55% at 74% 46%, #6b5836aa 0%, #574c3933 45%, transparent 70%),
+    radial-gradient(ellipse at 8% 110%, #0a0f0c 0%, transparent 55%);
+}
+body[data-four-styles][data-fs-style="gen4"] .stage::before{ /* letterbox bars — Cinema's own geometry */
+  content:''; position:absolute; inset:0; z-index:3; pointer-events:none;
+  background:linear-gradient(#030302 0 6vh, transparent 6vh calc(100% - 9vh), #030302 0);
+}
+body[data-four-styles][data-fs-style="gen4"] .stage::after{ /* vignette */
+  content:''; position:absolute; inset:0; z-index:4; pointer-events:none;
+  box-shadow:inset 0 0 180px 46px #05080799, inset 0 -70px 90px #05080766;
+}
+body[data-four-styles][data-fs-style="gen4"] .world[data-scene="1"] .world-art img,
+body[data-four-styles][data-fs-style="gen4"] .world[data-scene="2"] .world-art img,
+body[data-four-styles][data-fs-style="gen4"] .world[data-scene="3"] .world-art img{
+  filter:sepia(.1) saturate(1.12) contrast(1.1) brightness(.88);
+}
+body[data-four-styles][data-fs-style="gen4"] .hotspot-mark{ /* lantern halo rings */
+  box-shadow:0 0 0 9px color-mix(in srgb,var(--p-accent) 6%,transparent),
+             0 0 0 18px color-mix(in srgb,var(--p-accent) 3%,transparent),
+             0 0 42px color-mix(in srgb,var(--p-accent) 28%,transparent);
+}
+body[data-four-styles][data-fs-style="gen4"] .scene-copy .df-chapter__title{ text-shadow:0 4px 22px #00000088; }
+body[data-four-styles][data-fs-style="gen4"] .caption-well{ /* subtitles */
+  background:#070a09e0; border:0; box-shadow:0 12px 34px #000a; padding:14px 26px;
+}
+body[data-four-styles][data-fs-style="gen4"] .caption-well p{ font-size:19px; letter-spacing:.2px; }
+body[data-four-styles][data-fs-style="gen4"] .paper-floor{ filter:drop-shadow(0 24px 20px #00000090) brightness(.85); }
+
+/* ============================================================
+   GEN2 · STORYBOOK — the book open on the table, in daylight
+   ============================================================ */
+body[data-four-styles][data-fs-style="gen2"] .backdrop{
+  background:
+    radial-gradient(ellipse 75% 60% at 18% -6%, #fff6d9cc 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 115%, #b49b5e33 0%, transparent 55%);
+}
+body[data-four-styles][data-fs-style="gen2"] .world{
+  background:linear-gradient(180deg,#efe3c2,#e7d8b0);
+  box-shadow:0 24px 60px #4a3a1e55, inset 0 0 0 1px #c9b98f, inset 0 0 90px #b49b5e26;
+}
+body[data-four-styles][data-fs-style="gen2"][data-fs-theme="dark"] .world{
+  background:linear-gradient(180deg,#f0e4c4,#e9dcbc);
+  box-shadow:0 24px 80px #000c, 0 0 120px #e8c37e2e, inset 0 0 0 1px #c9b98f;
+}
+body[data-four-styles][data-fs-style="gen2"] .scene-shade{
+  background:
+    linear-gradient(90deg, #ead9ae 0%, #ead9aeee 20%, #ead9ae80 33%, transparent 52%),
+    linear-gradient(0deg, #ead9ae 0%, transparent 14%, transparent 88%, #ead9ae73 100%);
+}
+body[data-four-styles][data-fs-style="gen2"] .world[data-scene="1"] .world-art img,
+body[data-four-styles][data-fs-style="gen2"] .world[data-scene="2"] .world-art img,
+body[data-four-styles][data-fs-style="gen2"] .world[data-scene="3"] .world-art img{
+  filter:sepia(.16) saturate(.94) brightness(1.035);
+}
+body[data-four-styles][data-fs-style="gen2"] .world[data-scene="1"] .world-art,
+body[data-four-styles][data-fs-style="gen2"] .world[data-scene="2"] .world-art,
+body[data-four-styles][data-fs-style="gen2"] .world[data-scene="3"] .world-art{ filter:drop-shadow(-14px 18px 22px #6b532f30); }
+body[data-four-styles][data-fs-style="gen2"] .scene-copy .df-chapter__title{ letter-spacing:-.045em; text-shadow:none; }
+body[data-four-styles][data-fs-style="gen2"] .scene-copy .df-chapter__title em{ color:var(--p-accent-2); }
+body[data-four-styles][data-fs-style="gen2"] .chapter-icon{ clip-path:none; border-radius:4px 10px 4px 10px; }
+body[data-four-styles][data-fs-style="gen2"] .caption-well{
+  background:#fff6dd; border:1px solid var(--p-line); box-shadow:0 10px 26px #6b532f33; rotate:-.4deg;
+}
+body[data-four-styles][data-fs-style="gen2"] .caption-well span{ color:var(--p-accent-2); }
+body[data-four-styles][data-fs-style="gen2"] .paper-floor .floor-face{ background:#b39d6d; opacity:.65; }
+body[data-four-styles][data-fs-style="gen2"] .paper-floor .floor-lip{ background:#c8b183; opacity:.7; }
+
+/* ============================================================
+   SKEPTIC · EVIDENCE — the record, open; what is the source?
+   ============================================================ */
+body[data-four-styles][data-fs-style="skeptic"] .backdrop{ /* archival graph paper */
+  background:
+    repeating-linear-gradient(0deg, #253c4710 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, #253c4710 0 1px, transparent 1px 34px),
+    radial-gradient(ellipse at 70% 40%, #ffffff55 0%, transparent 60%);
+}
+body[data-four-styles][data-fs-style="skeptic"][data-fs-theme="dark"] .backdrop{
+  background:
+    repeating-linear-gradient(0deg, #d4e3e912 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, #d4e3e912 0 1px, transparent 1px 34px);
+}
+body[data-four-styles][data-fs-style="skeptic"] .world{ /* the open folder's edge */
+  box-shadow:inset 0 0 0 1px var(--p-line), 0 0 0 12px #00000008, 0 18px 44px #17242b14;
+}
+body[data-four-styles][data-fs-style="skeptic"] .world[data-scene="1"] .world-art img,
+body[data-four-styles][data-fs-style="skeptic"] .world[data-scene="2"] .world-art img,
+body[data-four-styles][data-fs-style="skeptic"] .world[data-scene="3"] .world-art img{
+  filter:grayscale(1) contrast(1.09) brightness(1.02);
+}
+body[data-four-styles][data-fs-style="skeptic"] .paper-floor{ filter:grayscale(1) drop-shadow(0 24px 20px #060d0c40); }
+/* Correction to the older host rule: world.css grayscales .world-art in
+   EVERY scene under Evidence, which includes the supplied portrait
+   (scenes 0 and 4). The repo rule says the portrait is never altered;
+   the figure filter is lifted here and the grayscale lives only on the
+   scenery images above (scenes 1–3) and on the paper floor prop. */
+body[data-four-styles][data-fs-style="skeptic"] .world-art{ filter:none; }
+body[data-four-styles][data-fs-style="skeptic"] .scene-copy .df-chapter__title{
+  font-weight:600; letter-spacing:-1.6px; line-height:1.04; text-shadow:none;
+}
+body[data-four-styles][data-fs-style="skeptic"] .scene-copy .df-chapter__eyebrow,
+body[data-four-styles][data-fs-style="skeptic"] .note-label,
+body[data-four-styles][data-fs-style="skeptic"] .caption-well span,
+body[data-four-styles][data-fs-style="skeptic"] .clip-meta{
+  font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace; letter-spacing:1.6px;
+}
+body[data-four-styles][data-fs-style="skeptic"] .scene-lede{ font-family:PaperSans,Arial,sans-serif; }
+body[data-four-styles][data-fs-style="skeptic"] .begin{
+  border-radius:0; clip-path:none; text-transform:uppercase; letter-spacing:1.6px; font-size:12.5px;
+  box-shadow:none; border:1px solid var(--p-accent);
+}
+body[data-four-styles][data-fs-style="skeptic"] .chapter-icon{ clip-path:none; border-radius:0; font-family:PaperSans,Arial,sans-serif; }
+body[data-four-styles][data-fs-style="skeptic"] .caption-well{ /* the transcript card */
+  background:var(--p-surface); border:0; border-left:3px solid var(--p-accent);
+  box-shadow:0 8px 24px #17242b22; text-align:left; padding:14px 22px;
+}
+body[data-four-styles][data-fs-style="skeptic"] .caption-well p{ font-size:16.5px; }
+body[data-four-styles][data-fs-style="skeptic"] .paper-dialog{
+  background:#fbfcfc; color:#1c2a31;
+  --fs-ink:#1c2a31; --fs-accent:#253c47; --fs-focus:#1c5274;
+}
+body[data-four-styles][data-fs-style="skeptic"] .paper-dialog a{ color:#1c5274!important; }
+body[data-four-styles][data-fs-style="skeptic"] .paper-dialog h2{ font-family:PaperSans,Arial,sans-serif!important; font-weight:600; letter-spacing:-1.2px; }
+body[data-four-styles][data-fs-style="skeptic"] .reveal-note{ border-left:3px solid var(--p-accent-2); }
+body[data-four-styles][data-fs-style="skeptic"] .art-credit::after{ content:' · scenery is an interpretation, not evidence'; }
+
+/* ============================================================
+   SEMIOTIC · SYMBOLS — the signs, by themselves
+   ============================================================ */
+body[data-four-styles][data-fs-style="semiotic"] .backdrop{ /* one moon, a deep field */
+  background:
+    radial-gradient(circle 190px at 79% 26%, #e3b34e30 0%, #e3b34e12 55%, transparent 72%),
+    radial-gradient(ellipse at 15% 115%, #6fa8a022 0%, transparent 55%),
+    linear-gradient(180deg, transparent 55%, #0b1219 130%);
+}
+body[data-four-styles][data-fs-style="semiotic"] .world[data-scene="1"] .world-art img,
+body[data-four-styles][data-fs-style="semiotic"] .world[data-scene="2"] .world-art img,
+body[data-four-styles][data-fs-style="semiotic"] .world[data-scene="3"] .world-art img{
+  filter:sepia(.28) saturate(.5) contrast(1.12) hue-rotate(-8deg) brightness(1.01);
+}
+body[data-four-styles][data-fs-style="semiotic"] .scene-copy .df-chapter__title{
+  text-transform:uppercase; font-weight:600; letter-spacing:.5px; line-height:1.06;
+  font-size:clamp(34px,5.2vw + 10px,84px); text-shadow:none; overflow-wrap:break-word;
+}
+body[data-four-styles][data-fs-style="semiotic"] .scene-copy .df-chapter__title em{
+  font-family:PaperSerif,Georgia,serif; text-transform:none; color:var(--p-accent);
+}
+body[data-four-styles][data-fs-style="semiotic"] .scene-copy .df-chapter__eyebrow{ color:var(--p-accent-2); letter-spacing:3px; }
+body[data-four-styles][data-fs-style="semiotic"] .begin{
+  background:transparent; color:var(--p-accent); border:1.5px solid var(--p-accent);
+  border-radius:999px; clip-path:none; box-shadow:none;
+}
+body[data-four-styles][data-fs-style="semiotic"] .begin:hover{ background:color-mix(in srgb,var(--p-accent) 18%,transparent); }
+body[data-four-styles][data-fs-style="semiotic"] .chapter-icon{
+  clip-path:none; border-radius:50%; font-size:31px;
+  border:1.5px solid color-mix(in srgb,var(--p-line) 70%,transparent);
+}
+body[data-four-styles][data-fs-style="semiotic"] .chapter-stop[aria-current="step"] .chapter-icon{
+  background:transparent; color:var(--p-accent); border-color:var(--p-accent);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--p-accent) 22%,transparent), 0 0 26px color-mix(in srgb,var(--p-accent) 30%,transparent);
+}
+body[data-four-styles][data-fs-style="semiotic"] .caption-well{ /* one floating line, no box */
+  background:transparent; border:0; box-shadow:none; padding:6px 10px;
+}
+body[data-four-styles][data-fs-style="semiotic"] .caption-well p{
+  font-style:italic; font-size:19.5px; font-family:PaperSerif,Georgia,serif;
+  text-shadow:0 2px 18px #000c, 0 0 3px #000;
+}
+body[data-four-styles][data-fs-style="semiotic"] .caption-well span{ /* visually gone, still announced */
+  position:absolute; width:1px; height:1px; margin:-1px; padding:0; border:0;
+  clip-path:inset(50%); overflow:hidden; white-space:nowrap;
+}
+body[data-four-styles][data-fs-style="semiotic"] .paper-dialog{ box-shadow:0 0 0 1px #c9b98f, 0 0 0 5px #f1e7cd, 0 0 0 6px var(--p-accent-2), 0 35px 110px #000c; }
+body[data-four-styles][data-fs-style="semiotic"] .hotspot-mark{ border-radius:50%; border-color:color-mix(in srgb,var(--p-accent-2) 70%,transparent); }
+/* Symbols with Words off is the mode's home: let the art take the stage
+   (scenery scenes only — the portrait is never resized or cropped) */
+body[data-four-styles][data-fs-style="semiotic"][data-fs-words="false"] .world[data-scene="1"] .world-art,
+body[data-four-styles][data-fs-style="semiotic"][data-fs-words="false"] .world[data-scene="2"] .world-art,
+body[data-four-styles][data-fs-style="semiotic"][data-fs-words="false"] .world[data-scene="3"] .world-art{ width:104%; right:-16%; }
+body[data-four-styles][data-fs-style="semiotic"][data-fs-words="false"] .hotspot-label{ opacity:.55; }
+
+/* density (across the room) still wins where world.css already speaks */
+body[data-four-styles][data-density="tv"] .caption-well p{ font-size:26px; }
+body[data-four-styles][data-density="tv"][data-fs-style="semiotic"] .scene-copy .df-chapter__title{ font-size:clamp(54px,5.6vw,96px); }
+
+/* ============================================================
+   PORTRAIT GUARD — last word in this file, on purpose.
+   The supplied Malachi portrait (scenes 0 and 4) is never filtered,
+   blended or repainted, whoever's rule says otherwise.
+   ============================================================ */
+body[data-four-styles] #world[data-scene="0"] .world-art,
+body[data-four-styles] #world[data-scene="0"] .world-art img,
+body[data-four-styles] #world[data-scene="4"] .world-art,
+body[data-four-styles] #world[data-scene="4"] .world-art img{
+  filter:none!important; mix-blend-mode:normal!important;
+}

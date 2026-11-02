@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sixth Piggie · Clue at the Brook</title>
+<style>
+  :root{
+    --cream:#f7efe0; --cream-deep:#eedfc2; --ink:#46392c; --ink-soft:#8a7a64;
+    --blue:#5b7fa6; --blue-deep:#3f6288; --gold:#c9962e;
+    --sage:#7d9b76; --sage-deep:#5d7a57; --brook:#bcd6cf; --brook-deep:#7fa89b;
+    --willow:#6f8a64;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(900px 420px at 50% -10%, #fdf8ec 0%, transparent 60%),
+      linear-gradient(180deg, #e8eedd 0%, #c9dcc9 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  .card{
+    width:min(580px, 100%); background:var(--cream); border-radius:10px;
+    box-shadow:0 2px 0 #d8c49a, 0 18px 44px rgba(120,85,40,.30);
+    overflow:hidden; position:relative;
+  }
+  .intro{ padding:1.6rem 1.6rem 0.4rem; text-align:center; }
+  .intro h1{ font-size:1.35rem; margin:.2rem 0 .4rem; font-weight:400; }
+  .intro p{ margin:0 auto; max-width:42ch; line-height:1.6; color:var(--ink-soft); font-size:.98rem; }
+  /* ---------- the brook ---------- */
+  .scene{
+    margin:1.4rem 1.2rem 0; padding:1.1rem; position:relative;
+    background:linear-gradient(180deg, #fffaf0, var(--cream-deep));
+    border:2px solid #e0cda4; border-radius:14px;
+    box-shadow:inset 0 0 0 6px rgba(255,255,255,.35); overflow:hidden;
+  }
+  .willow-note{ text-align:center; font-size:.85rem; color:var(--willow); line-height:1.5; margin:0 0 1rem; }
+  .brook{
+    background:linear-gradient(180deg, var(--brook), #a8c9bd);
+    border:2px solid #8fb3a6; border-radius:12px; padding:1rem .8rem 1.2rem; text-align:center;
+    position:relative;
+  }
+  .brook h2{ font-size:.8rem; letter-spacing:.22em; text-transform:uppercase; color:#43685c; margin:0 0 .9rem; font-weight:400; }
+  .stones{ display:flex; flex-wrap:wrap; gap:.55rem; justify-content:center; align-items:flex-end; }
+  .stone{
+    border:0; cursor:pointer; font-family:inherit; min-height:56px; min-width:64px;
+    padding:.6rem .7rem; border-radius:50% 46% 52% 48%;
+    background:linear-gradient(180deg, #d8d2c2, #b8b0a0); color:var(--ink);
+    border:2px solid #8f887a; box-shadow:0 4px 0 rgba(120,110,95,.45);
+    font-size:.9rem; line-height:1.4; -webkit-tap-highlight-color:transparent;
+    transition:transform .4s ease, box-shadow .4s ease;
+  }
+  .stone:hover{ transform:translateY(-2px); }
+  .stone:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .stone.stepped{ transform:translateY(3px); box-shadow:0 1px 0 rgba(120,110,95,.45); background:linear-gradient(180deg, #c9c2b2, #a89f8d); }
+  .stone.apart{
+    background:linear-gradient(180deg, #e6ddc8, #c9bfa8); border-color:#7d7462;
+    margin-top:1.1rem; transform:rotate(-2deg);
+  }
+  .stone.apart:hover{ transform:rotate(-2deg) translateY(-2px); }
+  .stone.apart.found{ transform:rotate(0deg) translateY(2px); box-shadow:0 1px 0 rgba(120,110,95,.45); background:linear-gradient(180deg, #f2e7c8, #d9c795); }
+  .stone .small{ display:block; font-size:.8rem; color:var(--ink-soft); margin-top:.15rem; }
+  .stone-note{
+    margin:.8rem auto 0; max-width:40ch; font-style:italic; font-size:.9rem; line-height:1.5;
+    color:#43685c; min-height:1.5em; opacity:0; transition:opacity .8s ease;
+  }
+  .stone-note.show{ opacity:1; }
+  /* ---------- the reflection / doorway ---------- */
+  .reflection{
+    margin-top:1.1rem; padding:1rem; border-radius:12px; text-align:center;
+    background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(188,214,207,.6));
+    border:2px dashed #8fb3a6; color:#43685c; line-height:1.6;
+    transition:background 1.2s ease, border-color 1.2s ease;
+  }
+  .reflection .water{ font-size:1.4rem; letter-spacing:.3em; }
+  .reflection.doorway{
+    background:linear-gradient(180deg, #fdf0c8, #f5d98e);
+    border:2px solid var(--gold); color:var(--ink);
+  }
+  .reflection.doorway .water{ display:none; }
+  .door-glow{ display:none; font-size:2rem; }
+  .reflection.doorway .door-glow{ display:block; }
+  .hand-line{
+    display:none; margin:.8rem auto 0; padding:.7rem 1rem; border:0; cursor:pointer;
+    background:none; font-family:inherit; font-size:1.05rem; font-style:italic; color:var(--ink);
+    text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--blue);
+    min-height:48px; -webkit-tap-highlight-color:transparent;
+  }
+  .hand-line:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:6px; }
+  .reflection.doorway .hand-line{ display:inline-block; }
+  .ribbon{
+    display:block; margin:1rem auto 0; padding:.5rem .9rem; border:0; cursor:pointer;
+    background:linear-gradient(180deg, var(--blue), var(--blue-deep)); color:#f2f6fa;
+    border-radius:20px; font-family:inherit; font-size:.9rem;
+    box-shadow:0 3px 0 rgba(40,70,105,.4); min-height:44px;
+    -webkit-tap-highlight-color:transparent; transition:transform .25s ease;
+  }
+  .ribbon:hover{ transform:translateY(-2px); }
+  .ribbon:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .ribbon.glint{ background:linear-gradient(180deg, #e9c25a, #c9962e); color:#46392c; }
+  .ribbon-note{
+    margin:.5rem auto 0; max-width:34ch; font-style:italic; font-size:.9rem; line-height:1.5;
+    color:var(--ink-soft); min-height:1.5em; opacity:0; transition:opacity .8s ease;
+  }
+  .ribbon-note.show{ opacity:1; }
+  .note{ text-align:center; padding:1rem 1.4rem 1.5rem; }
+  .note p{ margin:.3rem auto; max-width:44ch; line-height:1.6; color:var(--ink-soft); font-size:.95rem; }
+  .note p b{ color:var(--ink); font-weight:400; }
+  .unlock{
+    display:none; margin:1rem auto 0; padding:.9rem 1.1rem; max-width:44ch;
+    background:#fff8e2; border:1px solid var(--gold); border-radius:10px;
+    color:var(--ink); line-height:1.6; font-size:.98rem;
+  }
+  .unlock.show{ display:block; }
+  .reset{
+    margin:1rem auto 0; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font-family:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+    min-height:44px; padding:.4rem .8rem;
+  }
+  .reset:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:6px; }
+</style>
+</head>
+<body>
+<p class="kicker">The Sixth Piggie · A clue at the brook</p>
+<main class="card">
+  <div class="intro">
+    <h1>Five stones home. One stone, apart.</h1>
+    <p>The way home crosses the brook on five stepping stones, the way it
+    always has. But beneath the willow, a little apart from the route, one
+    more stone sits in the shade — dry, quiet, and kept for small feet.</p>
+  </div>
+
+  <div class="scene" aria-label="The brook and its stepping stones">
+    <p class="willow-note">🌿 beneath the willow, where the water runs slow 🌿<br>five stones home — and one stone, apart</p>
+    <div class="brook">
+      <h2>The brook, on the way home</h2>
+      <div class="stones" role="group" aria-label="Stepping stones">
+        <button class="stone" type="button" data-route="true">🪨<span class="small">Pipkin's step</span></button>
+        <button class="stone" type="button" data-route="true">🪨<span class="small">moss, bright green</span></button>
+        <button class="stone" type="button" data-route="true">🪨<span class="small">cool in the shade</span></button>
+        <button class="stone" type="button" data-route="true">🪨<span class="small">the wet side</span></button>
+        <button class="stone" type="button" data-route="true">🪨<span class="small">the last step home</span></button>
+      </div>
+      <button class="stone apart" type="button" id="apart" aria-pressed="false">
+        🪨 a stone apart, beneath the willow
+        <span class="small" id="apartSmall">a blue ribbon, and two close-set hoofmarks on its dry top</span>
+      </button>
+      <p class="stone-note" id="stoneNote" aria-live="polite">On the dry stone: a blue ribbon, laid carefully, and two small hoofmarks close together — as if someone stood here a little while, deciding whether to come closer.</p>
+    </div>
+
+    <div class="reflection" id="reflection" aria-live="polite">
+      <span class="water" aria-hidden="true">〜 〜 〜</span>
+      <span class="door-glow" aria-hidden="true">🏡✨</span>
+      <p id="reflectionText" style="margin:.5rem 0 0;">The water shimmers. Nothing else, yet.</p>
+      <button class="hand-line" type="button" id="handLine">“There was room beside the rhyme.”</button>
+    </div>
+
+    <button class="ribbon" type="button" id="ribbon" aria-pressed="false">🎀 The blue ribbon, on the apart stone</button>
+    <p class="ribbon-note" id="ribbonNote" aria-live="polite">The same blue as the feast napkin, the thread on the well's lowest stone, the thread in Hazel's unfinished pear, and the ribbon on the tea party's little chair. Five clues, one colour, one small guest — and this stone is her door.</p>
+  </div>
+
+  <div class="note">
+    <p id="brookNote">Walk the five stones home if you like — they are all
+    still there, and the way home is unchanged. Or touch the stone apart,
+    beneath the willow, and see what its reflection has been keeping.</p>
+    <div class="unlock" id="unlock" aria-live="polite">
+      🏡 Beneath the willow at dusk, the reflection opens into a low, round
+      room of roots, and through its leafy ceiling you can still see the
+      brook's stones. A kettle stands on a flat pebble; six mismatched cups
+      wait on a cloth. A small, soft-grey piggie with one ear folded forward
+      looks up and says: <i>“You can sit down while I think.”</i> The door
+      was never locked — only uncounted. And on the keepsake's reverse, a
+      seventh cup waits, for the reader, whenever they have a little while.
+    </div>
+    <button class="reset" type="button" id="reset">Cross the brook again</button>
+  </div>
+</main>
+<script>
+  const apart = document.getElementById('apart');
+  const apartSmall = document.getElementById('apartSmall');
+  const stoneNote = document.getElementById('stoneNote');
+  const reflection = document.getElementById('reflection');
+  const reflectionText = document.getElementById('reflectionText');
+  const handLine = document.getElementById('handLine');
+  const ribbon = document.getElementById('ribbon');
+  const ribbonNote = document.getElementById('ribbonNote');
+  const unlock = document.getElementById('unlock');
+  const note = document.getElementById('brookNote');
+  let found = false, opened = false;
+
+  document.querySelectorAll('[data-route="true"]').forEach((s) => {
+    s.addEventListener('click', () => {
+      s.classList.toggle('stepped');
+      if (!found) note.innerHTML = 'A good stone, solid underfoot. <b>The way home is unchanged.</b> The stone apart, beneath the willow, is still waiting.';
+    });
+  });
+
+  apart.addEventListener('click', () => {
+    if (found) return;
+    found = true;
+    apart.classList.add('found');
+    apart.setAttribute('aria-pressed', 'true');
+    apartSmall.textContent = 'touched — and its reflection has changed';
+    stoneNote.classList.add('show');
+    reflection.classList.add('doorway');
+    reflectionText.innerHTML = 'The reflection warms. Where the water was, a little doorway glows — and a handwritten line appears beneath it, in a small, careful hand.';
+    note.innerHTML = 'The stone is found, and its reflection has become <b>a warm doorway.</b> Touch the handwritten line, and step through.';
+  });
+
+  handLine.addEventListener('click', () => {
+    if (!found) return;
+    opened = true;
+    unlock.classList.add('show');
+    reflectionText.innerHTML = 'The doorway stands open. Through it: dusk, roots, a kettle — and room beside the rhyme.';
+    note.innerHTML = 'The line is touched, and the door opens. <b>The hidden chapter begins beneath the willow.</b> Walking home finishes the familiar journey, too — nothing is taken away.';
+  });
+
+  ribbon.addEventListener('click', () => {
+    const on = ribbon.classList.toggle('glint');
+    ribbonNote.classList.toggle('show', on);
+    ribbon.setAttribute('aria-pressed', String(on));
+    ribbon.textContent = on ? '🎀 The blue ribbon — glinting on the apart stone' : '🎀 The blue ribbon, on the apart stone';
+  });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    found = false; opened = false;
+    apart.classList.remove('found');
+    apart.setAttribute('aria-pressed', 'false');
+    apartSmall.textContent = 'a blue ribbon, and two close-set hoofmarks on its dry top';
+    stoneNote.classList.remove('show');
+    reflection.classList.remove('doorway');
+    reflectionText.textContent = 'The water shimmers. Nothing else, yet.';
+    unlock.classList.remove('show');
+    document.querySelectorAll('[data-route="true"]').forEach((s) => s.classList.remove('stepped'));
+    note.innerHTML = 'Walk the five stones home if you like — they are all still there, and the way home is unchanged. Or touch the stone apart, beneath the willow, and see what its reflection has been keeping.';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sixth Piggie · Mallow's Little While</title>
+<style>
+  :root{
+    --cream:#f7efe0; --cream-deep:#eedfc2; --ink:#46392c; --ink-soft:#8a7a64;
+    --blue:#5b7fa6; --blue-deep:#3f6288; --gold:#c9962e;
+    --sage:#7d9b76; --sage-deep:#5d7a57; --brook:#bcd6cf;
+    --willow:#6f8a64; --dusk:#8a6f9e; --mallow:#b6aea2; --mallow-deep:#94897a;
+    --firefly:#f2c14e;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(900px 420px at 50% -10%, #fdf8ec 0%, transparent 60%),
+      linear-gradient(180deg, #e3ddc9 0%, #b9c4ab 55%, #93a98d 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:#5d564a;
+  }
+  .card{
+    width:min(580px, 100%); background:var(--cream); border-radius:10px;
+    box-shadow:0 2px 0 #d8c49a, 0 18px 44px rgba(80,60,40,.35);
+    overflow:hidden; position:relative;
+  }
+  .intro{ padding:1.6rem 1.6rem 0.4rem; text-align:center; }
+  .intro h1{ font-size:1.35rem; margin:.2rem 0 .4rem; font-weight:400; }
+  .intro p{ margin:0 auto; max-width:44ch; line-height:1.6; color:var(--ink-soft); font-size:.98rem; }
+  .returning{
+    display:none; margin:.9rem auto 0; max-width:42ch; padding:.55rem .9rem;
+    background:#fff8e2; border:1px solid var(--gold); border-radius:10px;
+    color:var(--ink); font-size:.92rem; line-height:1.5;
+  }
+  .returning.show{ display:block; }
+  /* ---------- the willow room ---------- */
+  .scene{
+    margin:1.4rem 1.2rem 0; padding:1.1rem; position:relative;
+    background:linear-gradient(180deg, #fdf0c8 0%, #ecd9a8 45%, var(--cream-deep) 100%);
+    border:2px solid #e0cda4; border-radius:14px;
+    box-shadow:inset 0 0 0 6px rgba(255,255,255,.30); overflow:hidden;
+  }
+  .scene h2{
+    font-size:.8rem; letter-spacing:.22em; text-transform:uppercase;
+    color:#6d5a2e; margin:0 0 .4rem; font-weight:400; text-align:center;
+  }
+  .room{ position:relative; }
+  .room svg{ display:block; width:100%; height:auto; }
+  /* ---------- fireflies / thoughts ---------- */
+  .firefly{
+    position:absolute; width:46px; height:46px; border:0; cursor:pointer;
+    background:none; padding:0; -webkit-tap-highlight-color:transparent;
+    animation:drift 7s ease-in-out infinite;
+  }
+  .firefly .glow{
+    display:block; width:16px; height:16px; margin:15px auto; border-radius:50%;
+    background:radial-gradient(circle, #fff3c4 0%, var(--firefly) 55%, rgba(242,193,78,0) 78%);
+    box-shadow:0 0 14px 5px rgba(242,193,78,.55);
+    transition:opacity 1s ease, box-shadow 1s ease;
+  }
+  .firefly:hover .glow{ box-shadow:0 0 20px 8px rgba(242,193,78,.7); }
+  .firefly:focus-visible{ outline:3px solid var(--gold); outline-offset:2px; border-radius:50%; }
+  .firefly.heard .glow{ opacity:.28; box-shadow:0 0 5px 2px rgba(242,193,78,.25); }
+  .firefly.heard{ animation:none; }
+  @keyframes drift{
+    0%,100%{ transform:translate(0,0); }
+    33%{ transform:translate(6px,-9px); }
+    66%{ transform:translate(-5px,-4px); }
+  }
+  .hidden{ display:none !important; }
+  /* ---------- words ---------- */
+  .speech{
+    margin:1rem auto 0; max-width:44ch; text-align:center; line-height:1.65;
+    font-size:1.02rem; min-height:1.6em;
+  }
+  .speech .who{ display:block; font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:.25rem; }
+  .thought{
+    margin:.7rem auto 0; max-width:42ch; text-align:center; font-style:italic;
+    line-height:1.6; font-size:.99rem; color:#5d564a; min-height:1.6em;
+    opacity:0; transition:opacity 1.1s ease;
+  }
+  .thought.show{ opacity:1; }
+  .thought-count{ text-align:center; font-size:.85rem; color:var(--ink-soft); margin:.45rem auto 0; min-height:1.4em; }
+  /* ---------- gentle buttons ---------- */
+  .gentle-row{ display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-top:1rem; }
+  .gentle{
+    border:0; cursor:pointer; font-family:inherit; font-size:.95rem; color:#f2f6fa;
+    background:linear-gradient(180deg, var(--blue), var(--blue-deep));
+    border-radius:20px; padding:.65rem 1.15rem; min-height:48px;
+    box-shadow:0 3px 0 rgba(40,70,105,.4); -webkit-tap-highlight-color:transparent;
+    transition:transform .25s ease;
+  }
+  .gentle:hover{ transform:translateY(-2px); }
+  .gentle:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .gentle.tea{ background:linear-gradient(180deg, #a8835a, #86643d); box-shadow:0 3px 0 rgba(90,60,25,.4); }
+  /* ---------- payoff & ending ---------- */
+  .note{ text-align:center; padding:1rem 1.4rem 1.5rem; }
+  .note p{ margin:.3rem auto; max-width:44ch; line-height:1.6; color:var(--ink-soft); font-size:.95rem; }
+  .note p b{ color:var(--ink); font-weight:400; }
+  .unlock{
+    display:none; margin:1rem auto 0; padding:.95rem 1.15rem; max-width:45ch;
+    background:#fff8e2; border:1px solid var(--gold); border-radius:10px;
+    color:var(--ink); line-height:1.65; font-size:.98rem;
+  }
+  .unlock.show{ display:block; }
+  .ending{
+    display:none; margin:1.1rem auto 0; max-width:45ch; text-align:center;
+    line-height:1.7; font-size:1rem; color:var(--ink);
+  }
+  .ending.show{ display:block; }
+  .ending .keepsake{
+    margin-top:.8rem; padding:.7rem .9rem; border:1px dashed var(--gold); border-radius:10px;
+    background:rgba(255,248,226,.6); font-style:italic; font-size:.95rem;
+  }
+  .reset{
+    margin:1rem auto 0; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font-family:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+    min-height:44px; padding:.4rem .8rem;
+  }
+  .reset:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:6px; }
+</style>
+</head>
+<body>
+<p class="kicker">The Sixth Piggie · The hidden chapter</p>
+<main class="card">
+  <div class="intro">
+    <h1>Mallow's Little While</h1>
+    <p>Through the brook's reflection, and under the willow: a low, round
+    room of roots, at dusk. Through its leafy ceiling you can still see the
+    stepping stones you came by. Nothing here is in a hurry.</p>
+    <p class="returning" id="returning">You have sat with Mallow before.
+    The door was never locked — and for you, it stays open.</p>
+  </div>
+
+  <div class="scene" aria-label="Mallow's willow room at dusk">
+    <h2>Beneath the willow, at dusk</h2>
+    <div class="room" id="room">
+      <svg viewBox="0 0 520 330" role="img" aria-label="A willow room of roots at dusk: a kettle on a flat pebble, six mismatched cups on a cloth, a small soft-grey piggie and a smaller pink one sitting together">
+        <!-- dusk sky through the leaves -->
+        <rect x="0" y="0" width="520" height="330" rx="10" fill="#f0d9a0"/>
+        <circle cx="438" cy="52" r="24" fill="#f7e3ae" opacity="0.85"/>
+        <!-- willow canopy: drooping strands -->
+        <g stroke="#6f8a64" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.9">
+          <path d="M40 0 C 55 70, 50 130, 38 185"/>
+          <path d="M95 0 C 105 80, 100 150, 88 215"/>
+          <path d="M150 0 C 158 70, 155 140, 146 195"/>
+          <path d="M370 0 C 365 75, 368 145, 376 205"/>
+          <path d="M425 0 C 418 85, 422 155, 432 218"/>
+          <path d="M478 0 C 470 70, 472 135, 482 190"/>
+        </g>
+        <g stroke="#7d9b76" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.75">
+          <path d="M68 0 C 78 60, 74 120, 64 168"/>
+          <path d="M122 0 C 130 62, 127 128, 118 178"/>
+          <path d="M398 0 C 394 62, 396 128, 404 180"/>
+          <path d="M452 0 C 446 60, 448 122, 456 172"/>
+          <path d="M205 0 C 210 55, 208 105, 200 150"/>
+          <path d="M315 0 C 311 55, 313 108, 320 152"/>
+        </g>
+        <!-- stepping stones, seen through the leafy ceiling -->
+        <g fill="#cfc8b4" stroke="#8f887a" stroke-width="2">
+          <ellipse cx="215" cy="38" rx="20" ry="8"/>
+          <ellipse cx="260" cy="30" rx="22" ry="9"/>
+          <ellipse cx="307" cy="38" rx="20" ry="8"/>
+        </g>
+        <!-- ground of the root room -->
+        <path d="M0 262 Q 130 238, 260 254 T 520 258 L520 330 L0 330 Z" fill="#cdbb96"/>
+        <path d="M0 288 Q 150 272, 300 284 T 520 286 L520 330 L0 330 Z" fill="#b7a37e" opacity="0.65"/>
+        <!-- roots making the round room -->
+        <g stroke="#8a6f4d" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.85">
+          <path d="M18 330 C 30 290, 52 268, 84 256"/>
+          <path d="M502 330 C 490 292, 468 270, 436 258"/>
+          <path d="M60 330 C 78 302, 104 288, 138 282"/>
+          <path d="M460 330 C 442 304, 416 290, 384 284"/>
+        </g>
+        <!-- the cloth with six mismatched cups -->
+        <rect x="176" y="288" width="168" height="18" rx="6" fill="#f3ead2" stroke="#d8c49a" stroke-width="2"/>
+        <g stroke-width="2">
+          <path d="M190 288 v-11 h15 v11 z" fill="#fdfaf0" stroke="#8a7a64"/>
+          <path d="M216 288 v-14 h13 v14 z" fill="#dcebf5" stroke="#5b7fa6"/>
+          <path d="M240 288 v-10 h16 v10 z" fill="#f7efe0" stroke="#c9962e"/>
+          <path d="M266 288 v-13 h13 v13 z" fill="#e6ddf0" stroke="#8a6f9e"/>
+          <path d="M289 288 v-11 h15 v11 z" fill="#e2efdc" stroke="#5d7a57"/>
+          <path d="M314 288 v-12 h14 v12 z" fill="#fbe3e0" stroke="#b06a5e"/>
+        </g>
+        <!-- cups placed beside the piggies (appear when poured/placed) -->
+        <g id="cupMallow" class="hidden">
+          <path d="M128 292 v-12 h17 v12 z" fill="#dcebf5" stroke="#5b7fa6" stroke-width="2"/>
+          <path d="M131 274 q6 -5, 12 0" stroke="#c9962e" stroke-width="2" fill="none"/>
+        </g>
+        <g id="cupPipkin" class="hidden">
+          <path d="M382 294 v-11 h15 v11 z" fill="#f7efe0" stroke="#c9962e" stroke-width="2"/>
+          <path d="M385 277 q5 -5, 11 0" stroke="#c9962e" stroke-width="2" fill="none"/>
+        </g>
+        <!-- kettle on a flat pebble -->
+        <ellipse cx="260" cy="306" rx="34" ry="7" fill="#a89f8d"/>
+        <path d="M240 306 q0 -26, 20 -26 t20 26 z" fill="#6d6257"/>
+        <path d="M243 284 q17 -12, 34 0" stroke="#57493c" stroke-width="3.5" fill="none"/>
+        <path d="M278 292 q13 3, 10 12" stroke="#6d6257" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="260" cy="278" r="4" fill="#46392c"/>
+        <!-- the moth, resting on the kettle (appears midway) -->
+        <g id="moth" class="hidden">
+          <ellipse cx="252" cy="270" rx="7" ry="4.5" fill="#efe6d2" transform="rotate(-24 252 270)"/>
+          <ellipse cx="264" cy="268" rx="7" ry="4.5" fill="#e6dbc2" transform="rotate(18 264 268)"/>
+          <circle cx="258" cy="271" r="2.2" fill="#8a7a64"/>
+        </g>
+        <!-- MALLOW: small, soft-grey, one ear folded forward -->
+        <g aria-label="Mallow, a small soft-grey piggie">
+          <path d="M96 296 q-14 -4, -10 -16" stroke="#94897a" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <ellipse cx="140" cy="272" rx="46" ry="30" fill="#b6aea2"/>
+          <circle cx="104" cy="256" r="23" fill="#c0b9ae"/>
+          <!-- standing ear -->
+          <path d="M92 238 q-4 -14, 6 -18 q7 9, 3 19 z" fill="#c0b9ae" stroke="#94897a" stroke-width="2"/>
+          <!-- the ear that folds forward when she listens -->
+          <path d="M112 236 q13 -6, 17 4 q-6 8, -16 5 q-4 -4, -1 -9 z" fill="#a89f92" stroke="#94897a" stroke-width="2"/>
+          <ellipse cx="88" cy="262" rx="10" ry="8" fill="#cfc7bb" stroke="#94897a" stroke-width="2"/>
+          <circle cx="85" cy="262" r="1.8" fill="#6d6257"/>
+          <circle cx="92" cy="262" r="1.8" fill="#6d6257"/>
+          <circle cx="112" cy="252" r="3" fill="#46392c"/>
+          <path d="M126 300 v10 M156 300 v10" stroke="#94897a" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <!-- PIPKIN: smaller, pink, sitting beside her -->
+        <g aria-label="Pipkin, a smaller pink piggie">
+          <ellipse cx="392" cy="282" rx="32" ry="21" fill="#eec3c9"/>
+          <circle cx="366" cy="270" r="16" fill="#f3ccd2"/>
+          <path d="M358 257 q-3 -10, 4 -13 q5 7, 2 14 z" fill="#f3ccd2" stroke="#d89aa4" stroke-width="1.6"/>
+          <path d="M372 255 q2 -10, 10 -11 q3 8, -2 14 z" fill="#f3ccd2" stroke="#d89aa4" stroke-width="1.6"/>
+          <ellipse cx="354" cy="274" rx="7" ry="5.5" fill="#f8dde1" stroke="#d89aa4" stroke-width="1.6"/>
+          <circle cx="352" cy="274" r="1.3" fill="#a06a74"/>
+          <circle cx="357" cy="274" r="1.3" fill="#a06a74"/>
+          <circle cx="372" cy="266" r="2.2" fill="#46392c"/>
+          <path d="M380 301 v8 M402 301 v8" stroke="#d89aa4" stroke-width="4" stroke-linecap="round"/>
+        </g>
+      </svg>
+
+      <!-- fireflies of thought (revealed once you sit down) -->
+      <button class="firefly hidden" type="button" data-thought="0" style="left:12%; top:16%;" aria-label="A thought arrives — tap to listen"><span class="glow"></span></button>
+      <button class="firefly hidden" type="button" data-thought="1" style="left:78%; top:12%;" aria-label="A thought arrives — tap to listen"><span class="glow"></span></button>
+      <button class="firefly hidden" type="button" data-thought="2" style="left:56%; top:34%;" aria-label="A thought arrives — tap to listen"><span class="glow"></span></button>
+      <button class="firefly hidden" type="button" data-thought="3" style="left:26%; top:44%;" aria-label="A thought arrives — tap to listen"><span class="glow"></span></button>
+      <button class="firefly hidden" type="button" data-thought="4" style="left:86%; top:48%;" aria-label="A thought arrives — tap to listen"><span class="glow"></span></button>
+      <button class="firefly hidden" type="button" data-thought="5" style="left:44%; top:8%;" aria-label="A thought arrives — tap to listen"><span class="glow"></span></button>
+    </div>
+
+    <p class="speech" id="speech" aria-live="polite">
+      <span class="who">Mallow</span>
+      “You can sit down while I think.”
+    </p>
+    <p class="thought" id="thought" aria-live="polite"></p>
+    <p class="thought-count" id="thoughtCount"></p>
+
+    <div class="gentle-row" id="sitRow">
+      <button class="gentle" type="button" id="sitDown">Sit down, and stay a little while</button>
+    </div>
+    <div class="gentle-row hidden" id="cupRow">
+      <button class="gentle tea" type="button" id="cupForMallow">Place a cup beside Mallow</button>
+      <button class="gentle tea" type="button" id="cupForPipkin">Place a cup beside Pipkin</button>
+    </div>
+  </div>
+
+  <div class="note">
+    <p id="chapterNote">She has been out back, where it is quiet — not lost,
+    and never left out on purpose. The rhyme simply finished before her
+    thinking did. <b>There is no puzzle here. There is only a little while,
+    and it is yours too.</b></p>
+
+    <div class="unlock" id="roomKept" aria-live="polite">
+      🍐 Back at the feast — the long table, the bread basket, the pear cut
+      into thin moons — the sixth place is still set, and now you know whose
+      it is. It was never an empty chair. It was <i>room, left on purpose</i>:
+      the napkin's hem says <i>“Leave a little room,”</i> and the room is
+      left for whoever is still thinking, whenever they are ready to come
+      in. Mallow cuts the pears thin enough for everyone to have another
+      piece — including, now, you.
+    </div>
+
+    <div class="ending" id="ending" aria-live="polite">
+      <p>“I liked walking with you,” Mallow says at last, to the room in
+      general. And when the light goes, the narration finds you both:</p>
+      <p><i>And home they went, with room between them for the evening.</i></p>
+      <div class="keepsake">
+        On the keepsake's reverse: Mallow's willow room, and a seventh cup,
+        left for the reader.<br>“For whenever you have a little while.”
+      </div>
+    </div>
+
+    <button class="reset" type="button" id="reset">Sit with Mallow again</button>
+  </div>
+</main>
+<script>
+  // The remembering book: finding Mallow is remembered on this device.
+  // Integration note (for the Everfallen build, if this chapter is folded
+  // in later): a reader who has ever found Mallow keeps the brook door
+  // open from the start — veteran unlocks apply to this door like any
+  // other. Prototype keeps it to one quiet flag; don't overbuild.
+  const FOUND_KEY = 'piggie-sixth-mallow-found';
+  try {
+    if (localStorage.getItem(FOUND_KEY)) {
+      document.getElementById('returning').classList.add('show');
+    }
+  } catch (e) { /* private mode / blocked storage: the visit still counts, just unremembered */ }
+
+  const thoughts = [
+    '“I was not lost. I was out back, where it is quiet enough to hear the pears ripening.”',
+    '“I count slowly. That is the whole reason the rhyme finished without me — and it is all right.”',
+    '“If a cushion is uncomfortable, I turn it over before I sit. Most things are a cushion.”',
+    '“I keep spare string in my pocket, in case something somebody loves comes undone.”',
+    '“Sometimes I want company before I know what to say. Thank you for waiting anyway.”',
+    '“I liked walking with you.”'
+  ];
+
+  const sitRow = document.getElementById('sitRow');
+  const cupRow = document.getElementById('cupRow');
+  const sitDown = document.getElementById('sitDown');
+  const cupForMallow = document.getElementById('cupForMallow');
+  const cupForPipkin = document.getElementById('cupForPipkin');
+  const cupMallow = document.getElementById('cupMallow');
+  const cupPipkin = document.getElementById('cupPipkin');
+  const moth = document.getElementById('moth');
+  const speech = document.getElementById('speech');
+  const thoughtEl = document.getElementById('thought');
+  const thoughtCount = document.getElementById('thoughtCount');
+  const roomKept = document.getElementById('roomKept');
+  const ending = document.getElementById('ending');
+  const note = document.getElementById('chapterNote');
+  const fireflies = Array.from(document.querySelectorAll('.firefly'));
+
+  let sat = false, placedMallow = false, placedPipkin = false;
+  const heard = new Set();
+
+  sitDown.addEventListener('click', () => {
+    if (sat) return;
+    sat = true;
+    sitRow.classList.add('hidden');
+    cupRow.classList.remove('hidden');
+    fireflies.forEach((f) => f.classList.remove('hidden'));
+    speech.innerHTML = '<span class="who">Mallow, thinking</span>“…”';
+    thoughtEl.textContent = 'You sit. The kettle ticks as it warms. After a little while, her thoughts begin to arrive — small and lit, like fireflies. Tap one, whenever you are ready. There is no order, and no hurry.';
+    thoughtEl.classList.add('show');
+    thoughtCount.textContent = 'Six thoughts, drifting. None of them is a test.';
+    try { localStorage.setItem(FOUND_KEY, '1'); } catch (e) { /* remembered or not, you were here */ }
+    document.getElementById('returning').classList.add('show');
+  });
+
+  function placeCup(which) {
+    if (which === 'mallow' && !placedMallow) {
+      placedMallow = true;
+      cupMallow.classList.remove('hidden');
+      cupForMallow.textContent = 'A cup beside Mallow ✓';
+      thoughtEl.textContent = 'You set the blue cup down beside her, where she can reach it when the thought is finished. She does not look up yet. That is fine.';
+    }
+    if (which === 'pipkin' && !placedPipkin) {
+      placedPipkin = true;
+      cupPipkin.classList.remove('hidden');
+      cupForPipkin.textContent = 'A cup beside Pipkin ✓';
+      thoughtEl.textContent = 'Pipkin holds his cup with both trotters, the way he holds everything he is pleased about.';
+    }
+    thoughtEl.classList.add('show');
+    if (placedMallow && placedPipkin) {
+      thoughtCount.textContent = 'Tea is placed. Nobody needed unlocking to receive it — Mallow tips the kettle herself.';
+    }
+  }
+  cupForMallow.addEventListener('click', () => placeCup('mallow'));
+  cupForPipkin.addEventListener('click', () => placeCup('pipkin'));
+
+  fireflies.forEach((f) => {
+    f.addEventListener('click', () => {
+      const i = Number(f.dataset.thought);
+      if (heard.has(i)) {
+        thoughtEl.textContent = thoughts[i];
+        thoughtEl.classList.add('show');
+        return;
+      }
+      heard.add(i);
+      f.classList.add('heard');
+      f.setAttribute('aria-label', 'A thought you have heard — tap to hear it again');
+      thoughtEl.textContent = thoughts[i];
+      thoughtEl.classList.add('show');
+      if (heard.size === 3) {
+        moth.classList.remove('hidden');
+        thoughtCount.textContent = 'A moth lands on the kettle. Mallow loses her sentence entirely, and you watch it together instead. Some of the while is for watching moths.';
+      } else if (heard.size < thoughts.length) {
+        thoughtCount.textContent = heard.size + ' of six thoughts heard. The rest are still drifting, unbothered.';
+      }
+      if (heard.size === thoughts.length) {
+        thoughtCount.textContent = 'That is all of them — for today. Thinking is never quite finished, but a little while can be complete.';
+        roomKept.classList.add('show');
+        ending.classList.add('show');
+        note.innerHTML = 'The while is complete, and nothing was won, because nothing was being contested. <b>You were given time, and you gave some back.</b> The brook door is behind you whenever you want the way home — it will be open.';
+      }
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    sat = false; placedMallow = false; placedPipkin = false;
+    heard.clear();
+    sitRow.classList.remove('hidden');
+    cupRow.classList.add('hidden');
+    cupMallow.classList.add('hidden');
+    cupPipkin.classList.add('hidden');
+    moth.classList.add('hidden');
+    cupForMallow.textContent = 'Place a cup beside Mallow';
+    cupForPipkin.textContent = 'Place a cup beside Pipkin';
+    fireflies.forEach((f) => { f.classList.add('hidden'); f.classList.remove('heard'); });
+    speech.innerHTML = '<span class="who">Mallow</span>“You can sit down while I think.”';
+    thoughtEl.textContent = '';
+    thoughtEl.classList.remove('show');
+    thoughtCount.textContent = '';
+    roomKept.classList.remove('show');
+    ending.classList.remove('show');
+    note.innerHTML = 'She has been out back, where it is quiet — not lost, and never left out on purpose. The rhyme simply finished before her thinking did. <b>There is no puzzle here. There is only a little while, and it is yours too.</b>';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Show &amp; Tell — for Sven's eyes · Nov 1</title>
+<style>
+  :root{
+    --paper:#f7f1e3; --paper2:#efe5cf; --ink:#33302a; --ink-soft:#5c564a;
+    --gold:#b98a2f; --gold-soft:#d9b968; --sage:#727766; --olive:#46554e;
+    --teal:#3f7d78; --card:#fffdf6; --line:#ddd0ae;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:Georgia,'Iowan Old Style','Times New Roman',serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(239,185,110,.28), transparent 60%),
+      linear-gradient(160deg,#202b30 0%, var(--olive) 34%, #8a8a76 62%, var(--paper2) 100%);
+    min-height:100vh;
+    padding:48px 20px 72px;
+  }
+  .sheet{
+    max-width:880px;margin:0 auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:6px;
+    box-shadow:0 24px 60px rgba(20,25,22,.45), inset 0 0 60px rgba(185,138,47,.06);
+    padding:52px 54px 44px;position:relative;
+  }
+  .sheet::before{
+    content:"";position:absolute;inset:10px;border:1px solid rgba(185,138,47,.35);
+    border-radius:4px;pointer-events:none;
+  }
+  header{text-align:center;margin-bottom:38px;position:relative}
+  .moon{width:54px;height:54px;margin:0 auto 14px;border-radius:50%;
+    background:radial-gradient(circle at 38% 35%, #f4dc9a, #e5c68d 58%, #cfa856);
+    box-shadow:0 0 34px rgba(229,198,141,.75)}
+  h1{font-size:2.35rem;margin:0 0 6px;font-weight:600;letter-spacing:.01em}
+  .sub{color:var(--ink-soft);font-style:italic;font-size:1.05rem;margin:0}
+  .rule{width:120px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:26px auto 0}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:5px;
+    padding:26px 30px 22px;margin:0 0 22px;position:relative;
+    box-shadow:0 3px 10px rgba(70,60,30,.08);
+  }
+  .card h2{margin:0 0 6px;font-size:1.45rem;font-weight:600}
+  .card h2 a{color:var(--ink);text-decoration:none;border-bottom:2px solid var(--gold-soft)}
+  .card h2 a:hover{border-bottom-color:var(--gold);color:#000}
+  .card p{margin:6px 0;color:var(--ink-soft);line-height:1.55;font-size:1rem}
+  .card .note{font-size:.88rem;font-style:italic;color:#8a7c5c}
+  .tag{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:#fff;background:var(--sage);border-radius:3px;padding:3px 9px;margin-bottom:12px}
+  .tag.gold{background:var(--gold)} .tag.teal{background:var(--teal)} .tag.olive{background:var(--olive)}
+  .trail{list-style:none;margin:14px 0 4px;padding:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .trail li{display:flex;align-items:center;gap:8px}
+  .trail a{color:var(--olive);text-decoration:none;border:1px solid var(--line);
+    background:var(--paper);border-radius:20px;padding:5px 13px;font-size:.92rem}
+  .trail a:hover{border-color:var(--gold);color:#000}
+  .trail a.chapter{background:var(--olive);color:#f7f1e3;border-color:var(--olive);font-weight:600}
+  .trail .arr{color:var(--gold);font-size:.9rem}
+  footer{text-align:center;color:var(--ink-soft);font-style:italic;font-size:.92rem;margin-top:34px;position:relative}
+  @media (max-width:640px){ .sheet{padding:36px 22px 30px} h1{font-size:1.8rem} }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <div class="moon" aria-hidden="true"></div>
+    <h1>Show &amp; Tell</h1>
+    <p class="sub">for Sven's eyes · Nov 1</p>
+    <div class="rule"></div>
+  </header>
+
+  <section class="card">
+    <span class="tag">Meef · This Little Piggie</span>
+    <h2><a href="meef/sixth-piggie-06-mallows-little-while.html">Mallow's Little While</a></h2>
+    <p>The hidden chapter the five clues were always pointing at — soft-grey Mallow under the
+       willow, who was never in the rhyme because she was out back, thinking.
+       <em>"You can sit down while I think."</em></p>
+    <p>The trail, in order:</p>
+    <ul class="trail">
+      <li><a href="meef/sixth-piggie-01-feast.html">1 · The Feast</a><span class="arr">→</span></li>
+      <li><a href="meef/sixth-piggie-02-market.html">2 · The Market</a><span class="arr">→</span></li>
+      <li><a href="meef/sixth-piggie-03-cottage.html">3 · The Cottage</a><span class="arr">→</span></li>
+      <li><a href="meef/sixth-piggie-04-tea.html">4 · Tea</a><span class="arr">→</span></li>
+      <li><a href="meef/sixth-piggie-05-brook.html">5 · The Brook Door</a><span class="arr">→</span></li>
+      <li><a class="chapter" href="meef/sixth-piggie-06-mallows-little-while.html">Mallow's Little While</a></li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <span class="tag gold">Malachi · The Sermon Ride</span>
+    <h2><a href="malachi-site/index.html">Malachi — the four places</a></h2>
+    <p>The sermon experience in its four styles — Cinema, Storybook, Evidence, Symbols —
+       four distinct rooms now, not one room re-accented. Switch places and watch the
+       whole site change weather.</p>
+    <p class="note">Public review with paper scenery and ten original-sermon excerpts.
+       The supplied portrait and continuous edited audio remain private.</p>
+  </section>
+
+  <section class="card">
+    <span class="tag teal">Malachi · Art</span>
+    <h2><a href="malachi-art/art-wall.html">The art wall — sixteen moments</a></h2>
+    <p>Every gap in the tour, drafted: the torn map's edge, the unflattenable sheet, the
+       crown the wind walks through, light for one step. Scroll, look, and tap your
+       verdict on each — Keep, Redo, or Decide later — and export them back in one list.</p>
+    <p class="note">Your tap verdicts are stored per-browser, on this device only.</p>
+  </section>
+
+  <section class="card">
+    <span class="tag olive">bespoke.gig</span>
+    <h2><a href="bespoke/bespoke-gig-hypermetapunk.html">bespoke.gig — the new skin: Hypermetapunk Kit v0</a></h2>
+    <p>The documented bespoke.gig, built to be seen, wearing its new skin — the
+       Hypermetapunk Kit v0: a genuine gig-work platform —
+       <em>"Strange Work Finds Its People"</em> — Enter → Post → Find → Make → Deliver → Grow,
+       with Dominic Paradyne hosting and Lumi and Pip in their places.</p>
+    <p class="note">Earlier skin: <a href="bespoke/bespoke-gig-platform-prototype.html">the platform prototype in neo-Victorian atelier dress</a>.</p>
+  </section>
+
+  <footer>Packed by Sae · Show &amp; Tell 1.0.0 · November 2, 2026.</footer>
+</div>
+</body>
+</html>
