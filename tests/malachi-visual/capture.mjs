@@ -53,9 +53,19 @@ try{
     const intersection={width:Math.max(0,Math.min(caption.right,nav.right)-Math.max(caption.x,nav.x)),height:Math.max(0,Math.min(caption.bottom,nav.bottom)-Math.max(caption.y,nav.y))};
     return {caption,nav,intersection,documentWidth:document.documentElement.scrollWidth,documentHeight:document.documentElement.scrollHeight,viewport:innerWidth,viewportHeight:innerHeight,scrollY,art:rect(document.querySelector('#scene-art')),captionHidden:document.querySelector('#caption-well').hidden,captionDisplay:getComputedStyle(document.querySelector('#caption-well')).display,captionFont:getComputedStyle(document.querySelector('#caption')).fontSize,captionText:rect(document.querySelector('#caption')),captionZ:getComputedStyle(document.querySelector('#caption-well')).zIndex,navZ:getComputedStyle(document.querySelector('.world-footer')).zIndex};
    });
-   const checks={captionMatches:playback.caption===cue.text,captionVisible:!geometry.captionHidden&&geometry.caption.height>0,noNavOverlap:geometry.intersection.height===0,noHorizontalOverflow:geometry.documentWidth<=geometry.viewport,captionWithinViewport:geometry.caption.x>=0&&geometry.caption.right<=geometry.viewport};
-   report.profiles.push({profile:profile.name,style,cue,playback,geometry,checks,errors});report.screenshots.push(`${name}.png`,`${name}-full.png`);
-   console.log(JSON.stringify({profile:profile.name,style,geometry,checks,errors}));await context.close();
+   const controls=await page.evaluate(()=>{
+    const canvas=document.createElement('canvas');canvas.width=canvas.height=1;const ctx=canvas.getContext('2d');
+    const rgba=color=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=color;ctx.fillRect(0,0,1,1);const c=[...ctx.getImageData(0,0,1,1).data];return [c[0],c[1],c[2],c[3]/255];};
+    const over=(fg,bg)=>[0,1,2].map(i=>fg[i]*fg[3]+bg[i]*(1-fg[3])).concat(1);
+    const background=node=>{const layers=[];for(let n=node;n;n=n.parentElement)layers.push(rgba(getComputedStyle(n).backgroundColor));return layers.reverse().reduce((bg,fg)=>over(fg,bg),[255,255,255,1]);};
+    const lum=c=>c.slice(0,3).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4;}).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);
+    const contrast=[...document.querySelectorAll('#listen,#moment-prev,#moment-next,#moment-variants button')].filter(n=>!n.disabled).map(n=>{const bg=background(n),fg=over(rgba(getComputedStyle(n).color),bg),l=[lum(fg),lum(bg)].sort((a,b)=>b-a);return{id:n.id||n.textContent,foreground:fg,background:bg,ratio:(l[0]+.05)/(l[1]+.05)};});
+    const icons=[...document.querySelectorAll('.chapter-icon')].map(n=>{const box=n.getBoundingClientRect(),label=n.nextElementSibling.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(n);const glyph=range.getBoundingClientRect();return {chapter:n.parentElement.dataset.chapter,box:{x:box.x,y:box.y,width:box.width,height:box.height,bottom:box.bottom},glyph:{x:glyph.x,y:glyph.y,width:glyph.width,height:glyph.height,bottom:glyph.bottom},labelTop:label.y,fits:glyph.left>=box.left-1&&glyph.right<=box.right+1&&glyph.top>=box.top-1&&glyph.bottom<=box.bottom+1&&label.y>=box.bottom+4};});
+    return {contrast,icons};
+   });
+   const checks={controlContrast:controls.contrast.every(c=>c.ratio>=4.5),iconsFit:controls.icons.every(i=>i.fits),captionMatches:playback.caption===cue.text,captionVisible:!geometry.captionHidden&&geometry.caption.height>0,noNavOverlap:geometry.intersection.height===0,noHorizontalOverflow:geometry.documentWidth<=geometry.viewport,captionWithinViewport:geometry.caption.x>=0&&geometry.caption.right<=geometry.viewport};
+   report.profiles.push({profile:profile.name,style,cue,playback,geometry,controls,checks,errors});report.screenshots.push(`${name}.png`,`${name}-full.png`);
+   console.log(JSON.stringify({profile:profile.name,style,geometry,controls,checks,errors}));await context.close();
   }
  }
  const context=await browser.newContext({viewport:{width:1280,height:900},reducedMotion:'reduce',acceptDownloads:true});
