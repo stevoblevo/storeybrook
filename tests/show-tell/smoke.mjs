@@ -27,7 +27,7 @@ const origin = `http://127.0.0.1:${server.address().port}`;
 let browser;
 try {
   // Use the hosted runner's ordinary installed Chrome. Fail if its sandbox is unavailable.
-  browser = await chromium.launch({channel:'chrome', headless:true, chromiumSandbox:true, args:['--mute-audio']});
+  browser = await chromium.launch({channel:'chrome', headless:true, chromiumSandbox:true, args:['--mute-audio','--enable-automation']});
   const session = await browser.newBrowserCDPSession();
   const command = await session.send('Browser.getBrowserCommandLine');
   assert(!command.arguments.some(arg => /^--(no-sandbox|disable-setuid-sandbox|disable-seccomp-filter-sandbox|disable-namespace-sandbox)(=|$)/.test(arg)), 'Sandbox-disabling flags are forbidden.');
