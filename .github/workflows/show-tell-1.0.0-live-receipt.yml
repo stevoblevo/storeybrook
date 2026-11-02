@@ -1,0 +1,25 @@
+name: Show and Tell 1.0.0 live receipt
+
+on:
+  push:
+    branches: [sae/show-tell-2026-11-01]
+    paths: ['.github/workflows/show-tell-1.0.0-live-receipt.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    if: github.repository == 'stevoblevo/storeybrook' && github.event.repository.visibility == 'public'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: 9a0990eee1fee5c04fda06f8647257e3df96d74f
+          persist-credentials: false
+      - name: Verify the published 1.0.0 files against the deployed source
+        env:
+          EXPECTED_SOURCE_SHA: 9a0990eee1fee5c04fda06f8647257e3df96d74f
+          PAGES_RUN_ID: '41399525831'
+        run: python3 tests/show-tell/live.py
