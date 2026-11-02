@@ -23,3 +23,16 @@ jobs:
           EXPECTED_SOURCE_SHA: 9a0990eee1fee5c04fda06f8647257e3df96d74f
           PAGES_RUN_ID: '41399525831'
         run: python3 tests/show-tell/live.py
+      - name: Verify the exact public directory URLs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, urllib.request
+          base = 'https://stevoblevo.github.io/storeybrook/show-tell/'
+          for route, source in [('', 'show-tell/index.html'), ('malachi-site/', 'show-tell/malachi-site/index.html')]:
+              with urllib.request.urlopen(base + route, timeout=25) as response:
+                  data = response.read()
+                  assert response.status == 200
+                  assert data == Path(source).read_bytes()
+                  print(json.dumps({'public_url': base + route, 'status': response.status, 'sha256': hashlib.sha256(data).hexdigest()}))
+          PY
