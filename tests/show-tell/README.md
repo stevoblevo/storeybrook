@@ -5,20 +5,27 @@ repository, on the standard `ubuntu-24.04` hosted runner. It grants only
 `contents: read`, does not persist checkout credentials, and does not deploy.
 Its checkout and receipts identify the exact pushed commit.
 
+After the existing Pages workflow succeeds on `main`, a separate read-only job
+in the same workflow checks that deployment's source SHA. `live.py` requests all
+tracked runtime exhibit files at the fixed public Pages URL and compares their complete
+bytes with that source, including all 11 HTML pages and 31 media assets. It records
+the release version and Pages run ID. This hosted check does not use or retry the
+blocked local executor's Pages route and never changes deployment settings.
+
 `python3 tests/show-tell/verify.py` checks the authored references, all JavaScript
 syntax, the 31 approved assets and their recorded hashes. `--source-only` allows
 the specifically declared bundle to be absent for preparation; that option is
 never a release pass.
 
-Before the release audit can pass, obtain the supplied `show-tell-media.zip`,
-verify its 20,533,612-byte length and SHA-256
+The approved media was verified before import at commit `32646a72bf45adf56f2323f80d725d577071200a`.
+The supplied `show-tell-media.zip` has a 20,533,612-byte length and SHA-256
 `bb98208e5e382600140f96a8ec5880b49ddd1b0d7343c281508491647c1ff284`,
-and safely extract only the 31 paths in `expected-assets.json`. The ZIP expands
-to 21,540,736 bytes. Reject unsafe paths, symlinks, duplicates or any other entry.
-Inspect the fonts and retain their required licenses before publishing them.
-Write `show-tell/media-manifest.json` with `archive_sha256` and an `assets` array
-of `{path, bytes, sha256}` derived from those verified bytes. Paths are relative
-to `show-tell/`. Do not create a manifest from substitute files.
+and contains exactly the 31 paths in `expected-assets.json`, expanding to
+21,540,736 bytes. `show-tell/media-manifest.json` records per-file hashes
+independently recomputed from the verified imported Git blobs. The original
+Malachi font blob IDs match all three bundled fonts; matching OFL notices and
+embedded copyright statements are retained in `malachi-site/licenses/`.
+No archive download is needed to run these checks.
 
 The browser test uses the runner's installed Google Chrome, headlessly and
 muted, with Playwright's `chromiumSandbox: true`. It also checks the effective

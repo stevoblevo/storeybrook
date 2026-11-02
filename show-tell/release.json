@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "product": "Storeybrook Show & Tell",
+  "version": "1.0.0",
+  "release_date": "2026-11-02",
+  "media_manifest": "media-manifest.json",
+  "media_import_commit": "32646a72bf45adf56f2323f80d725d577071200a",
+  "scope": "Additive public review exhibits; canonical Storeybrook toolkit unchanged."
+}

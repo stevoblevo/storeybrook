@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "archive_sha256": "bb98208e5e382600140f96a8ec5880b49ddd1b0d7343c281508491647c1ff284",
+  "archive_bytes": 20533612,
+  "expanded_bytes": 21540736,
+  "verified_import_commit": "32646a72bf45adf56f2323f80d725d577071200a",
+  "custody": "Approved archive verified before import; these hashes were independently recomputed from the imported Git blobs.",
+  "assets": [
+    {
+      "path": "malachi-art/art-drafts/01-opening-question.png",
+      "bytes": 864071,
+      "sha256": "d6076403ca122f979e84d251f7f4442d5816d46223f6a21d22aafb44c15020bf"
+    },
+    {
+      "path": "malachi-art/art-drafts/02-hail-storm.png",
+      "bytes": 1312425,
+      "sha256": "27dc21734a16147e580ba2ca1779224ed529b062423269db1e640f897db6bf1b"
+    },
+    {
+      "path": "malachi-art/art-drafts/03-hail-dent.png",
+      "bytes": 830825,
+      "sha256": "bcd67027a7e7916fc5ecce5d66036793e7f525de189bcbe337cae7173ced7e8e"
+    },
+    {
+      "path": "malachi-art/art-drafts/03b-hail-dent-redo.png",
+      "bytes": 763324,
+      "sha256": "be8975e31c0998ccf1969ce56e9c52428f4be4440dbe188b1c66e10fd462e892"
+    },
+    {
+      "path": "malachi-art/art-drafts/04-knowledge-satellite.png",
+      "bytes": 811261,
+      "sha256": "f37afc55631b1fa2fe55154904cef2aaea1aa40650ff8474ac69dfb18d40ac24"
+    },
+    {
+      "path": "malachi-art/art-drafts/05-knowledge-maps-edge.png",
+      "bytes": 1097365,
+      "sha256": "cb0d1c2a1670e538d02ee64bfb4b41db4d46e5b3e1076ae2c2be49d91c6f58ee"
+    },
+    {
+      "path": "malachi-art/art-drafts/06-thesis-unflattenable-sheet.png",
+      "bytes": 652991,
+      "sha256": "5a89dffd9e07b004b9773ce271276f4cad27fe52fd78e6e2c1c67df82d3964fa"
+    },
+    {
+      "path": "malachi-art/art-drafts/07-wisdom-the-reach.png",
+      "bytes": 944461,
+      "sha256": "ca5010c0a6746049bf607ea112a9dab8ca6ff8d19934c7b1a1b5c89417ec2fe6"
+    },
+    {
+      "path": "malachi-art/art-drafts/08-wisdom-far-off-deep.png",
+      "bytes": 970642,
+      "sha256": "cf1c9bdd31ae73197006f48472f45ca496a17817ed9395018aeece7a92cf460f"
+    },
+    {
+      "path": "malachi-art/art-drafts/09-weather-expected.png",
+      "bytes": 1001146,
+      "sha256": "79d45c36c9f2adc47ae28559b6df796a083319d75d08e6a399fcedef48b42f8b"
+    },
+    {
+      "path": "malachi-art/art-drafts/10-weather-got.png",
+      "bytes": 1280264,
+      "sha256": "7f3c88162763cf8448ff6108c1e303ee3bd6866e2086b352b2a348a453736d68"
+    },
+    {
+      "path": "malachi-art/art-drafts/11-schemes-paper-ring.png",
+      "bytes": 840396,
+      "sha256": "86053d45305256807e012ce95e7661dde4fedeb9f2dc45a8b753c5576e627000"
+    },
+    {
+      "path": "malachi-art/art-drafts/12-power-crown-wind.png",
+      "bytes": 666207,
+      "sha256": "08ddb5ef2c903d28d9ca7dd395eba93df6bcd6d6e15ff43befe4afc5eefa26af"
+    },
+    {
+      "path": "malachi-art/art-drafts/12b-power-crown-wind-redo.png",
+      "bytes": 726375,
+      "sha256": "cc05649a9a4e73d847043c7bbd8c1f066ad174842c79b01d3c2e556e0055f151"
+    },
+    {
+      "path": "malachi-art/art-drafts/13-trust-lay-down-schemes.png",
+      "bytes": 1113340,
+      "sha256": "8e640d38462d6a03605e9e16a868ad0984dfd1ec52a72277678203a780600d41"
+    },
+    {
+      "path": "malachi-art/art-drafts/14-trust-light-one-step.png",
+      "bytes": 861797,
+      "sha256": "9ba49db153855fe4958558833ff7eb6f80e04269cb4241043f5425d8212f4617"
+    },
+    {
+      "path": "malachi-art/art-drafts/15-faithful-not-abandoned.png",
+      "bytes": 1035682,
+      "sha256": "a77f29c7998da106ad42f7bd97827ca798953e6972378c654f3f7bd29b1f0b7a"
+    },
+    {
+      "path": "malachi-art/art-drafts/16-faithful-one-small-step.png",
+      "bytes": 625156,
+      "sha256": "9c7c4d21cee0d3faaf67cc5f6454b38915a51523c8b9dfc8dcadea88edc750ce"
+    },
+    {
+      "path": "malachi-site/clips/hail.mp3",
+      "bytes": 409868,
+      "sha256": "0f0215a67e510459988289e27379e316f46b03ce07afd581ebc19c26e7d03ccc"
+    },
+    {
+      "path": "malachi-site/clips/knowledge.mp3",
+      "bytes": 354860,
+      "sha256": "378bfe1b5e09cb57ad8ce88576c9f19e04ae06b4a3fa38537307252d00570232"
+    },
+    {
+      "path": "malachi-site/clips/thesis.mp3",
+      "bytes": 46412,
+      "sha256": "4aa9d131ee8241f7bb0f90d79e051be359fc04f499da1920acf5ed538c6f977a"
+    },
+    {
+      "path": "malachi-site/clips/wisdom.mp3",
+      "bytes": 187820,
+      "sha256": "bfb8d71914ac10cd97d5942f268580b73e8db19d5dd5e3d2f2bbd62a86cc2b75"
+    },
+    {
+      "path": "malachi-site/clips/weather.mp3",
+      "bytes": 392588,
+      "sha256": "9daf0e58e1305d1c95d15ad7c37cfd6f314817d83bc3db17abf04e0e2c92e7fd"
+    },
+    {
+      "path": "malachi-site/clips/schemes.mp3",
+      "bytes": 269612,
+      "sha256": "406e066888b61e920570d2e2e9b2377ebfa3f574ad51a880487a8b354c31a11e"
+    },
+    {
+      "path": "malachi-site/clips/power.mp3",
+      "bytes": 413036,
+      "sha256": "b8ed54a059d85008bf6b8c4c459ef256e3aa289f8e22f3f9b8a20524218987c5"
+    },
+    {
+      "path": "malachi-site/clips/gospel.mp3",
+      "bytes": 714284,
+      "sha256": "4dd6a6f83712e4ccc76a88c9418cedecb95baef796db5f7d82e97cf121c11bfb"
+    },
+    {
+      "path": "malachi-site/clips/trust.mp3",
+      "bytes": 246572,
+      "sha256": "189b7a091cb5f9468a348463c2794907438a05b2391889c780284ed47ff98bbd"
+    },
+    {
+      "path": "malachi-site/clips/faithful.mp3",
+      "bytes": 224396,
+      "sha256": "6aee0ea18afb2024d89dfd4f94399339fe1961a74bbc2ac98ae399ed4ea100e7"
+    },
+    {
+      "path": "malachi-site/fonts/Serif.ttf",
+      "bytes": 588876,
+      "sha256": "9d7583b7dc9e812afd32a14280c5cac3160012efe50c8d08938f4fea266ff67f"
+    },
+    {
+      "path": "malachi-site/fonts/SerifItalic.ttf",
+      "bytes": 637472,
+      "sha256": "bc25600aa27cd409e1e5b3d86340df3a329bb860fcfbe57a03a95070b229e1b0"
+    },
+    {
+      "path": "malachi-site/fonts/Sans.ttf",
+      "bytes": 657212,
+      "sha256": "6f6940be0835c3ddec9199e5fc42be4cbc61ebcfd58c623fdf719366253f1780"
+    }
+  ]
+}

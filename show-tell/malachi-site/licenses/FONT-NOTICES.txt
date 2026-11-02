@@ -1,0 +1,28 @@
+Show & Tell bundled font notices
+
+These TTF files are unmodified. The local filenames are presentation aliases;
+their embedded font family names and copyright metadata are unchanged.
+
+Sans.ttf — Lato Regular
+Version 2.015; 2015-08-06; http://www.latofonts.com/
+Copyright (c) 2011-2015 by tyPoland Lukasz Dziedzic (http://www.typoland.com/) with Reserved Font Name "Lato". Licensed under the SIL Open Font License, Version 1.1 (http://scripts.sil.org/OFL). 
+Copyright (c) 2011-2015 by tyPoland Lukasz Dziedzic (http://www.typoland.com/) with Reserved Font Name "Lato". Licensed under the SIL Open Font License, Version 1.1 (http://scripts.sil.org/OFL). 
+SHA-256: 6f6940be0835c3ddec9199e5fc42be4cbc61ebcfd58c623fdf719366253f1780
+
+Serif.ttf — Noto Serif Regular
+Version 2.004; ttfautohint (v1.8.3) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X ""
+Copyright 2015 Google LLC. All Rights Reserved.
+This Font Software is licensed under the SIL Open Font License, Version 1.1. This Font Software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the SIL Open Font License for the specific language, permissions and limitations governing your use of this Font Software.
+SHA-256: 9d7583b7dc9e812afd32a14280c5cac3160012efe50c8d08938f4fea266ff67f
+
+SerifItalic.ttf — Noto Serif Italic
+Version 2.004; ttfautohint (v1.8.3) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X ""
+Copyright 2015 Google LLC. All Rights Reserved.
+This Font Software is licensed under the SIL Open Font License, Version 1.1. This Font Software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the SIL Open Font License for the specific language, permissions and limitations governing your use of this Font Software.
+SHA-256: bc25600aa27cd409e1e5b3d86340df3a329bb860fcfbe57a03a95070b229e1b0
+
+License: SIL Open Font License, Version 1.1.
+The matching source-distribution notices are retained in Lato-OFL.txt and
+Noto-OFL.txt. Their Debian packaging sections do not change the OFL terms
+of the font binaries; no Debian packaging files are distributed here.
+Official license: https://openfontlicense.org/open-font-license-official-text/

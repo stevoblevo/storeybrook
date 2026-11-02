@@ -1,6 +1,10 @@
 name: Show and Tell candidate smoke
 
 on:
+  workflow_run:
+    workflows: ['pages build and deployment']
+    types: [completed]
+    branches: [main]
   push:
     branches: [sae/show-tell-2026-11-01]
     paths:
@@ -12,12 +16,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: show-tell-candidate-smoke
+  group: show-tell-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
   smoke:
-    if: github.repository == 'stevoblevo/storeybrook' && github.event.repository.visibility == 'public'
+    if: github.event_name == 'push' && github.repository == 'stevoblevo/storeybrook' && github.event.repository.visibility == 'public'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -40,3 +44,17 @@ jobs:
       - name: Enforce media audit
         if: always() && steps.audit.outcome != 'success'
         run: exit 1
+  live:
+    if: github.event_name == 'workflow_run' && github.repository == 'stevoblevo/storeybrook' && github.event.repository.visibility == 'public' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - name: Verify the deployed version and every public exhibit file
+        env:
+          EXPECTED_SOURCE_SHA: ${{ github.event.workflow_run.head_sha }}
+          PAGES_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: python3 tests/show-tell/live.py

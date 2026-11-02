@@ -8,5 +8,7 @@ play the ten approved original-sermon excerpt clips individually. The complete
 original sermon remains linked at its original public source. No cloned take or
 private chapter narration is included.
 
-The release still requires the approved media bundle (18 art-wall PNGs, ten MP3
-excerpts and three licensed TTF fonts) to be installed and verified before merge.
+The approved media bundle is installed: 18 art-wall PNGs, ten original MP3
+excerpts and three TTF fonts. ../media-manifest.json records every byte hash.
+The unmodified Lato and Noto Serif fonts retain their matching OFL notices in
+licenses/. Release metadata is recorded in ../release.json.
