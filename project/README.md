@@ -1,6 +1,6 @@
 Storeybrook is a light-first kit for storybook pages and little games: watercolor paper, pages that turn, stories read aloud, a brook of stepping stones to walk, nougats that fly into a jar, and a creature that grows. It is the daylight counterpart to Depthfield. Where Depthfield is a dark scene with a quiet HUD, Storeybrook is a book on a table with a game folded inside it.
 
-The system has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk), one set of token names that every look fills, twenty-eight components with live previews, a behavior bundle (`window.Storeybrook`), drawn icons, the creature and the nougat as art, and the rules below. This page is the short version. The sections after it go deep: paper, looks, color, type, layout, motion, iconography, writing, sound and reading aloud, rewards and progression, devices, accessibility, code, governance, and play.
+The system has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk), one set of token names that every look fills, thirty components with live previews, a behavior bundle (`window.Storeybrook`), drawn icons, the creature and the nougat as art, and the rules below. This page is the short version. The sections after it go deep: paper, looks, color, type, layout, motion, iconography, writing, sound and reading aloud, rewards and progression, devices, accessibility, code, governance, play, and taste.
 
 ## Principles
 

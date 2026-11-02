@@ -53,13 +53,15 @@ Load them in that order, set `data-theme` on `<html>` (and `class="sb-root"` for
 - `fold(host, swap)` and `blot(host, {duration})` → Promises that settle when the motion ends
 - `drawer.open/close(el)`, `dialog.open/close(el)`, `toast(html, {ms})`
 - `sound.enable(on)`, `sound.play('stone' | 'nougat' | 'sticker' | 'page')`, `haptic(pattern)`
+- `guardian(host, {kind, label, on, near, from, onTap, fill, svg, sleepNote})` → `{el, on, asleep, set(on), sleep(), wake(), place(x, y), destroy()}`; `guardian.asleep()`, `guardian.wakeAll()`, `guardian.kinds`
+- `taste({scope, log})` → findings `[{rule, severity, count, sample, fix}]`; `taste.badge(findings)`; `?sb-taste` in the address shows them
 - `icon(name, size)`, `icons`, `mountIcons(root)`, `nougatSVG(seed)`, `jarSVG(fill)`, `token(name)`, `reducedMotion()`, `ensureDefs()`, `version`
 
 Every function is typed in `index.d.ts`.
 
 ## Events
 
-Events arrive on `window` as `sb:<name>` with a `detail`: `ready`, `theme`, `density`, `back`, `read`, `nougat`, `unlock`, `step`, `creature`, `page`, `drawer`, `dialog`, `sound`.
+Events arrive on `window` as `sb:<name>` with a `detail`: `ready`, `theme`, `density`, `back`, `read`, `nougat`, `unlock`, `step`, `creature`, `page`, `drawer`, `dialog`, `sound`, and since 1.2 `guardian` (`{kind, label, on}` or `{kind, label, asleep}`) and `taste` (`{findings, look}`).
 
 ```js
 addEventListener('sb:nougat', e => console.log(e.detail.count, e.detail.reason));
@@ -89,6 +91,6 @@ Put `data-sb="daylight"` (or another look) on any panel and it becomes a Storeyb
 
 ## Budgets
 
-- `bundle.js` under 60 KB and `bundle.css` under 56 KB before compression (1.1.0: 59.8 KB and 55.8 KB).
+- `bundle.js` under 80 KB and `bundle.css` under 60 KB before compression (1.2.0: 75.6 KB and 57.9 KB; 60 KB and 56 KB until 1.2).
 - No network from the bundle; fonts are the largest cost: load only the families a page uses.
 - One canvas at most per page belongs to a game, not the kit; the kit draws with SVG and CSS.

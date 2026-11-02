@@ -1,6 +1,6 @@
 # Storeybrook
 
-A light-first design system for storybook pages and little games. Its pieces are watercolor paper, pages that turn, stories read aloud, a brook of stepping stones, nougats that fly into a jar, and a creature that grows. It has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk) built on one set of token names, 28 components, and a behavior bundle exposed as `window.Storeybrook`. It is the daylight counterpart to [Depthfield](https://github.com/stevoblevo/depthfield).
+A light-first design system for storybook pages and little games. Its pieces are watercolor paper, pages that turn, stories read aloud, a brook of stepping stones, nougats that fly into a jar, and a creature that grows. It has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk) built on one set of token names, 30 components (guardians and a taste check among them), and a behavior bundle exposed as `window.Storeybrook` (1.2.0). It is the daylight counterpart to [Depthfield](https://github.com/stevoblevo/depthfield).
 
 This repo is a read-only export of the Storeybrook design system (index format v3) from its Claude artifact:
 <https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe>
@@ -19,9 +19,9 @@ Read [`project/README.md`](project/README.md) first. It is the brand book and ex
 SKILL.md                     How the Design System artifact format works (file shapes, caps, write order)
 project/
   README.md                  Brand book — start here
-  01-paper.md … 15-play.md   Foundations, one topic per file:
+  01-paper.md … 16-taste.md  Foundations, one topic per file:
                              paper, looks, color, type, layout, motion, iconography, writing,
-                             sound, progression, devices, accessibility, code, governance, play
+                             sound, progression, devices, accessibility, code, governance, play, taste
   design-system.json         Index: title, namespace, libraries, asset-group records
   tokens.json                All tokens (six looks as color themes, type, spacing, radius, …) as lists
   components/
@@ -66,5 +66,9 @@ project/
 - **Seven pets.** One waits in each look, and Saelion arrives for whoever finds the other six. Each is found by doing the thing that look is for: tap Saelion on the front page, wake the sleeper at bedtime, turn the slate to its last page, grab the nougats in the comic, walk three stones in the level maker, and press the seal on the album. The pet you choose walks with you in the corner, and the pet book lists all seven with a hint for each one still hidden.
 - **Play it for me.** The adventure plays itself in seven steps, about 45 seconds, finding every pet on the way. Any touch, key or wheel hands it back. `?autoplay` starts it from a link, which is how the home-screen shortcut works. It never starts on its own.
 - **Shared with Depthfield.** Both sites save to one `localStorage` key, `crossing:pets` (`sb:` and `df:` ids), on the same origin. The pet book counts Depthfield's five night pets, and finding all seven here puts Saelion in Depthfield's night sky.
+
+### Taste
+
+Open any page with `?sb-taste` in its address and the bundle reads it against the brand book (see `project/16-taste.md`). The showcase passes its own check.
 
 After changing anything under `project/`, run `python3 site/build.py` and commit the output.

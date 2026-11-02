@@ -140,6 +140,10 @@
   {
    "path": "project/15-play.md",
    "title": "Play"
+  },
+  {
+   "path": "project/16-taste.md",
+   "title": "Taste"
   }
  ],
  "cover": {
@@ -202,6 +206,14 @@
    "summary": "The read-aloud bar: a play button, the chapter's title, the voice in use and a meter, bound to the text it reads."
   },
   {
+   "name": "Taste",
+   "group": "Story",
+   "height": 440,
+   "preview": "project/components/Taste/preview.html",
+   "readme": "project/components/Taste/README.md",
+   "summary": "`Storeybrook.taste()` reads a rendered page against this brand book and against the tells that make a page look generated, and returns what it finds, each with the rule, a sample and the fix."
+  },
+  {
    "name": "Blot",
    "group": "Transitions",
    "height": 320,
@@ -232,6 +244,14 @@
    "preview": "project/components/Creature/preview.html",
    "readme": "project/components/Creature/README.md",
    "summary": "Saelion: a bunny, a tree octopus and a butterfly pixie at once, which grows from an egg."
+  },
+  {
+   "name": "Guardian",
+   "group": "Play",
+   "height": 330,
+   "preview": "project/components/Guardian/preview.html",
+   "readme": "project/components/Guardian/README.md",
+   "summary": "A small drawn object, with no visible label, that floats near the creature and switches one real thing when tapped; it can be dragged anywhere and flicked off the page to sleep."
   },
   {
    "name": "Button",
