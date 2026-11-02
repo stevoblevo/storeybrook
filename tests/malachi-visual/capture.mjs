@@ -22,12 +22,14 @@ try{
  assert(!command.arguments.some(x=>/^--(no-sandbox|disable-setuid-sandbox|disable-seccomp-filter-sandbox|disable-namespace-sandbox)(=|$)/.test(x)));
  const sandbox=await browser.newPage();await sandbox.goto('chrome://sandbox');report.sandbox=await sandbox.locator('body').innerText();assert.match(report.sandbox,/Seccomp-BPF sandbox\s+Yes/);await sandbox.close();
  report.browser=browser.version();
- for(const profile of [{name:'desktop',width:1280,height:900},{name:'mobile',width:390,height:844},{name:'narrow',width:320,height:740},{name:'text200',width:390,height:844,textScale:2}]){
+ for(const profile of [{name:'desktop',width:1280,height:900},{name:'mobile',width:390,height:844},{name:'narrow',width:320,height:740},{name:'text200',width:390,height:844,textScale:2},{name:'tv',width:1280,height:900,density:true}]){
   for(const style of ['gen4','gen2','skeptic','semiotic']){
    const context=await browser.newContext({viewport:{width:profile.width,height:profile.height},reducedMotion:'reduce'});const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto(origin+'/show-tell/malachi-site/');await page.waitForFunction(()=>!!window.paperWorld);
    await page.locator('[data-fs-settings-open]').click();await page.locator(`[data-fs-mode="${style}"]`).click();await page.keyboard.press('Escape');
    await page.waitForTimeout(2600);
+   if(await page.locator('#reveal-note').isVisible())await page.locator('#reveal-close').click();
+   if(profile.density){await page.locator('[data-fs-settings-open]').click();await page.locator('[data-fs-density]').click();await page.keyboard.press('Escape');}
    if(profile.textScale)await page.evaluate(()=>{
     // Deliberate text-size stress, not a claim of native OS/browser zoom.
     const nodes=[...document.querySelectorAll('body *')].filter(n=>n instanceof HTMLElement&&[...n.childNodes].some(c=>c.nodeType===Node.TEXT_NODE&&c.textContent.trim()));
@@ -48,7 +50,7 @@ try{
     const rect=n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
     const caption=rect(document.querySelector('#caption-well')),nav=rect(document.querySelector('#journey'));
     const intersection={width:Math.max(0,Math.min(caption.right,nav.right)-Math.max(caption.x,nav.x)),height:Math.max(0,Math.min(caption.bottom,nav.bottom)-Math.max(caption.y,nav.y))};
-    return {caption,nav,intersection,documentWidth:document.documentElement.scrollWidth,viewport:innerWidth,scrollY,captionHidden:document.querySelector('#caption-well').hidden,captionDisplay:getComputedStyle(document.querySelector('#caption-well')).display,captionZ:getComputedStyle(document.querySelector('#caption-well')).zIndex,navZ:getComputedStyle(document.querySelector('.world-footer')).zIndex};
+    return {caption,nav,intersection,documentWidth:document.documentElement.scrollWidth,viewport:innerWidth,scrollY,captionHidden:document.querySelector('#caption-well').hidden,captionDisplay:getComputedStyle(document.querySelector('#caption-well')).display,captionText:rect(document.querySelector('#caption')),captionZ:getComputedStyle(document.querySelector('#caption-well')).zIndex,navZ:getComputedStyle(document.querySelector('.world-footer')).zIndex};
    });
    report.profiles.push({profile:profile.name,style,cue,playback,geometry,errors});report.screenshots.push(`${name}.png`,`${name}-full.png`);
    console.log(JSON.stringify({profile:profile.name,style,playback,geometry,errors}));await context.close();
