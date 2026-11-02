@@ -38,7 +38,7 @@ try{
    const playback=await page.evaluate(()=>({caption:document.querySelector('#caption').textContent,players:[...document.querySelectorAll('audio')].map(a=>({time:a.currentTime,ready:a.readyState,paused:a.paused,src:a.src}))}));
    if(profile.textScale)await page.evaluate(()=>{
     // Deliberate text-size stress, not a claim of native OS/browser zoom.
-    const nodes=[...document.querySelectorAll('body *')].filter(n=>n instanceof HTMLElement&&[...n.childNodes].some(c=>c.nodeType===Node.TEXT_NODE&&c.textContent.trim()));
+    const nodes=[...document.querySelectorAll('body *')].filter(n=>n instanceof HTMLElement&&(n.matches('button,input,select,textarea')||[...n.childNodes].some(c=>c.nodeType===Node.TEXT_NODE&&c.textContent.trim())));
     const sizes=nodes.map(n=>{const s=getComputedStyle(n);return[n,parseFloat(s.fontSize),parseFloat(s.lineHeight)];});
     for(const[n,f,l]of sizes){n.style.setProperty('font-size',`${f*2}px`,'important');if(Number.isFinite(l))n.style.setProperty('line-height',`${l*2}px`,'important');}
    });
@@ -51,7 +51,7 @@ try{
     const rect=n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
     const caption=rect(document.querySelector('#caption-well')),nav=rect(document.querySelector('#journey'));
     const intersection={width:Math.max(0,Math.min(caption.right,nav.right)-Math.max(caption.x,nav.x)),height:Math.max(0,Math.min(caption.bottom,nav.bottom)-Math.max(caption.y,nav.y))};
-    return {caption,nav,intersection,documentWidth:document.documentElement.scrollWidth,viewport:innerWidth,scrollY,captionHidden:document.querySelector('#caption-well').hidden,captionDisplay:getComputedStyle(document.querySelector('#caption-well')).display,captionFont:getComputedStyle(document.querySelector('#caption')).fontSize,captionText:rect(document.querySelector('#caption')),captionZ:getComputedStyle(document.querySelector('#caption-well')).zIndex,navZ:getComputedStyle(document.querySelector('.world-footer')).zIndex};
+    return {caption,nav,intersection,documentWidth:document.documentElement.scrollWidth,documentHeight:document.documentElement.scrollHeight,viewport:innerWidth,viewportHeight:innerHeight,scrollY,art:rect(document.querySelector('#scene-art')),captionHidden:document.querySelector('#caption-well').hidden,captionDisplay:getComputedStyle(document.querySelector('#caption-well')).display,captionFont:getComputedStyle(document.querySelector('#caption')).fontSize,captionText:rect(document.querySelector('#caption')),captionZ:getComputedStyle(document.querySelector('#caption-well')).zIndex,navZ:getComputedStyle(document.querySelector('.world-footer')).zIndex};
    });
    const checks={captionMatches:playback.caption===cue.text,captionVisible:!geometry.captionHidden&&geometry.caption.height>0,noNavOverlap:geometry.intersection.height===0,noHorizontalOverflow:geometry.documentWidth<=geometry.viewport,captionWithinViewport:geometry.caption.x>=0&&geometry.caption.right<=geometry.viewport};
    report.profiles.push({profile:profile.name,style,cue,playback,geometry,checks,errors});report.screenshots.push(`${name}.png`,`${name}-full.png`);
@@ -71,7 +71,7 @@ try{
    for(let v=0;v<Math.max(1,count);v++){
     if(count)await page.locator('#moment-variants button').nth(v).click();
     const image=await page.locator('#scene-art').evaluate(async n=>{await n.decode();return{src:new URL(n.src).pathname,alt:n.alt,width:n.naturalWidth,display:getComputedStyle(n).objectFit};});
-    assert(image.width>0&&image.alt.length>20);assert.equal(image.display,'contain');report.art.push({moment:option.value,...image});
+    assert(image.width>0&&image.alt.length>20);assert.equal(image.display,'contain');report.art.push({moment:option.value,...image});if(count){await page.locator('#art-wrap').scrollIntoViewIfNeeded();await page.screenshot({path:`${out}/variant-${option.value}-${v}.png`});}
    }
   }
   assert.equal(new Set(report.art.filter(i=>i.src.endsWith('.png')).map(i=>i.src)).size,18);

@@ -1,4 +1,5 @@
 import {mount} from './vendor/four-styles.js';
+import {MOMENTS} from '../malachi-art/moments.js';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const data=window.SERMON, status=$('#world-status'), root=document.body;
 const asset=p=>window.LOCAL_ASSETS?.[p]||p;
@@ -12,6 +13,8 @@ const chapters=[
 ];
 let current=0,foldBusy=false,captionOn=true,lastOpener=null,entered=false,activePlayer=null,activeOffset=0;
 const clipPlayers=new Map();
+let moment=MOMENTS[0];
+const variants=new Map();
 const media=matchMedia('(prefers-reduced-motion:reduce)');
 const quiet=()=>media.matches||root.dataset.fsReduced==='true';
 const fs=mount(root,{storeybrook:window.Storeybrook,preferences:{style:'gen4',theme:'system',words:true},storageKey:'malachi.paperworld.preferences.v02',imageAlt:chapters[0].alt});
@@ -24,7 +27,7 @@ $$('dialog').forEach(d=>d.addEventListener('close',()=>{if(lastOpener?.isConnect
 function sourceText(){const host=$('#source-excerpts');host.replaceChildren();for(const clip of data.timeline.filter(c=>chapters[current].ids.includes(c.id))){const p=document.createElement('p'),mark=document.createElement('strong');mark.textContent=`Original ${time(clip.source_in)}–${time(clip.source_out)} · `;p.append(mark,document.createTextNode(clip.transcript));host.append(p);}}
 function setScene(i,{fold=false,seek=false}={}){
  i=Math.max(0,Math.min(4,i));if(foldBusy)return;
- const c=chapters[i],swap=()=>{current=i;$('#world').dataset.scene=String(i);$('#scene-title').innerHTML=c.title;$('#scene-lede').innerHTML=c.lede;$('#eyebrow').textContent=`0${i+1} / 05 · ${c.eyebrow}`;$('#scene-art').src=c.art;$('#scene-art').alt=c.alt;$('#art-description').textContent='Original vector paper scenery; a creative visual adaptation, not historical evidence.';$('#hotspot-label').textContent=c.spot[0];$('#discover').setAttribute('aria-label',`Discover: ${c.spot[0]}`);$('#discover').style.setProperty('--x',i===0||i===4?'83%':'72%');$('#discover').style.setProperty('--y',i===3?'65%':'58%');$('#reflection-prompt').textContent=c.prompt;$('#begin').innerHTML=i===4?'Stay a little <span aria-hidden="true">✦</span>':'Unfold the next scene <span aria-hidden="true">↗</span>';$('#listen').innerHTML=(activePlayer?.paused??true)?'<span aria-hidden="true">▷</span> Listen to this excerpt':'<span aria-hidden="true">Ⅱ</span> Pause recording';$('.art-credit').innerHTML='Original paper scenery'+' <span aria-hidden="true">✦</span>';$$('[data-chapter]').forEach(b=>{if(+b.dataset.chapter===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});$('#reveal-note').hidden=true;sourceText();updateWorkshop();announce(`Chapter ${i+1}: ${c.name}. ${c.lede.replace(/<br>/g,' ')}`);};
+ const c=chapters[i],swap=()=>{current=i;$('#world').dataset.scene=String(i);$('#scene-title').innerHTML=c.title;$('#scene-lede').innerHTML=c.lede;$('#eyebrow').textContent=`0${i+1} / 05 · ${c.eyebrow}`;$('#scene-art').src=c.art;$('#scene-art').alt=c.alt;$('#art-description').textContent='Original vector paper scenery; a creative visual adaptation, not historical evidence.';$('#hotspot-label').textContent=c.spot[0];$('#discover').setAttribute('aria-label',`Discover: ${c.spot[0]}`);$('#discover').style.setProperty('--x',i===0||i===4?'83%':'72%');$('#discover').style.setProperty('--y',i===3?'65%':'58%');$('#reflection-prompt').textContent=c.prompt;$('#begin').innerHTML=i===4?'Stay a little <span aria-hidden="true">✦</span>':'Unfold the next scene <span aria-hidden="true">↗</span>';$('#listen').innerHTML=(activePlayer?.paused??true)?'<span aria-hidden="true">▷</span> Listen to this excerpt':'<span aria-hidden="true">Ⅱ</span> Pause recording';$('.art-credit').innerHTML='Original paper scenery'+' <span aria-hidden="true">✦</span>';$$('[data-chapter]').forEach(b=>{if(+b.dataset.chapter===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});$('#reveal-note').hidden=true;sourceText();renderMoment(seek||moment.chapter!==i?MOMENTS.find(m=>m.chapter===i):moment);updateWorkshop();announce(`Chapter ${i+1}: ${c.name}. ${c.lede.replace(/<br>/g,' ')}`);};
  if(fold&&!quiet()){foldBusy=true;Storeybrook.fold($('#stage'),swap).then(()=>{foldBusy=false;});$$('.sb-fold-half').forEach(el=>el.inert=true);setTimeout(()=>{foldBusy=false;$$('.sb-fold-half,.sb-fold-crease').forEach(n=>n.remove());},1000);}else swap();
  if(seek){activePlayer?.pause();$('#caption-well').hidden=true;}
 }
@@ -42,11 +45,37 @@ $('#discover').onclick=()=>{const c=chapters[current];$('#reveal-title').textCon
 $('#reveal-close').onclick=()=>{$('#reveal-note').hidden=true;$('#discover').focus({preventScroll:true});};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#reveal-note').hidden){$('#reveal-note').hidden=true;$('#discover').focus({preventScroll:true});}});
 async function playFrom(t,resumeClip){const clip=resumeClip||data.timeline.find(c=>c.source_in!==undefined&&t>=c.start&&t<c.end),player=clipPlayers.get(clip?.id);if(!player)return;$$('.clip-audio').forEach(x=>{if(x!==player)x.pause();});try{player.currentTime=Math.max(0,t-clip.start);await player.play();announce('Playing Malachi’s original excerpt.');}catch{announce('Playback could not start. Use the native audio controls in the listening room.');if(!$('#recording-dialog').open)openDialog('#recording-dialog');}}
-$('#listen').onclick=()=>{if(activePlayer&&!activePlayer.paused){activePlayer.pause();return;}const clip=data.timeline.find(c=>clipPlayers.get(c.id)===activePlayer),resume=clip&&chapters[current].ids.includes(clip.id)&&!activePlayer.ended;playFrom(resume?clip.start+activePlayer.currentTime:chapters[current].start,resume?clip:undefined);};
+$('#listen').onclick=()=>{if(activePlayer&&!activePlayer.paused){activePlayer.pause();return;}const clip=data.timeline.find(c=>clipPlayers.get(c.id)===activePlayer),resume=clip&&chapters[current].ids.includes(clip.id)&&!activePlayer.ended;playFrom(resume?clip.start+activePlayer.currentTime:(moment.at??chapters[current].start),resume?clip:undefined);};
 $('#reveal-source').onclick=()=>{playFrom(chapters[current].start);$('#reveal-note').hidden=true;};
 $('#stop-audio').onclick=()=>activePlayer?.pause();
 $('#captions-toggle').onclick=()=>{captionOn=!captionOn;$('#captions-toggle').textContent=captionOn?'Captions on':'Captions off';$('#captions-toggle').setAttribute('aria-pressed',String(captionOn));updateCaption();};
-function updateCaption(){const t=(activePlayer?.currentTime||0)+activeOffset,c=activePlayer&&!activePlayer.ended&&chapters[current].ids.some(id=>clipPlayers.get(id)===activePlayer)&&data.captions.find(x=>t>=x.start&&t<x.end);$('#caption-well').hidden=!captionOn||!c;$('#caption').textContent=c?.text||'';}
+function updateCaption(){
+ const t=(activePlayer?.currentTime||0)+activeOffset;
+ const clip=data.timeline.find(c=>clipPlayers.get(c.id)===activePlayer);
+ const belongs=clip&&chapters[current].ids.includes(clip.id)&&!activePlayer.ended;
+ const c=belongs&&data.captions.find(x=>t>=x.start&&t<x.end);
+ if(belongs){const next=MOMENTS.filter(m=>m.clipId===clip.id&&m.at<=t).at(-1);if(next&&next!==moment){renderMoment(next);updateWorkshop();}}
+ $('#caption-well').hidden=!captionOn||!c;$('#caption').textContent=c?.text||'';
+}
+function renderMoment(m){
+ moment=m;
+ const variant=variants.get(m.n)??Math.max(0,m.imgs.findIndex(im=>im.recommended));
+ const im=m.imgs[variant];
+ $('#scene-art').src=asset('../malachi-art/'+im.src);$('#scene-art').alt=im.alt;
+ $('#art-description').textContent=m.note+' · Creative illustration';
+ $('#moment-select').value=String(m.n);
+ const clip=data.timeline.find(c=>c.id===m.clipId);
+ $('#moment-source').textContent=clip?`Original ${time(clip.source_in+(m.at-clip.start))} · ${clip.heading}`:'Opening illustration · no spoken passage';
+ $('#moment-prev').disabled=MOMENTS.indexOf(m)===0;$('#moment-next').disabled=MOMENTS.indexOf(m)===MOMENTS.length-1;
+ const host=$('#moment-variants');host.replaceChildren();
+ if(m.imgs.length>1)m.imgs.forEach((img,i)=>{const button=document.createElement('button');button.textContent=i===0?'First illustration':'Alternate illustration';button.setAttribute('aria-pressed',String(i===variant));button.onclick=()=>{variants.set(m.n,i);renderMoment(m);host.children[i].focus({preventScroll:true});};host.append(button);});
+}
+function chooseMoment(m){if(!m)return;activePlayer?.pause();activePlayer=null;activeOffset=0;setScene(m.chapter,{seek:true});renderMoment(m);updateWorkshop();announce(m.moment);}
+for(const m of MOMENTS){const option=document.createElement('option');option.value=String(m.n);option.textContent=m.moment;$('#moment-select').append(option);}
+$('#moment-select').onchange=e=>chooseMoment(MOMENTS.find(m=>String(m.n)===e.target.value));
+$('#moment-prev').onclick=()=>chooseMoment(MOMENTS[MOMENTS.indexOf(moment)-1]);
+$('#moment-next').onclick=()=>chooseMoment(MOMENTS[MOMENTS.indexOf(moment)+1]);
+
 for(const clip of data.timeline.filter(c=>c.source_in!==undefined)){
  const row=document.createElement('section');row.className='clip-row';
  const h=document.createElement('h3');h.textContent=clip.heading;
@@ -57,10 +86,11 @@ for(const clip of data.timeline.filter(c=>c.source_in!==undefined)){
 }
 $('#fold-thought').onclick=()=>{if(!$('#reflection').value.trim()){announce('A blank page is welcome too.');return;}$('#reflection').hidden=true;$('#fold-thought').hidden=true;$('#unfold-thought').hidden=false;$('#folded-letter').hidden=false;$('#thought-status').textContent='Folded for this visit. Your words are still here; open them whenever you like.';$('#unfold-thought').focus();};
 $('#unfold-thought').onclick=()=>{$('#reflection').hidden=false;$('#fold-thought').hidden=false;$('#unfold-thought').hidden=true;$('#folded-letter').hidden=true;$('#thought-status').textContent='Your words stay in this visit only. Nothing is sent or stored.';$('#reflection').focus();};
-function updateWorkshop(){const clip=data.timeline.find(c=>c.id===chapters[current].ids[0]);$('#workshop-passage').textContent=clip.transcript;}
-$('#workshop-original').onclick=()=>playFrom(chapters[current].start);
-$('#save-workshop').onclick=()=>{const payload={format:'rehearsal-notes-v1',episode:data.episode_id,chapter:chapters[current].name,source_clip_ids:chapters[current].ids,direction:$('#voice-direction').value,feedback:$('#malachi-feedback').value,synthetic_take:null,status:'notes only; generation pending'};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='malachi-rehearsal-notes.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);announce('Rehearsal notes downloaded.');};
+function selectedClip(){return data.timeline.find(c=>c.id===moment.clipId)||data.timeline.find(c=>c.id===chapters[current].ids[0]);}
+function updateWorkshop(){const clip=selectedClip();$('#workshop-passage').textContent=clip.transcript;}
+$('#workshop-original').onclick=()=>playFrom(selectedClip().start);
+$('#save-workshop').onclick=()=>{const clip=selectedClip();const payload={format:'passage-notes-v1',episode:data.episode_id,chapter:chapters[current].name,moment:moment.moment,source_clip_id:clip.id,source_in:clip.source_in,source_out:clip.source_out,transcript:clip.transcript,phrase:$('#voice-direction').value,reflection:$('#malachi-feedback').value,status:'Personal notes; not submitted or attributed to the speaker'};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='malachi-passage-notes.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);announce('Passage notes downloaded.');};
 root.addEventListener('fourstyles:change',e=>{if(e.detail.style==='skeptic'){$('#reveal-title').textContent='What is the source?';$('#reveal-copy').textContent='The illustration is an interpretation. Open “The original sermon” to compare its exact source passages and caption uncertainties.';$('#reveal-note').hidden=false;}});
-sourceText();updateWorkshop();
-window.paperWorld={setScene,getState:()=>({chapter:current,time:(activePlayer?.currentTime||0)+activeOffset,style:fs.getState(),reflection:$('#reflection').value}),chapters};
+sourceText();renderMoment(moment);updateWorkshop();
+window.paperWorld={setScene,getState:()=>({chapter:current,moment:moment.n,time:(activePlayer?.currentTime||0)+activeOffset,style:fs.getState(),reflection:$('#reflection').value}),chapters};
 const qp=new URLSearchParams(location.search);if(qp.has('scene'))setScene(+qp.get('scene'));if(qp.get('quiet')==='1')$('button[data-fs-quiet]').click();
