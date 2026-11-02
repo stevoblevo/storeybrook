@@ -31,3 +31,13 @@ The initial two capture runs were harness failures: a non-range server
 prevented reliable MP3 seeking. The next run captured six cases before an
 Evidence-style discovery card intercepted Listen; later captures explicitly
 dismiss that card. Keep these receipts separate from product regressions.
+
+Independent inspection of all 44 d2b72c1 PNGs confirmed the caption separation
+and found low-contrast light controls, dark header text, enlarged glyph overflow
+and joined words where mobile hides line breaks. The successor checks computed
+solid-surface text contrast (4.5:1), glyph/label bounds, rendered word spacing,
+and nearby read-along controls. Non-solid backgrounds fail the numeric probe
+instead of receiving a misleading contrast score. Saved screenshots still need
+inspection. Each of the 18 approved artworks plus gospel now receives its own
+actual exhibit figure capture; a separate test-only source-art contact sheet
+shows all 18 together. None is a new public product page.

@@ -8,7 +8,9 @@ receipt. The source baseline is Storeybrook main
 ## Changes and source
 
 Captions and chapter navigation now occupy separate rows in normal document
-flow. Art is displayed whole, with descriptive alternatives. The five existing
+flow. Nearby read-along play/pause and full-passage controls reuse the existing
+player/dialog. Host controls use explicit readable surface/ink pairs; navigation
+glyph boxes grow with text; hiding editorial line breaks preserves word spaces. Art is displayed whole, with descriptive alternatives. The five existing
 chapters, source passages, ten native original-audio players, notes, reflection,
 four-style settings and stored appearance preferences remain available.
 

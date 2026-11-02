@@ -59,3 +59,21 @@ body[data-reading-layout] .paper-dialog :is(.media-actions,.fs-dialog-actions,.r
 body[data-reading-layout] .listening-link { padding:0 max(1rem,4%) max(1.5rem,env(safe-area-inset-bottom)); max-width:65rem; line-height:1.6; overflow-wrap:anywhere; color:var(--p-ink); }
 .listening-link a { text-underline-offset:.2em; }
 .listening-link p { font-size:.85rem; color:var(--p-muted); margin:.4rem 0; }
+
+/* Screenshot-review regressions: host controls must use their actual surface,
+   and navigation glyph boxes must grow with enlarged text. */
+body[data-reading-layout] #world {
+ --fs-ink:var(--p-ink); --fs-ground:var(--p-ground); --fs-surface:var(--p-surface);
+ --fs-line:var(--p-line); --fs-accent:var(--p-ink); --fs-on-accent:var(--p-surface);
+}
+body[data-reading-layout] #app :is(.topbar,.bottom-bar) { color:var(--p-ink); background:var(--p-ground); }
+body[data-reading-layout] .wordmark { color:var(--p-ink); }
+body[data-reading-layout] :is(#listen,#moment-prev,#moment-next,#moment-variants button,.readalong-controls button) { color:var(--p-ink); background:var(--p-surface); border:1px solid var(--p-line); }
+body[data-reading-layout] #moment-variants button[aria-pressed=true] { color:var(--p-surface); background:var(--p-ink); border-color:var(--p-ink); }
+body[data-reading-layout] .chapter-stop { min-width:min-content; }
+body[data-reading-layout] .chapter-icon { flex:none; width:2em; height:2em; min-width:2em; min-height:2em; line-height:1; }
+body[data-reading-layout][data-density=tv] .chapter-icon { min-width:max(2em,68px); min-height:max(2em,68px); }
+body[data-reading-layout] .readalong-panel { padding:0 max(1rem,4%); }
+body[data-reading-layout] .readalong-controls { display:flex; flex-wrap:wrap; gap:.75rem; max-width:70ch; margin:1rem auto; }
+body[data-reading-layout] .readalong-controls button { min-height:48px; white-space:normal; }
+body[data-reading-layout] .readalong-panel #caption-well { margin:1rem auto; }
