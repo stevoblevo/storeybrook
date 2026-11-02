@@ -1,0 +1,42 @@
+name: Show and Tell candidate smoke
+
+on:
+  push:
+    branches: [sae/show-tell-2026-11-01]
+    paths:
+      - 'show-tell/**'
+      - 'tests/show-tell/**'
+      - '.github/workflows/show-tell-smoke.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: show-tell-candidate-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    if: github.repository == 'stevoblevo/storeybrook' && github.event.repository.visibility == 'public'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Record exact candidate
+        run: git rev-parse HEAD
+      - name: Source and media audit
+        id: audit
+        continue-on-error: true
+        run: python3 tests/show-tell/verify.py
+      - name: Install pinned test library without package scripts
+        run: npm install --prefix "$RUNNER_TEMP/show-tell-smoke" --ignore-scripts --no-audit --no-fund playwright@1.64.1
+      - name: Sandboxed, muted Chrome smoke
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/show-tell-smoke/node_modules/playwright/index.mjs
+        run: node tests/show-tell/smoke.mjs
+      - name: Enforce media audit
+        if: always() && steps.audit.outcome != 'success'
+        run: exit 1
