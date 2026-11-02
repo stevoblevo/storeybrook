@@ -35,11 +35,11 @@ try{
     for(const[n,f,l]of sizes){n.style.fontSize=`${f*2}px`;if(Number.isFinite(l))n.style.lineHeight=`${l*2}px`;}
    });
    // Longest real opening caption, through an actual manually-started public MP3.
-   await page.locator('#listen').click();await page.waitForFunction(()=>[...document.querySelectorAll('audio')].some(a=>!a.paused));
+   await page.locator('#listen').click();await page.waitForFunction(()=>[...document.querySelectorAll('audio')].some(a=>!a.paused&&a.readyState>=2&&a.currentTime>.15));
    const cue=await page.evaluate(()=>{const clip=window.SERMON.timeline.find(c=>c.id==='hail');const cue=window.SERMON.captions.filter(c=>c.start>=clip.start&&c.end<=clip.end).sort((a,b)=>b.text.length-a.text.length)[0];const a=[...document.querySelectorAll('audio')].find(a=>!a.paused);a.currentTime=cue.start-clip.start+.1;a.pause();return cue;});
    await page.waitForFunction(text=>document.querySelector('#caption').textContent===text,cue.text);
    if(await page.locator('#reveal-note').isVisible())await page.locator('#reveal-close').click();
-   await page.locator('#caption-well').scrollIntoViewIfNeeded();
+   await page.locator('.world-footer').evaluate(n=>n.scrollIntoView({block:'end'}));
    const name=`${profile.name}-${style}`;
    await page.screenshot({path:`${out}/${name}.png`,fullPage:false});
    await page.screenshot({path:`${out}/${name}-full.png`,fullPage:true});
@@ -47,7 +47,7 @@ try{
     const rect=n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
     const caption=rect(document.querySelector('#caption-well')),nav=rect(document.querySelector('#journey'));
     const intersection={width:Math.max(0,Math.min(caption.right,nav.right)-Math.max(caption.x,nav.x)),height:Math.max(0,Math.min(caption.bottom,nav.bottom)-Math.max(caption.y,nav.y))};
-    return {caption,nav,intersection,documentWidth:document.documentElement.scrollWidth,viewport:innerWidth,scrollY,captionZ:getComputedStyle(document.querySelector('#caption-well')).zIndex,navZ:getComputedStyle(document.querySelector('.world-footer')).zIndex};
+    return {caption,nav,intersection,documentWidth:document.documentElement.scrollWidth,viewport:innerWidth,scrollY,captionHidden:document.querySelector('#caption-well').hidden,captionDisplay:getComputedStyle(document.querySelector('#caption-well')).display,captionZ:getComputedStyle(document.querySelector('#caption-well')).zIndex,navZ:getComputedStyle(document.querySelector('.world-footer')).zIndex};
    });
    report.profiles.push({profile:profile.name,style,cue,geometry,errors});report.screenshots.push(`${name}.png`,`${name}-full.png`);
    console.log(JSON.stringify({profile:profile.name,style,geometry,errors}));await context.close();
