@@ -7,7 +7,7 @@ This repo is a read-only export of the Storeybrook design system (index format v
 
 The artifact is the source of truth. Opening that link requires access on claude.ai; everything needed to read the system is in this repo.
 
-**Live site:** <https://stevoblevo.github.io/storeybrook/> is the showcase, one scene per look, each built for what that look is for: a front page with the brook as its map and a shelf of covers (Meta Daylight), a bedtime story read aloud (Knight Night), an e-ink slate you can print (Ink Blot), a comic (Comix), a level maker that refolds the brook (Origami), a sticker album (Skein silk), and mirror windows showing one page on six devices at once. The docs (brand book, tokens per theme, every component running live, assets) are at <https://stevoblevo.github.io/storeybrook/docs.html>. Both are built from the system's own files.
+**Live site:** <https://stevoblevo.github.io/storeybrook/> is the showcase, one scene per look, each built for what that look is for: a front page with the brook as its map and a shelf of covers (Meta Daylight), a bedtime story read aloud (Knight Night), an e-ink slate you can print (Ink Blot), a comic (Comix), a level maker that refolds the brook (Origami), a sticker album (Skein silk), and mirror windows showing one page on six devices at once. Seven pets are hidden along the brook, and the book can play itself (<https://stevoblevo.github.io/storeybrook/?autoplay>). The docs (brand book, tokens per theme, every component running live, assets) are at <https://stevoblevo.github.io/storeybrook/docs.html>. Both are built from the system's own files.
 
 ## Start here
 
@@ -53,5 +53,18 @@ project/
 - `site/site.json` is the site's index (sections, components, assets, style groups), and `site/hooks.css` repeats the bundle's per-look defaults so a look can sit inside another (the style cards). Both are written by the same script from `site/config.json`.
 - `site/vendor/` holds pinned copies of marked 12.0.2 and DOMPurify 3.1.6 for rendering the Markdown.
 - `.nojekyll` makes Pages serve the raw files.
+
+### Full screen on phones
+
+- **Android and iPad:** the first tap anywhere asks the browser for full screen (browsers only allow it after a tap), and the browser's bars fold away. Leaving full screen is respected for the rest of the visit. The full-screen button in the header switches it back on.
+- **iPhone:** Safari gives full screen only to sites opened from the Home Screen. A one-time hint says so: Share, then Add to Home Screen. The site ships `manifest.webmanifest` (`display: fullscreen`) and Apple's web-app meta so it opens there without Safari's bars.
+- The browser's own chrome (`theme-color`) is tinted to the ground of whatever is on screen, and the page paints its background before any stylesheet loads, so a slow font never shows a white screen.
+- All of this is in `site/immersive.js`, which is shared with the sister site and has no dependencies.
+
+### The adventure
+
+- **Seven pets.** One waits in each look, and Saelion arrives for whoever finds the other six. Each is found by doing the thing that look is for: tap Saelion on the front page, wake the sleeper at bedtime, turn the slate to its last page, grab the nougats in the comic, walk three stones in the level maker, and press the seal on the album. The pet you choose walks with you in the corner, and the pet book lists all seven with a hint for each one still hidden.
+- **Play it for me.** The adventure plays itself in seven steps, about 45 seconds, finding every pet on the way. Any touch, key or wheel hands it back. `?autoplay` starts it from a link, which is how the home-screen shortcut works. It never starts on its own.
+- **Shared with Depthfield.** Both sites save to one `localStorage` key, `crossing:pets` (`sb:` and `df:` ids), on the same origin. The pet book counts Depthfield's five night pets, and finding all seven here puts Saelion in Depthfield's night sky.
 
 After changing anything under `project/`, run `python3 site/build.py` and commit the output.

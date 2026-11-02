@@ -1,0 +1,22 @@
+{
+  "id": "./",
+  "name": "Storeybrook",
+  "short_name": "Storeybrook",
+  "description": "A light-first design system for storybook pages and little games, shown in all six of its looks.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#f4f6f2",
+  "theme_color": "#f4f6f2",
+  "icons": [
+    { "src": "site/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "site/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "site/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Play the adventure", "url": "./?autoplay", "icons": [{ "src": "site/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "The docs", "url": "./docs.html", "icons": [{ "src": "site/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

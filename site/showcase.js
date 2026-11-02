@@ -138,6 +138,7 @@
     mk.walked++;
     refold();
     S.rewards.drop(1, { from: $('#mk-walk'), to: $('#jar'), reason: 'walking a stone' });
+    if (mk.walked >= 3) findPet('sprite');
   }
   if (mk.host) {
     [mk.n, mk.lock, mk.down].forEach(function (c) { c.addEventListener('input', refold); c.addEventListener('change', refold); });
@@ -152,7 +153,7 @@
   if (keep) keep.addEventListener('click', function () {
     var n = LOOKS.filter(function (l) { return S.unlocks.has('look-' + l.id); }).length;
     $('#keep-line').textContent = n === LOOKS.length ? 'Kept. All six stickers, and the jar, are yours.' : 'Kept. ' + n + ' of six stickers so far; the rest are waiting down the brook.';
-    S.toast('<span class="sb-nougat" style="--n:34px">' + S.nougatSVG(6) + '</span><span><b>The album</b> is kept.</span>', { ms: 2800 });
+    if (!findPet('pixie')) S.toast('<span class="sb-nougat" style="--n:34px">' + S.nougatSVG(6) + '</span><span><b>The album</b> is kept.</span>', { ms: 2800 });
   });
   var jar = $('#jar');
   if (jar) { jar.setAttribute('aria-label', jar.getAttribute('aria-label') + '. Open the album'); jar.addEventListener('click', function () { go('skein'); }); }
@@ -162,10 +163,140 @@
   if (restart) restart.addEventListener('click', function () {
     S.unlocks.list().forEach(function (id) { if (/^look-/.test(id)) S.unlocks.lock(id); });
     S.rewards.set(0); S.unlocks.paint();
+    var sv = save(); if (sv.found) Object.keys(sv.found).forEach(function (k) { if (/^sb:/.test(k)) delete sv.found[k]; });
+    if (sv.active) delete sv.active.sb; put(sv);
+    if (petEl) petEl.hidden = true; paintPets();
     visited = {}; current = null;
     go('daylight');
     S.toast('<span>The book is new again.</span>', { ms: 2200 });
   });
+
+  /* ---------- the adventure: a pet in every look, shared with Depthfield through one save ---------- */
+  var PKEY = 'crossing:pets', NIGHT = 5;
+  var PETS = [
+    { id: 'egg', name: 'The egg', look: 'daylight', o: { form: 'saelion', stage: 0 }, line: 'Saelion left it on the porch stone.', how: 'Tap Saelion on the front page.' },
+    { id: 'kit', name: 'Kit', look: 'knight', o: { form: 'saelion', stage: 1 }, line: 'It woke up by candlelight.', how: 'Wake the sleeper at bedtime.' },
+    { id: 'octopus', name: 'Octopus', look: 'inkblot', o: { form: 'octopus' }, line: 'It was waiting on the last page.', how: 'Turn the slate to its last page.' },
+    { id: 'bunny', name: 'Bunny', look: 'comix', o: { form: 'bunny', mood: 'surprised' }, line: 'The heist needed an accomplice.', how: 'Grab the nougats in the comic.' },
+    { id: 'sprite', name: 'Sprite', look: 'origami', o: { form: 'saelion', stage: 3 }, line: 'It grew while you walked.', how: 'Walk three stones in the level maker.' },
+    { id: 'pixie', name: 'Pixie', look: 'skein', o: { form: 'pixie' }, line: 'It was pressed into the album.', how: 'Press the seal on the album.' },
+    { id: 'saelion', name: 'Saelion', look: null, o: { form: 'saelion', stage: 4, hide: 'chimera' }, line: 'All grown, and she knows the way.', how: 'Find the other six first.' }
+  ];
+  function pet(id) { return PETS.filter(function (p) { return p.id === id; })[0]; }
+  function save() { try { return JSON.parse(localStorage.getItem(PKEY)) || {}; } catch (e) { return {}; } }
+  function put(s) { try { localStorage.setItem(PKEY, JSON.stringify(s)); } catch (e) {} }
+  function has(id) { var s = save(); return !!(s.found && s.found['sb:' + id]); }
+  function found() { return PETS.filter(function (p) { return has(p.id); }).length; }
+  function nightFound() { var f = save().found || {}; return Object.keys(f).filter(function (k) { return /^df:/.test(k); }).length; }
+  function opts(p) { return Object.assign({ form: 'saelion', stage: 4, mood: 'happy', hide: 'plain' }, p.o); }
+  function mini(p, hide) { return '<span class="sc-mini sb-creature' + (hide ? ' is-hidden' : '') + '" aria-hidden="true">' + S.creatureSVG(opts(p)) + '</span>'; }
+  var petEl = $('#pet'), petApi = null, book = $('#petbook');
+  function hop(el) { if (!el) return; el.classList.remove('is-hop'); void el.offsetWidth; el.classList.add('is-hop'); }
+  function active() { var s = save(), a = s.active && s.active.sb; return a && has(a) ? a : null; }
+  function paintPets() {
+    var a = active();
+    if (petEl && a) {
+      petEl.hidden = false;
+      if (!petApi) petApi = S.creature(petEl, opts(pet(a))); else petApi.set(opts(pet(a)));
+      petEl.setAttribute('aria-label', 'Your pet, ' + pet(a).name + '. Open the pet book');
+    }
+    var row = $('#quest-pets');
+    if (row) row.innerHTML = PETS.map(function (p) { var f = has(p.id); return '<li class="' + (f ? 'is-found' : '') + '">' + mini(p, !f) + '<span>' + (f ? p.name : '?') + '</span></li>'; }).join('');
+    var list = $('#petbook-list');
+    if (list) {
+      list.innerHTML = PETS.map(function (p) {
+        var f = has(p.id), where = p.look ? look(p.look).name : 'the end';
+        return '<li><button type="button" class="sc-petrow" data-pet="' + p.id + '" aria-pressed="' + (f && p.id === a) + '">' + mini(p, !f) +
+          '<span><b>' + (f ? p.name : 'Still hidden') + '</b><small>' + (f ? p.line : p.how) + '</small></span>' +
+          '<span class="sc-petrow__tag">' + (f ? (p.id === a ? 'with you' : 'walk with me') : '<span data-sb-icon="lock" data-size="16"></span>' + where) + '</span></button></li>';
+      }).join('');
+      S.mountIcons(list);
+    }
+    var c = $('#petbook-count'); if (c) c.textContent = found() + ' of ' + PETS.length + ' pets found. Tap a found pet and it walks with you.';
+    var n = nightFound(), nl = $('#petbook-night');
+    if (nl) nl.innerHTML = 'Night pets from Depthfield: ' + n + ' of ' + NIGHT + '. ' + (has('saelion') ? 'Saelion is in its night sky now, drawn in stars. ' : 'Find all seven here and something appears in its night sky. ') +
+      '<a class="sb-ink-link" href="https://stevoblevo.github.io/depthfield/' + (has('saelion') ? '?theme=contrast' : '') + '">' + (n < NIGHT ? 'Find the night pets' : 'Visit them') + '</a>.';
+  }
+  function findPet(id) {
+    if (has(id)) return false;
+    var s = save(); s.found = s.found || {}; s.active = s.active || {};
+    s.found['sb:' + id] = Date.now(); s.active.sb = id; put(s);
+    paintPets(); hop(petEl);
+    var p = pet(id);
+    S.toast('<span class="sc-mini sb-creature" style="width:46px;height:46px;flex:none">' + S.creatureSVG(opts(p)) + '</span><span><b>' + p.name + '</b> joined you. ' + p.line + '</span>', { ms: 3400 });
+    if (id !== 'saelion' && PETS.every(function (q) { return q.id === 'saelion' || has(q.id); })) setTimeout(function () { findPet('saelion'); }, 2600);
+    return true;
+  }
+  function choose(id) { var s = save(); s.active = s.active || {}; s.active.sb = id; put(s); paintPets(); hop(petEl); }
+  function openBook() { paintPets(); if (book) S.drawer.open(book); }
+  if (petEl) petEl.addEventListener('click', openBook);
+  $$('[data-sc-petbook]').forEach(function (b) { b.addEventListener('click', openBook); });
+  if (book) book.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-pet]'); if (!b) return;
+    var id = b.getAttribute('data-pet'), p = pet(id);
+    if (has(id)) choose(id);
+    else { S.drawer.close(book); if (p.look) go(p.look); S.toast('<span>' + p.how + '</span>', { ms: 2800 }); }
+  });
+  addEventListener('storage', function (e) { if (e.key === PKEY) paintPets(); });
+
+  /* each look's own interaction finds its pet */
+  var front = $('#front-creature');
+  if (front) front.addEventListener('click', function () { hop(front); findPet('egg'); });
+  var sleeper = $('#sleeper');
+  if (sleeper) sleeper.addEventListener('click', function () {
+    var c = sleeper.__creature; hop(sleeper);
+    if (c) { c.set({ mood: 'happy' }); setTimeout(function () { c.set({ mood: 'sleepy' }); }, 2400); }
+    findPet('kit');
+  });
+  var readPlay = $('#look-knight .sb-reader__play'); if (readPlay) readPlay.addEventListener('click', function () { findPet('kit'); });
+  addEventListener('sb:page', function (e) { var dt = e.detail || {}; if (dt.count && dt.index >= dt.count - 2) findPet('octopus'); });
+  var grab = $('[data-sb-drop="3"]'); if (grab) grab.addEventListener('click', function () { findPet('bunny'); });
+
+  /* ---------- autoplay: the book plays the adventure itself; any touch or key hands it back ---------- */
+  var auto = { on: false, timers: [] }, autoEl = $('#auto');
+  function later(sec, fn) { auto.timers.push(setTimeout(function () { if (auto.on) fn(); }, sec * 1000)); }
+  function press(sel) { var el = $(sel); if (el) el.click(); }
+  var STEPS = [
+    { look: 'daylight', line: 'Meta Daylight · Saelion leaves an egg', d: 5, at: [[1.8, function () { press('#front-creature'); }]] },
+    { look: 'knight', line: 'Knight Night · waking the kit by candlelight', d: 5.5, at: [[2, function () { press('#sleeper'); }]] },
+    { look: 'inkblot', line: 'Ink Blot · turning the slate to its last page', d: 6.5, at: [[1.6, turnPage], [3.2, turnPage], [4.8, turnPage]] },
+    { look: 'comix', line: 'Comix · the nougat heist', d: 5.5, at: [[2, function () { press('[data-sb-drop="3"]'); }]] },
+    { look: 'origami', line: 'Origami · walking the level maker', d: 7.5, at: [[1.2, function () { press('#mk-reset'); }], [2.2, walkOne], [3.6, walkOne], [5, walkOne]] },
+    { look: 'skein', line: 'Skein silk · keeping the album', d: 7, at: [[2, function () { press('#keep'); }]] },
+    { scene: 'mirrors', line: 'Every window · one page on six screens', d: 6 }
+  ];
+  function turnPage() { press('[data-sc-turn="next"]'); }
+  function walkOne() { press('#mk-walk'); }
+  function step(i) {
+    if (!auto.on) return;
+    if (i >= STEPS.length) { stopAuto(true); return; }
+    var s = STEPS[i];
+    $('#auto-line').textContent = (i + 1) + ' / ' + STEPS.length + ' · ' + s.line;
+    if (s.look) go(s.look);
+    else { var m = doc.getElementById(s.scene); if (m) m.scrollIntoView({ behavior: S.reducedMotion() ? 'auto' : 'smooth', block: 'start' }); }
+    (s.at || []).forEach(function (a) { later(a[0], a[1]); });
+    later(s.d, function () { step(i + 1); });
+  }
+  var EV = ['pointerdown', 'keydown', 'wheel', 'touchstart'];
+  function interrupt(e) { if (e.target && e.target.closest && e.target.closest('#auto-stop')) return; stopAuto(false); }
+  function startAuto() {
+    if (auto.on || !autoEl) return;
+    if (book && book.classList.contains('is-open')) S.drawer.close(book);
+    auto.on = true; autoEl.hidden = false; root.classList.add('sc-autoplaying');
+    try { var u = new URL(location.href); u.searchParams.delete('autoplay'); history.replaceState(null, '', u.href); } catch (e) {}
+    EV.forEach(function (n) { addEventListener(n, interrupt, { capture: true, passive: true }); });
+    step(0);
+  }
+  function stopAuto(done) {
+    if (!auto.on) return;
+    auto.on = false; auto.timers.forEach(clearTimeout); auto.timers = [];
+    autoEl.hidden = true; root.classList.remove('sc-autoplaying');
+    EV.forEach(function (n) { removeEventListener(n, interrupt, { capture: true }); });
+    S.toast('<span>' + (done ? 'The adventure is done. Every pet you found is in <b>the pet book</b>.' : 'Over to you. The adventure waits where you left it.') + '</span>', { ms: 3000 });
+  }
+  if (autoEl) $('#auto-stop').addEventListener('click', function () { stopAuto(false); });
+  $$('[data-sc-autoplay]').forEach(function (b) { b.addEventListener('click', startAuto); });
+  paintPets();
 
   /* ---------- mirror windows: lazy frames, scaled into their bezels ---------- */
   var devices = $$('.sc-device');
@@ -198,4 +329,5 @@
   }
   pick();
   ready = true;
+  if (q.has('autoplay')) setTimeout(startAuto, 1400);
 })();

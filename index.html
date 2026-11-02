@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4f6f2">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="site/icons/icon-192.png">
+<link rel="apple-touch-icon" href="site/icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Storeybrook">
+<style>/* painted before any stylesheet arrives, so a slow font never leaves a white screen */ html{background:#f4f6f2;color-scheme:light}</style>
 <title>Storeybrook — six looks, one book</title>
 <meta name="description" content="Storeybrook, a light-first design system for storybook pages and little games, shown in all six of its looks: Meta Daylight, Knight Night, Ink Blot, Comix, Origami and Skein silk.">
 <script>/* old docs links (#/…) live at docs.html now */ if (/^#\//.test(location.hash)) location.replace('docs.html' + location.search + location.hash);</script>
@@ -24,10 +33,19 @@
     <a href="#look-origami" data-scene-link="origami"><i data-theme="origami" aria-hidden="true"></i>Origami</a>
     <a href="#look-skein" data-scene-link="skein"><i data-theme="skein" aria-hidden="true"></i>Skein silk</a>
   </nav>
+  <button class="sb-btn sb-btn--quiet sb-btn--sm sc-full" type="button" data-immersive hidden><svg class="sc-full__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span data-immersive-label>Full screen</span></button>
   <a class="sb-btn sb-btn--secondary sb-btn--sm sc-docs" href="docs.html"><span data-sb-icon="book"></span>Docs</a>
 </header>
 
 <button class="sb-jar sb-jar--fixed" data-cap="30" type="button" id="jar"></button>
+<button class="sc-pet sc-tap" type="button" id="pet" hidden aria-label="Your pet. Open the pet book"></button>
+<div class="sc-auto" id="auto" role="status" hidden><span class="sc-auto__dot" aria-hidden="true"></span><span class="sc-auto__line" id="auto-line">Playing the adventure</span><button class="sb-btn sb-btn--quiet sb-btn--sm" type="button" id="auto-stop">Take over</button></div>
+<aside class="sb-drawer" id="petbook" aria-labelledby="petbook-h">
+  <div class="sb-drawer__head"><h2 id="petbook-h">The pet book</h2><button class="sb-btn sb-btn--quiet sb-btn--icon" type="button" data-sb-close aria-label="Close the pet book"><span data-sb-icon="close"></span></button></div>
+  <p class="small sc-petbook__count" id="petbook-count"></p>
+  <ol class="sc-petbook" id="petbook-list"></ol>
+  <p class="small sc-petbook__night" id="petbook-night"></p>
+</aside>
 
 <main>
 
@@ -52,11 +70,26 @@
         <a class="sb-btn sb-btn--quiet" href="docs.html">Skip to the docs</a>
       </div>
     </div>
-    <div class="sc-front__art" data-sb-creature='{"form":"saelion","stage":4,"hide":"chimera","label":"Saelion, fully grown"}'></div>
+    <button type="button" class="sc-front__art sc-tap" id="front-creature" aria-label="Saelion, fully grown. Tap her." data-sb-creature='{"form":"saelion","stage":4,"hide":"chimera","label":"Saelion, fully grown"}'></button>
   </div>
   <div class="sc-in">
     <div class="sc-map-head"><p class="sb-note">the brook is the map. every stone is a look.</p></div>
     <div class="sc-front__brook" id="front-brook"></div>
+  </div>
+
+  <div class="sc-in">
+    <div class="sb-sheet sc-quest" id="quest">
+      <span class="sb-tape sb-tape--tr" aria-hidden="true"></span>
+      <div class="sc-quest__copy">
+        <h2 class="display-s">The adventure</h2>
+        <p class="story-body">Seven pets are waiting along the brook: one in every look, and one at the end for whoever finds the other six. Find them yourself, or let the book play itself.</p>
+        <p class="sc-actions">
+          <button class="sb-btn sb-btn--primary" type="button" data-sc-autoplay><span data-sb-icon="play"></span>Play it for me</button>
+          <button class="sb-btn sb-btn--secondary" type="button" data-sc-petbook><span data-sb-icon="bunny"></span>The pet book</button>
+        </p>
+      </div>
+      <ol class="sc-quest__pets" id="quest-pets" aria-label="Pets along the brook"></ol>
+    </div>
   </div>
 
   <div class="sc-in sc-shelf-wrap">
@@ -103,7 +136,7 @@
         </article>
       </div>
       <div class="sc-knight__sleep">
-        <div class="sc-sleeper" data-sb-creature='{"form":"saelion","stage":4,"mood":"sleepy","label":"Saelion, asleep"}'></div>
+        <button type="button" class="sc-sleeper sc-tap" id="sleeper" aria-label="Saelion, asleep. Wake her gently." data-sb-creature='{"form":"saelion","stage":4,"mood":"sleepy","label":"Saelion, asleep"}'></button>
         <p class="sb-note">lights out at the far stone</p>
       </div>
     </div>
@@ -240,6 +273,7 @@
       <a class="sb-btn sb-btn--primary" href="docs.html">Read the docs</a>
       <a class="sb-btn sb-btn--secondary" href="https://github.com/stevoblevo/storeybrook">Source on GitHub</a>
       <a class="sb-btn sb-btn--secondary" href="https://stevoblevo.github.io/depthfield/"><span data-sb-icon="moon"></span>Depthfield, the night counterpart</a>
+      <button class="sb-btn sb-btn--secondary" type="button" data-sc-autoplay><span data-sb-icon="play"></span>Play the adventure</button>
       <button class="sb-btn sb-btn--quiet" type="button" id="restart">Start the book again</button>
     </p>
   </footer>
@@ -247,6 +281,7 @@
 
 </main>
 <script src="project/components/bundle.js"></script>
+<script src="site/immersive.js"></script>
 <script src="site/showcase.js"></script>
 </body>
 </html>
