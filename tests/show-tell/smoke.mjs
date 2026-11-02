@@ -77,7 +77,7 @@ try {
   await check('Mallow: cups, six thoughts, remembered return', 'meef/sixth-piggie-06-mallows-little-while.html', async page => {
     await keyboardClick(page, '#sitDown');
     await page.locator('#cupForMallow').click(); await page.locator('#cupForPipkin').click();
-    for (let i=0;i<6;i++) await page.locator(`[data-thought="${i}"]`).click();
+    for (let i=0;i<6;i++) await keyboardClick(page, `[data-thought="${i}"]`);
     await hasClass(page, '#ending', 'show');
     assert.equal(await page.evaluate(()=>localStorage.getItem('piggie-sixth-mallow-found')), '1');
     await page.reload(); await hasClass(page, '#returning', 'show');
