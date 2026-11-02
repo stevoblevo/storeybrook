@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Malachi — Art Wall · “What’s Going On? — little things”</title>
+<style>
+  :root{
+    --sky-deep:#202b30; --sky:#46554e; --sage:#727766; --olive:#88846d;
+    --tan:#a9a17f; --tan-warm:#b6a180; --gold:#efb96e; --moon:#e5c68d;
+    --paper:#f3ead6; --paper-hi:#faf4e3; --paper-lo:#e7dcc0;
+    --ink:#2c2a22; --ink-soft:#57523f; --teal:#2f6f6a;
+    --keep:#4c7a4f; --redo:#b0512f; --later:#8a7a3a;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--ink);
+    font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+    background:
+      linear-gradient(160deg,var(--sky-deep) 0%,var(--sky) 34%,var(--sage) 62%,var(--tan) 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+  /* facet grain over the sky */
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; opacity:.5; z-index:0;
+    background:
+      repeating-linear-gradient(63deg, rgba(255,255,255,.025) 0 2px, transparent 2px 90px),
+      repeating-linear-gradient(-24deg, rgba(0,0,0,.05) 0 2px, transparent 2px 120px);
+  }
+  header{
+    position:sticky; top:0; z-index:20;
+    background:linear-gradient(180deg, rgba(32,43,48,.97), rgba(32,43,48,.92));
+    color:var(--paper); border-bottom:2px solid var(--gold);
+    padding:.7rem 1rem .8rem;
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),62% 100%,0 calc(100% - 5px));
+  }
+  .head-in{max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; gap:.6rem 1.2rem; align-items:center; justify-content:space-between}
+  h1{font-size:1.25rem; margin:0; font-weight:normal; letter-spacing:.02em}
+  h1 .sub{display:block; font-size:.78rem; color:var(--moon); font-style:italic; margin-top:.15rem}
+  .head-right{display:flex; align-items:center; gap:.9rem; flex-wrap:wrap}
+  #progress{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.9rem; color:var(--paper)}
+  #progress b{color:var(--gold); font-size:1.15rem}
+  .pbar{width:150px; height:8px; background:rgba(243,234,214,.18); border:1px solid rgba(239,185,110,.55)}
+  .pbar i{display:block; height:100%; background:linear-gradient(90deg,var(--tan-warm),var(--gold)); width:0%; transition:width .3s ease}
+  button{
+    font-family:ui-sans-serif,system-ui,sans-serif; cursor:pointer;
+    border:1px solid var(--ink-soft); background:var(--paper); color:var(--ink);
+    padding:.45rem .8rem; font-size:.88rem;
+  }
+  #exportBtn{background:var(--gold); border-color:#8a6a34; font-weight:600}
+  #exportBtn:active{transform:translateY(1px)}
+  #exportStatus{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.8rem; color:var(--moon); min-height:1em}
+  main{position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:1.4rem 1rem 5rem}
+  .intro{color:var(--paper); font-style:italic; text-align:center; margin:.4rem auto 1.6rem; max-width:640px; line-height:1.5}
+  .intro .moon{display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--moon); box-shadow:0 0 14px 3px rgba(229,198,141,.55); vertical-align:middle; margin:0 .4rem}
+  article.card{
+    background:linear-gradient(175deg,var(--paper-hi),var(--paper) 55%,var(--paper-lo));
+    margin:0 auto 2.2rem; padding:1.1rem 1.1rem 1.2rem;
+    box-shadow:0 14px 34px rgba(0,0,0,.38), 0 2px 0 rgba(255,255,255,.25) inset;
+    clip-path:polygon(0 10px, 12px 0, calc(100% - 16px) 4px, 100% 18px, 100% calc(100% - 12px), calc(100% - 10px) 100%, 14px calc(100% - 4px), 0 calc(100% - 16px));
+  }
+  .card-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:.4rem .8rem; margin-bottom:.15rem}
+  .brief-no{
+    font-family:ui-sans-serif,system-ui,sans-serif; font-weight:700; font-size:.8rem; letter-spacing:.14em;
+    background:var(--sky-deep); color:var(--gold); padding:.22rem .55rem;
+    clip-path:polygon(0 0,100% 3px,calc(100% - 4px) 100%,3px calc(100% - 2px));
+  }
+  .clip-id{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.82rem; color:var(--teal)}
+  .moment{font-size:1.08rem}
+  .makers-note{font-style:italic; color:var(--ink-soft); margin:.2rem 0 .8rem; font-size:1.02rem}
+  .makers-note::before{content:"“"} .makers-note::after{content:"”"}
+  figure{margin:0}
+  figure img{
+    display:block; width:100%; height:auto;
+    border:1px solid rgba(44,42,34,.35);
+    box-shadow:0 6px 18px rgba(32,43,48,.35);
+  }
+  figcaption{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.8rem; color:var(--ink-soft); margin-top:.4rem}
+  .duo{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
+  @media (max-width:720px){ .duo{grid-template-columns:1fr} }
+  .take{position:relative}
+  .take .badge{
+    position:absolute; top:.55rem; left:.55rem; z-index:2;
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:.74rem; font-weight:700; letter-spacing:.08em;
+    padding:.28rem .55rem; background:rgba(32,43,48,.88); color:var(--paper);
+  }
+  .take.recommended .badge{background:var(--gold); color:var(--ink); border:1px solid #8a6a34}
+  .take.recommended img{outline:3px solid var(--gold); outline-offset:-3px}
+  .verdict-row{display:flex; flex-wrap:wrap; gap:.55rem; margin-top:1rem; align-items:center}
+  .verdict-row .lbl{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.82rem; color:var(--ink-soft); letter-spacing:.06em}
+  .vbtn{
+    border-radius:999px; padding:.5rem 1.05rem; font-size:.92rem; background:transparent;
+    border:1.5px solid var(--ink-soft); transition:all .15s ease;
+  }
+  .vbtn[data-v="keep"]{border-color:var(--keep); color:var(--keep)}
+  .vbtn[data-v="redo"]{border-color:var(--redo); color:var(--redo)}
+  .vbtn[data-v="later"]{border-color:var(--later); color:var(--later)}
+  .vbtn[aria-pressed="true"]{color:var(--paper-hi); font-weight:700}
+  .vbtn[data-v="keep"][aria-pressed="true"]{background:var(--keep)}
+  .vbtn[data-v="redo"][aria-pressed="true"]{background:var(--redo)}
+  .vbtn[data-v="later"][aria-pressed="true"]{background:var(--later)}
+  .vbtn:focus-visible, #exportBtn:focus-visible, textarea:focus-visible{outline:2px solid var(--teal); outline-offset:2px}
+  textarea{
+    width:100%; margin-top:.8rem; min-height:2.6rem; resize:vertical;
+    font-family:Georgia,serif; font-size:.95rem; color:var(--ink);
+    background:rgba(255,255,255,.45); border:1px solid rgba(87,82,63,.45); padding:.55rem .65rem;
+  }
+  textarea::placeholder{color:#8b8468; font-style:italic}
+  .decided-tag{
+    margin-left:auto; font-family:ui-sans-serif,system-ui,sans-serif; font-size:.78rem;
+    color:var(--ink-soft); letter-spacing:.05em;
+  }
+  footer{position:relative; z-index:1; color:rgba(243,234,214,.75); text-align:center; font-size:.84rem; font-style:italic; padding:0 1rem 2.4rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-in">
+    <h1>The Art Wall
+      <span class="sub">“What’s Going On? — little things” · Malachi Tresler · Ecclesiastes 7:23–8:9 · sixteen missing moments, in tour order</span>
+    </h1>
+    <div class="head-right">
+      <div>
+        <div id="progress"><b id="pCount">0</b> of 16 decided</div>
+        <div class="pbar" aria-hidden="true"><i id="pFill"></i></div>
+      </div>
+      <button id="exportBtn" type="button">Export verdicts</button>
+      <span id="exportStatus" role="status"></span>
+    </div>
+  </div>
+</header>
+
+<main id="wall">
+  <p class="intro">Walk the tour top to bottom.<span class="moon" aria-hidden="true"></span>Tap a verdict on each
+  scene — Keep, Redo, or Decide later — and leave a note where a note is needed. Everything saves on this device as you go.</p>
+  <!-- Cards are built by the script below from the BRIEFS table, so order and labels can never drift apart. -->
+</main>
+
+<footer>Drafts are starting points for review — the repo’s native route is make_art.py vector scenes, and any accepted draft can be rebuilt there. Local review copy; not published.</footer>
+
+<script>
+"use strict";
+/* Tour order 1→16. clip = the excerpt clip the moment belongs to;
+   note = the brief's maker's-note line (ART-BRIEFS.md). */
+const BRIEFS = [
+  {n:1,  clip:"opening",        moment:"Opening — the question before any answer",   note:"A question, folded open.",
+   imgs:[{src:"art-drafts/01-opening-question.png", label:"Draft 01"}]},
+  {n:2,  clip:"hail · i",       moment:"Hail (A) — the storm hits",                  note:"The storm nobody forecast.",
+   imgs:[{src:"art-drafts/02-hail-storm.png", label:"Draft 02"}]},
+  {n:3,  clip:"hail · ii",      moment:"Hail (B) — the dent afterwards",             note:"A dent can remain.",
+   imgs:[{src:"art-drafts/03-hail-dent.png", label:"Original 03"},
+         {src:"art-drafts/03b-hail-dent-redo.png", label:"Redo 03b", recommended:true}]},
+  {n:4,  clip:"knowledge · i",  moment:"Knowledge (A) — forecasts that help",        note:"Useful knowledge, honestly held.",
+   imgs:[{src:"art-drafts/04-knowledge-satellite.png", label:"Draft 04"}]},
+  {n:5,  clip:"knowledge · ii", moment:"Knowledge (B) — where the map stops",        note:"Every map has an edge.",
+   imgs:[{src:"art-drafts/05-knowledge-maps-edge.png", label:"Draft 05"}]},
+  {n:6,  clip:"thesis",         moment:"Thesis — enough to live, not enough to control", note:"The sheet will not lie flat.",
+   imgs:[{src:"art-drafts/06-thesis-unflattenable-sheet.png", label:"Draft 06"}]},
+  {n:7,  clip:"wisdom · i",     moment:"Wisdom (A) — “I will be wise”: the reach",   note:"Reaching is not grasping.",
+   imgs:[{src:"art-drafts/07-wisdom-the-reach.png", label:"Draft 07"}]},
+  {n:8,  clip:"wisdom · ii",    moment:"Wisdom (B) — far off and deep",              note:"Deep, very deep.",
+   imgs:[{src:"art-drafts/08-wisdom-far-off-deep.png", label:"Draft 08"}]},
+  {n:9,  clip:"weather · i",    moment:"Weather (A) — climate is what you expect",   note:"The world, working as designed.",
+   imgs:[{src:"art-drafts/09-weather-expected.png", label:"Draft 09"}]},
+  {n:10, clip:"weather · ii",   moment:"Weather (B) — weather is what you get",      note:"What we get.",
+   imgs:[{src:"art-drafts/10-weather-got.png", label:"Draft 10"}]},
+  {n:11, clip:"schemes",        moment:"Schemes — our little schemes",               note:"Little plans, tightly folded.",
+   imgs:[{src:"art-drafts/11-schemes-paper-ring.png", label:"Draft 11"}]},
+  {n:12, clip:"power",          moment:"Power — a crown cannot command the wind",    note:"Wind does not take orders.",
+   imgs:[{src:"art-drafts/12-power-crown-wind.png", label:"Original 12"},
+         {src:"art-drafts/12b-power-crown-wind-redo.png", label:"Redo 12b", recommended:true}]},
+  {n:13, clip:"trust · i",      moment:"Trust (A) — lay down your schemes",          note:"Hands open, plans down.",
+   imgs:[{src:"art-drafts/13-trust-lay-down-schemes.png", label:"Draft 13"}]},
+  {n:14, clip:"trust · ii",     moment:"Trust (B) — enough for the next step",       note:"Light for one step is enough.",
+   imgs:[{src:"art-drafts/14-trust-light-one-step.png", label:"Draft 14"}]},
+  {n:15, clip:"faithful · i",   moment:"Faithful (A) — not abandoned",               note:"Unanswered is not abandoned.",
+   imgs:[{src:"art-drafts/15-faithful-not-abandoned.png", label:"Draft 15"}]},
+  {n:16, clip:"faithful · ii",  moment:"Faithful (B) — one small next step",         note:"Still here. One step.",
+   imgs:[{src:"art-drafts/16-faithful-one-small-step.png", label:"Draft 16"}]}
+];
+
+const STORE_KEY = "malachi-art-wall-v1";
+const VERDICTS = [["keep","Keep"],["redo","Redo"],["later","Decide later"]];
+
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  catch(e){ return {}; }
+}
+function saveState(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+}
+const state = loadState();   // { "3": {v:"keep"|"redo"|"later", note:"..."} }
+
+const wall = document.getElementById("wall");
+const pCount = document.getElementById("pCount");
+const pFill  = document.getElementById("pFill");
+const status = document.getElementById("exportStatus");
+
+function decidedCount(){
+  return BRIEFS.filter(b => state[b.n] && state[b.n].v).length;
+}
+function refreshProgress(){
+  const d = decidedCount();
+  pCount.textContent = d;
+  pFill.style.width = (d/16*100) + "%";
+}
+
+BRIEFS.forEach(b => {
+  const card = document.createElement("article");
+  card.className = "card";
+  card.id = "brief-" + b.n;
+
+  const head = document.createElement("div");
+  head.className = "card-head";
+  head.innerHTML =
+    '<span class="brief-no">BRIEF ' + b.n + '</span>' +
+    '<span class="clip-id">clip · ' + b.clip + '</span>' +
+    '<span class="moment">' + b.moment + '</span>';
+  card.appendChild(head);
+
+  const note = document.createElement("p");
+  note.className = "makers-note";
+  note.textContent = b.note;
+  card.appendChild(note);
+
+  if (b.imgs.length === 1){
+    const fig = document.createElement("figure");
+    const img = document.createElement("img");
+    img.src = b.imgs[0].src;
+    img.alt = "Brief " + b.n + " — " + b.moment;
+    img.loading = "lazy";
+    const cap = document.createElement("figcaption");
+    cap.textContent = b.imgs[0].label + " · " + b.imgs[0].src.split("/").pop();
+    fig.appendChild(img); fig.appendChild(cap);
+    card.appendChild(fig);
+  } else {
+    const duo = document.createElement("div");
+    duo.className = "duo";
+    b.imgs.forEach(t => {
+      const wrap = document.createElement("div");
+      wrap.className = "take" + (t.recommended ? " recommended" : "");
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = t.recommended ? t.label + " · RECOMMENDED" : t.label;
+      const fig = document.createElement("figure");
+      const img = document.createElement("img");
+      img.src = t.src;
+      img.alt = "Brief " + b.n + " — " + t.label;
+      img.loading = "lazy";
+      const cap = document.createElement("figcaption");
+      cap.textContent = t.src.split("/").pop();
+      fig.appendChild(img); fig.appendChild(cap);
+      wrap.appendChild(badge); wrap.appendChild(fig);
+      duo.appendChild(wrap);
+    });
+    card.appendChild(duo);
+  }
+
+  const row = document.createElement("div");
+  row.className = "verdict-row";
+  const lbl = document.createElement("span");
+  lbl.className = "lbl";
+  lbl.textContent = "VERDICT";
+  row.appendChild(lbl);
+
+  const tag = document.createElement("span");
+  tag.className = "decided-tag";
+
+  VERDICTS.forEach(([key, text]) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "vbtn";
+    btn.dataset.v = key;
+    btn.textContent = text;
+    btn.setAttribute("aria-pressed",
+      (state[b.n] && state[b.n].v === key) ? "true" : "false");
+    btn.addEventListener("click", () => {
+      state[b.n] = state[b.n] || {};
+      state[b.n].v = (state[b.n].v === key) ? null : key;  // tap again to unmark
+      saveState();
+      row.querySelectorAll(".vbtn").forEach(x =>
+        x.setAttribute("aria-pressed", x.dataset.v === state[b.n].v ? "true" : "false"));
+      tag.textContent = state[b.n].v ? "decided ✓" : "";
+      refreshProgress();
+    });
+    row.appendChild(btn);
+  });
+  tag.textContent = (state[b.n] && state[b.n].v) ? "decided ✓" : "";
+  row.appendChild(tag);
+  card.appendChild(row);
+
+  const ta = document.createElement("textarea");
+  ta.placeholder = "A note on this one, if a note is needed…";
+  ta.value = (state[b.n] && state[b.n].note) || "";
+  ta.setAttribute("aria-label", "Note for brief " + b.n);
+  ta.addEventListener("input", () => {
+    state[b.n] = state[b.n] || {};
+    state[b.n].note = ta.value;
+    saveState();
+  });
+  card.appendChild(ta);
+
+  wall.appendChild(card);
+});
+refreshProgress();
+
+function verdictsText(){
+  const label = {keep:"KEEP", redo:"REDO", later:"DECIDE LATER"};
+  const lines = ['Malachi art wall — verdicts',
+    '“What’s Going On? — little things” · ' + decidedCount() + ' of 16 decided', ''];
+  BRIEFS.forEach(b => {
+    const s = state[b.n] || {};
+    const files = b.imgs.map(t => t.src.split("/").pop()).join(" / ");
+    let line = "Brief " + b.n + " (" + b.clip + ") — " + b.moment +
+      " [" + files + "]: " + (s.v ? label[s.v] : "— unmarked");
+    if (s.note && s.note.trim()) line += "\n    note: " + s.note.trim();
+    lines.push(line);
+  });
+  return lines.join("\n");
+}
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const text = verdictsText();
+  const blob = new Blob([text], {type:"text/plain"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "malachi-art-verdicts.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(
+      () => { status.textContent = "downloaded + copied ✓"; },
+      () => { status.textContent = "downloaded ✓"; });
+  } else {
+    status.textContent = "downloaded ✓";
+  }
+});
+</script>
+</body>
+</html>
