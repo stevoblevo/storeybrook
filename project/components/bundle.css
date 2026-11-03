@@ -452,3 +452,24 @@ dialog.sb-dialog[open] { animation: sb-arrive var(--dur-base) var(--ease-out); }
 [data-theme="inkblot"] *, [data-theme="inkblot"] *::before, [data-theme="inkblot"] *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
 @media (forced-colors: active) { .sb-btn, .sb-stone, .sb-cover, .sb-choice span { border: 2px solid ButtonText; } .sb-wash, .sb-brook__wash { display: none; } }
 @media print { .sb-reader, .sb-jar--fixed, .sb-drawer, .sb-toast { display: none !important; } .sb-body::before { display: none; } }
+
+/* ---------- 1.2: guardians and taste ---------- */
+.sb-guardian { position: absolute; z-index: var(--z-sticky); left: 0; top: 0; width: 56px; height: 56px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: grab; touch-action: none; filter: drop-shadow(0 3px 0 var(--sb-shadow-c, rgba(0, 0, 0, .18))); transition: filter var(--dur-quick) var(--ease-out); }
+.sb-guardian svg { display: block; width: 100%; height: 100%; }
+.sb-guardian.is-held { cursor: grabbing; filter: drop-shadow(0 8px 6px var(--sb-shadow-c, rgba(0, 0, 0, .22))); }
+.sb-guardian.is-on::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 3px solid var(--cue); }
+.sb-guardian.is-asleep { display: none; }
+.sb-guardian:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+[data-theme="knight"] .sb-guardian { filter: drop-shadow(0 0 10px color-mix(in srgb, var(--gamboge) 45%, transparent)); }
+[data-theme="origami"] .sb-guardian svg { transform: rotate(-8deg); }
+.sb-taste { position: fixed; z-index: var(--z-overlay); left: 16px; bottom: 16px; width: min(440px, calc(100vw - 32px)); max-height: 60vh; overflow: auto; background: var(--page); color: var(--ink); border: 2px solid var(--ink); border-radius: var(--radius-md, 12px); font: 400 15px/1.45 var(--sb-ui); box-shadow: var(--shadow-page, 0 8px 24px rgba(0, 0, 0, .18)); }
+.sb-taste summary { cursor: pointer; padding: 10px 14px; font-weight: 700; }
+.sb-taste summary b { color: var(--danger); }
+.sb-taste ol { margin: 0; padding: 0 14px 6px 34px; }
+.sb-taste li { margin: 0 0 10px; }
+.sb-taste li b { font-weight: 700; }
+.sb-taste li.is-warn b { color: var(--danger); }
+.sb-taste li span { display: block; }
+.sb-taste li small { display: block; color: var(--ink-muted); font-size: 13px; word-break: break-word; }
+.sb-taste p { margin: 0; padding: 0 14px 12px; color: var(--ink-muted); font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { .sb-guardian { transition: none; } }

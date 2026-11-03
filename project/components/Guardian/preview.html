@@ -1,0 +1,10 @@
+<!-- @dsCard group="Play" height=330 -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Guardian</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DynaPuff:wdth,wght@75..100,400..700&family=Alegreya:ital,wght@0,400..800;1,400..800&family=Andika:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400..700&family=IM+Fell+English:ital@0;1&family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<style>html,body{margin:0}body.sb-body{min-height:0;background:var(--paper);color:var(--ink);font-family:var(--sb-story)}.pv{position:relative;height:300px;padding:20px 28px;box-sizing:border-box}.c{position:absolute;left:28px;top:56px;width:150px}.say{position:absolute;left:28px;right:28px;bottom:16px;margin:0;font:400 16px/1.4 var(--sb-ui);color:var(--ink-muted)}.say b{color:var(--ink)}.pv .sb-btn{position:absolute;left:28px;top:16px}</style></head>
+<body class="sb-body">
+<div class="pv" id="pv"><button class="sb-btn sb-btn--secondary sb-btn--sm" type="button" id="wake">Wake the sleepers</button><div class="c" id="c"></div><p class="say" id="say" role="status">Tap a guardian to switch its thing. Drag it anywhere; flick it off to put it to sleep.</p></div>
+<script>(function(){var S=window.Storeybrook;if(!S)return;S.ensureDefs();S.mountIcons();var host=document.getElementById('pv'),c=document.getElementById('c'),say=document.getElementById('say');S.creature(c,{form:'saelion',stage:3});
+[{kind:'ice',label:'Freeze the chord'},{kind:'heart',label:'The light mood'},{kind:'moon',label:'Quiet mode'},{kind:'bell',label:'Ring the stones'}].forEach(function(g){S.guardian(host,{kind:g.kind,label:g.label,near:c,onTap:function(on){say.innerHTML='<b>'+g.label+'</b> is '+(on?'on':'off')+'.';}});});
+document.getElementById('wake').onclick=function(){S.guardian.wakeAll();};})();</script></body></html>

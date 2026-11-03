@@ -41,9 +41,17 @@ A canvas game drawn for a dark night can wear the paper looks without redrawing:
 - A game should have a quiet mode: every word hidden except music and what someone needs right now. Hints come back for a few seconds when they matter, then fade.
 - Loud moments (a chorus finished, a stone opened) are one balloon or one toast, never both.
 
+## Guardians
+
+Small drawn objects with no visible label that sit beside the creature and each switch one real thing when tapped: an ice cube freezes the chord, a heart turns on the light mood, a moon turns on quiet mode. Shipped first in AND SO 7 (they arrive from words the game overheard and playfully misheard), then in Saelion Loom (a strawberry guardian that follows, reviews and can be thrown), so they graduated in 1.2 (the Guardian component).
+
+- A guardian arrives because something happened, hops to its place beside the creature, and then holds still: nothing new loops (Motion).
+- Tapping switches its thing and rings it in `cue` while on; it is a real button with a name that says what it switches.
+- Drag it anywhere. Flick it off the page and it sleeps; a toast says so, and the drawer can wake the sleepers.
+- Four at most, never over the story, and never the only way to a setting.
+
 ## Candidate patterns
 
-Shipped once in AND SO 7 and waiting for a second use (see Governance):
+Shipped first in AND SO 7 and not yet written down (see Governance):
 
-- **Guardians.** Small drawn objects, with no labels, that float near the creature and switch a real feature when tapped (an ice cube freezes the chord, a heart turns on the light mood). They arrive from words the game overheard and playfully misheard, can be dragged anywhere, and are flicked off the screen to sleep.
-- **Mirror windows.** The game opened inside itself in sandboxed frames shaped like real devices (a phone, a folding phone, a tablet, an e-ink slate, a TV), to show one state in many skins at once.
+- **Mirror windows.** The game opened inside itself in sandboxed frames shaped like real devices (a phone, a folding phone, a tablet, an e-ink slate, a TV), to show one state in many skins at once. Used a second time in the Storeybrook showcase (one page on six devices); waiting to be written down.

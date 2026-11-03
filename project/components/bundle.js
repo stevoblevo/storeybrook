@@ -1,11 +1,11 @@
-/* Storeybrook 1.0.0 · behaviors for storybook pages and little games. One classic script, no dependencies, no network.
+/* Storeybrook 1.2.0 · behaviors for storybook pages and little games. One classic script, no dependencies, no network.
    window.Storeybrook: theme, density, nav, read (read aloud), rewards (nougats), unlocks, brook, creature, spread,
-   fold, blot, drawer, dialog, toast, sound, haptic, icons. Every module checks reduced motion at run time and
+   fold, blot, drawer, dialog, toast, sound, haptic, icons, guardian, taste. Every module checks reduced motion at run time and
    wraps storage, so a page works with storage blocked and with JS off (markup stays readable). */
 (function (w, d) {
   'use strict';
   if (w.Storeybrook && w.Storeybrook.version) return;
-  var VERSION = '1.1.0';
+  var VERSION = '1.2.0';
   var THEMES = [
     { id: 'daylight', name: 'Meta Daylight', line: 'Watercolor on north-light paper' },
     { id: 'knight', name: 'Knight Night', line: 'A cobalt paper theatre by candle' },
@@ -616,13 +616,152 @@
     $$('.sb-jar').forEach(function (j) { if (!$('.sb-jar__count', j)) j.insertAdjacentHTML('beforeend', '<span class="sb-jar__count"></span>'); });
     $$('[data-sb-nougat]').forEach(function (x) { if (!x.__sbn) { x.__sbn = true; x.innerHTML = nougatSVG(+(x.getAttribute('data-sb-nougat') || 7)); } });
     rewards.paint(); unlocks.paint();
+    if (/[?&#]sb-taste\b/.test(w.location.href)) setTimeout(function () { taste.badge(); }, 700);
     emit('ready', { version: VERSION, theme: theme.get(), density: density.get() });
     return API;
   }
 
+
+  /* ---------- guardians: small drawn objects that switch a real thing; dragged anywhere, flicked away to sleep ---------- */
+  var GUARD_ART = {
+    ice: '<rect x="12" y="13" width="32" height="30" rx="7" fill="var(--sbg-fill)"/><path d="M12 22 L22 13 M44 22 L34 13" /><rect x="12" y="13" width="32" height="30" rx="7"/><path d="M19 22 L25 28 M30 20 L36 26" stroke-width="2.4" stroke="var(--art-light)"/>',
+    heart: '<path d="M28 45 C14 35 10 27 13 21 C16 15 24 15 28 22 C32 15 40 15 43 21 C46 27 42 35 28 45 Z" fill="var(--sbg-fill)"/><path d="M28 45 C14 35 10 27 13 21 C16 15 24 15 28 22 C32 15 40 15 43 21 C46 27 42 35 28 45 Z"/><path d="M19 22 Q20 19 23 19" stroke="var(--art-light)" stroke-width="2.4"/>',
+    star: '<path d="M28 10 L33 23 L46 23 L35.5 31 L39.5 44 L28 36 L16.5 44 L20.5 31 L10 23 L23 23 Z" fill="var(--sbg-fill)"/><path d="M28 10 L33 23 L46 23 L35.5 31 L39.5 44 L28 36 L16.5 44 L20.5 31 L10 23 L23 23 Z"/>',
+    leaf: '<path d="M14 42 C14 24 26 13 44 12 C44 30 33 42 14 42 Z" fill="var(--sbg-fill)"/><path d="M14 42 C14 24 26 13 44 12 C44 30 33 42 14 42 Z M14 42 L34 22"/>',
+    moon: '<path d="M36 12 A16 16 0 1 0 44 38 A13 13 0 0 1 36 12 Z" fill="var(--sbg-fill)"/><path d="M36 12 A16 16 0 1 0 44 38 A13 13 0 0 1 36 12 Z"/>',
+    bell: '<path d="M18 38 L18 27 C18 20 22 15 28 15 C34 15 38 20 38 27 L38 38 L42 41 L14 41 Z" fill="var(--sbg-fill)"/><path d="M18 38 L18 27 C18 20 22 15 28 15 C34 15 38 20 38 27 L38 38 L42 41 L14 41 Z M24 44 Q28 48 32 44 M28 15 L28 11"/>'
+  };
+  var GUARD_FILL = { ice: 'wash-sky', heart: 'wash-rose', star: 'wash-sun', leaf: 'wash-meadow', moon: 'wash-brook', bell: 'wash-sun' };
+  var sleepers = [];
+  function guardian(host, opts) {
+    if (!host) return null; var o = Object.assign({ kind: 'star', label: 'A guardian', on: false }, opts || {});
+    if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+    var b = el('button', { type: 'button', 'class': 'sb-guardian', 'aria-label': o.label, 'aria-pressed': String(!!o.on) });
+    b.style.setProperty('--sbg-fill', 'var(--' + (o.fill || GUARD_FILL[o.kind] || 'wash-sun') + ')');
+    b.innerHTML = '<svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><g fill="none" stroke="var(--art-line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + (o.svg || GUARD_ART[o.kind] || GUARD_ART.star) + '</g></svg>';
+    host.appendChild(b);
+    var st = { x: 0, y: 0, on: !!o.on, drag: null, asleep: false };
+    function hostRect() { return host.getBoundingClientRect(); }
+    function put(x, y) { var r = hostRect(), s = b.offsetWidth || 56; st.x = Math.max(0, Math.min(r.width - s, x)); st.y = Math.max(0, Math.min(r.height - s, y)); b.style.transform = 'translate(' + st.x.toFixed(1) + 'px,' + st.y.toFixed(1) + 'px)'; }
+    function near() {
+      var r = hostRect(), s = b.offsetWidth || 56, a = o.near && o.near.getBoundingClientRect ? o.near.getBoundingClientRect() : null, i = $$('.sb-guardian', host).indexOf(b);
+      if (a && a.width) return [a.right - r.left + 8 + (i % 3) * (s + 6), a.top - r.top + Math.floor(i / 3) * (s + 6)];
+      return [r.width - s - 16 - (i % 4) * (s + 8), 16 + Math.floor(i / 4) * (s + 8)];
+    }
+    function arrive() {
+      var to = near(); if (reduced() || !o.from || !o.from.getBoundingClientRect) { put(to[0], to[1]); return; }
+      var r = hostRect(), f = o.from.getBoundingClientRect(); put(f.left - r.left, f.top - r.top);
+      var a = b.animate([{ transform: b.style.transform, opacity: 0 }, { transform: 'translate(' + to[0] + 'px,' + to[1] + 'px)', opacity: 1 }], { duration: ms('dur-base', 420), easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' });
+      a.onfinish = function () { put(to[0], to[1]); };
+    }
+    function setOn(v, quiet) { st.on = !!v; b.setAttribute('aria-pressed', String(st.on)); b.classList.toggle('is-on', st.on); if (!quiet) { emit('guardian', { kind: o.kind, label: o.label, on: st.on }); if (o.onTap) o.onTap(st.on); } }
+    function sleep() {
+      if (st.asleep) return; st.asleep = true; b.classList.add('is-asleep'); sleepers.push(api); emit('guardian', { kind: o.kind, label: o.label, asleep: true });
+      toast('<b>' + esc(o.label) + '</b> went to sleep.' + (o.sleepNote ? ' ' + esc(o.sleepNote) : ''), { ms: 3600 });
+    }
+    function wake() { if (!st.asleep) return; st.asleep = false; b.classList.remove('is-asleep'); sleepers.splice(sleepers.indexOf(api), 1); arrive(); emit('guardian', { kind: o.kind, label: o.label, asleep: false }); }
+    b.addEventListener('pointerdown', function (e) {
+      if (st.asleep) return; try { b.setPointerCapture(e.pointerId); } catch (er) { /* no capture */ }
+      st.drag = { x0: e.clientX, y0: e.clientY, bx: st.x, by: st.y, moved: false, hist: [[e.clientX, e.clientY, performance.now()]] }; b.classList.add('is-held');
+    });
+    b.addEventListener('pointermove', function (e) {
+      var g = st.drag; if (!g) return; if (Math.hypot(e.clientX - g.x0, e.clientY - g.y0) > 6) g.moved = true;
+      if (g.moved) put(g.bx + e.clientX - g.x0, g.by + e.clientY - g.y0); g.hist.push([e.clientX, e.clientY, performance.now()]); if (g.hist.length > 6) g.hist.shift();
+    });
+    function up() {
+      var g = st.drag; if (!g) return; st.drag = null; b.classList.remove('is-held');
+      if (!g.moved) return; b.__sbIgnore = true;
+      var a = g.hist[0], c = g.hist[g.hist.length - 1], dt = Math.max(16, c[2] - a[2]) / 1000, vx = (c[0] - a[0]) / dt, vy = (c[1] - a[1]) / dt;
+      if (Math.hypot(vx, vy) < 1100) return;
+      if (reduced()) { sleep(); return; }
+      var k = 0.35, tx = st.x + vx * k, ty = st.y + vy * k;
+      var an = b.animate([{ transform: b.style.transform, opacity: 1 }, { transform: 'translate(' + tx + 'px,' + ty + 'px) rotate(' + (vx > 0 ? 40 : -40) + 'deg)', opacity: 0 }], { duration: ms('dur-base', 420), easing: 'cubic-bezier(0.2, 0.9, 0.3, 1)' });
+      an.onfinish = sleep;
+    }
+    b.addEventListener('pointerup', up); b.addEventListener('pointercancel', function () { st.drag = null; b.classList.remove('is-held'); });
+    b.addEventListener('click', function () {
+      if (b.__sbIgnore || st.asleep) { b.__sbIgnore = false; return; }
+      setOn(!st.on); sound.play('stone'); haptic(10);
+    });
+    b.addEventListener('keydown', function (e) { if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); sleep(); } });
+    setOn(st.on, true); put.apply(null, near()); arrive();
+    var api = { el: b, kind: o.kind, label: o.label, get on() { return st.on; }, get asleep() { return st.asleep; }, set: setOn, sleep: sleep, wake: wake, place: put, destroy: function () { b.remove(); } };
+    return api;
+  }
+  guardian.asleep = function () { return sleepers.slice(); };
+  guardian.wakeAll = function () { sleepers.slice().forEach(function (s) { s.wake(); }); };
+  guardian.kinds = Object.keys(GUARD_ART);
+
+  /* ---------- taste: read a page against this system's rules and the tells that make a page look generated ---------- */
+  function vis(e) { var r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; }
+  function words(e) { var t = e.innerText; return (t == null ? e.textContent || '' : t).replace(/\s+/g, ' ').trim(); }
+  function taste(opts) {
+    var o = opts || {}, scope = o.scope || d.body, out = [], lk = look(), comix = lk === 'comix';
+    var text = words(scope);
+    function add(rule, sev, n, sample, fix) { out.push({ rule: rule, severity: sev, count: n, sample: String(sample || '').slice(0, 90), fix: fix }); }
+    var xl = $$('h1, .display-xl, .sb-title--xl', scope).filter(vis); if (xl.length > 1) add('one-display-xl', 'warn', xl.length, words(xl[1]), 'One display-xl per page.');
+    var caps = $$('p, span, small, div, dt, legend, summary, label, a, button', scope).filter(function (e) {
+      if (e.children.length > 1 || !vis(e) || comix || e.closest('.sb-balloon, .sb-shout, [data-sb="comix"]')) return false;
+      var s = getComputedStyle(e), fs = parseFloat(s.fontSize), ls = parseFloat(s.letterSpacing) || 0, t = words(e);
+      return t.length > 3 && (s.textTransform === 'uppercase' || (/[A-Z]{4,}/.test(t) && t === t.toUpperCase())) && ls >= fs * .05;
+    });
+    if (caps.length) add('letterspaced-caps', 'warn', caps.length, words(caps[0]), 'No all-caps labels and no letter-spaced eyebrows (Type). Sentence case, in the look\'s own faces.');
+    var bang = $$('h1, h2, h3, p, button, a, .sb-caption, .sb-note', scope).filter(function (e) { return !comix && !e.closest('.sb-balloon, .sb-shout, [data-sb="comix"]') && /!/.test(words(e)) && vis(e); });
+    if (bang.length) add('exclamation', 'warn', bang.length, words(bang[0]), 'No exclamation marks, except in Comix balloons and sound effects (Writing).');
+    try { var emo = text.match(/\p{Emoji_Presentation}/gu) || []; if (emo.length) add('emoji', 'warn', emo.length, emo.slice(0, 6).join(' '), 'No emoji. A picture is an icon, the creature, a nougat or the game\'s own drawing.'); } catch (e) { /* no unicode classes */ }
+    var oops = text.match(/\b(oops|simply)\b/gi) || []; $$('button, a', scope).forEach(function (b) { if (/\bjust\b/i.test(words(b))) oops.push(words(b)); });
+    if (oops.length) add('words-to-leave-out', 'warn', oops.length, oops.slice(0, 4).join(', '), 'No "Oops"; no "simply" or "just" in instructions (Writing).');
+    var NAMES = { start: 'Play this one', go: 'Play this one', submit: 'a verb for what it does', next: 'Turn the page, or Walk to the next stone', 'continue': 'Walk to the next stone', listen: 'Read it to me', audio: 'Read it to me', tts: 'Read it to me', rewards: 'Open the jar', inventory: 'Open the jar', skip: 'Skip the story' };
+    var named = $$('button, a', scope).filter(function (b) { return NAMES[words(b).toLowerCase()]; });
+    if (named.length) add('button-names', 'info', named.length, words(named[0]) + ' → ' + NAMES[words(named[0]).toLowerCase()], 'Buttons keep the system\'s names (Writing: Buttons and links).');
+    var locks = $$('.sb-lock', scope).filter(function (l) { var why = $('.sb-lock__why', l); return !why || !words(why); }).concat($$('[data-sb-look][aria-disabled="true"]', scope).filter(function (b) { return !b.getAttribute('data-sb-why'); }));
+    if (locks.length) add('lock-without-why', 'warn', locks.length, (locks[0].outerHTML || '').slice(0, 60), 'Every lock says why and how to open it, in one sentence.');
+    var dark = text.match(/\b(only today|limited time|hurry|last chance|don't lose your streak|streak|\d+ lives? left)\b/gi) || [];
+    if (dark.length) add('dark-pattern', 'warn', dark.length, dark[0], 'Nothing is lost, nothing is timed, nothing is sold against a clock (Rewards and progression).');
+    var washes = $$('.sb-wash', scope).filter(function (e) { var r = e.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < w.innerHeight; }); if (washes.length > 5) add('too-many-washes', 'warn', washes.length, washes.length + ' washes', 'No more than five washes on a screen (Paper).');
+    var gamb = token('gamboge');
+    if (gamb && lk !== 'knight' && lk !== 'inkblot') {
+      var probe = el('i'); probe.style.color = gamb; d.body.appendChild(probe); var gc = getComputedStyle(probe).color; probe.remove();
+      var gt = $$('p, span, a, button, h1, h2, h3, li, small', scope).filter(function (e) { return e.children.length === 0 && words(e) && vis(e) && getComputedStyle(e).color === gc; });
+      if (gt.length) add('gamboge-text', 'warn', gt.length, words(gt[0]), 'Gamboge is a fill and a mark, never text on light paper (Color).');
+    }
+    var centered = $$('.sb-prose, .sb-lede', scope).filter(function (e) { var a = getComputedStyle(e).textAlign; return a === 'center' || a === 'justify'; });
+    if (centered.length) add('story-alignment', 'info', centered.length, words(centered[0]).slice(0, 40), 'Story text aligns left; never centered or justified (Type).');
+    var dim = text.match(/\b(a little|a small|a hint of|little world)\b/gi) || []; if (dim.length > 3) add('diminutive-tic', 'info', dim.length, dim.slice(0, 4).join(' · '), 'Say a size once, when it is a size.');
+    var becomes = text.match(/\b[\w']+ becomes (a|an|the) [\w']+/gi) || []; if (becomes.length > 1) add('becomes-slogan', 'warn', becomes.length, becomes[0], '"X becomes a Y" is a slogan shape. Name real things instead (Writing: Narration).');
+    var tiles = 0, tileSample = '';
+    $$('*', scope).forEach(function (p) {
+      if (p.children.length < 4) return; var seen = {}, links = {};
+      Array.prototype.forEach.call(p.children, function (c) { if (c.children.length < 1) return; var e = c.lastElementChild || c, tail = words(e), a = e.closest('a[href]') || (c.matches('a[href]') ? c : null); if (a) links[a.getAttribute('href')] = 1; if (tail && tail.length < 24 && /[a-z]{2}/i.test(tail)) seen[tail] = (seen[tail] || 0) + 1; });
+      if (Object.keys(links).length >= 4) return;
+      Object.keys(seen).forEach(function (k) { if (seen[k] >= 4) { tiles++; tileSample = k + ' ×' + seen[k]; } });
+    });
+    if (tiles) add('identical-tiles', 'warn', tiles, tileSample, 'Rows of identical tiles read as a generated grid. A choice is a stone, a cover or a sticker: let each look like what it is.');
+    var groups = $$('[role="tablist"], [role="radiogroup"], [role="group"]', scope).filter(function (g) { return $$('[aria-pressed], [aria-selected], [role="radio"]', g).length > 1; });
+    if (groups.length > 3) add('mode-stack', 'warn', groups.length, '', 'Four or more mode switches make a dashboard. A look picker and one more, at most.');
+    var unnamed = $$('button, a[href], [role="button"]', scope).filter(function (b) { return vis(b) && !words(b) && !b.getAttribute('aria-label') && !b.getAttribute('title') && !b.getAttribute('aria-labelledby'); });
+    if (unnamed.length) add('unnamed-control', 'warn', unnamed.length, (unnamed[0].outerHTML || '').slice(0, 60), 'Every control is a real button or link with a name.');
+    var fams = {}; $$('body, body *', scope).slice(0, 1500).forEach(function (e) { var f = getComputedStyle(e).fontFamily.split(',')[0].replace(/["']/g, '').trim(); if (f) fams[f] = 1; });
+    var stock = ['Inter', 'DM Sans', 'Roboto', 'Poppins', 'Montserrat', 'Open Sans', 'Lato', 'Manrope', 'Plus Jakarta Sans', 'Space Grotesk'].filter(function (f) { return fams[f]; });
+    if (stock.length) add('stock-face', 'info', stock.length, stock.join(', '), 'Use the look\'s faces (Type); a stock grotesk reads as a template.');
+    var sev = { warn: 0, info: 1 }; out.sort(function (a, b) { return sev[a.severity] - sev[b.severity]; });
+    if (o.log !== false && w.console && out.length) { try { console.table(out.map(function (f) { return { rule: f.rule, severity: f.severity, count: f.count, sample: f.sample }; })); } catch (e) { /* no table */ } }
+    emit('taste', { findings: out, look: lk }); return out;
+  }
+  taste.badge = function (findings) {
+    findings = findings || taste({ log: false }); $$('.sb-taste').forEach(function (x) { x.remove(); });
+    var warn = findings.filter(function (f) { return f.severity === 'warn'; }).length, p = el('details', { 'class': 'sb-taste' });
+    p.innerHTML = '<summary>Taste: <b>' + warn + '</b> to fix, ' + (findings.length - warn) + ' to look at</summary><ol></ol><p>Storeybrook.taste() reads this page against the brand book. It never changes anything.</p>';
+    var ol = $('ol', p);
+    findings.forEach(function (f) { var li = el('li', { 'class': 'is-' + f.severity }); li.innerHTML = '<b></b> <span></span><small></small>'; li.children[0].textContent = (f.severity === 'warn' ? 'fix · ' : 'look · ') + f.rule + (f.count ? ' ×' + f.count : ''); li.children[1].textContent = f.fix; li.children[2].textContent = f.sample; ol.appendChild(li); });
+    if (!findings.length) ol.outerHTML = '<p>Nothing to fix. It reads like a book someone made.</p>';
+    d.body.appendChild(p); return p;
+  };
+
   var API = { version: VERSION, init: init, theme: theme, density: density, nav: nav, read: read, rewards: rewards, unlocks: unlocks, unlock: function (id, o) { return unlocks.unlock(id, o); },
     brook: brook, creature: creature, creatureSVG: creatureSVG, spread: spread, fold: fold, blot: blot, drawer: drawer, dialog: dialog, toast: toast, sound: sound, haptic: haptic,
-    icon: icon, icons: Object.keys(ICONS), mountIcons: mountIcons, nougatSVG: nougatSVG, jarSVG: jarSVG, token: token, reducedMotion: reduced, ensureDefs: ensureDefs };
+    icon: icon, icons: Object.keys(ICONS), mountIcons: mountIcons, nougatSVG: nougatSVG, jarSVG: jarSVG, token: token, reducedMotion: reduced, ensureDefs: ensureDefs,
+    guardian: guardian, taste: taste };
   w.Storeybrook = API;
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', ensureDefs); else ensureDefs();
 })(window, document);

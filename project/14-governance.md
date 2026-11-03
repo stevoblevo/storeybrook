@@ -2,11 +2,18 @@
 
 ## Versions
 
-Storeybrook is versioned as a whole: `tokens.json` carries the major version (1), `Storeybrook.version` the full one (1.1.0).
+Storeybrook is versioned as a whole: `tokens.json` carries the major version (1), `Storeybrook.version` the full one (1.2.0).
 
 - **Major**: a token, class, data attribute or API renamed or removed; a behavior that changes what a page does; a look removed.
 - **Minor**: new tokens, components, icons, looks, densities or options.
 - **Patch**: values tuned, bugs fixed, wording.
+
+## 1.2.0
+
+- Guardians graduate (AND SO 7, then Saelion Loom): `Storeybrook.guardian()` and the Guardian component, six drawn kinds (ice, heart, star, leaf, moon, bell), sleep and wake.
+- Taste: `Storeybrook.taste()` and the Taste component read a page against this book (caps, exclamation marks, button names, locks without reasons, dark patterns, washes, gamboge text) and against the generic tells shared with Depthfield 2.2. A sixteenth chapter, Taste.
+- Budgets: bundle.js 80 KB (from 60), bundle.css 60 KB (from 56).
+- Kept: every 1.1 token, class, attribute and API.
 
 ## 1.1.0
 
@@ -27,7 +34,7 @@ Storeybrook is versioned as a whole: `tokens.json` carries the major version (1)
 3. It is written down here with exact values from the page that shipped it, a preview, a README and its accessibility notes, and measured in all six looks.
 4. Its tokens, classes and API are named for what they do, not where they came from.
 
-Waiting at step 2: AND SO's overhearing guardians (drawn objects that switch a feature on when tapped), its recursive mirror windows, and its quiet mode (all words hidden but music).
+Waiting at step 2: AND SO's quiet mode (all words hidden but music). Waiting at step 3: the mirror windows, used a second time in the showcase.
 
 ## Rules for every page
 

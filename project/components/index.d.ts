@@ -99,7 +99,17 @@ export interface StoreybrookApi {
   nougatSVG(seed?: number): string; jarSVG(fill: number): string;
   token(name: string): string; reducedMotion(): boolean; ensureDefs(): void;
 }
+/** Added in 1.2: guardians and taste */
+export type GuardianKind = 'ice' | 'heart' | 'star' | 'leaf' | 'moon' | 'bell';
+export interface GuardianProps { kind?: GuardianKind; label: string; on?: boolean; near?: Element; from?: Element; fill?: string; svg?: string; sleepNote?: string; onTap?(on: boolean): void }
+export interface GuardianApi { el: HTMLButtonElement; kind: string; label: string; readonly on: boolean; readonly asleep: boolean; set(on: boolean, quiet?: boolean): void; sleep(): void; wake(): void; place(x: number, y: number): void; destroy(): void }
+export interface TasteFinding { rule: string; severity: 'warn' | 'info'; count: number; sample: string; fix: string }
+export interface StoreybrookApi {
+  guardian: ((host: HTMLElement, o: GuardianProps) => GuardianApi | null) & { asleep(): GuardianApi[]; wakeAll(): void; kinds: GuardianKind[] };
+  taste: ((o?: { scope?: Element; log?: boolean }) => TasteFinding[]) & { badge(findings?: TasteFinding[]): HTMLDetailsElement };
+}
 declare global { interface Window { Storeybrook: StoreybrookApi } }
 /** Events on window, as CustomEvent detail: sb:ready {version, theme, density}, sb:theme {theme}, sb:density {density}, sb:back {},
     sb:read {state, progress?, voice?}, sb:nougat {count, delta, reason?}, sb:unlock {id, name}, sb:step {id, index},
-    sb:creature {form, stage}, sb:page {index, count}, sb:drawer {open, id}, sb:dialog {open, id}, sb:sound {on}. */
+    sb:creature {form, stage}, sb:page {index, count}, sb:drawer {open, id}, sb:dialog {open, id}, sb:sound {on},
+    and since 1.2 sb:guardian {kind, label, on} or {kind, label, asleep}, sb:taste {findings, look}. */

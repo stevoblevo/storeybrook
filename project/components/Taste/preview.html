@@ -1,0 +1,16 @@
+<!-- @dsCard group="Story" height=440 -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Taste</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DynaPuff:wdth,wght@75..100,400..700&family=Alegreya:ital,wght@0,400..800;1,400..800&family=Andika:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400..700&family=IM+Fell+English:ital@0;1&family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<style>html,body{margin:0}body.sb-body{min-height:0;background:var(--paper);color:var(--ink);font-family:var(--sb-story)}.pv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;padding:20px 26px}
+.sample{padding:14px;border:2px dashed var(--line);border-radius:12px;background:var(--page)}.sample .eb{font:600 11px/1.6 var(--sb-ui);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin:0 0 6px}.sample h3{margin:0 0 8px;font:500 26px/1.1 var(--sb-display)}
+.out ol{margin:10px 0 0;padding-left:22px;font:400 15px/1.4 var(--sb-ui)}.out li{margin:0 0 9px}.out b{font-weight:700}.out small{display:block;color:var(--ink-muted);font-size:13px}@media(max-width:620px){.pv{grid-template-columns:1fr}}</style></head>
+<body class="sb-body">
+<div class="pv"><div class="sample" id="sample" aria-label="A sample page to read">
+<p class="eb">CHAPTER ONE</p><h3>Your journey starts here!</h3>
+<p>Oops, nothing here yet. Simply tap Start to begin. Only today: don't lose your streak!</p>
+<button class="sb-btn sb-btn--primary sb-btn--sm" type="button">Start</button>
+<div class="sb-lock" style="margin-top:12px;position:relative;height:40px"><span class="sb-lock__why"></span></div>
+</div>
+<div class="out"><button class="sb-btn sb-btn--secondary sb-btn--sm" type="button" id="go">Read the sample</button><ol id="list"></ol></div></div>
+<script>(function(){var S=window.Storeybrook;if(!S)return;S.ensureDefs();var b=document.getElementById('go'),l=document.getElementById('list');b.onclick=function(){var f=S.taste({scope:document.getElementById('sample'),log:false});l.innerHTML='';f.forEach(function(x){var li=document.createElement('li');li.innerHTML='<b></b> <span></span><small></small>';li.children[0].textContent=(x.severity==='warn'?'Fix: ':'Look: ')+x.rule;li.children[1].textContent=x.fix;li.children[2].textContent=x.sample;l.appendChild(li);});b.textContent=f.length+' found. Read again';};b.click();})();</script></body></html>
