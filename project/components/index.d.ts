@@ -113,3 +113,24 @@ declare global { interface Window { Storeybrook: StoreybrookApi } }
     sb:read {state, progress?, voice?}, sb:nougat {count, delta, reason?}, sb:unlock {id, name}, sb:step {id, index},
     sb:creature {form, stage}, sb:page {index, count}, sb:drawer {open, id}, sb:dialog {open, id}, sb:sound {on},
     and since 1.2 sb:guardian {kind, label, on} or {kind, label, asleep}, sb:taste {findings, look}. */
+
+/* paper.js, an add-on loaded after bundle.js (plan O1 and O3) */
+type PaperShape = 'mountain' | 'pine' | 'crane' | 'stone' | 'boat' | 'deer' | { tris: Array<[number[], number[], number[], string?]>; stock?: string; tags?: Record<string, string> };
+interface FoldOptions { x?: number; y?: number; size?: number; stock?: string; color?: string | number[]; tags?: Record<string, string>; open?: number; flip?: boolean; rot?: number; shadow?: boolean; lineWidth?: number; }
+interface RangeOptions { x?: number; y?: number; width?: number; height?: number; peaks?: number; seed?: number; stock?: string; cap?: boolean | string; depth?: number; open?: number; }
+interface StoreybrookPen {
+  look: string; version: string; inks: Record<string, [number, number, number]>; sun: [number, number, number];
+  crease: number; shadow: number; grain: number; shapes: string[];
+  rgb(name: string, alpha?: number): string; stock(name: string): [number, number, number];
+  material(ctx: CanvasRenderingContext2D, kind?: 'fibre' | 'grain' | 'halftone' | 'stipple' | 'knit' | 'mat'): CanvasPattern;
+  fold(ctx: CanvasRenderingContext2D, shape: PaperShape, opts?: FoldOptions): unknown;
+  range(ctx: CanvasRenderingContext2D, opts?: RangeOptions): unknown;
+  ground(ctx: CanvasRenderingContext2D, opts?: { w?: number; h?: number }): void;
+}
+interface StoreybrookLook { id: string; name: string; light: boolean; motion: boolean; print: boolean; }
+interface StoreybrookPaper {
+  pen(look?: string | Element, opts?: { fresh?: boolean }): StoreybrookPen;
+  folded(el: Element, opts?: { shape?: PaperShape; stock?: string; color?: string; tags?: Record<string, string>; label?: string; reveal?: boolean }): { el: Element; render(): void; refold(): void; set(o: object): void; destroy(): void } | null;
+  looks: StoreybrookLook[];
+  paperVersion: string;
+}

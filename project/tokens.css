@@ -42,6 +42,10 @@
   --art-shade: #c7d3cf;
   --art-stone: #d9ddd4;
   --art-water: #6fb0dc;
+  --paper-kami: #e46f7d;
+  --paper-washi: #f3efe4;
+  --paper-kraft: #b68a5b;
+  --paper-foil: #cbd3d9;
   --nougat: #f2dcb8;
   --nougat-nut: #a8743f;
   --wrapper: #d94f7f;
@@ -99,6 +103,10 @@
   --art-shade: #16202e;
   --art-stone: #4a5a73;
   --art-water: #5a8fbf;
+  --paper-kami: #e9b84a;
+  --paper-washi: #3a4a63;
+  --paper-kraft: #8b6a48;
+  --paper-foil: #d4b26a;
   --nougat: #f2dcb8;
   --nougat-nut: #c78e52;
   --wrapper: #e87a9a;
@@ -156,6 +164,10 @@
   --art-shade: #bdbdbd;
   --art-stone: #f2f2f2;
   --art-water: #9e9e9e;
+  --paper-kami: #ffffff;
+  --paper-washi: #ffffff;
+  --paper-kraft: #f0f0f0;
+  --paper-foil: #e8e8e8;
   --nougat: #ffffff;
   --nougat-nut: #000000;
   --wrapper: #000000;
@@ -213,6 +225,10 @@
   --art-shade: #3a3a3a;
   --art-stone: #ffffff;
   --art-water: #00a8e8;
+  --paper-kami: #ffd23f;
+  --paper-washi: #fff8e1;
+  --paper-kraft: #c9955d;
+  --paper-foil: #d9dde2;
   --nougat: #ffe8b0;
   --nougat-nut: #8a4a10;
   --wrapper: #ff3ea5;
@@ -270,6 +286,10 @@
   --art-shade: #c8cfd6;
   --art-stone: #ffffff;
   --art-water: #5c86c9;
+  --paper-kami: #d9452b;
+  --paper-washi: #f1ece0;
+  --paper-kraft: #b5875a;
+  --paper-foil: #c4a24c;
   --nougat: #f2dcb8;
   --nougat-nut: #a8743f;
   --wrapper: #e2452c;
@@ -327,6 +347,10 @@
   --art-shade: #e3c9d0;
   --art-stone: #efe3dc;
   --art-water: #86b4d8;
+  --paper-kami: #e7a6b4;
+  --paper-washi: #f8eeea;
+  --paper-kraft: #c49a7a;
+  --paper-foil: #c98f6a;
   --nougat: #f6e2c4;
   --nougat-nut: #9c5a2a;
   --wrapper: #c96a8a;
@@ -407,6 +431,11 @@
   --tex-deckle: 6;
   --tex-bleed: 14;
   --tex-halftone: 6px;
+  --tex-fold-light: 135;
+  --tex-fold-elevation: 48;
+  --tex-fold-crease: 0.5;
+  --tex-fold-shadow: 0.32;
+  --tex-fold-grain: 0.1;
   --font-display: "DynaPuff", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
   --font-story: "Alegreya", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --font-ui: "Andika", "Segoe UI", ui-sans-serif, system-ui, sans-serif;

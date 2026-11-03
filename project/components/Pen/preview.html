@@ -1,0 +1,32 @@
+<!-- @dsCard group="Play" height=580 -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Pen</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DynaPuff:wdth,wght@75..100,400..700&family=Alegreya:ital,wght@0,400..800;1,400..800&family=Andika:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400..700&family=IM+Fell+English:ital@0;1&family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<style>html,body{margin:0}body.sb-body{min-height:0;background:var(--paper);color:var(--ink);font-family:var(--sb-story)}.pv{padding:18px 22px;box-sizing:border-box}canvas{display:block;width:100%;border-radius:4px}#scene{height:280px}.row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:10px}.row canvas{height:96px}.row p{margin:4px 0 0;font:500 12px/1.3 var(--sb-ui);color:var(--ink-muted);text-align:center}.lbl{margin:14px 0 0;font:600 13px/1.3 var(--sb-ui);color:var(--ink-muted)}</style></head>
+<body class="sb-body">
+<div class="pv">
+<canvas id="scene" aria-label="A paper valley: folded ridges, pines, a boat on the water, a crane in the sky and one foil stone"></canvas>
+<p class="lbl">The shapes, in this look</p>
+<div class="row" id="shapes"></div>
+<p class="lbl">One crane, every look</p>
+<div class="row" id="looks"></div>
+</div>
+<script src="../paper.js"></script>
+<script>(function(){var S=window.Storeybrook;if(!S||!S.pen)return;
+function fit(c){var r=c.getBoundingClientRect(),k=Math.min(2,devicePixelRatio||1);c.width=Math.round(r.width*k);c.height=Math.round(r.height*k);var g=c.getContext('2d');g.setTransform(k,0,0,k,0,0);return{g:g,w:r.width,h:r.height};}
+function cell(host,name,look){var wrap=document.createElement('div'),c=document.createElement('canvas'),p=document.createElement('p');c.setAttribute('aria-label',name);p.textContent=name;wrap.appendChild(c);wrap.appendChild(p);host.appendChild(wrap);return{c:c,look:look,name:name};}
+var shapes=S.pen().shapes.map(function(n){return cell(document.getElementById('shapes'),n);});
+var looks=S.looks.map(function(l){return cell(document.getElementById('looks'),l.name,l.id);});
+function draw(){var P=S.pen(document.body),f=fit(document.getElementById('scene')),g=f.g,W=f.w,H=f.h;
+P.ground(g,{w:W,h:H});
+P.range(g,{x:-20,y:H*.82,width:W+40,height:H*.62,peaks:5,seed:4,cap:true,depth:.8,stock:'wash-brook'});
+g.fillStyle=P.rgb('art-water',.55);g.fillRect(0,H*.86,W,H*.14);
+P.range(g,{x:-30,y:H*.9,width:W*.62,height:H*.3,peaks:4,seed:11,stock:'wash-meadow'});
+P.fold(g,'pine',{x:W*.1,y:H*.66,size:H*.13});P.fold(g,'pine',{x:W*.16,y:H*.72,size:H*.1});
+P.fold(g,'stone',{x:W*.42,y:H*.84,size:H*.06});
+P.fold(g,'boat',{x:W*.74,y:H*.86,size:H*.1});
+P.fold(g,'crane',{x:W*.8,y:H*.2,size:H*.13,flip:true});
+shapes.forEach(function(s){var q=fit(s.c);P.ground(q.g,{w:q.w,h:q.h});P.fold(q.g,s.name,{x:q.w/2,y:q.h/2,size:q.h*.36});});
+looks.forEach(function(s){var L=S.pen(s.look),q=fit(s.c);L.ground(q.g,{w:q.w,h:q.h});L.fold(q.g,'crane',{x:q.w/2,y:q.h/2,size:q.h*.38});});}
+draw();var t=0;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(draw,120);});
+new MutationObserver(function(){draw();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></body></html>

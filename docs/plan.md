@@ -4,7 +4,7 @@ Owner: Bleve. Last updated 3 Nov 2026 by Claude (session 01ApCRaiX6JVCSowgVuAsG4
 
 ## Where things stand
 
-- `main` is **Storeybrook 1.2.0**: 30 components (Guardian and Taste are new), six looks, 16 brand-book chapters, merged 3 Nov from `claude/storeybrook-1-2`.
+- `main` is **Storeybrook 1.3.0**: 32 components, six looks, 16 brand-book chapters. 1.2 (Guardian and Taste) was merged 3 Nov from `claude/storeybrook-1-2`; 1.3 adds paper (`components/paper.js`: the Pen and Folded).
 - The showcase (`index.html`) gives each look a scene and hides seven pets along the brook; "Play it for me" runs the adventure.
 - Consumers: AND SO (all six looks as `sb-*` skins, on a fork of the 1.0 bundle), the Malachi sites (a 1.0 copy), Reignfawn (its own origami, daylight, knight, ink and comix looks).
 
@@ -14,9 +14,9 @@ Origami today is folded-paper styling for editors and settings: 45° stones, dog
 
 | ID | Task | Acceptance check | Size | Who | Status |
 | --- | --- | --- | --- | --- | --- |
-| O1 | The papercraft pen: `Storeybrook.paper(look)` (resolved inks and stocks) and `Storeybrook.fold(ctx, shape, opts)`, which draws a shape as folded paper lit from one direction: facet shades, crease lines, a cast shadow, paper grain | A canvas demo draws a mountain, a fawn-shaped head and a crane in Origami and in two other looks from the pen alone | M | Claude | doing |
-| O2 | Origami tokens: paper stocks (`kami`, `washi`, `kraft`, `foil`), light direction, crease and fold-shadow strengths, used by the CSS and the pen | `tokens.json` has them; the docs token table shows them | S | Claude | doing |
-| O3 | The Folded component: a DOM figure built of facets (CSS, no canvas) that folds open on reveal and lies flat under reduced motion | README and preview; works inside any look, best in Origami | M | Claude | doing |
+| O1 | The papercraft pen: `Storeybrook.pen(look)` (resolved inks, stocks and materials) with `pen.fold(ctx, shape, opts)` and `pen.range(ctx, opts)`, which draw a shape as folded paper lit from one direction: facet shades, crease lines, a cast shadow, paper grain | A canvas demo draws a mountain, a fawn-shaped head and a crane in Origami and in two other looks from the pen alone (the Pen preview: one valley, six shapes, one crane in all six looks) | M | Claude | done (1.3.0, branch `claude/O1-O3-papercraft`) |
+| O2 | Origami tokens: paper stocks (`kami`, `washi`, `kraft`, `foil`), light direction, crease and fold-shadow strengths, used by the CSS and the pen | `tokens.json` has them; the docs token table shows them | S | Claude | done (1.3.0) |
+| O3 | The Folded component: a DOM figure built of facets (CSS, no canvas) that folds open on reveal and lies flat under reduced motion | README and preview; works inside any look, best in Origami | M | Claude | done (1.3.0) |
 | O4 | The showcase's Origami scene becomes a papercraft diorama: the level maker refolds a paper valley (pen) instead of only a map | Scene shows the valley; changing a control refolds it | M | open | open |
 | O5 | The creature in paper: `creatureSVG` draws faceted forms in Origami | Every stage and form reads as folded paper in Origami | M | open | open |
 | O6 | Hand O1 to Reignfawn and AND SO through their own rules (candidate branch and PR) | A PR in each that draws its origami from the pen | M | open | open |

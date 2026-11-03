@@ -12,7 +12,7 @@ A look is a complete material: paper, pigments, inks, fonts, edges and motion. A
 
 **Comix** (`comix`). Halftone, panels and speech balloons: 3px ink borders, offset shadows (`4px 4px 0`), magenta `rose`, Bangers for display and Comic Neue for everything else. Use it for loud chapters, title cards and sound effects; it is the one look where an exclamation mark is at home.
 
-**Origami** (`origami`). Folded paper on a green cutting mat: facets instead of washes, dog-eared sheets, vermilion `rose`, indigo `cerulean`, Zen Maru Gothic for display and interface. Stones and seals turn 45°. Use it for making things: editors, level makers, settings.
+**Origami** (`origami`). Folded paper on a green cutting mat: facets instead of washes, dog-eared sheets, vermilion `rose`, indigo `cerulean`, Zen Maru Gothic for display and interface. Stones and seals turn 45°. Use it for making things (editors, level makers, settings) and as the papercraft world of a game: since 1.3 the Pen folds mountains, pines, cranes and stones from the same paper on canvas, lit from the top left, and the Folded figure does it in the page.
 
 **Skein silk** (`skein`). Silk, copper thread and lace: blush paper, a `copper` accent, `sap` (the mint cardigan) as the cue, Caveat for display, a dashed copper stitch around every sheet. Use it for the doll's chapters, keepsakes and the sticker album.
 

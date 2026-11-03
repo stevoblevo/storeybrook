@@ -26,6 +26,7 @@ project/
   tokens.json                All tokens (six looks as color themes, type, spacing, radius, …) as lists
   components/
     bundle.js                One classic script that assigns window.Storeybrook
+    paper.js                 The paper add-on (Storeybrook.pen and Folded): load it after bundle.js
     bundle.css               Component styles and the six looks' hooks
     index.d.ts               Types, as documentation of the API
     <Component>/README.md    Usage guidelines (first sentence = summary)

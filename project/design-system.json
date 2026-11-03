@@ -455,9 +455,9 @@
   ],
   "lastChange": {
     "by": "Bleve",
-    "at": "2026-11-02T19:40:00Z",
+    "at": "2026-11-03T21:30:00Z",
     "via": "Claude",
-    "note": "Storeybrook 1.2: guardians graduate (Guardian component, six drawn kinds, sleep and wake) and Taste (the brand book as a page check); chapter 16, Taste; budgets 80 KB and 60 KB."
+    "note": "Storeybrook 1.3: paper. The Pen (Storeybrook.pen: a look's inks, paper stocks and folded shapes for canvas) and Folded (the same folds in the page) in components/paper.js, an add-on; paper and fold tokens; Storeybrook.looks as data. Plan O1 to O3."
   },
   "layout": "files",
   "libraries": [],

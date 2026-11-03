@@ -246,12 +246,28 @@
    "summary": "Saelion: a bunny, a tree octopus and a butterfly pixie at once, which grows from an egg."
   },
   {
+   "name": "Folded",
+   "group": "Play",
+   "height": 330,
+   "preview": "project/components/Folded/preview.html",
+   "readme": "project/components/Folded/README.md",
+   "summary": "A figure folded from paper in the page itself: an SVG built from the same facets as the Pen, which folds itself the first time it comes into view."
+  },
+  {
    "name": "Guardian",
    "group": "Play",
    "height": 330,
    "preview": "project/components/Guardian/preview.html",
    "readme": "project/components/Guardian/README.md",
    "summary": "A small drawn object, with no visible label, that floats near the creature and switches one real thing when tapped; it can be dragged anywhere and flicked off the page to sleep."
+  },
+  {
+   "name": "Pen",
+   "group": "Play",
+   "height": 580,
+   "preview": "project/components/Pen/preview.html",
+   "readme": "project/components/Pen/README.md",
+   "summary": "A look's inks and paper for canvas: `Storeybrook.pen(look)` resolves the look's colours to RGB and draws shapes as folded paper lit from one direction, so a game drawn on canvas looks like the page around it."
   },
   {
    "name": "Button",

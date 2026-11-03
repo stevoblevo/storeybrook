@@ -94,3 +94,8 @@ Put `data-sb="daylight"` (or another look) on any panel and it becomes a Storeyb
 - `bundle.js` under 80 KB and `bundle.css` under 60 KB before compression (1.2.0: 75.6 KB and 57.9 KB; 60 KB and 56 KB until 1.2).
 - No network from the bundle; fonts are the largest cost: load only the families a page uses.
 - One canvas at most per page belongs to a game, not the kit; the kit draws with SVG and CSS.
+
+## Paper, an add-on
+
+`components/paper.js` is loaded after `bundle.js` by pages that draw folded paper (Pen, Folded). It adds `Storeybrook.pen(look)`, `Storeybrook.folded(el)` and `Storeybrook.looks` and changes nothing else, so a page that draws no paper does not pay for it. Its budget is 28 KB. Canvas code asks the pen for colours by token name (`P.rgb('art-shade')`), never by hex value, so one drawing works in all six looks. The paper stocks (`paper-kami`, `paper-washi`, `paper-kraft`, `paper-foil`) and the fold light (`tex-fold-light`, `tex-fold-elevation`, `tex-fold-crease`, `tex-fold-shadow`, `tex-fold-grain`) are tokens like any other.
+

@@ -1,11 +1,11 @@
-/* Storeybrook 1.2.0 · behaviors for storybook pages and little games. One classic script, no dependencies, no network.
+/* Storeybrook 1.3.0 · behaviors for storybook pages and little games. One classic script, no dependencies, no network.
    window.Storeybrook: theme, density, nav, read (read aloud), rewards (nougats), unlocks, brook, creature, spread,
    fold, blot, drawer, dialog, toast, sound, haptic, icons, guardian, taste. Every module checks reduced motion at run time and
    wraps storage, so a page works with storage blocked and with JS off (markup stays readable). */
 (function (w, d) {
   'use strict';
   if (w.Storeybrook && w.Storeybrook.version) return;
-  var VERSION = '1.2.0';
+  var VERSION = '1.3.0';
   var THEMES = [
     { id: 'daylight', name: 'Meta Daylight', line: 'Watercolor on north-light paper' },
     { id: 'knight', name: 'Knight Night', line: 'A cobalt paper theatre by candle' },
