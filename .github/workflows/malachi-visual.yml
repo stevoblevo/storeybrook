@@ -1,0 +1,47 @@
+name: Malachi corrective candidate visual QA
+on:
+  push:
+    branches: [sae/malachi-1.0.1-readalong-art]
+permissions:
+  contents: read
+concurrency:
+  group: malachi-corrective-visual
+  cancel-in-progress: true
+jobs:
+  visual:
+    if: github.repository == 'stevoblevo/storeybrook' && github.event.repository.visibility == 'public'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Audit exact candidate
+        run: |
+          git rev-parse HEAD
+          python3 tests/show-tell/verify.py
+          node tests/malachi-visual/source.mjs
+      - name: Install pinned test library
+        run: npm install --prefix "$RUNNER_TEMP/malachi-qa" --ignore-scripts --no-audit --no-fund playwright@1.64.1
+      - name: Existing browser regressions
+        id: regressions
+        continue-on-error: true
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/malachi-qa/node_modules/playwright/index.mjs
+        run: node tests/show-tell/smoke.mjs
+      - name: Capture layout evidence
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/malachi-qa/node_modules/playwright/index.mjs
+        run: node tests/malachi-visual/capture.mjs
+      - name: Preserve screenshots and geometry
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: malachi-visual-${{ github.sha }}
+          path: tests/malachi-visual/output/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Enforce original regressions
+        if: always() && steps.regressions.outcome != 'success'
+        run: exit 1
