@@ -1,0 +1,418 @@
+diff --git a/bespoke-v5/index.html b/bespoke-v5/index.html
+index 38fbbf92623d870e9de0cc369be90ca4deba2db9..23fce0655952b4b99d0da62d29fee7ec2ce663c8 100644
+--- a/bespoke-v5/index.html
++++ b/bespoke-v5/index.html
+@@ -500,13 +500,15 @@
+   .panel .pc, .shelf .sc{padding-bottom:17px}
+ }
+ /* ---------- quiet & reduced motion ---------- */
+-body.quiet .hero-art img{animation:none}
+-body.quiet #pip.hop{animation:none}
++body.quiet .hero-art img, body.quiet #pip.hop, body.quiet .gig.fresh,
++body.quiet .arch.next::after, body.quiet #bloom.go{animation:none}
++body.quiet{scroll-behavior:auto}
++body.quiet .rv{opacity:1;transform:none;transition:none}
+ @media (prefers-reduced-motion:reduce){
+   html{scroll-behavior:auto}
+   .hero-art img, .gig.fresh, .arch.next::after, #pip.hop{animation:none}
+   .rv{opacity:1; transform:none; transition:none}
+-  #bloom.go, #veil.go{animation-duration:.01s}
++  #bloom.go, #veil.go{animation:none}
+ }
+ </style>
+ </head>
+@@ -670,14 +672,23 @@
+           </div>
+           <div class="field">
+             <label for="g-price">Bounty <span class="hint">(USD)</span></label>
+-            <input id="g-price" type="number" min="10" step="1" value="120" inputmode="numeric">
++            <input id="g-price" type="number" min="10" step="1" value="120" inputmode="numeric" aria-describedby="brief-scope posted-msg">
+           </div>
+         </div>
+         <div class="lumi-note" id="lumi-note" aria-live="polite"><b>Lumi tastes</b><span id="lumi-note-text">“Cherry — bright and bold. Work that wants to be <i>seen</i>.”</span></div>
+         <div class="pinrow">
+-          <button class="btn btn-ink" type="submit">Pin it to the board</button>
++          <button class="btn btn-ink" type="submit">Pin to this demo board</button>
++          <button class="btn btn-line" id="export-brief" type="button">Download brief (.txt)</button>
+           <span class="posted-msg" id="posted-msg" aria-live="polite"></span>
+         </div>
++        <p class="small" id="brief-scope">A local rehearsal: pinning saves to this browser when storage is available. Nothing is published, commissioned or paid. Download your brief to keep a separate copy.</p>
++        <p class="statusline" id="demo-storage-status" role="status" aria-live="polite"></p>
++        <details id="brief-export" hidden>
++          <summary>Copyable brief</summary>
++          <label for="brief-copy">Your brief as plain text</label>
++          <textarea id="brief-copy" readonly rows="10"></textarea>
++          <p class="small" id="export-status" role="status" aria-live="polite"></p>
++        </details>
+       </form>
+ 
+       <div id="find" class="rv">
+@@ -689,6 +700,7 @@
+           </div>
+         </div>
+         <div class="chips" id="chips" role="group" aria-label="Filter by family"></div>
++        <p class="small" id="board-summary" role="status" aria-live="polite" aria-atomic="true"></p>
+         <div class="board" id="board"></div>
+         <p class="board-empty" id="board-empty" hidden>No work stands in this doorway just now. Post some — the house provides.</p>
+       </div>
+@@ -752,12 +764,12 @@
+           <p class="small" id="pair-proj" style="margin:8px 0 0" aria-live="polite"></p>
+         </div>
+         <div class="room-actions">
+-          <button class="btn btn-gold" id="fund-btn" type="button">Accept &amp; fund the hold</button>
++          <button class="btn btn-gold" id="fund-btn" type="button">Simulate funding the hold</button>
+           <button class="btn btn-ghost" id="leave-room" type="button">Not this one — back to the board</button>
+         </div>
+         <div class="holdbox" id="holdbox" role="status">
+-          <p class="hb-t">Funded — held by the house.</p>
+-          <p class="small" style="margin:0">The case holds what's precious until the right hands open it. Undelivered means refunded; disputed means frozen for both sides, equally, while a human reads the record. <a href="#deliver">Walk to Deliver →</a></p>
++          <p class="hb-t">Rehearsal — simulated hold.</p>
++          <p class="small" style="margin:0">This is a local simulation; no money is held or transferred. The proposed house rules keep disputed holds frozen while a person reviews them. No reviewer is connected in this build. <a href="#deliver">Walk to Deliver →</a></p>
+         </div>
+         <p class="statusline" id="room-status" aria-live="polite"></p>
+       </div>
+@@ -785,16 +797,17 @@
+       </div>
+       <div id="deliver-live" hidden>
+         <h3 id="d-title" style="font-size:1.55rem"></h3>
+-        <p class="small" id="d-status" style="margin-top:4px">Held by the house, awaiting the maker's hands.</p>
++        <p class="small" id="d-status" style="margin-top:4px" role="status" aria-live="polite">Rehearsal: waiting for simulated delivery.</p>
+         <div class="room-actions">
+           <button class="btn btn-gold" id="deliver-btn" type="button">The maker delivers</button>
+           <button class="btn btn-gold" id="accept-btn" type="button" disabled>Accept &amp; release the hold</button>
+           <button class="btn btn-ghost" id="off-btn" type="button" disabled>Something's off</button>
+         </div>
+         <div class="dispute" id="dispute" role="status">
+-          <p style="margin-top:0"><b>Step one of the ladder: talk first (48 hours).</b> The clock pauses; nothing auto-accepts while you talk. What was agreed, what arrived, what would fix it — say it in the gig room, where the record is kept.</p>
+-          <p class="small">If talking doesn't mend it, <b>Dominic's Desk</b> reads the whole trail and proposes a split — release, partial, refund, or re-make. A human decides; the desk is his office in-fiction and his accountability in fact.</p>
+-          <button class="btn btn-ink" id="desk-btn" type="button">Escalate to Dominic's Desk</button>
++          <p style="margin-top:0"><b>Proposed first step: talk first (48 hours).</b> This rehearsal pauses acceptance when you raise a concern. It runs no deadline and sends no message. In the intended service, both sides would discuss what was agreed, what arrived, and what would fix it.</p>
++          <p class="small"><b>Dominic's Desk</b> is a proposed human review service. This button only rehearses escalation on this device; nobody receives a case. Resume the rehearsal explicitly when you want to try acceptance.</p>
++          <button class="btn btn-ink" id="desk-btn" type="button">Rehearse escalation to Dominic's Desk</button>
++          <button class="btn btn-line" id="resume-rehearsal" type="button">Resume this rehearsal</button>
+           <p class="statusline" id="desk-status" aria-live="polite"></p>
+         </div>
+         <div class="receipt" id="receipt">
+@@ -956,7 +969,8 @@
+ "use strict";
+ var $=function(id){return document.getElementById(id);};
+ function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+-var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
++var motionQuery=window.matchMedia("(prefers-reduced-motion: reduce)");
++function motionOff(){ return motionQuery.matches||document.body.classList.contains("quiet"); }
+ 
+ /* ---------------- data ---------------- */
+ var FAMILIES=["Makers & Objects","Illustration & Image","Wordcraft & Letters","Voice, Sound & Music",
+@@ -999,18 +1013,40 @@
+ 
+ /* ---------------- state ---------------- */
+ var LS="bespoke-gig-v5-state";
+-var state={posted:[],shelf:[],pairs:{},count:0,room:null};
++var state={posted:[],shelf:[],pairs:Object.create(null),count:0,room:null};
++var storageWarning="", saveWarning="";
++function validGig(g){
++  return g&&typeof g==="object"&&["id","title","by","family","shape","note"].every(function(k){return typeof g[k]==="string";})&&
++    typeof g.price==="number"&&isFinite(g.price)&&g.price>=10;
++}
++function validMark(e){
++  return e&&typeof e==="object"&&["title","by","date","ref"].every(function(k){return typeof e[k]==="string";})&&
++    ["n","price","makerGot","fees"].every(function(k){return typeof e[k]==="number"&&isFinite(e[k])&&e[k]>=0;});
++}
++function storageStatus(){ $("demo-storage-status").textContent=[storageWarning,saveWarning].filter(Boolean).join(" "); }
+ try{
+   var raw=localStorage.getItem(LS);
+   if(raw){var p=JSON.parse(raw); if(p&&typeof p==="object"){
+-    state.posted=Array.isArray(p.posted)?p.posted:[];
+-    state.shelf=Array.isArray(p.shelf)?p.shelf:[];
+-    state.pairs=(p.pairs&&typeof p.pairs==="object")?p.pairs:{};
+-    state.count=typeof p.count==="number"?p.count:state.shelf.length;
++    state.posted=Array.isArray(p.posted)?p.posted.filter(validGig):[];
++    state.shelf=Array.isArray(p.shelf)?p.shelf.filter(validMark):[];
++    state.pairs=Object.create(null);
++    if(p.pairs&&typeof p.pairs==="object") Object.keys(p.pairs).forEach(function(k){
++      if(typeof p.pairs[k]==="number"&&isFinite(p.pairs[k])&&p.pairs[k]>=0) state.pairs[k]=p.pairs[k];
++    });
++    state.count=Math.max(typeof p.count==="number"&&isFinite(p.count)&&p.count>=0?Math.floor(p.count):0,
++      state.shelf.reduce(function(n,e){return Math.max(n,e.n);},0));
++    if((Array.isArray(p.posted)&&state.posted.length!==p.posted.length)||(Array.isArray(p.shelf)&&state.shelf.length!==p.shelf.length))
++      storageWarning="Some saved entries could not be read. Valid entries are still here; download a brief before changing this browser's saved data.";
+     state.room=(p.room&&typeof p.room==="object")?p.room:null;
+   }}
+-}catch(e){}
+-function save(){try{localStorage.setItem(LS,JSON.stringify(state));}catch(e){}}
++}catch(e){ storageWarning="Saved progress could not be read. You can rehearse here and download your brief; do not rely on this browser remembering it."; }
++function save(){
++  try{localStorage.setItem(LS,JSON.stringify(state));saveWarning="";storageStatus();return true;}
++  catch(e){
++    saveWarning="Changes are only in this open page: browser storage could not save them. Download your brief before leaving.";
++    storageStatus();return false;
++  }
++}
+ function money(n){return "$"+Number(n||0).toFixed(2);}
+ function skeinRef(seed){
+   var h1=0x811c9dc5,h2=0x01000193,i,c;
+@@ -1021,6 +1057,7 @@
+ /* ---------------- motion helpers ---------------- */
+ function bloom(fromEl){
+   var b=$("bloom");
++  if(motionOff()){b.classList.remove("go");return;}
+   if(fromEl&&fromEl.getBoundingClientRect){
+     var r=fromEl.getBoundingClientRect();
+     b.style.setProperty("--bx", ((r.left+r.width/2)/window.innerWidth*100)+"%");
+@@ -1030,11 +1067,11 @@
+ }
+ function veilGo(sel){
+   var t=document.querySelector(sel); if(!t) return;
+-  t.scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});
++  t.scrollIntoView({behavior:motionOff()?"auto":"smooth",block:"start"});
+ }
+ function veilJump(sel){
+   var t=document.querySelector(sel); if(!t) return;
+-  if(reduced||document.body.classList.contains("quiet")){ t.scrollIntoView({behavior:"auto",block:"start"}); return; }
++  if(motionOff()){ t.scrollIntoView({behavior:"auto",block:"start"}); return; }
+   var v=$("veil"); v.classList.remove("go"); void v.offsetWidth; v.classList.add("go");
+   window.setTimeout(function(){ t.scrollIntoView({behavior:"auto",block:"start"}); }, 280);
+ }
+@@ -1065,7 +1102,7 @@
+   window.clearTimeout(railTimer);
+   railTimer=window.setTimeout(function(){ rail.classList.add("quiet"); }, 6500);
+   var pip=$("pip");
+-  pip.classList.remove("hop"); void pip.offsetWidth; pip.classList.add("hop");
++  pip.classList.remove("hop"); if(!motionOff()){ void pip.offsetWidth; pip.classList.add("hop"); }
+ }
+ $("rail-hush").addEventListener("click",function(){
+   window.clearTimeout(railTimer);
+@@ -1095,7 +1132,7 @@
+ $("enter-btn").addEventListener("click",function(){
+   bloom(this);
+   var btn=this;
+-  window.setTimeout(function(){ veilGo("#dance"); }, reduced?0:380);
++  window.setTimeout(function(){ veilGo("#dance"); }, motionOff()?0:380);
+ });
+ document.querySelectorAll(".panel").forEach(function(b){ b.addEventListener("click",function(){ veilGo(b.getAttribute("data-goto")); }); });
+ $("records-btn").addEventListener("click",function(){ veilJump("#records"); });
+@@ -1139,17 +1176,60 @@
+   ev.preventDefault();
+   var text=$("g-text").value.trim();
+   if(!text){ lumiSay("\u201CThe one required thing: the strange thing itself, plainly. Everything else, the house can carry.\u201D"); $("g-text").focus(); return; }
+-  var price=parseFloat($("g-price").value); if(!(price>=10)) price=120;
++  var price=Number($("g-price").value);
++  if(!isFinite(price)||price<10){
++    $("g-price").setAttribute("aria-invalid","true");
++    $("posted-msg").textContent="Choose a bounty of at least $10. Your brief has not been pinned; the amount has not been changed.";
++    $("g-price").focus();return;
++  }
++  $("g-price").removeAttribute("aria-invalid");
+   var gig={ id:"u"+Date.now(), title:text, by:$("g-name").value.trim()||"Signed by the house",
+     family:famSel.value, shape:$("g-shape").value,
+-    note:"Posted at the board just now — Pip carried it up personally. Flavor: "+flavSel.value+".",
++    note:"Pinned in this local rehearsal; not published. Flavor: "+flavSel.value+".",
+     price:price, priceNote:"" };
+-  state.posted.unshift(gig); save();
+-  famFilter="All"; $("q").value=""; query=""; syncChips(); renderBoard(gig.id);
+-  $("posted-msg").textContent="Posted. Pip has pinned it — look, there it is, still warm. \u2726";
+-  $("g-text").value="";
++  state.posted.unshift(gig); var saved=save();
++  famFilter=gig.family; $("q").value=""; query=""; syncChips(); renderBoard(gig.id);
++  $("posted-msg").textContent=saved
++    ?"Pinned to this demo board and saved in this browser — not published. Your brief stays in the form so you can download it."
++    :"Pinned only for this open page — not saved or published. Your brief stays in the form; download a copy before leaving.";
+ });
+ 
++/* A user-invoked portable brief; no upload, account or payment. */
++$("export-brief").addEventListener("click",function(){
++  var request=$("g-text").value.trim();
++  if(!request){ $("posted-msg").textContent="Write the work you want made before downloading a brief."; $("g-text").focus();return; }
++  var amount=$("g-price").value.trim();
++  var brief=[
++    "Bespoke.gig — local rehearsal brief",
++    "This is a draft, not a published gig, commission or payment.",
++    "",
++    "Request: "+request,
++    "By: "+($("g-name").value.trim()||"Signed by the house"),
++    "Family: "+famSel.value,
++    "Shape: "+$("g-shape").value,
++    "Flavor: "+flavSel.value,
++    "Proposed bounty (USD): "+(amount||"Not set"),
++    "",
++    "The proposed amount is copied as entered; confirm scope, schedule and price with a real collaborator."
++  ].join("\n")+"\n";
++  $("brief-copy").value=brief;
++  $("brief-export").hidden=false; $("brief-export").open=true;
++  var link=null, url=null;
++  try{
++    if(!window.Blob||!window.URL||!window.URL.createObjectURL) throw new Error("Downloads unavailable");
++    url=window.URL.createObjectURL(new window.Blob([brief],{type:"text/plain;charset=utf-8"}));
++    link=document.createElement("a");link.href=url;link.download="bespoke-gig-brief.txt";
++    document.body.appendChild(link);link.click();link.remove();
++    window.setTimeout(function(){window.URL.revokeObjectURL(url);},1000);
++    $("export-status").textContent="Download requested. The same plain text is below if your browser did not save the file.";
++  }catch(e){
++    if(link&&link.parentNode) link.remove();
++    if(url&&window.URL&&window.URL.revokeObjectURL) window.URL.revokeObjectURL(url);
++    $("export-status").textContent="This browser could not start a download. Copy your brief from the text field below.";
++    $("brief-copy").focus();$("brief-copy").select();
++  }
++});
++
+ /* ---------------- board ---------------- */
+ var famFilter="All", query="";
+ var chipsEl=$("chips");
+@@ -1204,9 +1284,10 @@
+   });
+   shown.forEach(function(g){ board.appendChild(gigCard(g)); });
+   $("board-empty").hidden=shown.length>0;
++  $("board-summary").textContent=shown.length+" demo "+(shown.length===1?"gig":"gigs")+" · "+famFilter+(query?" · search: "+query:"");
+   if(freshId){
+     var el=board.querySelector('[data-id="'+freshId+'"]');
+-    if(el){ el.classList.add("fresh"); el.scrollIntoView({behavior:reduced?"auto":"smooth",block:"nearest"}); }
++    if(el){ el.classList.add("fresh"); el.tabIndex=-1; el.focus({preventScroll:true}); el.scrollIntoView({behavior:motionOff()?"auto":"smooth",block:"nearest"}); }
+   }
+ }
+ 
+@@ -1227,6 +1308,7 @@
+       quote:room.quote||null,
+       ms:(document.querySelector('input[name="ms"]:checked')||{}).value||"1",
+       funded:!!room.funded, delivered:!!room.delivered, accepted:!!room.accepted,
++      disputed:!!room.disputed, escalated:!!room.escalated,
+       rc:room.rc||null };
+   }
+   save();
+@@ -1237,7 +1319,7 @@
+     $("room-status").textContent="A funded agreement is already in the case — \u201C"+room.gig.title+"\u201D. It keeps the room until it delivers; in this rehearsal the house holds one case at a time.";
+     return;
+   }
+-  room={gig:g, funded:false, delivered:false, accepted:false, quote:null, rc:null};
++  room={gig:g, funded:false, delivered:false, accepted:false, disputed:false, escalated:false, quote:null, rc:null};
+   $("room-empty").hidden=true; $("room-live").hidden=false;
+   $("room-title").textContent=g.title;
+   $("room-maker").textContent="with "+g.by+" · "+g.family+" · "+g.shape+" — Dominic's reading: what you'll do, what you'll receive, when it's due, who decides it's finished, and what happens if things go wrong are all on this page.";
+@@ -1245,7 +1327,7 @@
+   document.querySelector('input[name="ms"][value="1"]').checked=true;
+   ["r-price","r-tip"].forEach(function(id){ $(id).disabled=false; });
+   document.querySelectorAll('input[name="ms"]').forEach(function(r){ r.disabled=false; });
+-  var fb=$("fund-btn"); fb.disabled=false; fb.textContent="Accept & fund the hold";
++  var fb=$("fund-btn"); fb.disabled=false; fb.textContent="Simulate funding the hold";
+   $("holdbox").classList.remove("on");
+   $("room-status").textContent="Dominic has read the brief. The arithmetic is below — check it before you fund it.";
+   updateMath();
+@@ -1290,11 +1372,11 @@
+   var q=room.quote;
+   ["r-price","r-tip"].forEach(function(id){ $(id).disabled=true; });
+   document.querySelectorAll('input[name="ms"]').forEach(function(r){ r.disabled=true; });
+-  var fb=$("fund-btn"); fb.disabled=true; fb.textContent="Funded \u2713 — the case is closed";
++  var fb=$("fund-btn"); fb.disabled=true; fb.textContent="Rehearsal: simulated hold \u2713";
+   $("holdbox").classList.add("on");
+   $("deliver-empty").hidden=true; $("deliver-live").hidden=false;
+   $("d-title").textContent=room.gig.title;
+-  $("d-status").textContent="Held by the house — "+money(q.total)+" in the case, awaiting the maker's hands.";
++  $("d-status").textContent="Rehearsal: "+money(q.total)+" in a simulated hold, awaiting delivery. No money moved.";
+   $("deliver-btn").disabled=false; $("accept-btn").disabled=true; $("off-btn").disabled=true;
+   $("dispute").classList.remove("on"); $("receipt").classList.remove("on");
+   var db=$("desk-btn"); db.disabled=false; $("desk-status").textContent="";
+@@ -1321,7 +1403,7 @@
+   if(q.price<10){ $("room-status").textContent="The house minimum is $10 — the card rail eats anything smaller. Raise the price, and the case will close."; $("r-price").focus(); return; }
+   room.funded=true; room.quote=q;
+   applyFundedUI();
+-  $("room-status").textContent="Funded. "+money(q.total)+" sits in the case — not spent, not the maker's yet. Walk to Deliver when the work comes home.";
++  $("room-status").textContent="Rehearsal: "+money(q.total)+" in a simulated hold. No money moved. Walk to Deliver to try the next step.";
+   persistRoom();
+ });
+ $("leave-room").addEventListener("click",function(){
+@@ -1331,7 +1413,7 @@
+ function restoreRoom(){
+   var snap=state.room; if(!snap) return;
+   var g=findGig(snap.gid); if(!g){ state.room=null; save(); return; }
+-  room={gig:g, funded:!!snap.funded, delivered:!!snap.delivered, accepted:!!snap.accepted, quote:null, rc:snap.rc||null};
++  room={gig:g, funded:!!snap.funded, delivered:!!snap.delivered, accepted:!!snap.accepted, disputed:!!snap.disputed, escalated:!!snap.escalated, quote:null, rc:snap.rc||null};
+   $("room-empty").hidden=true; $("room-live").hidden=false;
+   $("room-title").textContent=g.title;
+   $("room-maker").textContent="with "+g.by+" · "+g.family+" · "+g.shape+" — Dominic's reading: what you'll do, what you'll receive, when it's due, who decides it's finished, and what happens if things go wrong are all on this page.";
+@@ -1341,11 +1423,11 @@
+   if(snap.quote&&snap.funded){ room.quote=snap.quote; renderMath(snap.quote); } else { updateMath(); }
+   if(room.funded){
+     applyFundedUI();
+-    $("room-status").textContent="The room kept your place — this agreement is funded and held. The case remembers, even when the browser forgets.";
+-    if(room.delivered&&!room.accepted){ applyDeliveredUI(); }
++    $("room-status").textContent="Restored from this browser: a rehearsal agreement with a simulated hold. No money moved.";
++    if(room.delivered&&!room.accepted){ applyDeliveredUI(); if(room.disputed) applyDisputeUI(); }
+     if(room.accepted&&room.rc){
+       $("deliver-btn").disabled=true; $("accept-btn").disabled=true; $("off-btn").disabled=true;
+-      $("d-status").textContent="Accepted. The hold is released, the maker is paid, and the agreement is kept — find its mark on your shelf in Grow.";
++      $("d-status").textContent="Rehearsal accepted: the simulated hold is released and a demo mark is on your shelf in Grow. No money moved.";
+       fillReceipt(room.rc);
+     }
+   } else {
+@@ -1360,13 +1442,35 @@
+   applyDeliveredUI();
+   persistRoom();
+ });
+-$("off-btn").addEventListener("click",function(){ $("dispute").classList.add("on"); $("dispute").scrollIntoView({behavior:reduced?"auto":"smooth",block:"nearest"}); });
++function applyDisputeUI(){
++  $("dispute").classList.add("on");
++  $("accept-btn").disabled=true;
++  $("off-btn").disabled=true;
++  $("desk-btn").disabled=!!room.escalated;
++  $("d-status").textContent="Rehearsal paused: acceptance is blocked while this concern is open. No money moved.";
++  $("desk-status").textContent=room.escalated
++    ?"Escalation rehearsed locally; no case was sent and no human review is underway. Acceptance stays paused until you resume this rehearsal."
++    :"The concern is kept in this rehearsal. Try the escalation step, or explicitly resume when you want to continue.";
++}
++$("off-btn").addEventListener("click",function(){
++  if(!room||!room.delivered||room.accepted)return;
++  room.disputed=true;room.escalated=false;applyDisputeUI();persistRoom();
++  $("desk-btn").focus({preventScroll:true});
++  $("dispute").scrollIntoView({behavior:motionOff()?"auto":"smooth",block:"nearest"});
++});
+ $("desk-btn").addEventListener("click",function(){
+-  this.disabled=true;
+-  $("desk-status").textContent="Dominic's Desk has the record. The hold stays frozen — both sides equal — while a human reads it. (In this rehearsal the desk is a promise; in the house it is a person, and the wait is five business days at most.)";
++  if(!room||!room.disputed||room.accepted)return;
++  room.escalated=true;applyDisputeUI();persistRoom();
+ });
++$("resume-rehearsal").addEventListener("click",function(){
++  if(!room||!room.disputed||room.accepted)return;
++  room.disputed=false;room.escalated=false;
++  $("dispute").classList.remove("on");applyDeliveredUI();persistRoom();
++  $("d-status").textContent="Rehearsal resumed by you: you may now try acceptance or raise a concern again. No money moved.";
++  $("accept-btn").focus();
++});
+ $("accept-btn").addEventListener("click",function(){
+-  if(!room||!room.delivered||room.accepted) return;
++  if(!room||!room.delivered||room.accepted||room.disputed) return;
+   room.accepted=true;
+   var q=room.quote, g=room.gig;
+   bloom(this);
+@@ -1379,7 +1483,7 @@
+   room.rc=entry;
+   fillReceipt(entry);
+   $("accept-btn").disabled=true; $("off-btn").disabled=true;
+-  $("d-status").textContent="Accepted. The hold is released, the maker is paid, and the agreement is kept — find its mark on your shelf in Grow.";
++  $("d-status").textContent="Rehearsal accepted: the simulated hold is released and a demo mark is on your shelf in Grow. No money moved.";
+   renderShelf();
+   /* refresh only the pair meter — the quote rows stay locked at funding-time rates */
+   var nv=state.pairs[g.by]||0;
+@@ -1419,12 +1523,14 @@
+   archBtns.forEach(function(b,i){
+     b.classList.toggle("done", i<danceStep);
+     b.classList.toggle("next", i===danceStep&&danceStep<6);
++    b.setAttribute("aria-label",(i+1)+" of 6: "+ARCH_NAMES[i]+(i<danceStep?" — completed":i===danceStep?" — current step":" — upcoming"));
++    if(i===danceStep&&danceStep<6)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current");
+   });
+ }
+ archBtns.forEach(function(b,i){
+   b.addEventListener("click",function(){
+     var msg=$("dance-msg");
+-    if(i<danceStep){ msg.textContent="You revisit "+ARCH_NAMES[i]+" — the floor remembers, and so does the dance. Arch "+(danceStep+1)+" still waits for you."; return; }
++    if(i<danceStep){ msg.textContent="You revisit "+ARCH_NAMES[i]+(danceStep>=6?" — all six steps are complete. Begin at the board, or dance again.":" — the floor remembers, and so does the dance. Arch "+(danceStep+1)+" still waits for you."); return; }
+     if(i>danceStep){ msg.textContent=ARCH_NAMES[danceStep]+" comes next — the refusal is kind, and final. The dance keeps its order."; return; }
+     danceStep++;
+     if(danceStep>=6){
+@@ -1480,6 +1586,7 @@
+ });
+ 
+ /* ---------------- init ---------------- */
++storageStatus();
+ syncChips();
+ renderBoard(null);
+ renderShelf();

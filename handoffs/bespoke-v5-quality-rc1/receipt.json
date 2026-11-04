@@ -1,0 +1,82 @@
+{
+  "status": "UNPUBLISHED_CANDIDATE_BROWSER_ACCEPTANCE_BLOCKED",
+  "candidateLabel": "bespoke-v5-quality-rc1",
+  "repository": "stevoblevo/storeybrook",
+  "baseCommit": "a11682d3ba4749f6db4a228f8c657ba28b5d744b",
+  "sourcePath": "bespoke-v5/index.html",
+  "sourceAdditionCommit": "9d13874a0356ae2556978cf5d519665ce90e36b4",
+  "source": {
+    "bytes": 2586243,
+    "sha256": "0a65ba91acda2b58b9c4ee8baa2b314b49d38f54d54e887017e63026c965103d",
+    "gitBlob": "38fbbf92623d870e9de0cc369be90ca4deba2db9"
+  },
+  "candidate": {
+    "bytes": 2593111,
+    "sha256": "e7faa73f4e4aa7e7ec0d58f8c188d25a7e1189610a27b7c4654aecbb538d088e",
+    "gitBlob": "23fce0655952b4b99d0da62d29fee7ec2ce663c8"
+  },
+  "patch": {
+    "bytes": 25869,
+    "sha256": "b39f81bced42c1abc6d7747bee25b1f03eb83db2167f4c5e1e2c244f728612c1",
+    "hunks": 24,
+    "added": 153,
+    "removed": 46,
+    "exactReplay": true,
+    "embeddedArtBytesInPatch": false
+  },
+  "branch": "sae/bespoke-v5-handoff-b39f81bc",
+  "commit": null,
+  "deploymentEvidence": {
+    "run": 41715013750,
+    "status": "success",
+    "environmentURL": "https://stevoblevo.github.io/storeybrook/",
+    "candidatePublished": false
+  },
+  "expectedExistingRoute": "https://stevoblevo.github.io/storeybrook/bespoke-v5/",
+  "liveCheck": {
+    "status": "blocked",
+    "tool": "web.open",
+    "message": "URL https://stevoblevo.github.io/storeybrook/bespoke-v5/ is not accessible via this tool. Internal Error."
+  },
+  "verification": {
+    "engine": "V8 functions execution; synthetic DOM, storage, clock, downloads and motion preferences",
+    "baseline": {
+      "pass": 10,
+      "fail": 27,
+      "total": 37
+    },
+    "candidate": {
+      "pass": 37,
+      "fail": 0,
+      "total": 37
+    },
+    "sourceBlobRecomputed": true,
+    "patchExactReplay": true,
+    "embeddedImageDataURLOccurrencesPreserved": 41,
+    "embeddedImagesInPatch": 0,
+    "browser": false,
+    "visual": false,
+    "screenReader": false,
+    "realDownload": false,
+    "gitApplyCommandRun": false,
+    "fullSourceRetainedOnlyInSessionMemory": true
+  },
+  "limitations": [
+    "No public live HTTP/rendered verification; deployment success alone is not browser acceptance.",
+    "No rendered verification of embedded art or original sheet provenance.",
+    "Room snapshot schema, no-JS reading, modal focus containment, and unsent proposal persistence need separate source/acceptance review.",
+    "Creative authoring endpoint beyond the verified Git source/addition author remains unconfirmed.",
+    "Handoff-only branch creation is authorized; candidate application, merge and deployment are not part of this step."
+  ],
+  "commitNote": "The containing handoff commit identifies this receipt; the candidate HTML is not committed.",
+  "custody": {
+    "kind": "new-v5-text-only-review-handoff",
+    "directory": "handoffs/bespoke-v5-quality-rc1",
+    "baseMain": "a11682d3ba4749f6db4a228f8c657ba28b5d744b",
+    "appliedToLiveSource": false,
+    "legacyArtifactIncluded": false,
+    "embeddedArtIncluded": false,
+    "workflowTriggersModified": false,
+    "remoteReadback": "To be reported separately after branch creation"
+  }
+}

@@ -1,0 +1,177 @@
+[
+  {
+    "name": "startup retains 14 seed gigs and six arches",
+    "pass": true
+  },
+  {
+    "name": "valid posted brief survives reload",
+    "pass": true
+  },
+  {
+    "name": "reject invalid bounty \"5\" without changing it",
+    "pass": false,
+    "error": "Error: invalid gig added"
+  },
+  {
+    "name": "reject invalid bounty \"\" without changing it",
+    "pass": false,
+    "error": "Error: invalid gig added"
+  },
+  {
+    "name": "reject invalid bounty \"-1\" without changing it",
+    "pass": false,
+    "error": "Error: invalid gig added"
+  },
+  {
+    "name": "reject invalid bounty \"NaN\" without changing it",
+    "pass": false,
+    "error": "Error: invalid gig added"
+  },
+  {
+    "name": "reject invalid bounty \"Infinity\" without changing it",
+    "pass": false,
+    "error": "Error: invalid gig added"
+  },
+  {
+    "name": "valid decimal bounty is preserved exactly",
+    "pass": true
+  },
+  {
+    "name": "empty request creates no gig",
+    "pass": true
+  },
+  {
+    "name": "posted draft remains available for export",
+    "pass": false,
+    "error": "Error: assertion failed"
+  },
+  {
+    "name": "storage denial keeps draft and reports unsaved open-page state",
+    "pass": false,
+    "error": "Error: draft cleared"
+  },
+  {
+    "name": "storage read denial leaves board usable and explains recovery",
+    "pass": false,
+    "error": "TypeError: Cannot read properties of undefined (reading 'textContent')"
+  },
+  {
+    "name": "malformed saved gig does not stop startup",
+    "pass": false,
+    "error": "Error: TypeError: Cannot read properties of null (reading 'id')"
+  },
+  {
+    "name": "mixed saved entries retain valid gig and shelf record",
+    "pass": false,
+    "error": "Error: TypeError: Cannot read properties of null (reading 'id')"
+  },
+  {
+    "name": "malformed JSON reports recovery without crashing",
+    "pass": false,
+    "error": "TypeError: Cannot read properties of undefined (reading 'textContent')"
+  },
+  {
+    "name": "new brief selects its family and focuses highlighted card",
+    "pass": false,
+    "error": "Error: family filter not retained"
+  },
+  {
+    "name": "board count and search result are announced",
+    "pass": false,
+    "error": "TypeError: Cannot read properties of undefined (reading 'textContent')"
+  },
+  {
+    "name": "brief download includes Unicode and exact entered values",
+    "pass": false,
+    "error": "TypeError: Cannot read properties of undefined (reading 'click')"
+  },
+  {
+    "name": "unsupported download exposes copyable text and focused selection",
+    "pass": false,
+    "error": "TypeError: Cannot read properties of undefined (reading 'click')"
+  },
+  {
+    "name": "empty draft cannot export a pretend brief",
+    "pass": false,
+    "error": "TypeError: Cannot read properties of undefined (reading 'click')"
+  },
+  {
+    "name": "single successful rehearsal still creates exactly one mark",
+    "pass": true
+  },
+  {
+    "name": "fee arithmetic remains unchanged at funding",
+    "pass": true
+  },
+  {
+    "name": "active simulated hold still prevents opening a second case",
+    "pass": true
+  },
+  {
+    "name": "concern immediately prevents acceptance",
+    "pass": false,
+    "error": "Error: accept still enabled"
+  },
+  {
+    "name": "escalation truthfully reports no human case sent",
+    "pass": false,
+    "error": "Error: assertion failed"
+  },
+  {
+    "name": "reload retains disputed hold and prevents acceptance",
+    "pass": false,
+    "error": "Error: assertion failed"
+  },
+  {
+    "name": "explicit resume restores acceptance and one mark",
+    "pass": false,
+    "error": "TypeError: Cannot read properties of undefined (reading 'click')"
+  },
+  {
+    "name": "accepted legacy snapshot still restores receipt",
+    "pass": true
+  },
+  {
+    "name": "dance cannot skip forward",
+    "pass": true
+  },
+  {
+    "name": "six dance steps finish without a seventh arch",
+    "pass": false,
+    "error": "Error: assertion failed"
+  },
+  {
+    "name": "dance stage is exposed to assistive technology and reset restores it",
+    "pass": false,
+    "error": "Error: assertion failed"
+  },
+  {
+    "name": "reduced motion disables scripted smooth scroll and bloom",
+    "pass": false,
+    "error": "Error: assertion failed"
+  },
+  {
+    "name": "Quiet disables scripted smooth scrolling",
+    "pass": false,
+    "error": "Error: assertion failed"
+  },
+  {
+    "name": "live reduced-motion change is honored on next action",
+    "pass": false,
+    "error": "Error: assertion failed"
+  },
+  {
+    "name": "ordinary-motion scrolling remains available",
+    "pass": true
+  },
+  {
+    "name": "storage recovery clears stale save failure while preserving drafts",
+    "pass": false,
+    "error": "TypeError: Cannot read properties of undefined (reading 'textContent')"
+  },
+  {
+    "name": "author name constructor is handled as an ordinary repeat-pair name",
+    "pass": false,
+    "error": "Error: assertion failed"
+  }
+]
