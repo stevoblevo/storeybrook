@@ -69,6 +69,7 @@
         <button class="sb-btn sb-btn--secondary" type="button" data-sc-read="#front-lede"><span data-sb-icon="voice"></span>Read it to me</button>
         <a class="sb-btn sb-btn--quiet" href="docs.html">Skip to the docs</a>
       </div>
+      <details class="sc-voice-options"><summary>Voice and reading speed</summary><div class="sb-reader" data-sb-read="#front-lede"><div class="sb-reader__info"><span class="sb-reader__voice"></span></div><div class="sb-reader__choices"><label>Voice <select data-sb-voice aria-label="Reading voice"></select></label><label>Speed <select data-sb-rate aria-label="Reading speed"><option value="0.85">Slower</option><option value="0.96">Gentle</option><option value="1">Natural</option><option value="1.15">Faster</option></select></label><button class="sb-btn sb-btn--quiet sb-btn--sm" type="button" data-sb-voice-preview>Try voice</button><button class="sb-btn sb-btn--quiet sb-btn--sm" type="button" data-sb-read-stop>Stop</button></div></div></details>
     </div>
     <button type="button" class="sc-front__art sc-tap" id="front-creature" aria-label="Saelion, fully grown. Tap her." data-sb-creature='{"form":"saelion","stage":4,"hide":"chimera","label":"Saelion, fully grown"}'></button>
   </div>
@@ -124,7 +125,7 @@
       <div class="sc-knight__book">
         <div class="sb-reader" data-sb-read="#bedtime">
           <button class="sb-btn sb-btn--primary sb-btn--icon sb-reader__play" aria-label="Read it to me"></button>
-          <div class="sb-reader__info"><span class="sb-reader__title">Bedtime at the brook</span><span class="sb-reader__voice"></span><span class="sb-reader__meter"><i></i></span></div>
+          <div class="sb-reader__info"><span class="sb-reader__title">Bedtime at the brook</span><span class="sb-reader__voice"></span><span class="sb-reader__meter"><i></i></span></div><div class="sb-reader__choices"><label>Voice <select data-sb-voice aria-label="Reading voice"></select></label><label>Speed <select data-sb-rate aria-label="Reading speed"><option value="0.85">Slower</option><option value="0.96">Gentle</option><option value="1">Natural</option><option value="1.15">Faster</option></select></label><button class="sb-btn sb-btn--quiet sb-btn--sm" type="button" data-sb-voice-preview>Try voice</button><button class="sb-btn sb-btn--quiet sb-btn--sm" type="button" data-sb-read-stop>Stop</button></div>
         </div>
         <article class="sb-page sb-page--right" id="bedtime">
           <div class="sb-prose">
@@ -259,12 +260,12 @@
       <p class="sb-lede sc-narrow">A look changes materials and fonts, never content, order or meaning. Here is one page open on six screens at once, from a phone to a television across the room.</p>
     </header>
     <div class="sc-desk">
-      <figure class="sc-device sc-device--tv" data-w="1920" data-h="1080" data-src="site/mirror.html?look=knight&amp;density=tv"><div class="sc-device__screen"></div><figcaption>TV across the room · Knight Night at TV density</figcaption></figure>
-      <figure class="sc-device sc-device--display" data-w="2560" data-h="1440" data-src="site/mirror.html?look=skein"><div class="sc-device__screen"></div><figcaption>5K display · Skein silk</figcaption></figure>
-      <figure class="sc-device sc-device--tablet" data-w="1024" data-h="768" data-src="site/mirror.html?look=daylight"><div class="sc-device__screen"></div><figcaption>4:3 tablet · Meta Daylight</figcaption></figure>
-      <figure class="sc-device sc-device--slate" data-w="620" data-h="827" data-src="site/mirror.html?look=inkblot"><div class="sc-device__screen"></div><figcaption>E-ink slate · Ink Blot</figcaption></figure>
-      <figure class="sc-device sc-device--fold" data-w="673" data-h="841" data-src="site/mirror.html?look=origami"><div class="sc-device__screen"></div><figcaption>Folding phone · Origami</figcaption></figure>
-      <figure class="sc-device sc-device--phone" data-w="390" data-h="844" data-src="site/mirror.html?look=comix"><div class="sc-device__screen"></div><figcaption>Phone · Comix</figcaption></figure>
+      <figure class="sc-device sc-device--tv" data-w="1920" data-h="1080" data-src="site/mirror.html?look=knight&amp;density=tv"><div class="sc-device__screen"><div class="sc-device__fallback"><p class="sc-device__status">Live preview</p><a href="site/mirror.html?look=knight&amp;density=tv" target="_blank" rel="noopener">Open this preview</a></div></div><figcaption>TV across the room · Knight Night at TV density</figcaption></figure>
+      <figure class="sc-device sc-device--display" data-w="2560" data-h="1440" data-src="site/mirror.html?look=skein"><div class="sc-device__screen"><div class="sc-device__fallback"><p class="sc-device__status">Live preview</p><a href="site/mirror.html?look=skein" target="_blank" rel="noopener">Open this preview</a></div></div><figcaption>5K display · Skein silk</figcaption></figure>
+      <figure class="sc-device sc-device--tablet" data-w="1024" data-h="768" data-src="site/mirror.html?look=daylight"><div class="sc-device__screen"><div class="sc-device__fallback"><p class="sc-device__status">Live preview</p><a href="site/mirror.html?look=daylight" target="_blank" rel="noopener">Open this preview</a></div></div><figcaption>4:3 tablet · Meta Daylight</figcaption></figure>
+      <figure class="sc-device sc-device--slate" data-w="620" data-h="827" data-src="site/mirror.html?look=inkblot"><div class="sc-device__screen"><div class="sc-device__fallback"><p class="sc-device__status">Live preview</p><a href="site/mirror.html?look=inkblot" target="_blank" rel="noopener">Open this preview</a></div></div><figcaption>E-ink slate · Ink Blot</figcaption></figure>
+      <figure class="sc-device sc-device--fold" data-w="673" data-h="841" data-src="site/mirror.html?look=origami"><div class="sc-device__screen"><div class="sc-device__fallback"><p class="sc-device__status">Live preview</p><a href="site/mirror.html?look=origami" target="_blank" rel="noopener">Open this preview</a></div></div><figcaption>Folding phone · Origami</figcaption></figure>
+      <figure class="sc-device sc-device--phone" data-w="390" data-h="844" data-src="site/mirror.html?look=comix"><div class="sc-device__screen"><div class="sc-device__fallback"><p class="sc-device__status">Live preview</p><a href="site/mirror.html?look=comix" target="_blank" rel="noopener">Open this preview</a></div></div><figcaption>Phone · Comix</figcaption></figure>
     </div>
   </div>
   <footer class="sc-in sc-foot">

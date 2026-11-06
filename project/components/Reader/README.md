@@ -1,6 +1,6 @@
 # Reader
 
-The read-aloud bar: a play button, the chapter's title, the voice in use and a meter, bound to the text it reads. Irish English first, word by word.
+The read-aloud bar: a play button, the chapter's title, the voice in use and a meter, bound to the text it reads. A natural browser voice, an explicit choice, word by word.
 
 **Provide**
 ```html
@@ -17,10 +17,12 @@ The read-aloud bar: a play button, the chapter's title, the voice in use and a m
 Add `sb-reader--fixed` to pin it to the bottom-left corner above the page (`z-reader`, safe areas respected). `Storeybrook.init()` binds every reader; `Storeybrook.read.bind(bar, target)` binds one by hand.
 
 - The play button's icon and name follow the state: "Read it to me", "Pause reading", "Keep reading".
-- The voice line says "Irish English voice", or which voice is used when there is no Irish one. With no voices at all the button is disabled and the line says the words are all on the page.
+- The voice line names the browser-available voice. Automatic selection prefers enhanced/premium/natural/neural quality hints, then accent preference. The picker preserves explicit choices; it does not promise every installed OS voice is exposed.
 - The word being spoken gets `cue-soft` with a `cue` edge; the meter fills in `cue`.
-- `<select data-sb-voice>` and `<select data-sb-rate>` are filled and remembered (`sb:voice`, `sb:rate`).
+- `<select data-sb-voice>` and `<select data-sb-rate>` are filled and remembered (`sb:voiceURI`, legacy `sb:voice`, and `sb:rate`).
 
 **Do / Don't**
 - Do give the bar a chapter title; the voice reads the text, the title says what it is.
 - Don't autoplay. Reading starts from a press.
+
+Add a button with `data-sb-voice-preview` for a short voice sample and `data-sb-read-stop` for Stop. Both wait for a press. A failed voice reports an error; old cancellation callbacks cannot advance a replacement story.

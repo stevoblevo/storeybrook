@@ -1,11 +1,11 @@
-/* Storeybrook 1.3.0 · behaviors for storybook pages and little games. One classic script, no dependencies, no network.
+/* Storeybrook 1.3.1 · behaviors for storybook pages and little games. One classic script, no dependencies.
    window.Storeybrook: theme, density, nav, read (read aloud), rewards (nougats), unlocks, brook, creature, spread,
    fold, blot, drawer, dialog, toast, sound, haptic, icons, guardian, taste. Every module checks reduced motion at run time and
    wraps storage, so a page works with storage blocked and with JS off (markup stays readable). */
 (function (w, d) {
   'use strict';
   if (w.Storeybrook && w.Storeybrook.version) return;
-  var VERSION = '1.3.0';
+  var VERSION = '1.3.1';
   var THEMES = [
     { id: 'daylight', name: 'Meta Daylight', line: 'Watercolor on north-light paper' },
     { id: 'knight', name: 'Knight Night', line: 'A cobalt paper theatre by candle' },
@@ -139,22 +139,29 @@
   };
   d.addEventListener('keydown', function (e) { nav.key(e); });
 
-  /* ---------- read aloud: Irish English first, word by word ---------- */
+  /* plan S6: read aloud: natural device voices, explicit choice, word by word ---------- */
   var SY = w.speechSynthesis || null;
   var IRISH_NAMES = /moira|orla|emily.*ireland|connor.*ireland|ireland|irish/i;
+  var VOICE_NOVELTY = /^(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Deranged|Good News|Hysterical|Jester|Organ|Pipe Organ|Trinoids|Whisper|Wobble|Zarvox)(?:\b|$)/i;
+  function voiceId(v) { return v && (v.voiceURI || v.name); }
+  function naturalQuality(v) { return /enhanced|premium|natural|neural|wavenet/i.test((v.name || '') + ' ' + (v.voiceURI || '')) ? 0 : 1; }
+  function englishVoice(v) { return /^en(?:[-_]|$)/i.test(v.lang || ''); }
   var read = {
-    supported: !!(SY && w.SpeechSynthesisUtterance), state: 'idle', voice: null, rate: 0.96, pitch: 1.05, _q: null, _el: null, _words: [], _chunks: [], _i: 0, _timer: 0, _boundary: false,
+    supported: !!(SY && w.SpeechSynthesisUtterance), state: 'idle', voice: null, rate: 1, pitch: 1, error: '', _session: 0, _text: '', _q: null, _el: null, _words: [], _chunks: [], _i: 0, _timer: 0, _boundary: false,
     voices: function () {
       if (!read.supported) return [];
-      var v = SY.getVoices() || [];
-      function rank(x) { var l = (x.lang || '').toLowerCase(); return l === 'en-ie' || IRISH_NAMES.test(x.name) && l.indexOf('en') === 0 ? 0 : l === 'en-gb' ? 1 : l.indexOf('en') === 0 ? 2 : 3; }
-      return v.slice().sort(function (a, b) { return rank(a) - rank(b) || (b.localService === a.localService ? 0 : b.localService ? 1 : -1) || a.name.localeCompare(b.name); });
+      var v; try { v = SY.getVoices() || []; } catch (e) { return []; }
+      function accentRank(x) { var l = (x.lang || '').toLowerCase(); return l === 'en-ie' || IRISH_NAMES.test(x.name) && englishVoice(x) ? 0 : l === 'en-gb' ? 1 : 2; }
+      return v.slice().sort(function (a, b) {
+        return Number(!englishVoice(a)) - Number(!englishVoice(b)) || Number(VOICE_NOVELTY.test(a.name)) - Number(VOICE_NOVELTY.test(b.name)) || naturalQuality(a) - naturalQuality(b) || accentRank(a) - accentRank(b) || Number(!a.localService) - Number(!b.localService) || Number(!a.default) - Number(!b.default) || a.name.localeCompare(b.name);
+      });
     },
     pick: function (name) {
       var v = read.voices(); if (!v.length) return null;
-      if (name) { var m = v.filter(function (x) { return x.name === name; })[0]; if (m) return m; }
-      var saved = get('sb:voice', null); if (saved) { var s = v.filter(function (x) { return x.name === saved; })[0]; if (s) return s; }
-      return v[0];
+      function match(id) { return id && v.filter(function (x) { return voiceId(x) === id || x.name === id; })[0]; }
+      var explicit = match(name); if (explicit) return explicit;
+      var saved = match(get('sb:voiceURI', null)) || match(get('sb:voice', null)); if (saved) return saved;
+      return v.filter(function (x) { return englishVoice(x) && !VOICE_NOVELTY.test(x.name); })[0] || null;
     },
     isIrish: function (v) { return !!v && (/^en-ie$/i.test(v.lang || '') || (IRISH_NAMES.test(v.name) && /^en/i.test(v.lang || ''))); },
     prepare: function (root) {
@@ -175,13 +182,18 @@
       return root.__sbWords;
     },
     _chunk: function (text) {
-      var out = [], re = /[^.!?;:]+[.!?;:]*\s*/g, m, buf = '', start = 0, pos = 0;
-      while ((m = re.exec(text))) {
-        if ((buf + m[0]).length > 220 && buf) { out.push({ text: buf, start: start }); start = pos; buf = ''; }
-        buf += m[0]; pos += m[0].length;
+      var out = [], start = 0;
+      while (start < text.length) {
+        var end = Math.min(start + 220, text.length);
+        if (end < text.length) {
+          var window = text.slice(start, end), match, boundary = 0, re = /[.!?;:]\s+/g;
+          while ((match = re.exec(window))) boundary = match.index + match[0].length;
+          if (!boundary) boundary = window.lastIndexOf(' ') + 1;
+          if (boundary > 0) end = start + boundary;
+        }
+        out.push({ text: text.slice(start, end), start: start }); start = end;
       }
-      if (buf.trim()) out.push({ text: buf, start: start });
-      return out.length ? out : [{ text: text, start: 0 }];
+      return out;
     },
     _mark: function (charIndex) {
       var ws = read._words, hit = null;
@@ -194,18 +206,22 @@
       opts = opts || {}; if (!read.supported) { emit('read', { state: 'unsupported' }); return false; }
       read.stop(true);
       var el2 = typeof target === 'string' ? null : target, prep = el2 ? read.prepare(el2) : { words: [], text: String(target) };
-      read._el = el2; read._words = prep.words; read._chunks = read._chunk(prep.text); read._i = 0; read._boundary = false;
-      read.voice = read.pick(opts.voice); read.rate = opts.rate || get('sb:rate', read.rate); read.pitch = opts.pitch || read.pitch;
+      read.error = ''; read._text = prep.text; read._el = el2; read._words = prep.words; read._chunks = read._chunk(prep.text); read._i = 0; read._boundary = false;
+      read.voice = read.pick(opts.voice);
+      var rate = opts.rate == null ? get('sb:rate', read.rate) : opts.rate, pitch = opts.pitch == null ? 1 : opts.pitch;
+      read.rate = typeof rate === 'number' && isFinite(rate) ? Math.max(0.5, Math.min(2, rate)) : 1; read.pitch = typeof pitch === 'number' && isFinite(pitch) ? Math.max(0.5, Math.min(2, pitch)) : 1;
       read.state = 'speaking'; emit('read', { state: 'speaking', progress: 0, voice: read.voice && read.voice.name });
       read._next(); read._sync(); return true;
     },
     _next: function () {
       if (read._i >= read._chunks.length) { read._done(); return; }
-      var c = read._chunks[read._i], u = new w.SpeechSynthesisUtterance(c.text);
-      if (read.voice) { u.voice = read.voice; u.lang = read.voice.lang; } else u.lang = 'en-IE';
+      var c = read._chunks[read._i], u = new w.SpeechSynthesisUtterance(c.text), session = read._session;
+      function current() { return session === read._session && read._q === u && read.state !== 'idle'; }
+      if (read.voice) { u.voice = read.voice; u.lang = read.voice.lang; } else u.lang = d.documentElement.lang || 'en';
       u.rate = read.rate; u.pitch = read.pitch;
-      u.onboundary = function (e) { if (e.name && e.name !== 'word') return; read._boundary = true; read._mark(c.start + (e.charIndex || 0)); };
+      u.onboundary = function (e) { if (!current()) return; if (e.name && e.name !== 'word') return; read._boundary = true; read._mark(c.start + (e.charIndex || 0)); };
       u.onstart = function () {
+        if (!current()) return;
         clearInterval(read._timer);
         if (!read._words.length) return;
         var wps = 2.6 * read.rate, t0 = Date.now(), first = read._words.findIndex(function (x) { return x.start >= c.start; });
@@ -215,34 +231,52 @@
           if (wd && wd.start < c.start + c.text.length) read._mark(wd.start);
         }, 120);
       };
-      u.onend = function () { clearInterval(read._timer); if (read.state === 'idle') return; read._i++; read._next(); };
-      u.onerror = function () { clearInterval(read._timer); if (read.state !== 'idle') { read._i++; read._next(); } };
-      read._q = u; SY.speak(u);
+      u.onend = function () { if (!current()) return; clearInterval(read._timer); read._i++; read._next(); };
+      u.onerror = function (e) { if (!current()) return; clearInterval(read._timer); read.state = 'idle'; $$('.sb-word.is-reading').forEach(function (x) { x.classList.remove('is-reading'); }); read.error = e && e.error === 'not-allowed' ? 'Press play to allow this browser to speak.' : 'This voice could not play. Choose another voice and try again.'; emit('read', { state: 'error', error: e && e.error }); read._sync(); };
+      read._q = u; try { SY.speak(u); } catch (e) { u.onerror({ error: 'synthesis-failed' }); }
     },
     _done: function () { clearInterval(read._timer); read.state = 'idle'; $$('.sb-word.is-reading').forEach(function (x) { x.classList.remove('is-reading'); }); read._progress(100); emit('read', { state: 'done', progress: 100 }); read._sync(); },
     pause: function () { if (read.state === 'speaking') { SY.pause(); read.state = 'paused'; emit('read', { state: 'paused' }); read._sync(); } },
     resume: function () { if (read.state === 'paused') { SY.resume(); read.state = 'speaking'; emit('read', { state: 'speaking' }); read._sync(); } },
     toggle: function (target) { if (read.state === 'speaking') read.pause(); else if (read.state === 'paused') read.resume(); else read.speak(target); },
-    stop: function (quiet) { if (!read.supported) return; clearInterval(read._timer); read.state = 'idle'; try { SY.cancel(); } catch (e) { /* engine busy */ } $$('.sb-word.is-reading').forEach(function (x) { x.classList.remove('is-reading'); }); if (!quiet) { emit('read', { state: 'stopped' }); read._sync(); } },
+    stop: function (quiet) { if (!read.supported) return; read._session++; clearInterval(read._timer); read.state = 'idle'; read.error = ''; read._q = null; try { SY.cancel(); } catch (e) { /* engine busy */ } $$('.sb-word.is-reading').forEach(function (x) { x.classList.remove('is-reading'); }); if (!quiet) { emit('read', { state: 'stopped' }); read._sync(); } },
     _sync: function () {
       $$('.sb-reader').forEach(function (bar) {
+        var currentVoice = read.state === 'idle' ? read.pick() : read.voice || read.pick();
+        var voiceLine = $('.sb-reader__voice', bar); if (voiceLine) voiceLine.textContent = read.error || (currentVoice ? currentVoice.name + ' · ' + currentVoice.lang : 'Using the browser’s available voice');
         var b = $('.sb-reader__play', bar); if (b) { b.setAttribute('aria-pressed', String(read.state === 'speaking')); b.setAttribute('aria-label', read.state === 'speaking' ? 'Pause reading' : read.state === 'paused' ? 'Keep reading' : 'Read it to me'); b.innerHTML = icon(read.state === 'speaking' ? 'pause' : 'play', 26); }
       });
     },
     bind: function (bar, target) {
       if (!bar || bar.__sb) return; bar.__sb = true;
       var tgt = target || (bar.getAttribute('data-sb-read') ? $(bar.getAttribute('data-sb-read')) : null);
-      if (!read.supported) { bar.setAttribute('data-unsupported', ''); var vv = $('.sb-reader__voice', bar); if (vv) vv.textContent = 'This browser has no voices. The words are all here to read.'; var pb = $('.sb-reader__play', bar); if (pb) pb.disabled = true; return; }
+      if (!read.supported) { bar.setAttribute('data-unsupported', ''); var vv = $('.sb-reader__voice', bar); if (vv) vv.textContent = 'This browser has no voices. The words are all here to read.'; $$('button,select', bar).forEach(function (x) { x.disabled = true; }); return; }
       var play = $('.sb-reader__play', bar), sel = $('select[data-sb-voice]', bar), rate = $('select[data-sb-rate]', bar), vname = $('.sb-reader__voice', bar);
       function fill() {
-        var vs = read.voices(), cur = read.pick(); if (!sel) { if (vname && cur) vname.textContent = cur.name + (read.isIrish(cur) ? ' · Irish English' : ''); return; }
-        sel.innerHTML = vs.filter(function (v) { return /^en/i.test(v.lang); }).map(function (v) { return '<option value="' + esc(v.name) + '"' + (cur && v.name === cur.name ? ' selected' : '') + '>' + esc(v.name.replace(/^(Microsoft|Google)\s+/, '').replace(/\s*\(Natural\)/, '')) + (read.isIrish(v) ? ' (Irish)' : '') + '</option>'; }).join('');
-        if (vname && cur) vname.textContent = read.isIrish(cur) ? 'Irish English voice' : 'No Irish voice on this device: ' + cur.lang;
+        var vs = read.voices(), cur = read.pick(), saved = get('sb:voiceURI', null) || get('sb:voice', null);
+        if (sel) {
+          sel.innerHTML = '<option value="">Automatic · best available</option>' + vs.filter(englishVoice).map(function (v) { return '<option value="' + esc(voiceId(v)) + '"' + (saved && cur && voiceId(v) === voiceId(cur) ? ' selected' : '') + '>' + esc(v.name) + ' · ' + esc(v.lang) + '</option>'; }).join('');
+          sel.disabled = !vs.some(englishVoice);
+        }
+        if (vname) { vname.setAttribute('aria-live', 'polite'); vname.textContent = cur ? cur.name + ' · ' + cur.lang + (cur.localService ? ' · on device' : ' · browser voice') : 'Device voices are loading. Press play to try the browser default.'; }
       }
       fill(); if (SY.addEventListener) SY.addEventListener('voiceschanged', fill); else SY.onvoiceschanged = fill;
+      w.addEventListener('sb:voice', fill);
       if (play) play.addEventListener('click', function () { read.toggle(tgt || d.querySelector('[data-sb-story]') || d.body); });
-      if (sel) sel.addEventListener('change', function () { put('sb:voice', sel.value); if (read.state !== 'idle') read.speak(read._el || tgt); fill(); });
-      if (rate) { rate.value = String(get('sb:rate', read.rate)); rate.addEventListener('change', function () { put('sb:rate', parseFloat(rate.value)); read.rate = parseFloat(rate.value); }); }
+      if (sel) sel.addEventListener('change', function () {
+        var chosen = sel.value ? read.pick(sel.value) : null;
+        put('sb:voiceURI', chosen ? voiceId(chosen) : null); put('sb:voice', chosen ? chosen.name : null);
+        emit('voice', { voice: chosen && chosen.name });
+        if (read.state !== 'idle') read.speak(read._el || read._text || tgt); fill();
+      });
+      var preview = $('[data-sb-voice-preview]', bar), stop = $('[data-sb-read-stop]', bar);
+      if (preview) preview.addEventListener('click', function () { read.speak('A book on a table, with a game folded inside it.'); });
+      if (stop) stop.addEventListener('click', function () { read.stop(); fill(); });
+      if (rate) {
+        function syncRate() { rate.value = String(get('sb:rate', read.rate)); }
+        syncRate(); w.addEventListener('sb:rate', syncRate);
+        rate.addEventListener('change', function () { var n = parseFloat(rate.value); if (!isFinite(n)) return; read.rate = Math.max(0.5, Math.min(2, n)); put('sb:rate', read.rate); emit('rate', { rate: read.rate }); });
+      }
       read._sync();
     }
   };

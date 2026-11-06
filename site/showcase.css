@@ -156,6 +156,12 @@ html { scroll-behavior: smooth; scroll-padding-top: 76px; }
 .sc-device--phone .sc-device__screen { aspect-ratio: 390 / 844; border-radius: 26px; max-width: 170px; }
 .sc-device--tv::after, .sc-device--display::after { content: ""; order: 2; width: 18%; height: 10px; margin-top: -6px; border-radius: 0 0 6px 6px; background: var(--art-line); }
 .sc-device figcaption { order: 3; font: 400 0.95rem/1.35 var(--sb-ui); color: var(--ink-muted); text-align: center; }
+/* plan S5: useful content while the live preview is not ready, including without JS. */
+.sc-device__fallback { position: absolute; inset: 0; display: grid; align-content: center; gap: var(--space-2); padding: var(--space-3); text-align: center; background: var(--surface); color: var(--ink); font: 400 0.9rem/1.4 var(--sb-ui); }
+.sc-device__fallback[hidden] { display: none; }
+.sc-device__status { margin: 0; }
+.sc-device__fallback a { color: var(--link); text-underline-offset: 0.2em; }
+.sc-device iframe:not(.is-loaded) { visibility: hidden; }
 .sc-device iframe { position: absolute; left: 0; top: 0; border: 0; transform-origin: 0 0; pointer-events: none; }
 @media (max-width: 900px) {
   .sc-desk { grid-template-columns: 1fr 1fr; grid-template-areas: "tv tv" "display display" "tablet tablet" "slate fold" "phone phone"; }

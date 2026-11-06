@@ -200,7 +200,7 @@
   {
    "name": "Reader",
    "group": "Story",
-   "height": 240,
+   "height": 380,
    "preview": "project/components/Reader/preview.html",
    "readme": "project/components/Reader/README.md",
    "summary": "The read-aloud bar: a play button, the chapter's title, the voice in use and a meter, bound to the text it reads."

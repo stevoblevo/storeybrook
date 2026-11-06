@@ -51,10 +51,16 @@
     if (!id) return;
     Object.keys(links).forEach(function (k) { links[k].setAttribute('aria-current', String(k === id)); });
     if (links[id] && links[id].scrollIntoView && innerWidth < 1100) {
-      var nav = links[id].parentNode; nav.scrollTo({ left: links[id].offsetLeft - 16, behavior: 'smooth' });
+      var nav = links[id].parentNode; nav.scrollTo({ left: links[id].offsetLeft - 16, behavior: S.reducedMotion() ? 'auto' : 'smooth' });
     }
     if (frontBrook) {
-      LOOKS.forEach(function (l) { frontBrook.set(l.id, l.id === id ? 'current' : visited[l.id] ? 'done' : 'open'); });
+      /* plan S5: update every stone, then draw once rather than six times during scroll. */
+      var changed = false;
+      frontBrook.stones.forEach(function (stone) {
+        var state = stone.id === id ? 'current' : visited[stone.id] ? 'done' : 'open';
+        if (stone.state !== state) { stone.state = state; changed = true; }
+      });
+      if (changed) frontBrook.layout();
     }
     if (!visited[id]) {
       visited[id] = true;
@@ -309,14 +315,34 @@
   function load(fig) {
     if ($('iframe', fig)) return;
     var f = doc.createElement('iframe');
+    /* plan S5: the static link stays useful before loading, on failure and without JS. */
+    var screen = $('.sc-device__screen', fig), fallback = $('.sc-device__fallback', fig);
+    var status = $('.sc-device__status', fig);
+    if (status) status.textContent = 'Loading live preview…';
+    var timer = setTimeout(function () {
+      if (status) status.textContent = 'The preview is taking longer. Open it directly below.';
+    }, 12000);
+    f.addEventListener('load', function () {
+      clearTimeout(timer);
+      var loaded = false;
+      try { loaded = !!f.contentDocument.querySelector('.m'); } catch (e) {}
+      if (loaded) {
+        f.classList.add('is-loaded');
+        if (fallback) fallback.hidden = true;
+      } else if (status) status.textContent = 'The preview could not load. Open it directly below.';
+    });
+    f.addEventListener('error', function () {
+      clearTimeout(timer);
+      if (status) status.textContent = 'The preview could not load. Open it directly below.';
+    });
     f.src = fig.getAttribute('data-src');
     f.width = fig.getAttribute('data-w'); f.height = fig.getAttribute('data-h');
     f.setAttribute('tabindex', '-1'); f.setAttribute('aria-hidden', 'true'); f.title = fig.querySelector('figcaption').textContent;
-    $('.sc-device__screen', fig).appendChild(f);
+    screen.appendChild(f);
     fit(fig);
   }
   if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { load(e.target); io.unobserve(e.target); } }); }, { rootMargin: '400px 0px' });
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { load(e.target); io.unobserve(e.target); } }); }, { rootMargin: '1600px 0px' });
     devices.forEach(function (d) { io.observe(d); });
   } else devices.forEach(load);
   if (window.ResizeObserver) { var ro = new ResizeObserver(function () { devices.forEach(fit); }); devices.forEach(function (d) { ro.observe(d); }); }

@@ -1,6 +1,6 @@
 # Storeybrook plan
 
-Owner: Bleve. Last updated 3 Nov 2026 by Claude (session 01ApCRaiX6JVCSowgVuAsG4V). Work that crosses the family (versions, the pen, Hypermetapunk) is in the family plan: <https://github.com/stevoblevo/depthfield/blob/main/docs/family.md>. Claim a task the same way as there.
+Owner: Bleve. Last updated 6 Nov 2026 by Sae(lion). Work that crosses the family (versions, the pen, Hypermetapunk) is in the family plan: <https://github.com/stevoblevo/depthfield/blob/main/docs/family.md>. Claim a task the same way as there.
 
 ## Where things stand
 
@@ -29,3 +29,5 @@ Origami today is folded-paper styling for editors and settings: 45° stones, dog
 | S2 | Guardian in the showcase: the pet you walk with can be the page's Guardian | Picking a pet in the pet book sets the Guardian | S | open | open |
 | S3 | Taste in the docs: a "check this page" button on every docs page | Running it on the showcase lists findings with fixes | S | open | open |
 | S4 | Mirror windows show Guardian and Taste states across the six devices | Screenshot | S | open | open |
+| S5 | Keep showcase scrolling responsive and mirror previews useful while loading | One brook layout per scene transition at most; early preview load with readable fallback | S | Sae(lion) | candidate (`sae/reader-voice-quality`); browser checks pending |
+| S6 | Reader quality and explicit voice choice | Browser-available quality hints, saved choice, late voice enumeration, natural pace, cancellation/error regressions | S | Sae(lion) | candidate; hosted/browser checks pending |

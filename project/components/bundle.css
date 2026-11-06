@@ -473,3 +473,14 @@ dialog.sb-dialog[open] { animation: sb-arrive var(--dur-base) var(--ease-out); }
 .sb-taste li small { display: block; color: var(--ink-muted); font-size: 13px; word-break: break-word; }
 .sb-taste p { margin: 0; padding: 0 14px 12px; color: var(--ink-muted); font-size: 13px; }
 @media (prefers-reduced-motion: reduce) { .sb-guardian { transition: none; } }
+
+/* plan S6: Reader choices remain usable on narrow screens; no voice list can force overflow. */
+.sb-reader { flex-wrap: wrap; }
+.sb-reader__info { flex: 1 1 150px; }
+.sb-reader__choices { display: flex; flex: 1 0 100%; flex-wrap: wrap; gap: 8px 12px; align-items: end; }
+.sb-reader__choices label { display: grid; gap: 3px; max-width: 100%; font-size: 13px; }
+.sb-reader__choices select { max-width: min(100%, 18rem); width: 100%; min-height: 44px; }
+.sb-reader__choices .sb-btn { min-height: 44px; }
+.sc-voice-options { margin-block: 12px; }
+.sc-voice-options summary { cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.sc-voice-options > .sb-reader { margin-top: 10px; }

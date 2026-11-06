@@ -1,6 +1,6 @@
 Storeybrook is a light-first kit for storybook pages and little games: watercolor paper, pages that turn, stories read aloud, a brook of stepping stones to walk, nougats that fly into a jar, and a creature that grows. It is the daylight counterpart to Depthfield. Where Depthfield is a dark scene with a quiet HUD, Storeybrook is a book on a table with a game folded inside it.
 
-The system has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk), one set of token names that every look fills, thirty components with live previews, a behavior bundle (`window.Storeybrook`), drawn icons, the creature and the nougat as art, and the rules below. This page is the short version. The sections after it go deep: paper, looks, color, type, layout, motion, iconography, writing, sound and reading aloud, rewards and progression, devices, accessibility, code, governance, play, and taste.
+The system has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk), one set of token names that every look fills, thirty-two components with live previews, a behavior bundle (`window.Storeybrook`), drawn icons, the creature and the nougat as art, and the rules below. This page is the short version. The sections after it go deep: paper, looks, color, type, layout, motion, iconography, writing, sound and reading aloud, rewards and progression, devices, accessibility, code, governance, play, and taste.
 
 ## Principles
 
@@ -9,7 +9,7 @@ The system has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami,
 - **The brook is the cue.** `cue` is the color of the path through the page: links, the word being read aloud, the walked trail, a switched-on toggle, every "tap" or "say it" hint. Never put `cue` and `accent` on the same control.
 - **The story leads; the game lives inside it.** Text is set to be read, in `story-body` at a reading measure. A game is a stone on the brook or a cover on the shelf, never a modal that interrupts the page.
 - **Rewards are gifts, not prices.** Nougats are never spent, never lost and never sold. A lock always says why it is shut and how to open it. No timers, no streaks to break, no "only today".
-- **Read it to me.** Every page can be read aloud, an Irish English voice first when the device has one, with the words lighting as they are read. With no voices the words are all still there.
+- **Read it to me.** Every page can be read aloud, a quality-marked English voice first when the browser exposes one, Irish preferred among equal-quality options, with the words lighting as they are read. With no voices the words are all still there.
 - **Six looks, one page.** A look changes materials and fonts, never content, order or meaning. Check a page in Meta Daylight first, then Knight Night, then Ink Blot (e-ink and print), then the rest.
 - **Across the room.** The same page works on a phone, an e-ink slate and a 75-inch TV: `data-density="tv"` raises targets to 64px and focus rings to 5px, and the arrow keys, a remote and a gamepad all move focus.
 - **Quiet until asked.** Sound is off until a person turns it on, and stays on for that visit only. Nothing needs a camera, a microphone or motion sensors.

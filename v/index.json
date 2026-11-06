@@ -1,0 +1,19 @@
+{
+  "latest": "1.3.1",
+  "versions": {
+    "1.3.0": {
+      "tokens.css": "cdf15cfa449604179f2571c314c479afc5d51cf6d8c9ad971a398ff0f9a08c5f",
+      "bundle.css": "ca489c35c9e9b15d0f1908488ed7d1df70ebd945e3427ab5f32dcd3436e4affc",
+      "bundle.js": "82990f89194e94f07c3c2b4f3bb2f23bc959c998cfc6788a81b15889331438c3",
+      "index.d.ts": "0ce3d014a3d332d253dc38719e8a41f6a03d6bcace42913e9d2586c75d214889",
+      "paper.js": "fa5869fec1f6508a54e3c0938fb2c2f99b37b6bcf5828103c0d5035f667f718a"
+    },
+    "1.3.1": {
+      "tokens.css": "cdf15cfa449604179f2571c314c479afc5d51cf6d8c9ad971a398ff0f9a08c5f",
+      "bundle.css": "21d8c8337c71ccb1cf9dad24a0cdb5e45723930f741c22d4bdc07b16494dd2a4",
+      "bundle.js": "2221b035bf805764d1fd3443a603da022679e6a50dfdfa1264723f66bce38351",
+      "index.d.ts": "de4138333784e2e82597533aefb7776783254a90d60618dd3993bce418bd47ee",
+      "paper.js": "fa5869fec1f6508a54e3c0938fb2c2f99b37b6bcf5828103c0d5035f667f718a"
+    }
+  }
+}

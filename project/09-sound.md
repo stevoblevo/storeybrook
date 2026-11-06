@@ -4,21 +4,21 @@ Storeybrook has two kinds of sound: a voice that reads the story, and small pape
 
 ## Reading aloud
 
-`Storeybrook.read` speaks a page with the browser's own speech synthesis and lights each word as it is spoken. It runs on the device; nothing is sent anywhere by the kit.
+`Storeybrook.read` speaks a page with the browser's own speech synthesis and lights each word as it is spoken. The kit uses only voices supplied by the browser. On-device voices stay on the device; browser-provided network voices may use the browser’s own speech service. The kit adds no speech service or paid account.
 
-- **Voice choice.** Voices are ranked: Irish English (`en-IE`, or a voice named Moira, Orla or "Irish") first, then British English, then any English, then the rest; on-device voices before network ones. A person's choice is kept (`sb:voice`).
-- **Pace.** Rate 0.96 and pitch 1.05 by default, a touch slower and brighter than the engine's default; the rate is kept (`sb:rate`). Offer 0.8, 0.96 and 1.15 at most.
+- **Voice choice.** Automatic selection first avoids novelty voices and prefers quality hints such as Enhanced, Premium, Natural or Neural in the browser voice name or identifier. Among otherwise equal voices it prefers Irish English, then British English, then other English; local/default voices break ties. These names are hints, not an audio-quality guarantee. A person’s explicit choice is kept (`sb:voiceURI` with the old `sb:voice` name as fallback).
+- **Pace.** Rate 1 and pitch 1 by default, leaving a natural voice unshifted. A saved pace is kept (`sb:rate`); the UI offers slower, gentle, natural and faster.
 - **Chunks.** Text is spoken in chunks that end at sentence marks, up to 220 characters, so long pages do not stall the engine.
 - **Highlight.** Words are wrapped in `sb-word` the first time a page is read; the spoken word gets `is-reading` (`cue-soft` behind it, a `cue` edge under it; inverted in Ink Blot). Where the engine reports word boundaries the highlight follows them; where it does not, it follows a steady 2.6 words a second times the rate.
 - **What is skipped.** `script`, `style`, anything `aria-hidden="true"` and anything inside `.sb-noread`.
 - **No voices.** If the browser has no speech synthesis the reader disables its play button and says "This browser has no voices. The words are all here to read." If there is no Irish voice it says which voice it is using.
-- **Events.** `sb:read` fires with `{state, progress}`: `speaking`, `paused`, `stopped`, `done`, `unsupported`.
+- **Events.** `sb:read` fires with `{state, progress}`: `speaking`, `paused`, `stopped`, `done`, `unsupported`, `error`. Stale events from cancelled utterances cannot skip into a new story; a synthesis failure is reported rather than silently skipping text.
 
 The reader is an aid, never a gate: every story is readable without it, and nothing happens only because a page was read aloud.
 
 ### The Irish voice
 
-Irish English is Storeybrook's first choice because the stories were written to be heard in it. Which voices exist depends on the device: Apple devices ship Moira (en-IE); Microsoft Edge offers Irish neural voices (Emily, Connor) online; many Android and Linux devices have none. The reader always falls back gracefully and says so.
+Irish English is Storeybrook's first choice because the stories were written to be heard in it. Which voices exist depends on the device: Apple devices ship Moira (en-IE); Microsoft Edge offers Irish neural voices (Emily, Connor) online; many Android and Linux devices have none. Safari may expose only a subset of the installed operating-system voices. The picker lists only browser-available choices, handles delayed voice enumeration and shows the voice name. “Try voice” plays a short sample; Stop cancels it. No voice is downloaded by this toolkit.
 
 ## Paper noises
 

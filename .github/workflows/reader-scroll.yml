@@ -1,0 +1,45 @@
+name: Reader and scroll quality gate
+on:
+  push:
+    branches: [sae/reader-voice-quality, main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Source checks
+        run: |
+          python3 -I site/build.py
+          python3 -I tools/release.py
+          git diff --exit-code
+          python3 -I tests/show-tell/verify.py
+          node tests/reader/logic.cjs
+          node tests/showcase/scroll.cjs
+          node --check project/components/bundle.js
+          node --check site/showcase.js
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - name: Install official WebKit test runtime
+        if: matrix.browser == 'webkit'
+        run: npx playwright install --with-deps webkit
+      - name: Browser regression test
+        env:
+          BROWSER: ${{ matrix.browser }}
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/reader/browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reader-scroll-${{ matrix.browser }}
+          path: test-results/
+          if-no-files-found: warn

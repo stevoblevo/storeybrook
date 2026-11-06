@@ -1,4 +1,4 @@
-/* Storeybrook 1.1 — types as documentation. Components are HTML + bundle.css classes (prefixed sb-); behaviors are
+/* Storeybrook 1.3.1 — types as documentation. Components are HTML + bundle.css classes (prefixed sb-); behaviors are
    window.Storeybrook. Each <Comp>Props names the markup contract a page provides; the functions are the JS API. */
 
 export type LookId = 'daylight' | 'knight' | 'inkblot' | 'comix' | 'origami' | 'skein';
@@ -65,7 +65,7 @@ export interface BlotProps { host: string; duration?: number }
 
 /** The behavior API (window.Storeybrook) */
 export interface ReadApi {
-  readonly supported: boolean; readonly state: 'idle' | 'speaking' | 'paused'; voice: SpeechSynthesisVoice | null; rate: number; pitch: number;
+  readonly supported: boolean; readonly state: 'idle' | 'speaking' | 'paused'; voice: SpeechSynthesisVoice | null; rate: number; pitch: number; error: string;
   voices(): SpeechSynthesisVoice[]; pick(name?: string): SpeechSynthesisVoice | null; isIrish(v: SpeechSynthesisVoice | null): boolean;
   prepare(root: Element): { words: { el: HTMLElement; start: number; end: number }[]; text: string };
   speak(target: Element | string, o?: { voice?: string; rate?: number; pitch?: number }): boolean;
