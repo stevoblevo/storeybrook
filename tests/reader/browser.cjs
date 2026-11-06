@@ -10,7 +10,7 @@ const server=http.createServer(async(req,res)=>{try{let p=decodeURIComponent(new
  await page.addInitScript(()=>{
   const bus=new EventTarget(),state={spoken:[],current:null,cancels:0};
   state.voices=[{name:'Moira',lang:'en-IE',voiceURI:'moira-basic',localService:true,default:false},{name:'Moira (Enhanced)',lang:'en-IE',voiceURI:'moira-enhanced',localService:true,default:false},{name:'Samantha',lang:'en-US',voiceURI:'samantha',localService:true,default:true},{name:'Bad News',lang:'en-US',voiceURI:'bad-news',localService:true,default:false}];
-  const synth={getVoices:()=>state.voices,speak(u){state.current=u;state.spoken.push({text:u.text,voice:u.voice&&u.voice.name,rate:u.rate,pitch:u.pitch});if(u.onstart)u.onstart();},cancel(){state.cancels++;},pause(){},resume(){},addEventListener:bus.addEventListener.bind(bus)};
+  const synth={getVoices:()=>state.voices,speak(u){state.current=u;state.spoken.push({text:u.text,voice:u.voice&&u.voice.name,rate:u.rate,pitch:u.pitch});if(u.onstart)u.onstart();},cancel(){state.cancels++;},paused:false,pause(){this.paused=true;},resume(){this.paused=false;},addEventListener:bus.addEventListener.bind(bus)};
   Object.defineProperty(window,'speechSynthesis',{configurable:true,value:synth});Object.defineProperty(window,'SpeechSynthesisUtterance',{configurable:true,value:class{constructor(t){this.text=t;}}});state.voicesChanged=()=>bus.dispatchEvent(new Event('voiceschanged'));window.__speech=state;
  });
  await page.goto(base);await page.evaluate(()=>document.fonts.ready);
@@ -20,7 +20,8 @@ const server=http.createServer(async(req,res)=>{try{let p=decodeURIComponent(new
  await page.locator('[data-sc-read]').click();
  assert.equal(await page.evaluate(()=>__speech.spoken.at(-1).voice),'Moira (Enhanced)');assert.equal(await page.evaluate(()=>__speech.spoken.at(-1).pitch),1);
  await picker.selectOption('samantha');assert.equal(await page.evaluate(()=>__speech.spoken.at(-1).voice),'Samantha');
- await page.locator('.sc-voice-options [data-sb-read-stop]').click();assert.equal(await page.evaluate(()=>Storeybrook.read.state),'idle');
+ await page.locator('[data-sc-read]').click();assert.equal(await page.evaluate(()=>speechSynthesis.paused),true);
+ await page.locator('.sc-voice-options [data-sb-read-stop]').click();assert.equal(await page.evaluate(()=>Storeybrook.read.state),'idle');assert.equal(await page.evaluate(()=>speechSynthesis.paused),false);
  await page.locator('.sc-voice-options select[data-sb-rate]').selectOption('0.85');
  assert.deepEqual(await page.locator('select[data-sb-rate]').evaluateAll(xs=>xs.map(x=>x.value)),['0.85','0.85']);
  await page.reload();await page.locator('.sc-voice-options summary').click();assert.equal(await picker.inputValue(),'samantha');

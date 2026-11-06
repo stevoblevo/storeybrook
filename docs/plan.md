@@ -4,7 +4,7 @@ Owner: Bleve. Last updated 6 Nov 2026 by Sae(lion). Work that crosses the family
 
 ## Where things stand
 
-- `main` is **Storeybrook 1.3.0**: 32 components, six looks, 16 brand-book chapters. 1.2 (Guardian and Taste) was merged 3 Nov from `claude/storeybrook-1-2`; 1.3 adds paper (`components/paper.js`: the Pen and Folded).
+- `main` is **Storeybrook 1.3.2**: 32 components, six looks, 16 brand-book chapters. 1.2 (Guardian and Taste) was merged 3 Nov from `claude/storeybrook-1-2`; 1.3 adds paper (`components/paper.js`: the Pen and Folded). 1.3.2 improves Reader voice controls, stopped speech recovery, and showcase loading; older runtime snapshots remain under `v/`.
 - The showcase (`index.html`) gives each look a scene and hides seven pets along the brook; "Play it for me" runs the adventure.
 - Consumers: AND SO (all six looks as `sb-*` skins, on a fork of the 1.0 bundle), the Malachi sites (a 1.0 copy), Reignfawn (its own origami, daylight, knight, ink and comix looks).
 
@@ -29,5 +29,5 @@ Origami today is folded-paper styling for editors and settings: 45° stones, dog
 | S2 | Guardian in the showcase: the pet you walk with can be the page's Guardian | Picking a pet in the pet book sets the Guardian | S | open | open |
 | S3 | Taste in the docs: a "check this page" button on every docs page | Running it on the showcase lists findings with fixes | S | open | open |
 | S4 | Mirror windows show Guardian and Taste states across the six devices | Screenshot | S | open | open |
-| S5 | Keep showcase scrolling responsive and mirror previews useful while loading | One brook layout per scene transition at most; early preview load with readable fallback | S | Sae(lion) | candidate (`sae/reader-voice-quality`); browser checks pending |
-| S6 | Reader quality and explicit voice choice | Browser-available quality hints, saved choice, late voice enumeration, natural pace, cancellation/error regressions | S | Sae(lion) | candidate; hosted/browser checks pending |
+| S5 | Keep showcase scrolling responsive and mirror previews useful while loading | One brook layout per scene transition at most; early preview load with readable fallback | S | Sae(lion) | done (1.3.2; source `76f7573`, Chromium/WebKit gate `edb94b0`) |
+| S6 | Reader quality and explicit voice choice | Browser-available quality hints, saved choice, late voice enumeration, natural pace, cancellation/error regressions | S | Sae(lion) | done (1.3.2; source `76f7573`, Chromium/WebKit gate `edb94b0`; audible device review remains separate) |

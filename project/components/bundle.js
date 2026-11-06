@@ -1,11 +1,11 @@
-/* Storeybrook 1.3.1 · behaviors for storybook pages and little games. One classic script, no dependencies.
+/* Storeybrook 1.3.2 · behaviors for storybook pages and little games. One classic script, no dependencies.
    window.Storeybrook: theme, density, nav, read (read aloud), rewards (nougats), unlocks, brook, creature, spread,
    fold, blot, drawer, dialog, toast, sound, haptic, icons, guardian, taste. Every module checks reduced motion at run time and
    wraps storage, so a page works with storage blocked and with JS off (markup stays readable). */
 (function (w, d) {
   'use strict';
   if (w.Storeybrook && w.Storeybrook.version) return;
-  var VERSION = '1.3.1';
+  var VERSION = '1.3.2';
   var THEMES = [
     { id: 'daylight', name: 'Meta Daylight', line: 'Watercolor on north-light paper' },
     { id: 'knight', name: 'Knight Night', line: 'A cobalt paper theatre by candle' },
@@ -239,7 +239,7 @@
     pause: function () { if (read.state === 'speaking') { SY.pause(); read.state = 'paused'; emit('read', { state: 'paused' }); read._sync(); } },
     resume: function () { if (read.state === 'paused') { SY.resume(); read.state = 'speaking'; emit('read', { state: 'speaking' }); read._sync(); } },
     toggle: function (target) { if (read.state === 'speaking') read.pause(); else if (read.state === 'paused') read.resume(); else read.speak(target); },
-    stop: function (quiet) { if (!read.supported) return; read._session++; clearInterval(read._timer); read.state = 'idle'; read.error = ''; read._q = null; try { SY.cancel(); } catch (e) { /* engine busy */ } $$('.sb-word.is-reading').forEach(function (x) { x.classList.remove('is-reading'); }); if (!quiet) { emit('read', { state: 'stopped' }); read._sync(); } },
+    stop: function (quiet) { if (!read.supported) return; read._session++; clearInterval(read._timer); read.state = 'idle'; read.error = ''; read._q = null; try { SY.cancel(); if (SY.paused) SY.resume(); } catch (e) { /* engine busy */ } $$('.sb-word.is-reading').forEach(function (x) { x.classList.remove('is-reading'); }); if (!quiet) { emit('read', { state: 'stopped' }); read._sync(); } },
     _sync: function () {
       $$('.sb-reader').forEach(function (bar) {
         var currentVoice = read.state === 'idle' ? read.pick() : read.voice || read.pick();

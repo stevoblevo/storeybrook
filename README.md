@@ -1,6 +1,6 @@
 # Storeybrook
 
-A light-first design system for storybook pages and little games. Its pieces are watercolor paper, pages that turn, stories read aloud, a brook of stepping stones, nougats that fly into a jar, and a creature that grows. It has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk) built on one set of token names, 32 components (guardians and a taste check among them), and a behavior bundle exposed as `window.Storeybrook` (1.3.1). It is the daylight counterpart to [Depthfield](https://github.com/stevoblevo/depthfield).
+A light-first design system for storybook pages and little games. Its pieces are watercolor paper, pages that turn, stories read aloud, a brook of stepping stones, nougats that fly into a jar, and a creature that grows. It has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk) built on one set of token names, 32 components (guardians and a taste check among them), and a behavior bundle exposed as `window.Storeybrook` (1.3.2). It is the daylight counterpart to [Depthfield](https://github.com/stevoblevo/depthfield).
 
 This repo is a read-only export of the Storeybrook design system (index format v3) from its Claude artifact:
 <https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe>
@@ -74,10 +74,12 @@ Open any page with `?sb-taste` in its address and the bundle reads it against th
 
 After changing anything under `project/`, run `python3 site/build.py` and commit the output.
 
-## 1.3.1 reader and scroll patch
+## 1.3.2 reader and scroll patch
 
 The Reader now offers the voices the browser actually exposes, a sample button, Stop, and natural pitch/rate. Automatic selection prefers enhanced/premium/natural/neural voice names or identifiers before accent preference; explicit saved choices always win. Installed operating-system voices are not necessarily exposed to Safari. No voice download, paid speech service or system setting is required.
 
 The showcase updates the brook once per changed scene, and mirror windows preload earlier with visible loading and fallback links. These changes do not claim to diagnose every Safari rendering delay.
 
 `node tests/reader/logic.cjs` and `node tests/showcase/scroll.cjs` cover deterministic behavior. Real audible Safari quality must be reviewed on a device with its available voices.
+
+Versioned runtime files live under `v/1.3.2/`; `v/index.json` records their SHA-256 hashes. The original 1.3.0 runtime and the 1.3.1 candidate remain unchanged. 1.3.2 also resets a paused speech engine when stopping, so the next Play can start normally.
