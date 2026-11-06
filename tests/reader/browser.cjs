@@ -21,7 +21,10 @@ const server=http.createServer(async(req,res)=>{try{let p=decodeURIComponent(new
  assert.equal(await page.evaluate(()=>__speech.spoken.at(-1).voice),'Moira (Enhanced)');assert.equal(await page.evaluate(()=>__speech.spoken.at(-1).pitch),1);
  await picker.selectOption('samantha');assert.equal(await page.evaluate(()=>__speech.spoken.at(-1).voice),'Samantha');
  await page.locator('.sc-voice-options [data-sb-read-stop]').click();assert.equal(await page.evaluate(()=>Storeybrook.read.state),'idle');
+ await page.locator('.sc-voice-options select[data-sb-rate]').selectOption('0.85');
+ assert.deepEqual(await page.locator('select[data-sb-rate]').evaluateAll(xs=>xs.map(x=>x.value)),['0.85','0.85']);
  await page.reload();await page.locator('.sc-voice-options summary').click();assert.equal(await picker.inputValue(),'samantha');
+ assert.deepEqual(await page.locator('select[data-sb-rate]').evaluateAll(xs=>xs.map(x=>x.value)),['0.85','0.85']);
  await page.locator('.sc-voice-options [data-sb-voice-preview]').click();assert.equal(await page.evaluate(()=>__speech.spoken.at(-1).voice),'Samantha');
  await page.locator('.sc-voice-options [data-sb-read-stop]').click();
  await picker.selectOption('');await page.locator('[data-sc-read]').click();assert.equal(await page.evaluate(()=>__speech.spoken.at(-1).voice),'Moira (Enhanced)');
@@ -39,7 +42,7 @@ const server=http.createServer(async(req,res)=>{try{let p=decodeURIComponent(new
  await page.screenshot({path:path.join(ROOT,`test-results/mirrors-${engine}.png`)});
  assert.deepEqual(errors,[]);
  const taste=await page.evaluate(()=>Storeybrook.taste({log:false}).map(x=>({rule:x.rule,severity:x.severity,count:x.count,sample:x.sample})));console.log('Taste review:',JSON.stringify(taste));
- for(const theme of ['daylight','knight','inkblot','comix','origami','skein']){await page.goto(`${base}/docs.html?theme=${theme}#/components/Reader`);const frame=page.frameLocator('iframe.frame').first();await frame.locator('.sb-reader__choices').waitFor();assert.equal(await frame.locator('body').evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`Reader preview overflow: ${theme}`);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`docs overflow: ${theme}`);}
+ for(const theme of ['daylight','knight','inkblot','comix','origami','skein']){await page.goto(`${base}/docs.html?theme=${theme}#/components/Reader`);const frame=page.frameLocator('iframe.frame').first();await frame.locator('.sb-reader__choices').waitFor();await page.waitForFunction(()=>{const f=document.querySelector('iframe.frame');return f&&f.contentDocument&&f.clientHeight+4>=f.contentDocument.documentElement.scrollHeight;});assert.equal(await frame.locator('body').evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`Reader preview overflow: ${theme}`);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`docs overflow: ${theme}`);}
  await page.screenshot({path:path.join(ROOT,`test-results/reader-docs-${engine}.png`)});assert.deepEqual(errors,[]);
  const nojs=await browser.newPage({javaScriptEnabled:false});await nojs.goto(base);assert.equal(await nojs.locator('.sc-device__fallback a').count(),6);await nojs.close();
  console.log(`PASS ${engine}: visible voice choices, quality default, explicit saved choice, sample/stop, delayed voice enumeration, no autoplay, six phone scenes, mirror load, no-JS fallback. Speech is mocked; this is not audible voice-quality verification.`);
