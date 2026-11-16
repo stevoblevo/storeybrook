@@ -1,0 +1,1038 @@
+<!doctype html>
+<!-- Storeybrook kit snapshot: v1.1.0 · source ~/workspace/storeybrook (project/tokens.css whole + project/components/bundle.css sections: hooks/base, washes, sheets, buttons, caption/balloon, chip) · design-system.json lastChange 2026-10-27 · inlined 2026-11-16 by hidden_files/build-origami-kit.py · see files/KIT-PRACTICE.md · v2 mobile form-factor pass 2026-11-16 (page layer only; snapshot unchanged) -->
+<html lang="en" data-theme="origami" class="sb-root">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fold a Sunflower — an Origami play experiment</title>
+<style>
+/* ===== KIT SNAPSHOT: project/tokens.css (whole file) ===== */
+/* Storeybrook — generated from tokens.json */
+:root, [data-theme="daylight"] {
+  --paper: #f4f6f2;
+  --surface: #e9eee7;
+  --page: #ffffff;
+  --line: #cdd5ca;
+  --ink: #26323f;
+  --ink-muted: #55616c;
+  --accent: var(--rose);
+  --accent-soft: var(--rose-soft);
+  --on-accent: var(--on-rose);
+  --cue: var(--cerulean);
+  --cue-soft: var(--cerulean-soft);
+  --on-cue: var(--on-cerulean);
+  --link: var(--cue);
+  --danger: #b3261e;
+  --focus: #2a6a9c;
+  --scrim: rgba(244, 246, 242, 0.86);
+  --chrome: rgba(255, 255, 255, 0.9);
+  --rose: #b8325f;
+  --rose-soft: #efe4e5;
+  --on-rose: #ffffff;
+  --cerulean: #2a6a9c;
+  --cerulean-soft: #e2e9ea;
+  --on-cerulean: #ffffff;
+  --sap: #44702a;
+  --sap-soft: #e4eae0;
+  --on-sap: #ffffff;
+  --gamboge: #d4920f;
+  --gamboge-soft: #f1edde;
+  --on-gamboge: #26323f;
+  --copper: #8c5a2b;
+  --copper-soft: #ebe8e0;
+  --on-copper: #ffffff;
+  --wash-sky: #c8e3f4;
+  --wash-meadow: #cfe3b8;
+  --wash-rose: #f3c6d3;
+  --wash-sun: #f7dc97;
+  --wash-brook: #8cc2e6;
+  --art-line: #2f3b48;
+  --art-light: #ffffff;
+  --art-shade: #c7d3cf;
+  --art-stone: #d9ddd4;
+  --art-water: #6fb0dc;
+  --nougat: #f2dcb8;
+  --nougat-nut: #a8743f;
+  --wrapper: #d94f7f;
+  --tag-sun: #8a5a00;
+  --tag-rose: #a3304f;
+  --tag-lilac: #6a4fa3;
+  --tag-sea: #1f6f5c;
+  --tag-sky: #2a6a9c;
+  --shadow-page: 0 1px 0 rgba(38, 50, 63, 0.06), 0 10px 30px rgba(38, 50, 63, 0.10);
+  --shadow-lift: 0 18px 40px rgba(38, 50, 63, 0.18);
+  --shadow-sticker: 0 2px 0 rgba(38, 50, 63, 0.15), 0 6px 14px rgba(38, 50, 63, 0.14);
+  --shadow-seal: inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -3px 6px rgba(0, 0, 0, 0.25), 0 3px 8px rgba(38, 50, 63, 0.25);
+  --shadow-ink: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+[data-theme="knight"] {
+  --paper: #1c2838;
+  --surface: #24334a;
+  --page: #2a3a52;
+  --line: #3d4f6b;
+  --ink: #f4efe6;
+  --ink-muted: #b7c2d2;
+  --accent: var(--gamboge);
+  --accent-soft: var(--gamboge-soft);
+  --on-accent: var(--on-gamboge);
+  --cue: var(--cerulean);
+  --cue-soft: var(--cerulean-soft);
+  --on-cue: var(--on-cerulean);
+  --link: var(--cue);
+  --danger: #ff8a7a;
+  --focus: #f0c75e;
+  --scrim: rgba(28, 40, 56, 0.84);
+  --chrome: rgba(42, 58, 82, 0.9);
+  --rose: #f29fb0;
+  --rose-soft: #4b4252;
+  --on-rose: #1c2838;
+  --cerulean: #8fb4e8;
+  --cerulean-soft: #35475f;
+  --on-cerulean: #1c2838;
+  --sap: #a9d98a;
+  --sap-soft: #3b4f4a;
+  --on-sap: #1c2838;
+  --gamboge: #f0c75e;
+  --gamboge-soft: #4b4b40;
+  --on-gamboge: #1c2838;
+  --copper: #e3b27a;
+  --copper-soft: #484647;
+  --on-copper: #1c2838;
+  --wash-sky: #2f4a6e;
+  --wash-meadow: #2c4a3d;
+  --wash-rose: #5a3a52;
+  --wash-sun: #6b5a2e;
+  --wash-brook: #3d6a8c;
+  --art-line: #0f1724;
+  --art-light: #f4efe6;
+  --art-shade: #16202e;
+  --art-stone: #4a5a73;
+  --art-water: #5a8fbf;
+  --nougat: #f2dcb8;
+  --nougat-nut: #c78e52;
+  --wrapper: #e87a9a;
+  --tag-sun: #f3cf8a;
+  --tag-rose: #f29fb0;
+  --tag-lilac: #c4a2ff;
+  --tag-sea: #8ff0d2;
+  --tag-sky: #8fb4e8;
+  --shadow-page: 0 1px 0 rgba(0, 0, 0, 0.3), 0 14px 40px rgba(5, 10, 20, 0.45);
+  --shadow-lift: 0 22px 50px rgba(5, 10, 20, 0.6);
+  --shadow-sticker: 0 2px 0 rgba(0, 0, 0, 0.4), 0 8px 18px rgba(0, 0, 0, 0.45);
+  --shadow-seal: inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -3px 6px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.5);
+  --shadow-ink: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+[data-theme="inkblot"] {
+  --paper: #ffffff;
+  --surface: #f0f0f0;
+  --page: #ffffff;
+  --line: #767676;
+  --ink: #000000;
+  --ink-muted: #3d3d3d;
+  --accent: var(--rose);
+  --accent-soft: var(--rose-soft);
+  --on-accent: var(--on-rose);
+  --cue: var(--cerulean);
+  --cue-soft: var(--cerulean-soft);
+  --on-cue: var(--on-cerulean);
+  --link: var(--cue);
+  --danger: #000000;
+  --focus: #000000;
+  --scrim: rgba(255, 255, 255, 0.94);
+  --chrome: rgba(255, 255, 255, 1);
+  --rose: #000000;
+  --rose-soft: #e6e6e6;
+  --on-rose: #ffffff;
+  --cerulean: #000000;
+  --cerulean-soft: #e6e6e6;
+  --on-cerulean: #ffffff;
+  --sap: #000000;
+  --sap-soft: #e6e6e6;
+  --on-sap: #ffffff;
+  --gamboge: #000000;
+  --gamboge-soft: #e6e6e6;
+  --on-gamboge: #ffffff;
+  --copper: #000000;
+  --copper-soft: #e6e6e6;
+  --on-copper: #ffffff;
+  --wash-sky: #e2e2e2;
+  --wash-meadow: #d6d6d6;
+  --wash-rose: #dcdcdc;
+  --wash-sun: #ececec;
+  --wash-brook: #bdbdbd;
+  --art-line: #000000;
+  --art-light: #ffffff;
+  --art-shade: #bdbdbd;
+  --art-stone: #f2f2f2;
+  --art-water: #9e9e9e;
+  --nougat: #ffffff;
+  --nougat-nut: #000000;
+  --wrapper: #000000;
+  --tag-sun: #000000;
+  --tag-rose: #000000;
+  --tag-lilac: #000000;
+  --tag-sea: #000000;
+  --tag-sky: #000000;
+  --shadow-page: 0 0 0 1px #000000;
+  --shadow-lift: 0 0 0 2px #000000;
+  --shadow-sticker: 0 0 0 1px #000000;
+  --shadow-seal: 0 0 0 2px #000000;
+  --shadow-ink: 0 0 0 rgba(0, 0, 0, 0);
+}
+[data-theme="comix"] {
+  --paper: #fffdf5;
+  --surface: #fff3c4;
+  --page: #ffffff;
+  --line: #111111;
+  --ink: #111111;
+  --ink-muted: #3a3a3a;
+  --accent: var(--rose);
+  --accent-soft: var(--rose-soft);
+  --on-accent: var(--on-rose);
+  --cue: var(--cerulean);
+  --cue-soft: var(--cerulean-soft);
+  --on-cue: var(--on-cerulean);
+  --link: var(--cue);
+  --danger: #c4001d;
+  --focus: #111111;
+  --scrim: rgba(255, 253, 245, 0.9);
+  --chrome: rgba(255, 255, 255, 0.96);
+  --rose: #c7006a;
+  --rose-soft: #fae6e8;
+  --on-rose: #ffffff;
+  --cerulean: #00669e;
+  --cerulean-soft: #e8efed;
+  --on-cerulean: #ffffff;
+  --sap: #22722e;
+  --sap-soft: #ebf0e3;
+  --on-sap: #ffffff;
+  --gamboge: #ffd400;
+  --gamboge-soft: #fff9df;
+  --on-gamboge: #111111;
+  --copper: #8a4a10;
+  --copper-soft: #f4ede0;
+  --on-copper: #ffffff;
+  --wash-sky: #7fd3f5;
+  --wash-meadow: #9bdc8f;
+  --wash-rose: #ff9fd0;
+  --wash-sun: #fff07a;
+  --wash-brook: #38b6ee;
+  --art-line: #111111;
+  --art-light: #ffffff;
+  --art-shade: #3a3a3a;
+  --art-stone: #ffffff;
+  --art-water: #00a8e8;
+  --nougat: #ffe8b0;
+  --nougat-nut: #8a4a10;
+  --wrapper: #ff3ea5;
+  --tag-sun: #7a5a00;
+  --tag-rose: #b0005e;
+  --tag-lilac: #5b3fa0;
+  --tag-sea: #1d6e57;
+  --tag-sky: #00669e;
+  --shadow-page: 4px 4px 0 #111111;
+  --shadow-lift: 7px 7px 0 #111111;
+  --shadow-sticker: 3px 3px 0 #111111;
+  --shadow-seal: 3px 3px 0 #111111;
+  --shadow-ink: 2px 2px 0 #ffffff;
+}
+[data-theme="origami"] {
+  --paper: #eceef0;
+  --surface: #e0e5e9;
+  --page: #ffffff;
+  --line: #b8c1c8;
+  --ink: #1f2a33;
+  --ink-muted: #4c5965;
+  --accent: var(--rose);
+  --accent-soft: var(--rose-soft);
+  --on-accent: var(--on-rose);
+  --cue: var(--cerulean);
+  --cue-soft: var(--cerulean-soft);
+  --on-cue: var(--on-cerulean);
+  --link: var(--cue);
+  --danger: #b3261e;
+  --focus: #2a4c86;
+  --scrim: rgba(236, 238, 240, 0.88);
+  --chrome: rgba(255, 255, 255, 0.92);
+  --rose: #b8311a;
+  --rose-soft: #e7dddd;
+  --on-rose: #ffffff;
+  --cerulean: #2a4c86;
+  --cerulean-soft: #dbdfe6;
+  --on-cerulean: #ffffff;
+  --sap: #1f6f68;
+  --sap-soft: #dae3e4;
+  --on-sap: #ffffff;
+  --gamboge: #d99a12;
+  --gamboge-soft: #eae6dc;
+  --on-gamboge: #1f2a33;
+  --copper: #8a5a2a;
+  --copper-soft: #e3e1de;
+  --on-copper: #ffffff;
+  --wash-sky: #c9d8ee;
+  --wash-meadow: #bfe0d8;
+  --wash-rose: #f6c3b8;
+  --wash-sun: #f6dc9a;
+  --wash-brook: #9ab6e0;
+  --art-line: #2a3540;
+  --art-light: #ffffff;
+  --art-shade: #c8cfd6;
+  --art-stone: #ffffff;
+  --art-water: #5c86c9;
+  --nougat: #f2dcb8;
+  --nougat-nut: #a8743f;
+  --wrapper: #e2452c;
+  --tag-sun: #7f5700;
+  --tag-rose: #a8341c;
+  --tag-lilac: #5a4a9a;
+  --tag-sea: #1f6f68;
+  --tag-sky: #2a4c86;
+  --shadow-page: 0 1px 0 rgba(31, 42, 51, 0.08), 0 8px 24px rgba(31, 42, 51, 0.12);
+  --shadow-lift: 0 18px 40px rgba(31, 42, 51, 0.2);
+  --shadow-sticker: 0 2px 0 rgba(31, 42, 51, 0.15), 0 6px 14px rgba(31, 42, 51, 0.14);
+  --shadow-seal: inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -3px 6px rgba(0, 0, 0, 0.2), 0 3px 8px rgba(31, 42, 51, 0.25);
+  --shadow-ink: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+[data-theme="skein"] {
+  --paper: #f6ecee;
+  --surface: #eee0e4;
+  --page: #fffafb;
+  --line: #dcc3ca;
+  --ink: #3a2330;
+  --ink-muted: #6b4f5c;
+  --accent: var(--copper);
+  --accent-soft: var(--copper-soft);
+  --on-accent: var(--on-copper);
+  --cue: var(--sap);
+  --cue-soft: var(--sap-soft);
+  --on-cue: var(--on-sap);
+  --link: var(--cue);
+  --danger: #a3241e;
+  --focus: #93305a;
+  --scrim: rgba(246, 236, 238, 0.88);
+  --chrome: rgba(255, 250, 251, 0.92);
+  --rose: #93305a;
+  --rose-soft: #eddbe1;
+  --on-rose: #ffffff;
+  --cerulean: #2f5f8a;
+  --cerulean-soft: #e4dfe5;
+  --on-cerulean: #ffffff;
+  --sap: #1a6e56;
+  --sap-soft: #e2e1e0;
+  --on-sap: #ffffff;
+  --gamboge: #c98a2a;
+  --gamboge-soft: #f2e3dc;
+  --on-gamboge: #3a2330;
+  --copper: #9c4d1c;
+  --copper-soft: #eededb;
+  --on-copper: #ffffff;
+  --wash-sky: #d8e3f2;
+  --wash-meadow: #cfe8dc;
+  --wash-rose: #f2c6d2;
+  --wash-sun: #f5ddb8;
+  --wash-brook: #a9c9e6;
+  --art-line: #3a2330;
+  --art-light: #fffafb;
+  --art-shade: #e3c9d0;
+  --art-stone: #efe3dc;
+  --art-water: #86b4d8;
+  --nougat: #f6e2c4;
+  --nougat-nut: #9c5a2a;
+  --wrapper: #c96a8a;
+  --tag-sun: #8a5418;
+  --tag-rose: #93305a;
+  --tag-lilac: #6a4a8a;
+  --tag-sea: #1a6e56;
+  --tag-sky: #2f5f8a;
+  --shadow-page: 0 1px 0 rgba(58, 35, 48, 0.06), 0 10px 30px rgba(58, 35, 48, 0.10);
+  --shadow-lift: 0 18px 40px rgba(58, 35, 48, 0.18);
+  --shadow-sticker: 0 2px 0 rgba(58, 35, 48, 0.12), 0 6px 14px rgba(58, 35, 48, 0.12);
+  --shadow-seal: inset 0 2px 0 rgba(255, 255, 255, 0.4), inset 0 -3px 6px rgba(0, 0, 0, 0.2), 0 3px 8px rgba(58, 35, 48, 0.25);
+  --shadow-ink: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 112px;
+  --space-10: 168px;
+  --radius-none: 0;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+  --z-art: 0;
+  --z-content: 10;
+  --z-stone: 20;
+  --z-sticky: 40;
+  --z-reader: 50;
+  --z-drawer: 60;
+  --z-overlay: 1000;
+  --z-drop: 2000;
+  --dur-tap: 120ms;
+  --dur-quick: 220ms;
+  --dur-base: 420ms;
+  --dur-turn: 700ms;
+  --dur-drop: 900ms;
+  --dur-bleed: 1600ms;
+  --ease-out: cubic-bezier(0.2, 0.9, 0.3, 1);
+  --ease-paper: cubic-bezier(0.45, 0.05, 0.25, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --bp-medium: 640px;
+  --bp-expanded: 1024px;
+  --bp-wide: 1600px;
+  --bp-tv: 1800px;
+  --size-root: clamp(16px, 0.42vw + 10px, 28px);
+  --size-target: 48px;
+  --size-stone: 56px;
+  --size-cover: 260px;
+  --size-measure: 60ch;
+  --size-page: 680px;
+  --size-reader: 560px;
+  --size-jar: 72px;
+  --size-container: 1280px;
+  --op-grain: 0.2;
+  --op-wash: 0.85;
+  --op-disabled: 0.45;
+  --border-pencil: 1px;
+  --border-ink: 2px;
+  --border-comix: 3px;
+  --border-focus: 3px;
+  --border-focus-offset: 3px;
+  --shape-blob: 58% 42% 55% 45% / 46% 54% 46% 54%;
+  --shape-stone: 52% 48% 46% 54% / 60% 58% 42% 40%;
+  --shape-seal: 49% 51% 47% 53% / 52% 47% 53% 48%;
+  --shape-tag: 6px 6px 6px 6px;
+  --density-regular: 1;
+  --density-kid: 1.15;
+  --density-tv: 1.5;
+  --tex-grain-size: 160px;
+  --tex-deckle: 6;
+  --tex-bleed: 14;
+  --tex-halftone: 6px;
+  --font-display: "DynaPuff", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  --font-story: "Alegreya", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-ui: "Andika", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-old: "IM Fell English", "Iowan Old Style", Georgia, serif;
+  --font-comic: "Bangers", "Impact", "Arial Black", sans-serif;
+  --font-comic-text: "Comic Neue", "Comic Sans MS", "Chalkboard SE", sans-serif;
+  --font-fold: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Arial Rounded MT Bold", sans-serif;
+  --font-hand: "Caveat", "Bradley Hand", "Segoe Print", cursive;
+}
+.display-xl { font-family: var(--font-display); font-size: 112px; line-height: 0.92; font-weight: 600; letter-spacing: -0.02em; }
+.display-l { font-family: var(--font-display); font-size: 72px; line-height: 0.95; font-weight: 600; letter-spacing: -0.015em; }
+.display-m { font-family: var(--font-display); font-size: 44px; line-height: 1.05; font-weight: 500; letter-spacing: -0.01em; }
+.display-s { font-family: var(--font-display); font-size: 28px; line-height: 1.1; font-weight: 500; }
+.story-lede { font-family: var(--font-story); font-size: 26px; line-height: 1.45; font-weight: 400; }
+.story-body { font-family: var(--font-story); font-size: 20px; line-height: 1.6; font-weight: 400; }
+.story-italic { font-family: var(--font-story); font-size: 20px; line-height: 1.6; font-weight: 400; font-style: italic; }
+.dropcap { font-family: var(--font-story); font-size: 96px; line-height: 0.8; font-weight: 700; }
+.title { font-family: var(--font-ui); font-size: 22px; line-height: 1.3; font-weight: 700; }
+.button { font-family: var(--font-ui); font-size: 18px; line-height: 1.2; font-weight: 700; }
+.label { font-family: var(--font-ui); font-size: 16px; line-height: 1.4; font-weight: 400; }
+.small { font-family: var(--font-ui); font-size: 14px; line-height: 1.4; font-weight: 400; }
+.count { font-family: var(--font-ui); font-size: 20px; line-height: 1; font-weight: 700; }
+.note { font-family: var(--font-hand); font-size: 26px; line-height: 1.15; font-weight: 500; }
+.comic-shout { font-family: var(--font-comic); font-size: 64px; line-height: 0.95; font-weight: 400; letter-spacing: 0.01em; }
+.balloon { font-family: var(--font-comic-text); font-size: 19px; line-height: 1.35; font-weight: 700; }
+/* ===== KIT SNAPSHOT: components/bundle.css — look hooks, base, focus ===== */
+/* ---------- the look hooks ---------- */
+:root {
+  --sb-display: var(--font-display); --sb-story: var(--font-story); --sb-ui: var(--font-ui); --sb-hand: var(--font-hand);
+  --sb-display-wdth: 92; --sb-display-weight: 600;
+  --sb-grain-blend: multiply; --sb-grain-op: var(--op-grain); --sb-wash-blend: multiply;
+  --sb-target: var(--size-target); --sb-focus-w: var(--border-focus); --sb-focus-off: var(--border-focus-offset);
+  --sb-sheet-filter: url(#sb-deckle); --sb-wash-filter: url(#sb-bleed);
+  --sb-shadow-c: rgba(38, 50, 63, 0.16);
+  --sb-grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .22 0 0 0 0 .25 0 0 0 -1.4 1.1'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  --sb-fibre-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02 .07' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .32 0 0 0 0 .35 0 0 0 -2.6 1.05'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23f)'/%3E%3C/svg%3E");
+}
+[data-theme="knight"] { --sb-display: var(--font-old); --sb-display-weight: 400; --sb-grain-blend: soft-light; --sb-grain-op: 0.5; --sb-wash-blend: screen; --sb-shadow-c: rgba(0, 0, 0, 0.5); }
+[data-theme="inkblot"] { --sb-display: var(--font-old); --sb-display-weight: 400; --sb-grain-op: 0; --sb-wash-blend: normal; --sb-wash-filter: none; --sb-sheet-filter: none; }
+[data-theme="comix"] { --sb-display: var(--font-comic); --sb-display-weight: 400; --sb-story: var(--font-comic-text); --sb-ui: var(--font-comic-text); --sb-grain-op: 0.18; --sb-sheet-filter: none; --sb-wash-filter: none; --sb-wash-blend: multiply; }
+[data-theme="origami"] { --sb-display: var(--font-fold); --sb-display-weight: 700; --sb-ui: var(--font-fold); --sb-grain-op: 0.22; --sb-sheet-filter: none; --sb-wash-filter: none; }
+[data-theme="skein"] { --sb-display: var(--font-hand); --sb-display-weight: 600; --sb-grain-op: 0.28; }
+
+/* the type styles from tokens.css follow the look */
+:root .display-xl, :root .display-l, :root .display-m, :root .display-s { font-family: var(--sb-display); font-variation-settings: "wdth" var(--sb-display-wdth); }
+:root .story-lede, :root .story-body, :root .story-italic, :root .dropcap { font-family: var(--sb-story); }
+:root .title, :root .button, :root .label, :root .small, :root .count { font-family: var(--sb-ui); }
+:root .note { font-family: var(--sb-hand); }
+[data-theme="comix"] .display-xl, [data-theme="comix"] .display-l, [data-theme="comix"] .display-m, [data-theme="comix"] .display-s { letter-spacing: 0.02em; }
+[data-theme="skein"] .display-xl, [data-theme="skein"] .display-l { line-height: 0.9; }
+
+/* ---------- the page ---------- */
+html.sb-root { font-size: var(--size-root); }
+.sb-body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); font-family: var(--sb-story); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+.sb-body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: var(--sb-grain-img); background-size: var(--tex-grain-size); opacity: var(--sb-grain-op); mix-blend-mode: var(--sb-grain-blend); }
+[data-theme="origami"] .sb-body, .sb-body.sb-mat { background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 48px 48px; background-position: -1px -1px; }
+[data-theme="origami"] .sb-body { background-color: var(--paper); }
+.sb-body > * { position: relative; z-index: 1; }
+.sb-grain { position: relative; isolation: isolate; }
+.sb-grain::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background-image: var(--sb-grain-img); background-size: var(--tex-grain-size); opacity: var(--sb-grain-op); mix-blend-mode: var(--sb-grain-blend); z-index: -1; }
+.sb-ink-link, .sb-prose a { color: var(--link); text-decoration-line: underline; text-decoration-style: wavy; text-decoration-thickness: 1px; text-underline-offset: 0.25em; text-decoration-color: color-mix(in srgb, var(--link) 55%, transparent); }
+.sb-ink-link:hover, .sb-prose a:hover { text-decoration-color: var(--link); }
+[data-theme="inkblot"] .sb-ink-link, [data-theme="inkblot"] .sb-prose a { text-decoration-style: solid; text-decoration-thickness: 2px; }
+.sb-prose { font-family: var(--sb-story); font-size: clamp(1.125rem, 1.2vw + 0.75rem, 1.375rem); line-height: 1.6; max-width: var(--size-measure); }
+.sb-prose p { margin: 0 0 1em; }
+.sb-lede { font-family: var(--sb-story); font-size: clamp(1.25rem, 2vw, 1.625rem); line-height: 1.45; max-width: 34em; margin: 0; }
+.sb-note { font-family: var(--sb-hand); font-size: 1.6rem; line-height: 1.1; color: var(--cue); }
+.sb-visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+[class^="sb-"][hidden], [class*=" sb-"][hidden] { display: none !important; }
+
+/* focus is always a ring you can see from across the room */
+.sb-body :focus-visible, .sb-focusable:focus-visible, [class^="sb-"]:focus-visible { outline: var(--sb-focus-w) solid var(--focus); outline-offset: var(--sb-focus-off); border-radius: 12px; }
+[data-density="tv"] { --sb-target: 64px; --sb-focus-w: 5px; --sb-focus-off: 5px; }
+[data-density="kid"] { --sb-target: 56px; }
+[data-density="kid"] .sb-prose, [data-density="kid"] .sb-lede { font-family: var(--sb-ui); font-size: clamp(1.3rem, 1.4vw + 0.9rem, 1.6rem); line-height: 1.55; }
+
+/* ===== KIT SNAPSHOT: components/bundle.css — washes ===== */
+/* ---------- washes: watercolor that bleeds, mixes and granulates ---------- */
+.sb-washes { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.sb-wash { --c: var(--wash-sky); position: absolute; width: var(--w, 40%); aspect-ratio: var(--ar, 1.35); border-radius: var(--shape-blob); pointer-events: none;
+  background: radial-gradient(closest-side, var(--c) 0%, color-mix(in srgb, var(--c) 88%, transparent) 55%, color-mix(in srgb, var(--c) 40%, transparent) 84%, transparent 100%);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--c) 70%, rgba(0, 0, 0, 0.08));
+  opacity: var(--op-wash); mix-blend-mode: var(--sb-wash-blend); filter: var(--sb-wash-filter); }
+.sb-wash::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background-image: var(--sb-grain-img); background-size: 120px; opacity: 0.55; mix-blend-mode: multiply; }
+.sb-wash--sky { --c: var(--wash-sky); } .sb-wash--meadow { --c: var(--wash-meadow); } .sb-wash--rose { --c: var(--wash-rose); }
+.sb-wash--sun { --c: var(--wash-sun); } .sb-wash--brook { --c: var(--wash-brook); }
+.sb-wash--band { width: 120%; left: -10%; aspect-ratio: auto; height: var(--h, 38%); border-radius: 40% 60% 46% 54% / 64% 58% 42% 36%; }
+[data-theme="knight"] .sb-wash::after { mix-blend-mode: overlay; opacity: 0.35; }
+/* Ink Blot: watercolor becomes stipple, Comix: halftone, Origami: folded paper */
+[data-theme="inkblot"] .sb-wash { background: radial-gradient(circle, #000 0.9px, transparent 1.1px) 0 0 / 7px 7px; opacity: 0.32; box-shadow: none;
+  -webkit-mask: radial-gradient(closest-side, #000 55%, transparent 100%); mask: radial-gradient(closest-side, #000 55%, transparent 100%); }
+[data-theme="inkblot"] .sb-wash::after { display: none; }
+[data-theme="comix"] .sb-wash { background: radial-gradient(circle, var(--c) 38%, transparent 41%) 0 0 / var(--tex-halftone) var(--tex-halftone); opacity: 0.9; box-shadow: none;
+  -webkit-mask: radial-gradient(closest-side, #000 50%, transparent 100%); mask: radial-gradient(closest-side, #000 50%, transparent 100%); }
+[data-theme="comix"] .sb-wash::after { display: none; }
+[data-theme="origami"] .sb-wash { border-radius: 0; background: linear-gradient(135deg, var(--c) 0 50%, color-mix(in srgb, var(--c) 82%, #000) 50% 100%); opacity: 0.8; box-shadow: none; mix-blend-mode: multiply;
+  clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%); }
+[data-theme="origami"] .sb-wash::after { display: none; }
+.sb-bloom { animation: sb-bloom var(--dur-bleed) var(--ease-out) both; }
+@keyframes sb-bloom { from { opacity: 0; transform: scale(0.82); } to { opacity: var(--op-wash); transform: none; } }
+
+/* the sun is paper left unpainted, with a gamboge ring around it */
+.sb-sun { position: absolute; width: var(--w, 14%); aspect-ratio: 1; border-radius: 50%; pointer-events: none; background: radial-gradient(closest-side, var(--paper) 0 52%, color-mix(in srgb, var(--wash-sun) 90%, transparent) 60%, color-mix(in srgb, var(--wash-sun) 40%, transparent) 78%, transparent 100%); filter: var(--sb-wash-filter); }
+[data-theme="knight"] .sb-sun { background: radial-gradient(closest-side, #f4efe6 0 40%, color-mix(in srgb, var(--gamboge) 50%, transparent) 52%, transparent 100%); }
+[data-theme="inkblot"] .sb-sun { background: radial-gradient(closest-side, #fff 0 46%, #000 47% 49%, transparent 50%); filter: none; }
+[data-theme="comix"] .sb-sun { background: radial-gradient(closest-side, var(--gamboge) 0 56%, var(--line) 57% 61%, transparent 62%); filter: none; }
+
+/* ===== KIT SNAPSHOT: components/bundle.css — sheets ===== */
+/* ---------- sheets: deckled, taped, inked ---------- */
+.sb-sheet { position: relative; isolation: isolate; color: var(--ink); padding: clamp(1.25rem, 3vw, 2.5rem); }
+.sb-sheet::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--page); border-radius: 4px; box-shadow: var(--shadow-page); filter: var(--sb-sheet-filter); }
+.sb-sheet::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: var(--sb-grain-img); background-size: var(--tex-grain-size); opacity: calc(var(--sb-grain-op) * 0.7); mix-blend-mode: var(--sb-grain-blend); border-radius: 4px; }
+[data-theme="comix"] .sb-sheet::before { border: var(--border-comix) solid var(--line); border-radius: 0; }
+[data-theme="origami"] .sb-sheet::before { border-radius: 2px; background: linear-gradient(135deg, var(--page) 0 72%, color-mix(in srgb, var(--page) 92%, #000) 72% 100%); }
+[data-theme="skein"] .sb-sheet::before { background: linear-gradient(160deg, var(--page) 0%, color-mix(in srgb, var(--page) 86%, var(--wash-rose)) 48%, var(--page) 62%, color-mix(in srgb, var(--page) 92%, var(--wash-sky)) 100%); outline: 2px dashed color-mix(in srgb, var(--copper) 45%, transparent); outline-offset: -10px; }
+.sb-tape { position: absolute; width: 96px; height: 28px; z-index: 2; pointer-events: none; opacity: 0.82;
+  background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--wash-sun) 92%, transparent) 0 8px, color-mix(in srgb, var(--wash-rose) 80%, transparent) 8px 16px);
+  -webkit-mask: linear-gradient(90deg, transparent 0, #000 4px, #000 calc(100% - 4px), transparent 100%); mask: linear-gradient(90deg, transparent 0, #000 4px, #000 calc(100% - 4px), transparent 100%); }
+.sb-tape--tl { top: -12px; left: -18px; transform: rotate(-32deg); } .sb-tape--tr { top: -12px; right: -18px; transform: rotate(30deg); }
+.sb-tape--bl { bottom: -12px; left: -18px; transform: rotate(28deg); } .sb-tape--br { bottom: -12px; right: -18px; transform: rotate(-30deg); }
+[data-theme="inkblot"] .sb-tape { background: repeating-linear-gradient(45deg, #000 0 1px, transparent 1px 6px); opacity: 0.6; }
+[data-theme="comix"] .sb-tape { background: var(--gamboge); border: 2px solid var(--line); -webkit-mask: none; mask: none; opacity: 1; }
+
+/* ===== KIT SNAPSHOT: components/bundle.css — buttons ===== */
+/* ---------- buttons ---------- */
+.sb-btn { --b-bg: transparent; --b-fg: var(--ink); --b-bd: transparent;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; min-height: var(--sb-target); min-width: var(--sb-target); padding: 0 1.35em;
+  border: var(--border-ink) solid var(--b-bd); border-radius: var(--radius-pill); background: var(--b-bg); color: var(--b-fg);
+  font: 700 1.125rem/1.1 var(--sb-ui); letter-spacing: 0.005em; text-decoration: none; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+  transition: transform var(--dur-tap) var(--ease-out), box-shadow var(--dur-quick) var(--ease-out), background-color var(--dur-quick); }
+.sb-btn svg { width: 1.25em; height: 1.25em; flex: none; }
+.sb-btn:hover { transform: translateY(-1px); }
+.sb-btn:active { transform: translateY(1px); }
+.sb-btn--primary { --b-bg: var(--accent); --b-fg: var(--on-accent); --b-bd: transparent; background-image: radial-gradient(120% 90% at 30% 20%, rgba(255, 255, 255, 0.28), transparent 55%); box-shadow: var(--shadow-seal); }
+.sb-btn--primary:active { box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.3); }
+.sb-btn--secondary { --b-bd: var(--ink); --b-fg: var(--ink); background: color-mix(in srgb, var(--page) 70%, transparent); }
+.sb-btn--secondary:hover { background: var(--cue-soft); }
+.sb-btn--quiet { --b-fg: var(--ink-muted); padding: 0 0.6em; }
+.sb-btn--quiet:hover { color: var(--ink); text-decoration: underline wavy color-mix(in srgb, var(--cue) 70%, transparent); text-underline-offset: 0.3em; transform: none; }
+.sb-btn--sticker { --b-bg: var(--page); --b-fg: var(--ink); border: 4px solid var(--page); box-shadow: var(--shadow-sticker); border-radius: var(--shape-blob); transform: rotate(-2deg); padding: 0 1.1em; }
+.sb-btn--sticker:hover { transform: rotate(0deg) translateY(-2px); }
+.sb-btn--lg { min-height: calc(var(--sb-target) + 16px); padding: 0 1.8em; font-size: 1.3rem; }
+.sb-btn--sm { min-height: 40px; padding: 0 1em; font-size: 1rem; }
+.sb-btn--icon { padding: 0; width: var(--sb-target); border-radius: 50%; }
+.sb-btn[disabled], .sb-btn[aria-disabled="true"] { opacity: var(--op-disabled); cursor: not-allowed; transform: none; box-shadow: none; }
+.sb-btn[aria-busy="true"]::after { content: ""; width: 0.9em; height: 0.9em; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: sb-spin 0.9s linear infinite; }
+@keyframes sb-spin { to { transform: rotate(1turn); } }
+[data-theme="comix"] .sb-btn { border: var(--border-comix) solid var(--line); box-shadow: 4px 4px 0 var(--line); border-radius: 14px; }
+[data-theme="comix"] .sb-btn--primary { background-image: radial-gradient(circle, rgba(255, 255, 255, 0.35) 22%, transparent 25%); background-size: 6px 6px; }
+[data-theme="comix"] .sb-btn--quiet { border-color: transparent; box-shadow: none; }
+[data-theme="comix"] .sb-btn:active { box-shadow: 1px 1px 0 var(--line); transform: translate(3px, 3px); }
+[data-theme="inkblot"] .sb-btn--primary { background-image: none; box-shadow: none; }
+[data-theme="origami"] .sb-btn--primary { border-radius: 4px; background-image: linear-gradient(135deg, transparent 0 62%, rgba(0, 0, 0, 0.14) 62% 100%); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18); }
+[data-theme="origami"] .sb-btn--secondary { border-radius: 4px; }
+[data-theme="skein"] .sb-btn--primary { outline: 2px dashed color-mix(in srgb, var(--on-accent) 60%, transparent); outline-offset: -6px; }
+
+/* the wax seal */
+.sb-seal { --s: 76px; position: relative; display: inline-grid; place-items: center; width: var(--s); height: var(--s); padding: 0; border: 0; cursor: pointer;
+  border-radius: var(--shape-seal); background: radial-gradient(70% 70% at 35% 30%, color-mix(in srgb, var(--accent) 70%, #fff) 0%, var(--accent) 45%, color-mix(in srgb, var(--accent) 78%, #000) 100%);
+  color: var(--on-accent); box-shadow: var(--shadow-seal); font: 700 calc(var(--s) * 0.36)/1 var(--sb-display); text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform var(--dur-quick) var(--ease-bounce); }
+.sb-seal::before { content: ""; position: absolute; inset: 9%; border-radius: inherit; border: 2px solid color-mix(in srgb, var(--on-accent) 30%, transparent); }
+.sb-seal::after { content: ""; position: absolute; width: 22%; height: 18%; right: -4%; bottom: 8%; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: inherit; box-shadow: var(--shadow-seal); }
+.sb-seal svg { width: 46%; height: 46%; }
+.sb-seal:hover { transform: rotate(-6deg) scale(1.04); }
+.sb-seal--sm { --s: 52px; } .sb-seal--lg { --s: 112px; }
+[data-theme="inkblot"] .sb-seal { background: #000; } [data-theme="inkblot"] .sb-seal::after { display: none; }
+[data-theme="comix"] .sb-seal { border: var(--border-comix) solid var(--line); }
+[data-theme="origami"] .sb-seal { border-radius: 6px; transform: rotate(45deg); } [data-theme="origami"] .sb-seal > * { transform: rotate(-45deg); } [data-theme="origami"] .sb-seal::after { display: none; }
+
+/* ===== KIT SNAPSHOT: components/bundle.css — caption + balloon ===== */
+.sb-caption { position: relative; display: inline-block; max-width: 30em; padding: 0.7em 1em 0.8em; color: var(--ink); font: 400 1.05rem/1.45 var(--sb-story); isolation: isolate; }
+.sb-caption::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--surface); filter: var(--sb-sheet-filter); box-shadow: var(--shadow-sticker); transform: rotate(-0.6deg); }
+.sb-caption__who { display: block; margin-bottom: 0.15em; font: 700 0.9rem/1.2 var(--sb-ui); color: var(--accent); }
+[data-theme="comix"] .sb-caption::before { background: var(--surface); border: var(--border-comix) solid var(--line); transform: none; box-shadow: none; }
+.sb-balloon { --tail-x: 22%; position: relative; display: inline-block; max-width: 22em; padding: 0.7em 1.05em; color: var(--ink); background: var(--page); border: var(--border-ink) solid var(--art-line);
+  border-radius: 1.4em; font: 700 1.1rem/1.35 var(--font-comic-text); box-shadow: var(--shadow-sticker); }
+.sb-balloon::after { content: ""; position: absolute; left: var(--tail-x); bottom: -14px; width: 22px; height: 22px; background: var(--page); border-right: var(--border-ink) solid var(--art-line); border-bottom: var(--border-ink) solid var(--art-line);
+  transform: skewX(-28deg) rotate(38deg); border-bottom-right-radius: 4px; }
+.sb-balloon--right { --tail-x: 74%; }
+.sb-balloon--think { border-radius: 50% 48% 52% 50% / 60% 62% 40% 42%; padding: 1em 1.4em; font-style: italic; font-weight: 400; font-family: var(--sb-story); }
+.sb-balloon--think::after { width: 16px; height: 16px; border-radius: 50%; border: var(--border-ink) solid var(--art-line); transform: none; bottom: -24px; box-shadow: -12px 14px 0 -4px var(--page), -12px 14px 0 -2px var(--art-line); }
+.sb-balloon--shout { border-radius: 4px; clip-path: polygon(0 12%, 8% 0, 18% 9%, 30% 0, 41% 8%, 53% 0, 63% 9%, 75% 0, 86% 8%, 100% 2%, 94% 22%, 100% 40%, 94% 58%, 100% 78%, 92% 100%, 78% 92%, 64% 100%, 50% 92%, 36% 100%, 22% 93%, 8% 100%, 4% 82%, 0 64%, 6% 46%, 0 28%);
+  padding: 1.1em 1.6em; font-family: var(--font-comic); font-weight: 400; font-size: 1.45rem; letter-spacing: 0.03em; box-shadow: none; background: var(--gamboge); color: var(--on-gamboge); border: 0; }
+.sb-balloon--shout::after { display: none; }
+[data-theme="comix"] .sb-balloon { border-width: var(--border-comix); box-shadow: none; }
+
+/* ===== KIT SNAPSHOT: components/bundle.css — chip ===== */
+.sb-chip { display: inline-flex; align-items: center; gap: 0.35em; min-height: 30px; padding: 0.15em 0.7em; border-radius: var(--radius-pill); background: var(--surface); color: var(--ink); font: 700 0.9rem/1.2 var(--sb-ui); white-space: nowrap; }
+.sb-chip::before { content: ""; width: 0.55em; height: 0.55em; border-radius: 50%; background: var(--dot, var(--line)); }
+.sb-chip--sun { --dot: var(--tag-sun); color: var(--tag-sun); background: color-mix(in srgb, var(--tag-sun) 12%, var(--page)); }
+.sb-chip--rose { --dot: var(--tag-rose); color: var(--tag-rose); background: color-mix(in srgb, var(--tag-rose) 12%, var(--page)); }
+.sb-chip--lilac { --dot: var(--tag-lilac); color: var(--tag-lilac); background: color-mix(in srgb, var(--tag-lilac) 12%, var(--page)); }
+.sb-chip--sea { --dot: var(--tag-sea); color: var(--tag-sea); background: color-mix(in srgb, var(--tag-sea) 12%, var(--page)); }
+.sb-chip--sky { --dot: var(--tag-sky); color: var(--tag-sky); background: color-mix(in srgb, var(--tag-sky) 12%, var(--page)); }
+[data-theme="inkblot"] .sb-chip { background: #fff; box-shadow: inset 0 0 0 1px #000; color: #000; }
+
+/* ===== PAGE LAYER: origami sunflower — hand-made scene on the kit =====
+   Shared values come from the kit tokens above (paper, page, ink, gamboge,
+   wash-rose, dur-turn, ease-paper). Scene art colours (petals, leaves, soil,
+   the red thread, Pipkin) stay this page's own, per the practice.
+   v2 (2026-11-16) — form-factor first, per FORM-FACTOR-STANDARD.md.
+   Posture map: folded/standard phone = the base layer below (full-bleed
+   scene, thumb rows, primary action ordered low); tablet portrait = the
+   561px blocks (generous single page, bigger scene); unfolded foldable =
+   the 680-1024px landscape block (the whole play docks to the right page
+   of the spread, clear of the crease); tablet landscape + desktop = the
+   composed centred sheet, with pointer:coarse finger tuning. */
+  *{box-sizing:border-box}
+  body.sb-body{min-height:100svh}
+  body{display:flex; flex-direction:column; align-items:stretch; gap:.85rem;
+    padding:calc(.8rem + env(safe-area-inset-top)) 0
+            calc(1.8rem + env(safe-area-inset-bottom))}
+  header{text-align:center; padding:0 .9rem}
+  h1.display-s{font-size:1.65rem; margin:.15rem 0 .25rem; letter-spacing:.01em}
+  .sub{font-style:italic; color:var(--ink-muted); margin:0 auto; line-height:1.45;
+    font-size:1rem; max-width:30rem}
+  .tagrow{display:flex; justify-content:center; margin:0}
+  .tagrow .sb-chip{font-size:.95rem; min-height:34px}
+  /* ---------- naming (kit Button, secondary; full-width thumb row) ---------- */
+  .names{display:flex; gap:.5rem; align-items:center; padding:0 .9rem}
+  .names span{font-family:var(--sb-ui); font-size:.95rem; color:var(--ink-muted); flex:0 0 auto}
+  .names button{flex:1 1 0; min-height:48px}
+  .names button.picked{background:var(--gamboge-soft); border-color:var(--gamboge)}
+  /* ---------- the sheet: full-bleed hero on a phone ---------- */
+  .stage{perspective:1200px; width:100%}
+  .sheet{
+    position:relative; width:100%; aspect-ratio:1/1; overflow:hidden;
+    background:
+      linear-gradient(160deg, #fff 0%, var(--page) 55%, var(--surface) 100%);
+    border-radius:0;
+    box-shadow:0 1px 0 #fff inset, 0 10px 24px rgba(31,42,51,.14);
+    cursor:pointer; touch-action:manipulation;
+  }
+  .sheet::after{ /* fibre whisper */
+    content:""; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background-image:repeating-linear-gradient(0deg, transparent 0 5px, rgba(120,100,70,.025) 5px 6px);
+  }
+  /* ---------- flaps (real 3D folds; kit turn duration + paper easing) ---------- */
+  .flap{position:absolute; transform-style:preserve-3d; z-index:1;
+    transition:transform var(--dur-turn) var(--ease-paper)}
+  .flap .face{position:absolute; inset:0; backface-visibility:hidden}
+  .flap .front{background:linear-gradient(150deg,#fff,var(--surface))}
+  .flap .back{background:linear-gradient(150deg,
+    color-mix(in srgb, var(--wash-rose) 30%, var(--page)), var(--wash-rose))}
+  .tuck{top:0; left:0; width:42%; height:42%;
+    clip-path:polygon(0 0,100% 0,0 100%); transform-origin:100% 0%}
+  .tuck .back{transform:rotate3d(1,1,0,180deg)}
+  .tuck.folded{transform:rotate3d(1,1,0,180deg)}
+  .waterL{top:0; left:0; bottom:0; width:22%; transform-origin:100% 50%}
+  .waterL .back{transform:rotateY(180deg)}
+  .waterL.folded{transform:rotateY(180deg)}
+  .waterR{top:0; right:0; bottom:0; width:22%; transform-origin:0% 50%}
+  .waterR .back{transform:rotateY(180deg)}
+  .waterR.folded{transform:rotateY(-180deg)}
+  .breathe{top:0; left:0; right:0; height:30%; transform-origin:50% 100%}
+  .breathe .back{transform:rotateX(180deg)}
+  .breathe.folded{transform:rotateX(180deg)}
+  /* ---------- the growing sunflower (drawn on the paper, above the flaps) ---------- */
+  .garden{position:absolute; inset:0; width:100%; height:100%; z-index:2; pointer-events:none}
+  .garden .stem{transform-origin:200px 340px; transform:scaleY(0); transition:transform .8s ease}
+  .garden .leafL,.garden .leafR{opacity:0; transition:opacity .6s ease}
+  .garden .bud{opacity:0; transition:opacity .5s ease}
+  .garden .petal{opacity:0; transform-origin:200px 150px; transform:scale(.3) rotate(0deg); transition:opacity .45s ease, transform .45s cubic-bezier(.34,1.4,.4,1)}
+  .garden .centre{opacity:0; transition:opacity .5s ease}
+  .garden .soil{opacity:.9}
+  .s1 .stem{transform:scaleY(.45)}
+  .s2 .stem{transform:scaleY(.75)}
+  .s2 .leafL,.s2 .leafR{opacity:1}
+  .s3 .stem,.s4 .stem{transform:scaleY(1)}
+  .s3 .leafL,.s3 .leafR,.s4 .leafL,.s4 .leafR{opacity:1}
+  .s3 .bud,.s4 .bud{opacity:1}
+  .s4 .bud{opacity:0}
+  .s4 .centre{opacity:1}
+  .b1 .p1,.b1 .p2{opacity:1; transform:scale(1) rotate(0deg)}
+  .b2 .p1,.b2 .p2,.b2 .p3,.b2 .p4{opacity:1; transform:scale(1) rotate(0deg)}
+  .b3 .petal{opacity:1; transform:scale(1) rotate(0deg)}
+  /* ---------- creases + season map ---------- */
+  .creases{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:3}
+  .creases line,.creases path{stroke:var(--ink-muted); stroke-width:1.6;
+    fill:none; stroke-dasharray:5 5; opacity:0; transition:opacity .5s, stroke .6s}
+  .s1 .c-tuck,.s2 .c-tuck,.s3 .c-tuck,.s4 .c-tuck{opacity:.55}
+  .s2 .c-water,.s3 .c-water,.s4 .c-water{opacity:.55}
+  .s3 .c-breathe,.s4 .c-breathe{opacity:.55}
+  .s4 .c-bloom{opacity:.55}
+  .map{opacity:0; transition:opacity .8s}
+  .map text{font-family:var(--sb-ui); font-size:13px; fill:#7a6420; font-style:italic}
+  .map circle{fill:var(--gamboge)}
+  .map path{stroke:var(--gamboge); stroke-width:2; stroke-dasharray:2 6; fill:none}
+  .unfolded .map{opacity:1}
+  .unfolded .creases line,.unfolded .creases path{
+    stroke:var(--gamboge); stroke-dasharray:none; opacity:.9;
+    filter:drop-shadow(0 0 3px rgba(217,154,18,.8))}
+  .unfolded .flap{opacity:.35}
+  /* ---------- Pipkin, the guide (kit Balloon, tail turned to the left) ---------- */
+  .guide{display:flex; gap:.7rem; align-items:center; padding:0 .9rem; min-height:64px}
+  .guide svg{flex:0 0 auto; width:64px; height:64px;
+    filter:drop-shadow(0 4px 6px rgba(31,42,51,.2))}
+  .guide .sb-balloon{flex:1 1 auto; min-height:44px; display:flex; align-items:center; gap:.35em;
+    font-family:var(--sb-story); font-weight:400; font-style:italic; color:var(--ink-muted)}
+  .guide .sb-balloon b{color:var(--ink); font-style:normal}
+  .guide .sb-balloon::after{left:-13px; bottom:auto; top:50%;
+    transform:translateY(-50%) rotate(45deg);
+    border-right:none; border-left:var(--border-ink) solid var(--art-line)}
+  /* ---------- controls (kit Buttons; state colours from kit tokens) ---------- */
+  .status{font-style:italic; color:var(--ink-muted); min-height:1.4em; text-align:center;
+    padding:0 .9rem; font-size:1rem}
+  .steps{display:flex; flex-direction:column; gap:.55rem; padding:0 .9rem; order:7}
+  .steps button{min-height:52px; width:100%}
+  .steps button.done{background:var(--rose-soft); border-color:var(--rose)}
+  .steps button.done::after{content:" · done"; color:var(--rose); font-size:.85rem}
+  .steps button.blooming{background:var(--gamboge-soft); border-color:var(--gamboge)}
+  .actions{display:flex; flex-direction:column; gap:.6rem; padding:0 .9rem; order:6}
+  .actions button{min-height:52px; width:100%}
+  .actions #nextBtn{min-height:56px}
+  footer{padding:0 .9rem; text-align:center; color:var(--ink-muted); font-size:.95rem;
+    line-height:1.6; order:8}
+  footer b{color:var(--ink)}
+  /* ---------- wider postures: the composed sheet comes back ---------- */
+  @media (min-width:561px){
+    body{align-items:center; gap:1.1rem;
+      padding:2rem 1rem 3rem}
+    header,.names,.guide,.status,.steps,.actions,footer{
+      width:100%; max-width:34rem; padding-left:0; padding-right:0}
+    h1.display-s{font-size:clamp(1.7rem,5vw,2.4rem); margin:.2rem 0 .3rem}
+    .sub{font-size:1.15rem; line-height:1.5}
+    .names{justify-content:center}
+    .names button{flex:0 1 auto; min-height:40px}
+    .stage{width:min(430px,88vw)}
+    .sheet{border-radius:var(--radius-sm);
+      box-shadow:0 1px 0 #fff inset, var(--shadow-lift), 0 2px 8px rgba(31,42,51,.12)}
+    .guide svg{width:58px; height:58px}
+    .steps{flex-direction:row; flex-wrap:wrap; justify-content:center; order:0}
+    .steps button{width:auto; min-height:48px}
+    .actions{flex-direction:row; flex-wrap:wrap; justify-content:center; order:0}
+    .actions button{width:auto; min-height:48px}
+    footer{order:0}
+  }
+  /* tablet portrait: a generous single page, the scene larger than phone */
+  @media (min-width:561px) and (max-width:1023.98px) and (orientation:portrait){
+    .stage{width:min(560px,92vw)}
+  }
+  /* unfolded foldable: the whole play docks to the right page of the
+     spread — nothing critical crosses the centre crease */
+  @media (min-width:680px) and (max-width:1023.98px) and (orientation:landscape) and (min-aspect-ratio:1/1){
+    body{align-items:flex-end; padding-right:max(1.5rem, env(safe-area-inset-right))}
+    header,.names,.guide,.status,.steps,.actions,footer{max-width:min(30rem,48vw)}
+    .stage{width:min(430px,46vw)}
+  }
+  /* touch tuning wherever width let the layout assume a mouse */
+  @media (pointer:coarse){
+    .names,.steps,.actions{gap:.65rem}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flap,.garden .stem,.garden .leafL,.garden .leafR,.garden .bud,.garden .petal,.garden .centre{transition:none}
+  }
+</style>
+</head>
+<body class="sb-body sb-no-js">
+  <div class="sb-washes" aria-hidden="true">
+    <i class="sb-wash sb-wash--sun sb-wash--band" style="top:-14%;--h:34%"></i>
+    <i class="sb-wash sb-wash--brook" style="--w:36%;right:-8%;top:16%"></i>
+  </div>
+<header>
+  <p class="tagrow"><span class="sb-chip sb-chip--sun">Storeybrook · Origami play · experiment</span></p>
+  <h1 class="display-s">Fold a Sunflower</h1>
+  <p class="sub">Four folds, one season. Tuck her in, water her, breathe once
+  slow — then three gentle taps, and she opens. Finish all four, then unfold
+  it and read the season in the creases.</p>
+</header>
+
+<div class="names" aria-label="Name the sunflower">
+  <span>Name her:</span>
+  <button class="sb-btn sb-btn--secondary sb-btn--sm" data-name="Sunny" class="picked">Sunny</button>
+  <button class="sb-btn sb-btn--secondary sb-btn--sm" data-name="Goldie">Goldie</button>
+  <button class="sb-btn sb-btn--secondary sb-btn--sm" data-name="Tallulah">Tallulah</button>
+</div>
+
+<div class="stage">
+  <div class="sheet" id="sheet" role="button" tabindex="0"
+       aria-label="Paper sheet. Activate to fold the next fold, or tap the bud."
+       title="Tap to fold the next fold">
+    <div class="flap tuck" id="flapTuck" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+    <div class="flap waterL" id="flapWaterL" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+    <div class="flap waterR" id="flapWaterR" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+    <div class="flap breathe" id="flapBreathe" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+
+    <svg class="garden" viewBox="0 0 400 400" aria-hidden="true">
+      <!-- one red thread, stitched along the bottom of the sheet -->
+      <path d="M 30 372 C 90 360, 150 380, 200 370 S 320 360, 372 372"
+        fill="none" stroke="#b3402e" stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round"/>
+      <!-- soil -->
+      <ellipse class="soil" cx="200" cy="348" rx="86" ry="14" fill="#cbb28a"/>
+      <ellipse class="soil" cx="200" cy="344" rx="70" ry="10" fill="#b99a6e"/>
+      <!-- stem, leaves, bud, bloom -->
+      <path class="stem" d="M 200 344 C 196 280, 204 220, 200 158"
+        fill="none" stroke="#4f7d43" stroke-width="7" stroke-linecap="round"/>
+      <path class="leafL" d="M 199 268 C 168 258, 146 236, 142 214 C 168 218, 190 236, 199 258 Z"
+        fill="#6f9e5f"/>
+      <path class="leafR" d="M 201 292 C 232 282, 254 260, 258 238 C 232 242, 210 260, 201 282 Z"
+        fill="#6f9e5f"/>
+      <path class="bud" d="M 200 118 C 182 132, 178 156, 200 168 C 222 156, 218 132, 200 118 Z"
+        fill="#7fae62" stroke="#4f7d43" stroke-width="2"/>
+      <g class="petals">
+        <path class="petal p1" d="M 200 150 L 172 108 L 200 96 L 216 118 Z" fill="#f7c948"/>
+        <path class="petal p2" d="M 200 150 L 228 108 L 200 96 L 184 118 Z" fill="#f9d976"/>
+        <path class="petal p3" d="M 200 150 L 152 132 L 158 104 L 186 122 Z" fill="#f7c948"/>
+        <path class="petal p4" d="M 200 150 L 248 132 L 242 104 L 214 122 Z" fill="#f9d976"/>
+        <path class="petal p5" d="M 200 150 L 158 168 L 172 140 L 192 148 Z" fill="#f7c948"/>
+        <path class="petal p6" d="M 200 150 L 242 168 L 228 140 L 208 148 Z" fill="#f9d976"/>
+      </g>
+      <circle class="centre" cx="200" cy="150" r="26" fill="#8a5a2b"/>
+      <circle class="centre" cx="192" cy="144" r="3" fill="#6b4420"/>
+      <circle class="centre" cx="208" cy="142" r="3" fill="#6b4420"/>
+      <circle class="centre" cx="200" cy="158" r="3" fill="#6b4420"/>
+      <circle class="centre" cx="212" cy="156" r="3" fill="#6b4420"/>
+      <circle class="centre" cx="188" cy="156" r="3" fill="#6b4420"/>
+    </svg>
+
+    <svg class="creases" viewBox="0 0 400 400" aria-hidden="true">
+      <line class="c-tuck" x1="0" y1="0" x2="168" y2="168" />
+      <line class="c-water" x1="88" y1="0" x2="88" y2="400" />
+      <line class="c-water" x1="312" y1="0" x2="312" y2="400" />
+      <path class="c-breathe" d="M 40 120 Q 200 150 360 120" />
+      <path class="c-bloom" d="M 200 150 L 186 92" />
+      <path class="c-bloom" d="M 200 150 L 214 92" />
+      <path class="c-bloom" d="M 200 150 L 152 118" />
+      <path class="c-bloom" d="M 200 150 L 248 118" />
+      <g class="map">
+        <path d="M 60 330 C 130 300, 180 250, 200 200 S 210 130, 200 96" />
+        <circle cx="60" cy="330" r="5"/><circle cx="140" cy="268" r="5"/>
+        <circle cx="186" cy="206" r="5"/><circle cx="200" cy="150" r="5"/>
+        <text x="52" y="352">tuck</text><text x="132" y="288">water</text>
+        <text x="178" y="226">breath</text><text x="212" y="140">bloom</text>
+        <text x="120" y="386">the season, kept in creases</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div class="guide" aria-live="polite">
+  <!-- Pipkin, canonical: round teal-green creature, mint belly, sprout with pink bud -->
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="56" r="36" fill="#79b8a6"/>
+    <ellipse cx="50" cy="70" rx="22" ry="16" fill="#cfe8d8"/>
+    <circle cx="16" cy="52" r="9" fill="#79b8a6"/>
+    <circle cx="84" cy="52" r="9" fill="#79b8a6"/>
+    <path d="M 50 22 C 50 14, 50 10, 50 6" stroke="#4f7d43" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="50" cy="6" r="5" fill="#ee7b89"/>
+    <circle cx="38" cy="52" r="4.5" fill="#1f2a33"/><circle cx="62" cy="52" r="4.5" fill="#1f2a33"/>
+    <circle cx="39.5" cy="50.5" r="1.5" fill="#fff"/><circle cx="63.5" cy="50.5" r="1.5" fill="#fff"/>
+    <circle cx="28" cy="62" r="3" fill="#f6c3b8" opacity=".8"/>
+    <circle cx="72" cy="62" r="3" fill="#f6c3b8" opacity=".8"/>
+    <path d="M 44 64 Q 50 69 56 64" stroke="#1f2a33" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="38" cy="94" rx="7" ry="4" fill="#79b8a6"/>
+    <ellipse cx="62" cy="94" rx="7" ry="4" fill="#79b8a6"/>
+  </svg>
+  <p class="sb-balloon"><b>Pipkin:</b> <span id="pipkinLine">A flat square of watercolour paper — and a seed to tuck in.</span></p>
+</div>
+
+<p class="status" id="status" aria-live="polite">A flat square of watercolour paper. Name her, then tuck her in.</p>
+
+<nav class="steps" aria-label="Folds">
+  <button class="sb-btn sb-btn--secondary" data-fold="1">1 · Tuck — <i>sprout</i></button>
+  <button class="sb-btn sb-btn--secondary" data-fold="2">2 · Water — <i>leaves</i></button>
+  <button class="sb-btn sb-btn--secondary" data-fold="3">3 · Breathe — <i>bud</i></button>
+  <button class="sb-btn sb-btn--secondary" data-fold="4">4 · Tap ×3 — <i>bloom</i></button>
+</nav>
+
+<div class="actions">
+  <button class="sb-btn sb-btn--primary" id="nextBtn">Fold the next one</button>
+  <button class="sb-btn sb-btn--secondary" id="unfoldBtn" disabled>Unfold it — see the season</button>
+  <button class="sb-btn sb-btn--secondary" id="resetBtn">Start again</button>
+</div>
+
+<footer>
+  <p><b>How it plays.</b> Every fold is failure-free: a tap out of order or a
+  double tap only rustles softly and nothing moves; tapping a fold jumps
+  straight to it — no fold can be broken, only peeked under. The bloom is
+  three gentle taps, the way the book opens her, and Pipkin only ever says
+  his own lines. When she is open, unfolding lays the sheet flat again, but
+  every crease stays behind in gold: a map of the season. From the Origami
+  play seed in the garden's design notes; paper, peach underside and one red
+  thread, in the Storeybrook Origami manner. Fold design from the Saedo Grok
+  lane (dispatch dsp_1afd409ee11345c7, 2026-11-15); the keepsake line is the
+  lane's, in the book's cadence — not book canon.</p>
+  <p><b>Kit.</b> Built on the Storeybrook kit, version 1.1.0 — its tokens and components are inlined above as a pinned snapshot from the kit repo (snapshot 2026-11-16), so this file stays one file. The shared layer is the kit’s; the sunflower, the folds and Pipkin are this page’s own. The practice is written down in KIT-PRACTICE.md in the garden’s files. Mobile pass (v2, 2026-11-16): the same pinned snapshot, with the page layer redesigned form-factor first — on a phone the paper fills the width, the rows are thumb-sized and the next fold sits low in the hand; tablet and desktop keep the composed sheet. It followed a play on a OnePlus 13, where the first build’s phone posture was ruled too small and too centred.</p>
+</footer>
+
+<script>
+(function(){
+  var sheet = document.getElementById('sheet');
+  var status = document.getElementById('status');
+  var pipkinLine = document.getElementById('pipkinLine');
+  var nextBtn = document.getElementById('nextBtn');
+  var unfoldBtn = document.getElementById('unfoldBtn');
+  var resetBtn = document.getElementById('resetBtn');
+  var stepBtns = document.querySelectorAll('.steps button');
+  var nameBtns = document.querySelectorAll('.names button');
+  var step = 0, bloomTaps = 0, unfolded = false, name = 'Sunny';
+  var pipkinLines = [
+    'A flat square of watercolour paper — and a seed to tuck in.',
+    'Wee!',
+    'That tickles!',
+    'Again! Again!',
+    'I grew again, did you see?'
+  ];
+  var audioCtx = null;
+  function rustle(){
+    try{
+      if (navigator.vibrate) navigator.vibrate(10);
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      var dur = 0.18, buf = audioCtx.createBuffer(1, audioCtx.sampleRate * dur, audioCtx.sampleRate);
+      var data = buf.getChannelData(0);
+      for (var i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+      var src = audioCtx.createBufferSource(); src.buffer = buf;
+      var filter = audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.value = 2800;
+      var gain = audioCtx.createGain(); gain.gain.value = 0.12;
+      src.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination); src.start();
+    }catch(e){ /* sound is garnish; the fold is the thing */ }
+  }
+  function plink(freq){
+    try{
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      var osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.14, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+    }catch(e){ /* sound is garnish; the tap is the thing */ }
+  }
+  var tapNotes = [740, 900, 1060];
+  function statusText(){
+    if (unfolded) return 'Flat again — and every crease glows gold: tuck, water, breath, bloom. And the garden grew, with room between the petals for the light.';
+    if (step === 0) return 'A flat square of watercolour paper. Name her, then tuck ' + name + ' in.';
+    if (step === 1) return 'Tucked in — ' + name + ' is a sprout. Now water.';
+    if (step === 2) return 'Watered — two leaves reach out. Now one slow breath.';
+    if (step === 3) return 'Breathed — a bud, closed tight. Now three gentle taps.';
+    if (bloomTaps === 0) return 'Tap the bud — one…';
+    if (bloomTaps === 1) return 'One tap — the bud stirs. Two…';
+    if (bloomTaps === 2) return 'Two taps — she is listening. Three…';
+    return 'She opens! Three taps, one sunflower. Unfold her to see the season.';
+  }
+  function render(){
+    sheet.classList.remove('s1','s2','s3','s4','b1','b2','b3');
+    if (step > 0) sheet.classList.add('s' + step);
+    if (step === 4 && bloomTaps > 0) sheet.classList.add('b' + bloomTaps);
+    document.getElementById('flapTuck').classList.toggle('folded', step >= 1 && !unfolded);
+    document.getElementById('flapWaterL').classList.toggle('folded', step >= 2 && !unfolded);
+    document.getElementById('flapWaterR').classList.toggle('folded', step >= 2 && !unfolded);
+    document.getElementById('flapBreathe').classList.toggle('folded', step >= 3 && !unfolded);
+    sheet.classList.toggle('unfolded', unfolded);
+    stepBtns.forEach(function(b, i){
+      var n = i + 1;
+      b.classList.toggle('done', step > n || (n === 4 && step === 4 && bloomTaps === 3));
+      b.classList.toggle('blooming', n === 4 && step === 4 && bloomTaps > 0 && bloomTaps < 3);
+    });
+    nextBtn.disabled = step === 4 && bloomTaps === 3;
+    nextBtn.textContent = step < 3 ? 'Fold the next one'
+      : (step === 3 ? 'Tap the bud (0/3)' : (bloomTaps < 3 ? 'Tap the bud (' + bloomTaps + '/3)' : 'All folded'));
+    unfoldBtn.disabled = !(step === 4 && bloomTaps === 3);
+    pipkinLine.textContent = pipkinLines[step];
+    status.textContent = statusText();
+  }
+  function foldTo(n){
+    if (n === step && n !== 4) return;
+    if (n < step) { step = n; bloomTaps = 0; }
+    else if (n === 4 && step === 4) { bloomTap(); return; }
+    else step = Math.max(0, Math.min(4, n));
+    if (step === 4 && bloomTaps > 0 && n !== 4) bloomTaps = 0;
+    unfolded = false;
+    rustle();
+    render();
+  }
+  function bloomTap(){
+    if (step !== 4 || bloomTaps >= 3 || unfolded) return;
+    bloomTaps += 1;
+    plink(tapNotes[bloomTaps - 1]);
+    render();
+  }
+  function advance(){
+    if (unfolded) return;
+    if (step < 3) foldTo(step + 1);
+    else if (step === 3) { step = 4; bloomTaps = 1; unfolded = false; plink(tapNotes[0]); render(); }
+    else bloomTap();
+  }
+  nextBtn.addEventListener('click', advance);
+  sheet.addEventListener('click', advance);
+  sheet.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance(); }
+  });
+  stepBtns.forEach(function(b){
+    b.addEventListener('click', function(){ foldTo(parseInt(b.getAttribute('data-fold'), 10)); });
+  });
+  nameBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      name = b.getAttribute('data-name');
+      nameBtns.forEach(function(x){ x.classList.toggle('picked', x === b); });
+      render();
+    });
+  });
+  unfoldBtn.addEventListener('click', function(){
+    if (!(step === 4 && bloomTaps === 3)) return;
+    unfolded = true; rustle(); render();
+  });
+  resetBtn.addEventListener('click', function(){ step = 0; bloomTaps = 0; unfolded = false; render(); });
+  render();
+})();
+</script>
+</body>
+</html>
