@@ -1,0 +1,658 @@
+<!doctype html>
+<!--
+  SAELION.CO — PRODUCTION INDEX CANDIDATE v0.1 (STAGED — NOT PUBLISHED)
+  Built 2026-11-08 from the staged comprehensive preview (index-prototype.html),
+  per Sven's direction the same evening: "go on further fun… you all glue up now" —
+  the comprehensive glue ships; Sven's publish/promote word is a separate named act.
+  Source of truth: REGISTRY.md (frozen 2026-11-03, readiness picture updated 2026-11-08).
+  All seven live doors re-verified HTTP 200 on 2026-11-08 and linked exactly once each.
+  HARD GATES honoured: no trace of the private, unapproved experience; no trace
+  of the hidden path; the sequel appears only as an UNLINKED studio door (ship
+  rule); Queso Hades and Anewgam appear only as UNLINKED studio doors (no
+  canonical public face chosen in the registry).
+
+  PUBLISH PATH (needs Sven's word): this file becomes the root index.html of
+  stevoblevo/saelion-relay-canary, branched from the production base
+  deploy/saelion-pwas-instruments-fix-20261101, via PR. scripts/public-files.json
+  already lists "index.html" (verified 2026-11-08).
+
+  TRAIL RECORDER — INTEGRATION NOTE (hook point, deliberately NOT wired here):
+  Per Sven's 2026-11-04 answers, the trail starts at the home page, so this page
+  is where a visit begins. The recorder itself (saelion-trail.js, window.SaeTrail)
+  rides draft PR #29 (branch sae/trail-recorder-t1-20261104) and its wiring rides
+  draft PR #30 (branch sae/trail-wiring-20261104); neither is on the production
+  base yet (verified 2026-11-08: production-base scripts/public-files.json has no
+  "saelion-trail.js" entry and its index.html carries no SaeTrail include), so this
+  file must NOT gain a bare <script src="/saelion-trail.js"> — it would 404.
+  At publish time, together with PRs #29/#30 (or their merged equivalent):
+    1. add <script src="/saelion-trail.js" defer></script> in <head>;
+    2. ensure "saelion-trail.js" is listed in scripts/public-files.json;
+    3. record the "home" step on load, and record each door's step at click time
+       on the "Step through" anchors rendered by selectNode() in the script below
+       (search this file for TRAIL HOOK POINT).
+-->
+<html lang="en" data-phase="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Saelion · The Garden Between Paths</title>
+<meta name="description" content="Games, illustrated stories, art, and quiet interactive worlds. Fray the paper fox walks the brook between Saelion's worlds — step through a door and play.">
+<link rel="canonical" href="https://saelion.co/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Saelion">
+<meta property="og:title" content="Saelion · The Garden Between Paths">
+<meta property="og:description" content="Games, illustrated stories, art, and quiet interactive worlds. Meet the public Saelion collection and choose your own way in.">
+<meta property="og:url" content="https://saelion.co/">
+<style>
+  :root{
+    --paper:#f6ead2; --paper2:#fff8e8; --ink:#244236; --ink-soft:#496257;
+    --water:#8ec9bd; --water-deep:#4d9387; --gold:#d9a441; --peach:#eda58b;
+    --sage:#9dbb8d; --rose:#d98b8b; --violet:#9387bd; --focus:#fff3bf;
+    --shadow:0 18px 45px rgba(62,48,25,.18); --card-shadow:0 12px 32px rgba(62,48,25,.16);
+    --dock-w:392px; --header-h:64px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--ink); overflow-x:hidden;
+    font-family:ui-rounded,"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(255,255,255,.75), transparent 22rem),
+      radial-gradient(circle at 86% 22%, rgba(237,165,139,.20), transparent 28rem),
+      radial-gradient(circle at 50% 72%, rgba(142,201,189,.18), transparent 34rem),
+      repeating-linear-gradient(0deg, rgba(91,70,38,.025) 0 1px, transparent 1px 7px),
+      linear-gradient(180deg,#fbf1da 0%, var(--paper) 42%, #f1dfbd 100%);
+    transition:background 700ms ease,color 700ms ease;
+  }
+  html[data-phase="dusk"] body{background:radial-gradient(circle at 15% 10%, rgba(255,194,113,.32), transparent 24rem),radial-gradient(circle at 82% 18%, rgba(117,91,160,.24), transparent 30rem),linear-gradient(180deg,#f3d9b8,#e8c6a8 48%,#c9a58f)}
+  html[data-phase="night"] body{color:#edf3df;background:radial-gradient(circle at 82% 8%, rgba(246,229,165,.35), transparent 13rem),radial-gradient(circle at 20% 30%, rgba(85,133,164,.35), transparent 28rem),linear-gradient(180deg,#1d3342,#244236 55%,#172a28)}
+  button,a{font:inherit} button{color:inherit}
+  :focus-visible{outline:3px solid var(--focus); outline-offset:3px}
+
+  /* ---------- fixed bank furniture ---------- */
+  .top-bank{
+    position:fixed; z-index:50; top:0; left:0; right:0; height:var(--header-h);
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    padding:.65rem clamp(.8rem,2.5vw,2rem);
+    background:linear-gradient(180deg, rgba(255,248,232,.92), rgba(255,248,232,.66)); backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(73,98,87,.18);
+  }
+  html[data-phase="night"] .top-bank{background:linear-gradient(180deg, rgba(20,39,45,.9), rgba(20,39,45,.68)); border-color:rgba(255,255,255,.14)}
+  .wordmark{display:flex; align-items:center; gap:.65rem; font-family:Georgia,"Times New Roman",serif; font-weight:700; letter-spacing:.04em; font-size:1.25rem; white-space:nowrap}
+  .wordmark .drop{width:.72rem;height:1.05rem;border-radius:60% 40% 60% 40%; background:var(--water); transform:rotate(22deg); box-shadow:inset -2px -3px 0 rgba(255,255,255,.45)}
+  .phase-switch{display:flex; gap:.35rem; padding:.25rem; border:1px solid rgba(73,98,87,.2); border-radius:999px; background:rgba(255,255,255,.42)}
+  .phase-switch button{border:0; border-radius:999px; padding:.42rem .72rem; min-height:40px; cursor:pointer; background:transparent}
+  .phase-switch button[aria-pressed="true"]{background:var(--ink); color:var(--paper2); box-shadow:0 4px 14px rgba(36,66,54,.25)}
+  .progress-brook{position:fixed; z-index:45; left:1.05rem; top:calc(var(--header-h) + 1rem); bottom:7rem; width:28px; pointer-events:none}
+  .progress-brook::before{content:""; position:absolute; left:13px; top:0; bottom:0; width:2px; border-radius:99px; background:linear-gradient(180deg, transparent, var(--water) 12%, var(--water-deep) 88%, transparent); opacity:.65}
+  .progress-fill{position:absolute; left:13px; top:0; width:2px; height:var(--progress,0%); background:#fff; box-shadow:0 0 10px var(--water); border-radius:99px}
+  .progress-fray{position:absolute; left:50%; top:var(--progress,0%); width:28px; height:28px; transform:translate(-50%,-50%); filter:drop-shadow(0 3px 5px rgba(62,48,25,.25)); transition:top 120ms linear}
+  .progress-fray svg{width:100%;height:100%}
+  .shelf{
+    position:fixed; z-index:46; right:1rem; top:calc(var(--header-h) + 1rem); width:58px;
+    padding:.55rem .35rem; border-radius:20px; background:rgba(255,248,232,.72); border:1px solid rgba(73,98,87,.18); box-shadow:var(--card-shadow); backdrop-filter:blur(8px);
+  }
+  html[data-phase="night"] .shelf{background:rgba(24,43,48,.72)}
+  .shelf h2{font-size:.58rem; letter-spacing:.12em; text-transform:uppercase; text-align:center; margin:.05rem 0 .45rem; color:var(--ink-soft)}
+  html[data-phase="night"] .shelf h2{color:#cfe0d1}
+  .shelf-slots{display:grid; gap:.35rem}
+  .shelf-slot{min-height:42px; border-radius:14px; display:grid; place-items:center; border:1px dashed rgba(73,98,87,.25); background:rgba(255,255,255,.28); font-size:1.05rem}
+  .shelf-slot.filled{border-style:solid; background:rgba(255,255,255,.62); cursor:pointer}
+  .shelf-slot button{all:unset; cursor:pointer; width:100%; height:100%; display:grid; place-items:center; border-radius:inherit}
+
+  /* ---------- Fray ---------- */
+  #fray{position:absolute; z-index:35; width:96px; height:76px; left:8vw; top:34vh; pointer-events:none; transform:translate(-50%,-72%) rotate(-2deg); transition:left 850ms cubic-bezier(.2,.8,.2,1), top 850ms cubic-bezier(.2,.8,.2,1), filter 500ms ease; filter:drop-shadow(0 10px 12px rgba(62,48,25,.22))}
+  #fray svg{width:100%; height:100%; overflow:visible}
+  #fray .fray-edge{filter:drop-shadow(0 0 0 transparent)}
+  #fray.curl{transform:translate(-50%,-72%) rotate(7deg) scale(.82)}
+  #fray.curl svg{filter:drop-shadow(0 0 12px var(--fray-glow,#d9a441))}
+  #fray .bob{animation:bob 2.8s ease-in-out infinite; transform-origin:50% 80%}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-4px) rotate(1.5deg)}}
+
+  /* ---------- reaches / brook ---------- */
+  .journey{position:relative}
+  .reach{position:relative; min-height:108vh; overflow:hidden; padding:7.5rem clamp(1rem,5vw,5rem) 13rem; isolation:isolate}
+  .reach + .reach{margin-top:-4rem}
+  .reach::before{content:""; position:absolute; inset:8% -10%; z-index:-3; background:radial-gradient(ellipse at 50% 52%, rgba(255,255,255,.34), transparent 58%); transform:rotate(-2deg)}
+  .brook-svg{position:absolute; inset:0; width:100%; height:100%; z-index:-2; overflow:visible}
+  .brook-bed{fill:none; stroke:rgba(255,255,255,.58); stroke-width:118; stroke-linecap:round; opacity:.42}
+  .brook-water{fill:none; stroke:var(--water); stroke-width:74; stroke-linecap:round; opacity:.5; transition:stroke 700ms ease}
+  html[data-phase="dusk"] .brook-water{stroke:#c99b78}
+  html[data-phase="night"] .brook-water{stroke:#386e78; opacity:.72}
+  .brook-flow{fill:none; stroke:rgba(255,255,255,.75); stroke-width:3; stroke-linecap:round; stroke-dasharray:2 18; animation:flow 7s linear infinite; opacity:.65}
+  @keyframes flow{to{stroke-dashoffset:-200}}
+  .bank-sign{position:relative; z-index:5; width:max-content; max-width:90vw; margin:0 auto; text-align:center; padding:.9rem 1.4rem 1rem; border-radius:50% 46% 52% 48%/16% 18% 16% 18%; background:rgba(255,248,232,.68); box-shadow:var(--card-shadow); border:1px solid rgba(73,98,87,.14)}
+  html[data-phase="night"] .bank-sign{background:rgba(28,50,54,.72); color:#f2ead2}
+  .bank-sign .place{font-family:Georgia,"Times New Roman",serif; font-size:clamp(2.1rem,6vw,5.2rem); line-height:.95; letter-spacing:.015em}
+  .bank-sign .reach-name{margin-top:.35rem; font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-soft)}
+  html[data-phase="night"] .bank-sign .reach-name{color:#bfd4c1}
+  .zone-sign{position:absolute; z-index:4; left:clamp(1rem,6vw,5rem); top:16rem; padding:.45rem .75rem; border-radius:999px; background:rgba(255,248,232,.66); border:1px solid rgba(73,98,87,.16); font-family:Georgia,serif; font-style:italic; box-shadow:0 8px 20px rgba(62,48,25,.10)}
+  html[data-phase="night"] .zone-sign{background:rgba(28,50,54,.72)}
+  .stones{position:absolute; inset:0; z-index:3; transform:translateX(var(--pan,0px)); transition:transform 180ms ease-out}
+  .stone{
+    --hue:#8ec9bd; --w:172px;
+    position:absolute; left:var(--x); top:var(--y); width:var(--w); aspect-ratio:1.3;
+    transform:translate(-50%,-50%) rotate(var(--tilt,-2deg));
+    border:0; cursor:pointer; text-align:center; color:var(--ink);
+    border-radius:48% 52% 45% 55%/58% 54% 46% 42%;
+    background:
+      radial-gradient(circle at 28% 22%, rgba(255,255,255,.82), transparent 34%),
+      linear-gradient(145deg, color-mix(in srgb, var(--hue) 34%, #fff8e8), color-mix(in srgb, var(--hue) 58%, #e8dcc0));
+    box-shadow:0 14px 0 -7px rgba(73,98,87,.18), 0 22px 30px rgba(62,48,25,.18), inset 0 0 0 1px rgba(73,98,87,.16), inset 0 -13px 22px rgba(73,98,87,.12);
+    transition:transform 420ms cubic-bezier(.2,.8,.2,1), box-shadow 420ms ease, filter 420ms ease;
+  }
+  .stone::before{content:""; position:absolute; inset:13% 11%; border-radius:inherit; border:1px dashed rgba(73,98,87,.18); pointer-events:none}
+  .stone::after{content:""; position:absolute; left:12%; right:12%; bottom:9%; height:18%; border-radius:50%; background:rgba(255,255,255,.35); filter:blur(5px); pointer-events:none}
+  .stone:hover,.stone:focus-visible,.stone.approached{transform:translate(-50%,-58%) rotate(0deg); filter:saturate(1.08)}
+  .stone.active{transform:translate(-50%,-64%) rotate(0deg) scale(1.06); box-shadow:0 22px 0 -8px rgba(73,98,87,.16), 0 32px 42px rgba(62,48,25,.24), inset 0 0 0 2px rgba(255,255,255,.62), inset 0 -13px 22px rgba(73,98,87,.10); z-index:8}
+  .stone .motif{position:relative; z-index:2; display:block; font-size:clamp(1.7rem,3vw,2.55rem); line-height:1; margin-top:13%}
+  .stone .stone-title{position:relative; z-index:2; display:block; padding:0 .55rem; font-family:Georgia,"Times New Roman",serif; font-weight:700; font-size:clamp(.92rem,1.4vw,1.13rem); line-height:1.08}
+  .stone .under-glint{position:absolute; z-index:1; left:50%; bottom:7%; transform:translateX(-50%); font-size:.68rem; letter-spacing:.13em; text-transform:uppercase; opacity:.56}
+  .stone.large{--w:226px}
+  .stone.small{--w:118px; aspect-ratio:1.05}
+  .stone.studio{border-radius:48% 52% 18% 18%/34% 34% 12% 12%; background:linear-gradient(160deg, rgba(255,248,232,.96), color-mix(in srgb, var(--hue) 26%, #e7d8ba)); box-shadow:0 16px 0 -8px rgba(73,98,87,.16), 0 24px 32px rgba(62,48,25,.17), inset 0 0 0 1px rgba(73,98,87,.22), inset 0 0 0 8px rgba(255,255,255,.16)}
+  .stone.studio::before{border-radius:inherit; border-style:solid; border-color:rgba(73,98,87,.14)}
+  .studio-seal{position:absolute; z-index:3; right:9%; top:8%; padding:.18rem .42rem; border-radius:999px; background:#7c4b35; color:#fff3d6; font-size:.58rem; letter-spacing:.12em; text-transform:uppercase; transform:rotate(5deg); box-shadow:0 4px 9px rgba(62,48,25,.22)}
+  .stone .paw-bloom{position:absolute; z-index:4; width:48px; height:48px; right:-8px; bottom:-10px; opacity:0; transform:scale(.55) rotate(-14deg); transition:opacity 500ms ease, transform 500ms ease; color:color-mix(in srgb, var(--hue) 70%, #244236)}
+  .stone.visited .paw-bloom,.stone.active .paw-bloom{opacity:.88; transform:scale(1) rotate(-8deg)}
+  .stone .paw-bloom svg{width:100%; height:100%; overflow:visible}
+  .stone .paw-bloom .bloom-motif{position:absolute; inset:31% 29% 22%; display:grid; place-items:center; font-size:1rem; color:var(--ink)}
+  .sleep-mark{position:absolute; z-index:4; left:8%; bottom:10%; opacity:0; font-size:.82rem; transform:translateY(4px); transition:opacity 300ms ease, transform 300ms ease}
+  .stone.warned .sleep-mark{opacity:.9; transform:translateY(0)}
+  .reed{position:absolute; z-index:1; width:70px; height:150px; opacity:.32; pointer-events:none}
+  .reed::before,.reed::after{content:""; position:absolute; bottom:0; width:7px; border-radius:99px 99px 0 0; background:linear-gradient(180deg,#759468,#43614c); transform-origin:bottom}
+  .reed::before{height:100%; left:22px; transform:rotate(-7deg)} .reed::after{height:76%; left:42px; transform:rotate(8deg)}
+
+  /* ---------- droplet: folded / narrow play ---------- */
+  .droplet-play{position:absolute; z-index:7; left:50%; bottom:6.5rem; transform:translateX(-50%); display:none; align-items:center; gap:.7rem; padding:.55rem .7rem; border-radius:999px; background:rgba(255,248,232,.76); box-shadow:var(--card-shadow)}
+  .droplet-track{position:relative; width:118px; height:16px; border-radius:99px; background:linear-gradient(90deg, rgba(142,201,189,.25), rgba(142,201,189,.72)); overflow:hidden}
+  .droplet{position:absolute; top:50%; left:8px; width:24px; height:24px; transform:translate(0,-50%) rotate(35deg); border-radius:62% 38% 62% 38%; background:linear-gradient(145deg,#dff9f2,#5ea99b); box-shadow:inset -3px -4px 0 rgba(255,255,255,.45), 0 4px 8px rgba(62,48,25,.2); cursor:grab; touch-action:none}
+  .droplet:active{cursor:grabbing}
+  .droplet-play button{border:0; border-radius:999px; padding:.45rem .65rem; min-height:40px; background:var(--ink); color:var(--paper2); cursor:pointer}
+
+  /* ---------- focus dock / underside ---------- */
+  .focus-dock{
+    position:fixed; z-index:55; left:50%; bottom:1rem; transform:translateX(-50%);
+    width:min(var(--dock-w), calc(100vw - 2rem)); max-height:min(46vh,430px); overflow:auto;
+    border-radius:26px 30px 24px 28px; padding:1rem 1.05rem 1.05rem;
+    background:linear-gradient(155deg, rgba(255,250,235,.97), rgba(244,229,196,.96)); color:var(--ink);
+    border:1px solid rgba(73,98,87,.2); box-shadow:0 24px 60px rgba(35,43,32,.28);
+  }
+  .focus-dock::before{content:""; position:absolute; inset:8px; border:1px dashed rgba(73,98,87,.16); border-radius:20px; pointer-events:none}
+  .dock-top{position:relative; display:flex; gap:.85rem; align-items:flex-start}
+  .dock-motif{flex:0 0 auto; width:58px; height:58px; display:grid; place-items:center; border-radius:20px 22px 18px 24px; background:color-mix(in srgb, var(--active-hue,#8ec9bd) 28%, #fff8e8); box-shadow:inset 0 0 0 1px rgba(73,98,87,.15); font-size:1.85rem}
+  .dock-title{font-family:Georgia,"Times New Roman",serif; font-size:1.48rem; line-height:1; margin:.08rem 0 .28rem}
+  .dock-line{margin:0; color:var(--ink-soft); line-height:1.35; font-size:.96rem}
+  .paw-keepsake{position:relative; margin-left:auto; flex:0 0 auto; width:54px; height:54px; color:color-mix(in srgb, var(--active-hue,#8ec9bd) 72%, #244236)}
+  .paw-keepsake svg{width:100%; height:100%; overflow:visible}
+  .paw-keepsake span{position:absolute; inset:32% 29% 20%; display:grid; place-items:center; font-size:1rem; color:var(--ink)}
+  .postures{position:relative; display:flex; flex-wrap:wrap; gap:.35rem; margin:.75rem 0}
+  .postures span{font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; padding:.25rem .46rem; border-radius:999px; background:rgba(73,98,87,.09)}
+  .dock-actions{position:relative; display:flex; gap:.55rem; align-items:stretch; flex-wrap:wrap}
+  .step-door{flex:1 1 180px; min-height:52px; display:flex; align-items:center; justify-content:center; gap:.5rem; text-decoration:none; text-align:center; border-radius:17px; padding:.72rem .9rem; background:var(--ink); color:var(--paper2); box-shadow:0 12px 24px rgba(36,66,54,.24); font-weight:700}
+  .step-door:hover{filter:brightness(1.1)}
+  .studio-door{flex:1 1 180px; min-height:52px; display:flex; align-items:center; justify-content:center; border-radius:17px; padding:.72rem .9rem; background:rgba(124,75,53,.12); border:1px dashed rgba(124,75,53,.45); color:#6b4030; font-weight:700; text-align:center}
+  .hold-btn{min-height:52px; border:1px solid rgba(73,98,87,.25); background:rgba(255,255,255,.55); border-radius:17px; padding:.65rem .8rem; cursor:pointer; font-weight:700}
+  .hold-btn[aria-pressed="true"]{background:var(--focus)}
+  .compare-tray{position:relative; display:none; grid-template-columns:1fr 1fr; gap:.55rem; margin-top:.7rem}
+  .compare-tray.show{display:grid}
+  .compare-card{min-height:74px; border-radius:17px; padding:.6rem; background:rgba(255,255,255,.52); border:1px solid rgba(73,98,87,.14)}
+  .compare-card b{display:block; font-family:Georgia,serif; margin:.15rem 0}
+  .compare-card span{font-size:1.25rem}
+  .compare-card small{color:var(--ink-soft); line-height:1.25; display:block}
+  .end-bank{position:relative; z-index:2; width:min(680px, calc(100vw - 2rem)); margin:-5rem auto 10rem; text-align:center; padding:1.2rem; border-radius:50% 46% 52% 48%/18% 20% 18% 20%; background:rgba(255,248,232,.55); font-family:Georgia,serif; font-style:italic; box-shadow:var(--card-shadow)}
+  html[data-phase="night"] .end-bank{background:rgba(28,50,54,.66)}
+
+  /* ---------- postures ---------- */
+  @media (min-width:1280px){
+    .reach{padding-left:6rem; padding-right:6rem}
+    .focus-dock{left:auto; right:2rem; transform:none; bottom:2rem}
+    .shelf{right:2rem}
+    .stone{--w:188px}.stone.large{--w:252px}.stone.small{--w:132px}
+  }
+  @media (min-width:1024px) and (max-width:1279px){
+    .reach{min-height:100vh; padding-bottom:12rem}
+    .focus-dock{left:auto; right:1.2rem; transform:none; bottom:1.2rem; --dock-w:430px}
+    .compare-tray{display:none}.compare-tray.show{display:grid}
+    .stone{--w:184px}.stone.large{--w:238px}
+  }
+  @media (min-width:600px) and (max-width:1023px) and (min-aspect-ratio:3/4){
+    :root{--dock-w:44vw}
+    .journey{width:56vw}
+    .top-bank{right:44vw}
+    .shelf{display:none}
+    .progress-brook{left:.55rem}
+    .reach{min-height:100vh; padding:6.8rem 1.2rem 8rem}
+    .bank-sign .place{font-size:clamp(2rem,7vw,4.2rem)}
+    .zone-sign{top:14rem; left:1rem}
+    .stone{--w:148px}.stone.large{--w:196px}.stone.small{--w:104px}
+    .focus-dock{left:auto; right:0; top:0; bottom:0; transform:none; width:44vw; max-height:none; height:100dvh; border-radius:0; padding:6.5rem 1.1rem 1.2rem; border-top:0; border-right:0; border-bottom:0; border-left:2px dashed rgba(73,98,87,.32); box-shadow:-18px 0 45px rgba(35,43,32,.16)}
+    .dock-top{flex-direction:column}
+    .paw-keepsake{margin-left:0}
+    .compare-tray.show{grid-template-columns:1fr 1fr}
+    #fray{width:82px;height:64px}
+  }
+  @media (max-width:599px){
+    :root{--header-h:58px}
+    .top-bank{padding:.55rem .7rem}
+    .wordmark{font-size:1.08rem}
+    .phase-switch button{padding:.36rem .52rem; min-height:38px; font-size:.88rem}
+    .progress-brook{left:.35rem; top:calc(var(--header-h) + .6rem); bottom:5.5rem; width:20px}
+    .progress-fray{width:22px;height:22px}
+    .shelf{top:auto; right:.65rem; bottom:calc(46vh + .6rem); width:50px; padding:.4rem .25rem}
+    .shelf h2{display:none}.shelf-slot{min-height:36px}
+    .reach{min-height:auto; padding:6.2rem .85rem 9rem; overflow:visible}
+    .reach + .reach{margin-top:0}
+    .bank-sign{margin-top:1rem; padding:.75rem .9rem}
+    .bank-sign .place{font-size:2.25rem}
+    .zone-sign{position:relative; left:auto; top:auto; width:max-content; margin:1.2rem auto .4rem}
+    .brook-svg{display:none}
+    .reach::after{content:""; position:absolute; left:50%; top:11rem; bottom:6rem; width:54px; transform:translateX(-50%); border-radius:999px; background:linear-gradient(180deg, rgba(142,201,189,.16), rgba(142,201,189,.48), rgba(77,147,135,.24)); box-shadow:inset 0 0 0 2px rgba(255,255,255,.32); z-index:0}
+    html[data-phase="night"] .reach::after{background:linear-gradient(180deg, rgba(56,110,120,.18), rgba(56,110,120,.55), rgba(56,110,120,.22))}
+    .stones{position:relative; inset:auto; display:flex; flex-direction:column; align-items:center; gap:1.15rem; padding:2rem 0 1rem; transform:none!important}
+    .stone{position:relative; left:auto!important; top:auto!important; width:min(82vw,330px); min-height:128px; margin-left:calc(var(--rack,0) * 1.15rem); transform:rotate(var(--tilt,-1deg)); touch-action:manipulation}
+    .stone:hover,.stone:focus-visible,.stone.approached{transform:translateY(-5px) rotate(0deg)}
+    .stone.active{transform:translateY(-8px) rotate(0deg) scale(1.025)}
+    .stone.large{width:min(88vw,360px)} .stone.small{width:min(62vw,230px)}
+    .stone .motif{margin-top:11%}
+    .droplet-play{display:flex}
+    .focus-dock{bottom:.65rem; width:calc(100vw - 1rem); max-height:44vh; padding:.85rem .9rem .95rem}
+    .dock-title{font-size:1.3rem}.dock-line{font-size:.92rem}
+    #fray{width:74px;height:58px}
+    .end-bank{margin-bottom:52vh}
+  }
+  @media (max-width:390px) and (max-height:650px){
+    .top-bank{height:52px}.wordmark{font-size:1rem}.wordmark .drop{display:none}
+    .phase-switch button{min-height:34px; padding:.28rem .44rem; font-size:.8rem}
+    .reach{padding-top:4.9rem}
+    .bank-sign .place{font-size:1.85rem}.bank-sign .reach-name{font-size:.64rem}
+    .stone{min-height:112px}.stone .motif{font-size:1.55rem}.stone-title{font-size:.9rem}
+    .focus-dock{max-height:47vh}.shelf{display:none}
+    .droplet-play{bottom:5.3rem; padding:.42rem .5rem}.droplet-track{width:96px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="fray-symbol" viewBox="0 0 120 92">
+      <g class="bob">
+        <path d="M12 66 Q2 42 24 35 Q43 30 48 51 Q50 67 31 75 Q18 79 12 66Z" fill="#f3c98d" stroke="#6b4a2e" stroke-width="3"/>
+        <ellipse cx="67" cy="58" rx="34" ry="24" fill="#fff3d6" stroke="#6b4a2e" stroke-width="3"/>
+        <path d="M82 39 L91 12 L101 36 Q111 28 116 39 Q104 58 91 61 Q80 52 82 39Z" fill="#fff3d6" stroke="#6b4a2e" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M90 31 L94 19 L99 33Z" fill="#d98b8b"/>
+        <circle cx="96" cy="48" r="3.2" fill="#244236"/>
+        <path d="M108 57 Q114 60 108 64" fill="none" stroke="#244236" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M49 76 Q61 84 78 77" fill="none" stroke="#6b4a2e" stroke-width="3" stroke-linecap="round"/>
+      </g>
+    </symbol>
+    <symbol id="paw-symbol" viewBox="0 0 80 80">
+      <ellipse cx="40" cy="52" rx="15" ry="12" fill="currentColor" opacity=".82"/>
+      <ellipse cx="18" cy="36" rx="7" ry="10" fill="currentColor" opacity=".82" transform="rotate(-18 18 36)"/>
+      <ellipse cx="32" cy="25" rx="7" ry="11" fill="currentColor" opacity=".82" transform="rotate(-5 32 25)"/>
+      <ellipse cx="49" cy="25" rx="7" ry="11" fill="currentColor" opacity=".82" transform="rotate(7 49 25)"/>
+      <ellipse cx="63" cy="37" rx="7" ry="10" fill="currentColor" opacity=".82" transform="rotate(18 63 37)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="top-bank" aria-label="Saelion showcase bank">
+  <div class="wordmark"><span class="drop" aria-hidden="true"></span><span>Saelion</span></div>
+  <div class="phase-switch" role="group" aria-label="Time along the brook">
+    <button type="button" data-phase-btn="day" aria-pressed="true">Day</button>
+    <button type="button" data-phase-btn="dusk" aria-pressed="false">Dusk</button>
+    <button type="button" data-phase-btn="night" aria-pressed="false">Night</button>
+  </div>
+</header>
+
+<div class="progress-brook" aria-hidden="true"><div class="progress-fill"></div><div class="progress-fray"><svg><use href="#fray-symbol"></use></svg></div></div>
+
+<aside class="shelf" aria-label="Keepsakes gathered along the brook">
+  <h2>Keepsakes</h2>
+  <div class="shelf-slots" id="shelfSlots"></div>
+</aside>
+
+<div id="fray" aria-hidden="true"><svg><use href="#fray-symbol"></use></svg></div>
+
+<main class="journey" id="journey">
+  <section class="reach" data-reach="spawn" aria-label="First Splash">
+    <svg class="brook-svg" viewBox="0 0 1000 900" preserveAspectRatio="none" aria-hidden="true">
+      <path class="brook-bed" d="M-40 700 C170 620 190 790 360 690 C540 585 560 420 735 470 C875 510 920 330 1060 260"/>
+      <path class="brook-water" d="M-40 700 C170 620 190 790 360 690 C540 585 560 420 735 470 C875 510 920 330 1060 260"/>
+      <path class="brook-flow" d="M-40 700 C170 620 190 790 360 690 C540 585 560 420 735 470 C875 510 920 330 1060 260"/>
+    </svg>
+    <div class="bank-sign"><div class="place">The Garden<br>Between Paths</div><div class="reach-name">First Splash</div></div>
+    <div class="zone-sign">where Fray wakes</div>
+    <div class="reed" style="left:6%;bottom:7%"></div><div class="reed" style="right:8%;top:20%;transform:scale(.75)"></div>
+    <div class="stones" data-stones="spawn"></div>
+    <div class="droplet-play" aria-label="Droplet path chooser">
+      <span aria-hidden="true">crease</span>
+      <div class="droplet-track" id="dropletTrack"><div class="droplet" id="droplet" role="slider" aria-label="Roll the droplet to another stone" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" tabindex="0"></div></div>
+      <button type="button" id="dropletBtn">roll</button>
+    </div>
+  </section>
+
+  <section class="reach" data-reach="bend" aria-label="The Long Bend">
+    <svg class="brook-svg" viewBox="0 0 1000 900" preserveAspectRatio="none" aria-hidden="true">
+      <path class="brook-bed" d="M-50 240 C160 330 260 210 410 330 C560 450 600 660 760 600 C890 552 950 700 1060 760"/>
+      <path class="brook-water" d="M-50 240 C160 330 260 210 410 330 C560 450 600 660 760 600 C890 552 950 700 1060 760"/>
+      <path class="brook-flow" d="M-50 240 C160 330 260 210 410 330 C560 450 600 660 760 600 C890 552 950 700 1060 760"/>
+    </svg>
+    <div class="zone-sign">The Long Bend</div>
+    <div class="reed" style="left:12%;top:10%"></div><div class="reed" style="right:5%;bottom:15%;transform:scale(1.2)"></div>
+    <div class="stones" data-stones="bend"></div>
+  </section>
+
+  <section class="reach" data-reach="far" aria-label="Far Bank">
+    <svg class="brook-svg" viewBox="0 0 1000 900" preserveAspectRatio="none" aria-hidden="true">
+      <path class="brook-bed" d="M-40 760 C150 650 230 790 390 665 C545 545 560 350 725 405 C870 455 920 250 1050 190"/>
+      <path class="brook-water" d="M-40 760 C150 650 230 790 390 665 C545 545 560 350 725 405 C870 455 920 250 1050 190"/>
+      <path class="brook-flow" d="M-40 760 C150 650 230 790 390 665 C545 545 560 350 725 405 C870 455 920 250 1050 190"/>
+    </svg>
+    <div class="zone-sign">Far Bank</div>
+    <div class="reed" style="right:13%;top:16%"></div><div class="reed" style="left:4%;bottom:10%;transform:scale(.85)"></div>
+    <div class="stones" data-stones="far"></div>
+  </section>
+
+  <div class="end-bank">Fray dries the last print, curls small, and waits by the water.</div>
+</main>
+
+<aside class="focus-dock" id="focusDock" aria-live="polite" aria-label="Underside of the stone Fray is considering">
+  <div class="dock-top">
+    <div class="dock-motif" id="dockMotif" aria-hidden="true">🐾</div>
+    <div>
+      <h1 class="dock-title" id="dockTitle">AndSo</h1>
+      <p class="dock-line" id="dockLine"></p>
+    </div>
+    <div class="paw-keepsake" aria-hidden="true"><svg><use href="#paw-symbol"></use></svg><span id="dockBloom">🐾</span></div>
+  </div>
+  <div class="postures" id="dockPostures" aria-label="Postures this world supports"></div>
+  <div class="dock-actions">
+    <span id="dockAction"></span>
+    <button class="hold-btn" id="holdBtn" type="button" aria-pressed="false">Hold beside</button>
+  </div>
+  <div class="compare-tray" id="compareTray" aria-label="Two stones held side by side"></div>
+</aside>
+
+<script>
+"use strict";
+/* Strict node manifest: these five fields are the whole contract.
+   Placement and invitation copy live in keyed maps; rendering and behaviour are central. */
+const NODE_MANIFEST = [
+  {id:"andso", title:"AndSo", "icon-motif":"paw", "url-or-null":"https://saelion.co/and-so", "posture-support":["rack","split","meadow","valley"]},
+  {id:"show-tell", title:"Show & Tell", "icon-motif":"frame", "url-or-null":"https://stevoblevo.github.io/storeybrook/show-tell/", "posture-support":["rack","split","meadow","valley"]},
+  {id:"storeybrook", title:"Storeybrook", "icon-motif":"brook", "url-or-null":"https://stevoblevo.github.io/storeybrook/", "posture-support":["rack","split","meadow","valley"]},
+  {id:"depthfield", title:"Depthfield", "icon-motif":"moon", "url-or-null":"https://stevoblevo.github.io/depthfield/", "posture-support":["rack","split","meadow","valley"]},
+  {id:"ic-lov", title:"ic.lov #1", "icon-motif":"card", "url-or-null":null, "posture-support":["rack","split"]},
+  {id:"bespoke", title:"bespoke.gig / Aurose", "icon-motif":"arch", "url-or-null":"https://stevoblevo.github.io/storeybrook/bespoke-v5/", "posture-support":["rack","split","meadow","valley"]},
+  {id:"reignfawn", title:"Reignfawn", "icon-motif":"lantern", "url-or-null":"https://saelion.co/reignfawn", "posture-support":["rack","split","meadow","valley"]},
+  {id:"queso-hades", title:"Queso Hades Cheese Royale", "icon-motif":"crown", "url-or-null":null, "posture-support":["rack","split","meadow"]},
+  {id:"anewgam", title:"Anewgam — Circle of Else", "icon-motif":"dream", "url-or-null":null, "posture-support":["rack","split","meadow","valley"]},
+  {id:"piggie", title:"This Little Piggie Had Roast Meef", "icon-motif":"book", "url-or-null":"https://saelion.co/piggie", "posture-support":["rack","split","meadow","valley"]},
+  {id:"piggie-garden", title:"This Little Piggie Planted a Garden", "icon-motif":"sprout", "url-or-null":null, "posture-support":["rack","split","meadow","valley"]},
+  {id:"bespoke-plans", title:"Bespoke — the engineering plans", "icon-motif":"compass", "url-or-null":null, "posture-support":["rack","split"]},
+  {id:"saedo-core", title:"Saedo core", "icon-motif":"gear", "url-or-null":null, "posture-support":["rack","split","meadow"]}
+];
+const INVITATIONS = {
+  "andso":"Come as you are; leave with a pawprint.",
+  "show-tell":"The exhibit room is open — mind the paint, touch everything.",
+  "storeybrook":"Paper, pages, and a brook that knows the way.",
+  "depthfield":"Storeybrook after dark, with its sleeves rolled up.",
+  "ic-lov":"A tiny card from the machine room, kept for luck.",
+  "bespoke":"Strange work finds its people through the arched door.",
+  "reignfawn":"Anna's lantern is lit and the pits are waiting.",
+  "queso-hades":"The cheese arena is built; its public bell hasn't rung.",
+  "anewgam":"One dream, many ways — still finding its front door.",
+  "piggie":"A whole roast-meef of a book — come hungry, stay for tea.",
+  "piggie-garden":"The next garden is still being planted behind this door.",
+  "bespoke-plans":"The marketplace's bones, spread on the drafting table.",
+  "saedo-core":"The work-lane engine, audible through the workshop wall."
+};
+const PLACEMENT = {
+  "andso":{reach:"spawn", x:18, y:61, rack:-1, tilt:-3, hue:"#d98b8b", size:""},
+  "show-tell":{reach:"spawn", x:40, y:47, rack:1, tilt:2, hue:"#d9a441", size:""},
+  "storeybrook":{reach:"spawn", x:62, y:63, rack:-1, tilt:-1, hue:"#8ec9bd", size:""},
+  "depthfield":{reach:"spawn", x:83, y:45, rack:1, tilt:3, hue:"#625b8f", size:""},
+  "ic-lov":{reach:"spawn", x:88, y:72, rack:0, tilt:-5, hue:"#eda58b", size:"small"},
+  "bespoke":{reach:"bend", x:19, y:50, rack:1, tilt:-2, hue:"#c9859b", size:"large"},
+  "reignfawn":{reach:"bend", x:43, y:66, rack:-1, tilt:2, hue:"#7ca982", size:"large"},
+  "queso-hades":{reach:"bend", x:67, y:43, rack:1, tilt:-3, hue:"#d9a441", size:""},
+  "anewgam":{reach:"bend", x:85, y:64, rack:-1, tilt:1, hue:"#9387bd", size:""},
+  "piggie":{reach:"far", x:21, y:57, rack:-1, tilt:-2, hue:"#eda58b", size:"large"},
+  "piggie-garden":{reach:"far", x:44, y:42, rack:1, tilt:2, hue:"#9dbb8d", size:""},
+  "bespoke-plans":{reach:"far", x:66, y:64, rack:-1, tilt:-4, hue:"#b49b72", size:""},
+  "saedo-core":{reach:"far", x:85, y:45, rack:1, tilt:3, hue:"#6f8f9b", size:""}
+};
+const MOTIFS = {paw:"🐾", frame:"▣", brook:"≈", moon:"☾", card:"▤", arch:"∩", lantern:"✦", crown:"♛", dream:"∞", book:"❧", sprout:"♧", compass:"✜", gear:"⚙"};
+const ORDER = NODE_MANIFEST.map(n => n.id);
+const byId = Object.fromEntries(NODE_MANIFEST.map(n => [n.id, n]));
+const stoneEls = new Map();
+const visited = new Set();
+const held = [];
+let activeId = "andso";
+let lastManualAt = 0;
+let currentPhase = "day";
+
+const shelfSlots = document.getElementById("shelfSlots");
+for (let i = 0; i < 7; i++) {
+  const slot = document.createElement("div");
+  slot.className = "shelf-slot";
+  slot.setAttribute("aria-hidden","true");
+  slot.textContent = "·";
+  shelfSlots.appendChild(slot);
+}
+
+function motifHTML(key){ return MOTIFS[key] || "✦"; }
+function renderStones(){
+  for (const node of NODE_MANIFEST) {
+    const p = PLACEMENT[node.id];
+    const holder = document.querySelector(`[data-stones="${p.reach}"]`);
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = `stone ${p.size} ${node["url-or-null"] ? "live" : "studio"}`;
+    el.dataset.id = node.id;
+    el.style.setProperty("--x", p.x + "%");
+    el.style.setProperty("--y", p.y + "%");
+    el.style.setProperty("--rack", p.rack);
+    el.style.setProperty("--tilt", p.tilt + "deg");
+    el.style.setProperty("--hue", p.hue);
+    el.setAttribute("aria-label", `${node.title}. ${INVITATIONS[node.id]}`);
+    el.innerHTML = `${node["url-or-null"] ? "" : '<span class="studio-seal">studio</span>'}<span class="motif" aria-hidden="true">${motifHTML(node["icon-motif"])}</span><span class="stone-title">${node.title}</span><span class="under-glint">underside</span><span class="sleep-mark" aria-hidden="true">🦊💤</span><span class="paw-bloom" aria-hidden="true"><svg><use href="#paw-symbol"></use></svg><span class="bloom-motif">${motifHTML(node["icon-motif"])}</span></span>`;
+    el.addEventListener("click", () => selectNode(node.id, {manual:true, scroll:false}));
+    el.addEventListener("mouseenter", () => { if (window.matchMedia("(hover:hover)").matches) selectNode(node.id, {manual:false}); });
+    el.addEventListener("focus", () => selectNode(node.id, {manual:false}));
+    holder.appendChild(el);
+    stoneEls.set(node.id, el);
+  }
+}
+
+function docCenter(el){
+  const r = el.getBoundingClientRect();
+  return {x:r.left + window.scrollX + r.width * .74, y:r.top + window.scrollY + r.height * .12, hue:getComputedStyle(el).getPropertyValue("--hue")};
+}
+function placeFray(targetEl){
+  const fray = document.getElementById("fray");
+  if (currentPhase === "dusk") {
+    const dock = document.getElementById("focusDock");
+    const r = dock.getBoundingClientRect();
+    fray.style.left = (r.left + window.scrollX + 34) + "px";
+    fray.style.top = (r.top + window.scrollY + 8) + "px";
+    fray.classList.add("curl");
+    fray.style.setProperty("--fray-glow", PLACEMENT[activeId].hue);
+    return;
+  }
+  fray.classList.remove("curl");
+  if (!targetEl) return;
+  const c = docCenter(targetEl);
+  fray.style.left = c.x + "px";
+  fray.style.top = c.y + "px";
+}
+
+function addToShelf(id){
+  const slots = [...shelfSlots.children];
+  if (slots.some(s => s.dataset.id === id)) return;
+  const slot = slots.find(s => !s.dataset.id);
+  if (!slot) return;
+  slot.dataset.id = id;
+  slot.classList.add("filled");
+  slot.removeAttribute("aria-hidden");
+  slot.innerHTML = `<button type="button" aria-label="Return to ${byId[id].title}">${motifHTML(byId[id]["icon-motif"])}</button>`;
+  slot.querySelector("button").addEventListener("click", () => selectNode(id,{manual:true, scroll:true}));
+}
+
+function renderCompare(){
+  const tray = document.getElementById("compareTray");
+  tray.classList.toggle("show", held.length === 2);
+  tray.innerHTML = held.map(id => {
+    const n = byId[id];
+    return `<div class="compare-card"><span aria-hidden="true">${motifHTML(n["icon-motif"])}</span><b>${n.title}</b><small>${INVITATIONS[id]}</small></div>`;
+  }).join("");
+  document.getElementById("holdBtn").setAttribute("aria-pressed", held.includes(activeId) ? "true" : "false");
+  document.getElementById("holdBtn").textContent = held.includes(activeId) ? "Beside you" : "Hold beside";
+}
+
+function selectNode(id, opts = {}){
+  if (!byId[id]) return;
+  activeId = id;
+  if (opts.manual) lastManualAt = Date.now();
+  const node = byId[id];
+  const p = PLACEMENT[id];
+  visited.add(id);
+  for (const [otherId, el] of stoneEls) {
+    el.classList.toggle("active", otherId === id);
+    el.classList.toggle("visited", visited.has(otherId));
+  }
+  document.documentElement.style.setProperty("--water", p.hue);
+  document.getElementById("focusDock").style.setProperty("--active-hue", p.hue);
+  document.getElementById("dockMotif").textContent = motifHTML(node["icon-motif"]);
+  document.getElementById("dockBloom").textContent = motifHTML(node["icon-motif"]);
+  document.getElementById("dockTitle").textContent = node.title;
+  document.getElementById("dockLine").textContent = INVITATIONS[id];
+  document.getElementById("dockPostures").innerHTML = node["posture-support"].map(x => `<span>${x}</span>`).join("");
+  const action = document.getElementById("dockAction");
+  if (node["url-or-null"]) {
+    /* TRAIL HOOK POINT: when the trail recorder (saelion-trail.js / SaeTrail,
+       PRs #29/#30) is wired at publish time, each door's step is recorded at
+       click time on this anchor — see the integration note in the file header. */
+    action.innerHTML = `<a class="step-door" href="${node["url-or-null"]}" target="_blank" rel="noopener">Step through <span aria-hidden="true">→</span></a>`;
+  } else {
+    action.innerHTML = `<div class="studio-door">In the studio — no public door yet</div>`;
+  }
+  addToShelf(id);
+  renderCompare();
+  placeFray(stoneEls.get(id));
+  const droplet = document.getElementById("droplet");
+  droplet.setAttribute("aria-valuenow", ORDER.indexOf(id));
+  droplet.style.left = (8 + (ORDER.indexOf(id) / (ORDER.length - 1)) * 82) + "px";
+  if (opts.scroll) stoneEls.get(id).scrollIntoView({behavior:"smooth", block:"center", inline:"center"});
+}
+
+document.getElementById("holdBtn").addEventListener("click", () => {
+  const i = held.indexOf(activeId);
+  if (i >= 0) held.splice(i,1);
+  else { held.push(activeId); if (held.length > 2) held.shift(); }
+  renderCompare();
+});
+
+for (const btn of document.querySelectorAll("[data-phase-btn]")) {
+  btn.addEventListener("click", () => {
+    currentPhase = btn.dataset.phaseBtn;
+    document.documentElement.dataset.phase = currentPhase;
+    for (const b of document.querySelectorAll("[data-phase-btn]")) b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+    placeFray(stoneEls.get(activeId));
+  });
+}
+
+/* Scroll = walking: Fray considers the stone nearest the middle of the eye. */
+let ticking = false;
+function onScroll(){
+  const max = document.documentElement.scrollHeight - innerHeight;
+  const progress = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+  document.documentElement.style.setProperty("--progress", (progress * 100) + "%");
+  if (Date.now() - lastManualAt < 1600) return;
+  const mid = innerHeight * .48;
+  let best = null, bestDist = Infinity;
+  for (const [id, el] of stoneEls) {
+    const r = el.getBoundingClientRect();
+    if (r.bottom < -80 || r.top > innerHeight + 80) continue;
+    const d = Math.abs((r.top + r.height/2) - mid);
+    if (d < bestDist) { bestDist = d; best = id; }
+  }
+  if (best && best !== activeId && bestDist < innerHeight * .42) selectNode(best);
+}
+addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { onScroll(); ticking = false; }); } }, {passive:true});
+addEventListener("resize", () => placeFray(stoneEls.get(activeId)));
+
+/* Approach wakes the stones before a tap lands. */
+const io = new IntersectionObserver(entries => {
+  for (const e of entries) e.target.classList.toggle("approached", e.isIntersecting);
+}, {threshold:.45});
+function observeStones(){ for (const el of stoneEls.values()) io.observe(el); }
+
+/* Desktop: drag the horizon; Fray leaves warning prints by sleeping studio stones. */
+for (const reach of document.querySelectorAll(".reach")) {
+  let drag = null;
+  reach.addEventListener("pointerdown", e => {
+    if (innerWidth < 1200 || e.target.closest(".stone,.droplet-play,.focus-dock,button,a")) return;
+    drag = {x:e.clientX, pan:parseFloat(getComputedStyle(reach.querySelector(".stones")).getPropertyValue("--pan")) || 0};
+  });
+  reach.addEventListener("pointermove", e => {
+    if (!drag) return;
+    const dx = Math.max(-76, Math.min(76, e.clientX - drag.x));
+    reach.querySelector(".stones").style.setProperty("--pan", dx + "px");
+    if (Math.abs(dx) > 42) reach.querySelectorAll(".stone.studio").forEach(s => s.classList.add("warned"));
+  });
+  addEventListener("pointerup", () => { drag = null; });
+}
+
+/* Narrow rack: swipe turns the page-stone; droplet rolls down the crease. */
+let touchX = null;
+addEventListener("touchstart", e => { touchX = e.changedTouches[0].clientX; }, {passive:true});
+addEventListener("touchend", e => {
+  if (touchX === null || innerWidth >= 600) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 52) cycle(dx < 0 ? 1 : -1);
+  touchX = null;
+}, {passive:true});
+function cycle(step){
+  const next = (ORDER.indexOf(activeId) + step + ORDER.length) % ORDER.length;
+  selectNode(ORDER[next], {manual:true, scroll:true});
+}
+document.getElementById("dropletBtn").addEventListener("click", () => cycle(1));
+const droplet = document.getElementById("droplet");
+let dropletDrag = null;
+droplet.addEventListener("pointerdown", e => { dropletDrag = {x:e.clientX}; droplet.setPointerCapture(e.pointerId); });
+droplet.addEventListener("pointermove", e => {
+  if (!dropletDrag) return;
+  const track = document.getElementById("dropletTrack").getBoundingClientRect();
+  const ratio = Math.min(1, Math.max(0, (e.clientX - track.left) / track.width));
+  droplet.style.left = (8 + ratio * 82) + "px";
+  droplet.dataset.ratio = ratio;
+});
+droplet.addEventListener("pointerup", () => {
+  if (!dropletDrag) return;
+  const ratio = parseFloat(droplet.dataset.ratio || "0");
+  const idx = Math.round(ratio * (ORDER.length - 1));
+  selectNode(ORDER[idx], {manual:true, scroll:true});
+  dropletDrag = null;
+});
+droplet.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); cycle(1); }
+  if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); cycle(-1); }
+});
+addEventListener("keydown", e => {
+  if (e.target.matches("input,textarea,select")) return;
+  if (e.key === "ArrowRight") cycle(1);
+  if (e.key === "ArrowLeft") cycle(-1);
+});
+
+renderStones();
+observeStones();
+selectNode("andso");
+onScroll();
+</script>
+</body>
+</html>
