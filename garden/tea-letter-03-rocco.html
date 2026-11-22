@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tea Letter № 3 — Rocco's Bone Spoon</title>
+<style>
+  :root{
+    --cream:#f7ecd8; --cream-deep:#efdfc0; --paper:#fdf8ec; --ink:#4a3826;
+    --ink-soft:#8a7358; --copper:#b06a2c; --copper-deep:#8a4f1e; --gold:#c9962e;
+    --gravy:#7a4a21;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(900px 420px at 50% -10%, #fbf0d6 0%, transparent 60%),
+      linear-gradient(180deg, #f7ecd8 0%, #ecd9b4 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  /* ---------- the card ---------- */
+  .card{
+    width:min(560px, 100%); background:var(--paper); border-radius:10px;
+    box-shadow:0 2px 0 #e2cfa5, 0 18px 44px rgba(120,80,30,.30);
+    overflow:hidden; position:relative;
+  }
+  /* the feast table, across the top of the card */
+  .table{
+    height:210px; position:relative; overflow:hidden;
+    background:
+      linear-gradient(180deg, #d9b57e 0%, #c89a5e 55%, #b9834a 100%);
+  }
+  .table::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:14px;
+    background:repeating-linear-gradient(90deg, rgba(255,255,255,.18) 0 26px, transparent 26px 52px);
+    opacity:.5;
+  }
+  .plate{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:300px; height:300px; border-radius:50%;
+    background:radial-gradient(circle at 50% 42%, #fffdf6 0%, #f3e8cf 62%, #e3cda0 100%);
+    box-shadow:0 10px 22px rgba(90,55,15,.35), inset 0 0 0 10px rgba(176,106,44,.12);
+  }
+  /* the bone — and, with one tap, the spoon */
+  .bone-btn{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(-18deg);
+    width:220px; height:120px; border:0; background:none; cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .6s cubic-bezier(.3,-.3,.4,1.3);
+  }
+  .bone-btn:focus-visible{ outline:3px solid var(--copper); outline-offset:6px; border-radius:50%; }
+  .bone-btn svg{ width:100%; height:100%; overflow:visible; }
+  .bone-btn .bowl{ opacity:0; transition:opacity .5s ease; }
+  .bone-btn .knob{ transition:opacity .5s ease; }
+  .bone-btn.spoon{ transform:translate(-50%,-50%) rotate(24deg) translateY(28px); }
+  .bone-btn.spoon .bowl{ opacity:1; }
+  .bone-btn.spoon .knob{ opacity:0; }
+  .bone-btn.stirring{ animation:stir .9s ease-in-out 2; }
+  @keyframes stir{
+    0%,100%{ transform:translate(-50%,-50%) rotate(24deg) translateY(28px) rotate(0deg); }
+    25%{ transform:translate(-50%,-50%) rotate(24deg) translateY(28px) rotate(-14deg); }
+    75%{ transform:translate(-50%,-50%) rotate(24deg) translateY(28px) rotate(14deg); }
+  }
+  /* the teacup, waiting under the table's edge */
+  .cup{
+    position:absolute; right:14px; bottom:16px; width:86px; height:64px;
+    opacity:.35; transition:opacity .8s ease;
+  }
+  .cup.lit{ opacity:1; }
+  .cup .steam{ opacity:0; transition:opacity 1s ease; }
+  .cup.lit .steam{ opacity:1; }
+  .cup .steam path{
+    fill:none; stroke:#fffdf6; stroke-width:3; stroke-linecap:round;
+    stroke-dasharray:60; stroke-dashoffset:60;
+  }
+  .cup.lit .steam path{ animation:curl 2.2s ease forwards; }
+  .cup.lit .steam path:nth-child(2){ animation-delay:.5s; }
+  @keyframes curl{ to{ stroke-dashoffset:0; } }
+  .cup .tiny-cup{ opacity:0; transition:opacity 1s ease 1.6s; }
+  .cup.lit .tiny-cup{ opacity:1; }
+  /* ---------- the letter ---------- */
+  .card-body{ padding:1.9rem 2rem 1.6rem; text-align:center; }
+  h1{ margin:.2rem 0 0; font-size:1.5rem; font-weight:400; line-height:1.3; }
+  h1 em{ color:var(--copper-deep); font-style:italic; }
+  .to-line{ margin:.55rem 0 0; color:var(--ink-soft); font-style:italic; }
+  .note{
+    margin:1.1rem auto 0; max-width:430px; text-align:left;
+    font-family:"Segoe Script","Bradley Hand","Comic Sans MS",cursive;
+    font-size:1.18rem; line-height:1.65;
+  }
+  .note .sig{ text-align:right; margin-top:.7rem; font-family:Georgia,serif; font-style:italic; color:var(--ink-soft); }
+  .whisper{ min-height:1.4em; font-style:italic; color:var(--ink-soft); margin:1rem 0 0; }
+  .margin-note{
+    margin:1.2rem auto 0; padding:.9rem 1.1rem; border:1px dashed #d3b98a; border-radius:8px;
+    background:#fbf0d6; font-size:1.02rem; line-height:1.6; opacity:.4;
+    transition:opacity .8s ease;
+  }
+  .margin-note.lit{ opacity:1; }
+  .margin-note b{ color:var(--copper-deep); }
+  .again{
+    margin-top:1.1rem; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+  }
+  .unlock{
+    margin:1.6rem -2rem -1.6rem; padding:1rem 2rem 1.2rem;
+    background:#f7ecd8; border-top:1px dashed #d3b98a;
+    font-size:.92rem; line-height:1.55; opacity:.45;
+    transition:opacity .8s ease;
+  }
+  .unlock.lit{ opacity:1; }
+  .unlock b{ color:var(--copper-deep); }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .kicker, .whisper, .again{ display:none; }
+    .card{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="kicker">El Phantea's Tea Letters · № 3 of 6</div>
+
+  <main class="card">
+    <div class="table" aria-label="Rocco's feast table, with a bone on a plate">
+      <div class="plate" aria-hidden="true"></div>
+      <button class="bone-btn" type="button" id="boneBtn"
+        aria-label="The roast-meef bone. Tap it to turn it into a spoon.">
+        <svg viewBox="0 0 220 120" aria-hidden="true">
+          <!-- the bone, printed in copper ink -->
+          <g fill="none" stroke="#b06a2c" stroke-width="10" stroke-linecap="round">
+            <line x1="52" y1="60" x2="168" y2="60"/>
+          </g>
+          <g class="knob" fill="#b06a2c">
+            <circle cx="40" cy="44" r="17"/><circle cx="40" cy="76" r="17"/>
+            <circle cx="180" cy="44" r="17"/><circle cx="180" cy="76" r="17"/>
+          </g>
+          <!-- the spoon bowl, waiting inside the bone -->
+          <ellipse class="bowl" cx="110" cy="60" rx="46" ry="26" fill="#c97e3a" stroke="#8a4f1e" stroke-width="3"/>
+          <ellipse class="bowl" cx="110" cy="60" rx="30" ry="14" fill="#e8a85c"/>
+          <!-- a dab of gravy, kept, not scrubbed -->
+          <circle cx="150" cy="72" r="5" fill="#7a4a21" opacity=".8"/>
+        </svg>
+      </button>
+      <svg class="cup" id="cup" viewBox="0 0 86 64" aria-hidden="true">
+        <g class="steam">
+          <path d="M28 26 C 22 18, 34 12, 28 4"/>
+          <path d="M50 26 C 44 18, 56 12, 50 4"/>
+        </g>
+        <g class="tiny-cup" stroke="#fffdf6" stroke-width="2" fill="none">
+          <path d="M36 2 h14 v3 a7 7 0 0 1 -14 0 z"/>
+        </g>
+        <path d="M14 28 h58 v6 a24 24 0 0 1 -48 0 z" fill="#fffdf6" stroke="#d3b98a" stroke-width="2"/>
+        <path d="M72 32 a10 10 0 0 1 0 18" fill="none" stroke="#fffdf6" stroke-width="4"/>
+      </svg>
+    </div>
+
+    <div class="card-body">
+      <h1>From Rocco, at the feast,<br><em>with the quiet end of the bone</em></h1>
+      <p class="to-line">For El Phantea — hold it right, and don't mind the gravy.</p>
+
+      <div class="note">
+        <p>“Saved the quiet end of the bone for you; it makes a decent spoon
+        if you hold it right and don't mind the gravy.”</p>
+        <p class="sig">— Rocco</p>
+      </div>
+
+      <p class="whisper" id="whisper" aria-live="polite">Tap the bone — see what it becomes.</p>
+
+      <div class="margin-note" id="marginNote">
+        📖 <b>Margin note, for the feast page:</b> “bone spoons keep tea warm
+        two minutes longer — useful for pocket elephants.”
+      </div>
+      <button class="again" type="button" id="again" hidden>Back to the bone ↻</button>
+
+      <div class="unlock" id="unlock">
+        🫖 <b>Unlocks in the book:</b> the margin note above, written in the
+        feast chapter's margin — and whenever El Phantea pours, the steam
+        curls, just for a moment, into the shape of a tiny cup.
+      </div>
+    </div>
+  </main>
+
+<script>
+  const btn = document.getElementById('boneBtn');
+  const cup = document.getElementById('cup');
+  const whisper = document.getElementById('whisper');
+  const marginNote = document.getElementById('marginNote');
+  const unlock = document.getElementById('unlock');
+  const again = document.getElementById('again');
+  let stage = 0; // 0 = bone, 1 = spoon, 2 = stirred + unlocked
+
+  btn.addEventListener('click', () => {
+    if (stage === 0) {
+      btn.classList.add('spoon');
+      cup.classList.add('lit');
+      whisper.textContent = 'A spoon! Now tap it again, and stir the tea.';
+      stage = 1;
+    } else if (stage === 1) {
+      btn.classList.remove('stirring'); void btn.offsetWidth; btn.classList.add('stirring');
+      marginNote.classList.add('lit');
+      unlock.classList.add('lit');
+      again.hidden = false;
+      whisper.textContent = 'Stirred. The steam curls into a tiny cup — and the tea stays warm two minutes longer.';
+      stage = 2;
+    }
+  });
+
+  again.addEventListener('click', () => {
+    btn.classList.remove('spoon', 'stirring');
+    cup.classList.remove('lit');
+    marginNote.classList.remove('lit');
+    unlock.classList.remove('lit');
+    again.hidden = true;
+    whisper.textContent = 'Tap the bone — see what it becomes.';
+    stage = 0;
+  });
+</script>
+</body>
+</html>

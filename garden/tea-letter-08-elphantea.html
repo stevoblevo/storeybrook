@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tea Letter № 8 — El Phantea Writes Back</title>
+<!--
+  Tea Letter № 8 — the postmistress writes back. Open to every reader.
+  Design: Grok lane, dispatch dsp_4a28749c48c94b2d, result_ref cd205122…
+  (brief: hidden_files/grok-brief-tea-letter-08-elphantea-2026-11-20.md).
+  Sae's flags on the lane's answer, applied in this build:
+  (1) Letter text: the lane's first paragraph kept verbatim; the second
+      keeps her question and adds her canon book line "Tea makes everything
+      better" plus one gentle invented line ("a second lump never hurt a
+      friend") that bridges the question to the two-lump interaction.
+  (2) The lane's interaction only showed the question and reset — the reader
+      should ANSWER it. So the bowl now takes the lumps in turn: one lump
+      for friends, two for family; the third tap stirs, and the steam curls
+      into the shape of a tiny cup (the Rocco echo), lighting the unlock.
+      The reset is a dedicated button, not a hidden tap — per the family's
+      rule since Letter № 7.
+  (3) The lane's look is kept: warm ivory paper, a faint rose-gold rim
+      suggesting a porcelain edge, the miniature trunk with its steam curl
+      in rose-gold line. Kept distinct from Rocco's cream card in copper
+      ink by the porcelain rim, the brass teapot, and the trunk motif.
+  (4) Unlock kept as the lane wrote it: the tea-party page's margin note,
+      "Pour for the smallest cup first."
+  (5) The lane's risk, built not just noted: the letter is UNGATED (unlike
+      № 7) and its wording never implies the other letters were hidden or
+      earned — the blend "travelled safely in my trunk with every letter
+      you opened" is open delivery, and the footnote says so plainly.
+      Nothing here claims she pours for Mallow (Mallow tips her own kettle
+      when El Phantea is not there).
+-->
+<style>
+  :root{
+    --ivory:#f7f2e8; --ivory-deep:#efe7d6; --paper:#fdfaf3; --ink:#6b5a48;
+    --ink-soft:#a08b74; --rose:#b76e5a; --rose-deep:#9d5744; --rose-soft:#d9a08e;
+    --brass:#c9962e; --brass-deep:#a87c22; --table:#e6d6ba; --table-deep:#d3bd97;
+    --steam:#fffdf7; --sugar:#fffef9;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(1000px 480px at 50% -10%, #faf6ec 0%, transparent 60%),
+      linear-gradient(180deg, #efe7d6 0%, #ddd0b6 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  /* ---------- the card: warm ivory, rose-gold porcelain rim ---------- */
+  .card{
+    width:min(560px, 100%); background:var(--paper); border-radius:8px;
+    box-shadow:0 2px 0 #d8cbb2, 0 18px 44px rgba(90,70,50,.28);
+    overflow:hidden; position:relative;
+    border:2px solid rgba(183,110,90,.45);
+    outline:1px solid rgba(183,110,90,.25); outline-offset:-6px;
+    background-image:
+      radial-gradient(220px 120px at 18% 22%, rgba(255,255,255,.6) 0%, transparent 70%),
+      radial-gradient(260px 140px at 82% 78%, rgba(217,160,142,.18) 0%, transparent 70%);
+  }
+  /* ---------- the tea table ---------- */
+  .table{
+    height:220px; position:relative; overflow:hidden;
+    background:linear-gradient(180deg, #f3e9d8 0%, #ecdcc0 62%, var(--table) 62%, var(--table-deep) 100%);
+  }
+  .table .cloth{
+    position:absolute; left:0; right:0; bottom:0; height:62px;
+    background:linear-gradient(180deg, var(--table) 0%, var(--table-deep) 100%);
+    border-top:1px dashed rgba(183,110,90,.4);
+  }
+  .teapot{
+    position:absolute; left:26px; bottom:52px; width:118px; height:92px;
+  }
+  /* the smallest cup, front and centre */
+  .cup-small{
+    position:absolute; left:50%; bottom:52px; transform:translateX(-50%);
+    width:58px; height:42px; border-radius:4px 4px 16px 16px;
+    background:linear-gradient(180deg, #fffdf7 0%, #f3e9d8 100%);
+    border:2px solid var(--rose-soft);
+    box-shadow:inset 0 -6px 8px rgba(183,110,90,.15), 0 4px 8px rgba(90,70,50,.25);
+  }
+  .cup-small::after{
+    content:""; position:absolute; right:-11px; top:10px; width:12px; height:12px;
+    border:2px solid var(--rose-soft); border-left:0; border-radius:0 50% 50% 0;
+  }
+  .cup-small .tea{
+    position:absolute; left:5px; right:5px; top:7px; height:8px; border-radius:50%;
+    background:#d9a05f; opacity:0; transition:opacity .8s ease;
+  }
+  .table.poured .cup-small .tea{ opacity:.85; }
+  .saucer{
+    position:absolute; left:50%; bottom:44px; transform:translateX(-50%);
+    width:84px; height:10px; border-radius:50%;
+    background:radial-gradient(ellipse at 50% 40%, #fffdf7 0%, #e8dcc4 70%);
+    box-shadow:0 2px 5px rgba(90,70,50,.2);
+  }
+  /* the two lumps, waiting above the cup until they are dropped in */
+  .lump{
+    position:absolute; left:50%; bottom:86px; width:13px; height:13px; border-radius:3px;
+    background:var(--sugar); border:1px solid #e3d9c2;
+    box-shadow:0 1px 3px rgba(90,70,50,.3);
+    opacity:0; transform:translate(-50%, -78px);
+    transition:transform .45s ease-in, opacity .2s ease;
+    pointer-events:none;
+  }
+  .lump.l1{ margin-left:-14px; }
+  .lump.l2{ margin-left:2px; }
+  .lump.in{ opacity:1; transform:translate(-50%, 0); }
+  /* the spoon, which appears to stir on the third tap */
+  .spoon{
+    position:absolute; left:50%; bottom:96px; margin-left:22px;
+    width:8px; height:44px; border-radius:4px;
+    background:linear-gradient(180deg, #e8dcc4 0%, #c9b48c 100%);
+    transform:rotate(24deg); transform-origin:50% 90%;
+    opacity:0; transition:opacity .4s ease;
+    pointer-events:none;
+  }
+  .spoon::before{
+    content:""; position:absolute; left:-4px; top:-9px; width:16px; height:14px;
+    border-radius:50%; background:#e8dcc4; border:1px solid #c9b48c;
+  }
+  .table.stirred .spoon{ opacity:1; animation:stir .9s ease-in-out 1; }
+  @keyframes stir{ 0%{ transform:rotate(24deg); } 50%{ transform:rotate(-8deg); } 100%{ transform:rotate(24deg); } }
+  /* steam: a wisp, and — on the stir — a tiny cup the steam curls into */
+  .steam{
+    position:absolute; left:50%; bottom:118px; transform:translateX(-50%);
+    width:36px; height:54px; opacity:0; transition:opacity 1.2s ease;
+    background:radial-gradient(ellipse at 50% 80%, rgba(255,253,247,.9) 0%, rgba(255,253,247,0) 70%);
+    border-radius:50%; filter:blur(2px); pointer-events:none;
+  }
+  .steam.up{ opacity:.85; }
+  .steam-cup{
+    position:absolute; left:50%; bottom:150px; transform:translateX(-50%);
+    width:34px; height:30px; opacity:0; transition:opacity 1.4s ease;
+    pointer-events:none;
+  }
+  .steam-cup.up{ opacity:.95; }
+  /* ---------- the sugar bowl: the tap target ---------- */
+  .bowl{
+    position:absolute; right:24px; bottom:52px; width:104px; height:74px;
+    border:0; background:none; cursor:pointer; padding:0;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .bowl:focus-visible{ outline:3px solid var(--rose); outline-offset:4px; border-radius:10px; }
+  .bowl svg{ width:104px; height:74px; overflow:visible; }
+  .bowl .bowl-lump{ transition:opacity .3s ease, transform .3s ease; }
+  .bowl .bowl-lump.gone{ opacity:0; transform:translateY(8px); }
+  .bowl:active svg{ transform:translateY(2px); }
+  /* ---------- the letter ---------- */
+  .card-body{ padding:1.9rem 2rem 1.6rem; text-align:center; position:relative; }
+  h1{ margin:.2rem 0 0; font-size:1.5rem; font-weight:400; line-height:1.3; }
+  h1 em{ color:var(--rose-deep); font-style:italic; }
+  .to-line{ margin:.55rem 0 0; color:var(--ink-soft); font-style:italic; }
+  .trunk{
+    position:absolute; top:1.1rem; right:1.4rem; width:40px; height:40px;
+    transform:rotate(6deg);
+  }
+  .trunk-note{ margin:1.1rem 0 0; font-size:.8rem; color:var(--ink-soft); }
+  .note{
+    margin:1rem auto 0; max-width:430px; text-align:left;
+    font-family:"Segoe Script","Bradley Hand","Comic Sans MS",cursive;
+    font-size:1.18rem; line-height:1.65;
+  }
+  .note .sig{ text-align:right; margin-top:.7rem; font-family:Georgia,serif; font-style:italic; color:var(--ink-soft); }
+  .whisper{ min-height:1.4em; font-style:italic; color:var(--ink-soft); margin:1rem 0 0; }
+  .again{
+    margin-top:1.1rem; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+  }
+  .unlock{
+    margin:1.6rem -2rem -1.6rem; padding:1rem 2rem 1.2rem;
+    background:var(--ivory); border-top:1px dashed #d8cbb2;
+    font-size:.92rem; line-height:1.55; opacity:.45;
+    transition:opacity .8s ease;
+  }
+  .unlock.lit{ opacity:1; }
+  .unlock b{ color:var(--rose-deep); }
+  .footnote{
+    margin:1.6rem -2rem -1.6rem; padding:.8rem 2rem 1rem;
+    border-top:1px dashed #ddd2bd;
+    font-size:.78rem; color:var(--ink-soft); line-height:1.5;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .lump, .steam, .steam-cup, .spoon, .unlock{ transition:none !important; }
+    .table.stirred .spoon{ animation:none !important; }
+  }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .kicker, .whisper, .again{ display:none; }
+    .card{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="kicker">El Phantea's Tea Letters · № 8 — the postmistress writes back</div>
+
+  <main class="card">
+    <!-- The tea table: teapot, the smallest cup, and the sugar bowl to tap. -->
+    <div class="table" id="table" aria-label="The tea table: a brass teapot, the smallest cup, and a sugar bowl with two lumps.">
+      <div class="cloth" aria-hidden="true"></div>
+      <svg class="teapot" viewBox="0 0 118 92" aria-hidden="true">
+        <path d="M30,46 C30,30 44,22 62,22 C80,22 94,30 94,46 L94,64 C94,76 80,82 62,82 C44,82 30,76 30,64 Z" fill="#c9962e" stroke="#a87c22" stroke-width="2" />
+        <path d="M30,46 L12,34 L17,29 L32,40 Z" fill="#c9962e" stroke="#a87c22" stroke-width="2" />
+        <path d="M94,42 C108,40 110,56 96,60" stroke="#a87c22" stroke-width="5" fill="none" />
+        <path d="M48,22 C48,13 76,13 76,22 Z" fill="#a87c22" />
+        <circle cx="62" cy="11" r="4.5" fill="#c9962e" stroke="#a87c22" stroke-width="1.5" />
+        <ellipse cx="62" cy="50" rx="24" ry="11" fill="#d9a05f" opacity=".5" />
+        <path d="M40,58 C48,64 76,64 84,58" stroke="#a87c22" stroke-width="1.6" fill="none" opacity=".6" />
+      </svg>
+      <div class="saucer" aria-hidden="true"></div>
+      <div class="cup-small" aria-hidden="true"><span class="tea"></span></div>
+      <span class="lump l1" id="lump1" aria-hidden="true"></span>
+      <span class="lump l2" id="lump2" aria-hidden="true"></span>
+      <span class="spoon" id="spoon" aria-hidden="true"></span>
+      <span class="steam" id="steam" aria-hidden="true"></span>
+      <svg class="steam-cup" id="steamCup" viewBox="0 0 34 30" aria-hidden="true">
+        <path d="M5,8 L29,8 L27,22 C27,26 23,28 17,28 C11,28 7,26 7,22 Z" fill="none" stroke="#fffdf7" stroke-width="2" />
+        <path d="M29,12 C33,12 33,18 28,18" fill="none" stroke="#fffdf7" stroke-width="2" />
+        <path d="M8,4 C10,1 12,1 13,4" fill="none" stroke="#fffdf7" stroke-width="1.6" />
+        <path d="M20,4 C22,1 24,1 25,4" fill="none" stroke="#fffdf7" stroke-width="1.6" />
+      </svg>
+      <button class="bowl" type="button" id="bowl" aria-label="The sugar bowl. Tap it: one lump, or two?">
+        <svg viewBox="0 0 104 74" aria-hidden="true">
+          <path d="M14,30 C14,20 26,16 52,16 C78,16 90,20 90,30 L90,48 C90,60 76,66 52,66 C28,66 14,60 14,48 Z" fill="#fffdf7" stroke="#d9a08e" stroke-width="2" />
+          <path d="M14,34 C6,32 4,44 14,46" stroke="#d9a08e" stroke-width="3.4" fill="none" />
+          <path d="M90,34 C98,32 100,44 90,46" stroke="#d9a08e" stroke-width="3.4" fill="none" />
+          <path d="M38,16 C38,9 66,9 66,16 Z" fill="#f3e9d8" stroke="#d9a08e" stroke-width="1.6" />
+          <g class="bowl-lump" id="bowlLump1"><rect x="42" y="4" width="11" height="11" rx="2" fill="#fffef9" stroke="#e3d9c2" /></g>
+          <g class="bowl-lump" id="bowlLump2"><rect x="55" y="2" width="11" height="11" rx="2" fill="#fffef9" stroke="#e3d9c2" /></g>
+        </svg>
+      </button>
+    </div>
+
+    <div class="card-body">
+      <svg class="trunk" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M8,20 C8,14 12,12 20,12 C28,12 32,14 32,20 L32,32 C32,35 29,36 20,36 C11,36 8,35 8,32 Z" fill="none" stroke="#b76e5a" stroke-width="1.8" />
+        <path d="M8,20 L32,20" stroke="#b76e5a" stroke-width="1.4" />
+        <path d="M16,20 L16,17 C16,14 24,14 24,17 L24,20" fill="none" stroke="#b76e5a" stroke-width="1.4" />
+        <path d="M20,8 C22,5 24,4 24,2" fill="none" stroke="#b76e5a" stroke-width="1.4" />
+        <path d="M24,2 C26,4 26,6 24,8" fill="none" stroke="#b76e5a" stroke-width="1.2" opacity=".7" />
+      </svg>
+      <h1>From El Phantea, <em>at the tea table</em></h1>
+      <p class="to-line">For the reader who keeps the letters &mdash; written in a careful hand, on ivory paper.</p>
+      <p class="trunk-note">A miniature trunk, carried everywhere &mdash; the letters travel in it, and so does the tea.</p>
+
+      <div class="note">
+        <p>&ldquo;Darling, the dusk-rose blend has travelled safely in my trunk
+        with every letter you opened. I pour for the smallest cup first,
+        always, so the steam rises kindly for all.&rdquo;</p>
+        <p>&ldquo;One lump, or two? Tea makes everything better &mdash; and a
+        second lump never hurt a friend.&rdquo;</p>
+        <p class="sig">&mdash; El Phantea</p>
+      </div>
+
+      <p class="whisper" id="whisper" aria-live="polite">Tap the sugar bowl &mdash; one lump, or two?</p>
+
+      <button class="again" type="button" id="again" hidden>Pour again &#8635;</button>
+
+      <div class="unlock" id="unlock">
+        &#129754; <b>Unlocks in the book:</b> a margin note on the tea-party
+        page, in El Phantea&rsquo;s hand &mdash; &ldquo;Pour for the smallest cup
+        first.&rdquo;
+      </div>
+
+      <div class="footnote">№ 8 &middot; the postmistress writes back &mdash; open to
+      every reader, since she delivers to all. Nothing here was hidden or
+      earned; the letters simply travel in her trunk. The first bundle of
+      six stands complete; № 7 waits under the willow.</div>
+    </div>
+  </main>
+
+<script>
+  var table = document.getElementById('table');
+  var bowl = document.getElementById('bowl');
+  var lump1 = document.getElementById('lump1');
+  var lump2 = document.getElementById('lump2');
+  var bowlLump1 = document.getElementById('bowlLump1');
+  var bowlLump2 = document.getElementById('bowlLump2');
+  var steam = document.getElementById('steam');
+  var steamCup = document.getElementById('steamCup');
+  var whisper = document.getElementById('whisper');
+  var unlock = document.getElementById('unlock');
+  var again = document.getElementById('again');
+
+  /* Three beats, in the family's grammar: one lump, two lumps, then the
+     stir — and the steam curls into a tiny cup, the Rocco echo. Either
+     choice is right; there is no wrong tap and no timer. */
+  var lumps = 0;
+  bowl.addEventListener('click', function () {
+    if (lumps === 0) {
+      lump1.classList.add('in');
+      bowlLump1.classList.add('gone');
+      whisper.textContent = 'One lump — for friends.';
+      again.hidden = false;
+    } else if (lumps === 1) {
+      lump2.classList.add('in');
+      bowlLump2.classList.add('gone');
+      whisper.textContent = 'Two lumps — for family.';
+    } else if (lumps === 2) {
+      table.classList.add('stirred');
+      table.classList.add('poured');
+      steam.classList.add('up');
+      steamCup.classList.add('up');
+      unlock.classList.add('lit');
+      whisper.textContent = 'Stirred, and poured for the smallest cup first.';
+    } else {
+      whisper.textContent = 'Stirred, and poured for the smallest cup first.';
+    }
+    lumps++;
+  });
+
+  again.addEventListener('click', function () {
+    lumps = 0;
+    lump1.classList.remove('in');
+    lump2.classList.remove('in');
+    bowlLump1.classList.remove('gone');
+    bowlLump2.classList.remove('gone');
+    table.classList.remove('stirred');
+    table.classList.remove('poured');
+    steam.classList.remove('up');
+    steamCup.classList.remove('up');
+    unlock.classList.remove('lit');
+    again.hidden = true;
+    whisper.textContent = 'Tap the sugar bowl — one lump, or two?';
+  });
+</script>
+</body>
+</html>

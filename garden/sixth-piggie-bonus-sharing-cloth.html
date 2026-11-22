@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sixth Piggie · A Bonus Clue at the Sharing Cloth</title>
+<style>
+  :root{
+    --cream:#f7efe0; --cream-deep:#eedfc2; --ink:#46392c; --ink-soft:#8a7a64;
+    --blue:#5b7fa6; --blue-deep:#3f6288; --gold:#c9962e;
+    --sage:#7d9b76; --sage-deep:#5d7a57; --rose:#c98a8a; --rose-deep:#a86a6a;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(900px 420px at 50% -10%, #fdf8ec 0%, transparent 60%),
+      linear-gradient(180deg, #f3e9d8 0%, #e6d3b3 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  .card{
+    width:min(580px, 100%); background:var(--cream); border-radius:10px;
+    box-shadow:0 2px 0 #d8c49a, 0 18px 44px rgba(120,85,40,.30);
+    overflow:hidden; position:relative;
+  }
+  .intro{ padding:1.6rem 1.6rem 0.4rem; text-align:center; }
+  .intro h1{ font-size:1.35rem; margin:.2rem 0 .4rem; font-weight:400; }
+  .intro p{ margin:0 auto; max-width:42ch; line-height:1.6; color:var(--ink-soft); font-size:.98rem; }
+  .intro p.bonus{ margin-top:.6rem; font-style:italic; }
+  /* ---------- the sharing cloth ---------- */
+  .scene{
+    margin:1.4rem 1.2rem 0; padding:1.1rem; position:relative;
+    background:linear-gradient(180deg, #fffaf0, var(--cream-deep));
+    border:2px solid #e0cda4; border-radius:14px;
+    box-shadow:inset 0 0 0 6px rgba(255,255,255,.35); overflow:hidden;
+  }
+  .line-note{ text-align:center; font-size:.85rem; color:var(--sage-deep); line-height:1.5; margin:0 0 1rem; }
+  .cloth-wrap{
+    background:linear-gradient(180deg, #eef0e2, #dde3cd);
+    border:2px solid #b9c2a0; border-radius:12px; padding:1rem .8rem 1.2rem; text-align:center;
+    position:relative;
+  }
+  .cloth-wrap h2{ font-size:.8rem; letter-spacing:.22em; text-transform:uppercase; color:#5d6b4a; margin:0 0 .9rem; font-weight:400; }
+  .line{ font-size:1.2rem; letter-spacing:.15em; color:var(--sage-deep); margin:0 0 .4rem; }
+  .cloth{
+    margin:0 auto; max-width:420px; padding:1rem 1rem 1.2rem; position:relative;
+    background:repeating-linear-gradient(90deg, #fffdf6 0 14px, #fbf3e2 14px 28px);
+    border:2px solid #d9c49a; border-radius:4px;
+    box-shadow:0 6px 0 rgba(190,165,120,.35);
+    transition:transform .5s ease, box-shadow .5s ease;
+  }
+  .cloth.lifted{ transform:rotate(-1deg) translateY(-3px); box-shadow:0 10px 0 rgba(190,165,120,.35); }
+  .cloth .hem{
+    border-top:2px dashed #d9c49a; margin-top:1rem; padding-top:.7rem;
+    font-style:italic; font-size:.95rem; color:var(--ink-soft); min-height:2.2em; line-height:1.5;
+  }
+  .cloth .hem .stitched{ display:none; color:var(--ink); }
+  .cloth.hem-read .hem .stitched{ display:inline; }
+  .cloth.hem-read .hem .unstitched{ display:none; }
+  .piggie-btn{
+    border:0; cursor:pointer; font-family:inherit; min-height:64px; min-width:120px;
+    padding:.7rem 1rem; border-radius:50% 46% 52% 48%;
+    background:linear-gradient(180deg, #f6e3d3, #eac9b0); color:var(--ink);
+    border:2px dashed var(--rose-deep); font-size:1rem; line-height:1.4;
+    -webkit-tap-highlight-color:transparent; transition:transform .4s ease, background .4s ease;
+  }
+  .piggie-btn:hover{ transform:translateY(-2px); }
+  .piggie-btn:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .piggie-btn.found{ background:linear-gradient(180deg, #fdf0c8, #f5d98e); border-style:solid; border-color:var(--gold); }
+  .piggie-btn .small{ display:block; font-size:.8rem; color:var(--ink-soft); margin-top:.15rem; }
+  .basket{
+    margin:1.1rem auto 0; padding:1rem; border-radius:12px; max-width:420px;
+    background:linear-gradient(180deg, #f3e6c8, #e3cfa0); border:2px solid #c4a97a;
+  }
+  .basket h3{ font-size:.8rem; letter-spacing:.22em; text-transform:uppercase; color:#7a5f33; margin:0 0 .8rem; font-weight:400; }
+  .basket-row{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
+  .keepsake{
+    border:0; cursor:pointer; font-family:inherit; min-height:56px; min-width:120px;
+    padding:.6rem .9rem; border-radius:14px;
+    background:linear-gradient(180deg, #fffdf6, #f3e8cf); color:var(--ink);
+    border:2px solid #c4a97a; font-size:.95rem; line-height:1.4;
+    -webkit-tap-highlight-color:transparent; transition:transform .4s ease, background .4s ease;
+  }
+  .keepsake:hover{ transform:translateY(-2px); }
+  .keepsake:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .keepsake.found{ background:linear-gradient(180deg, #fdf0c8, #f5d98e); border-color:var(--gold); }
+  .keepsake .small{ display:block; font-size:.8rem; color:var(--ink-soft); margin-top:.15rem; }
+  .found-note{
+    margin:.9rem auto 0; max-width:40ch; font-style:italic; font-size:.9rem; line-height:1.5;
+    color:#5d6b4a; min-height:1.5em; opacity:0; transition:opacity .8s ease;
+  }
+  .found-note.show{ opacity:1; }
+  .thread{
+    display:block; margin:1rem auto 0; padding:.5rem .9rem; border:0; cursor:pointer;
+    background:linear-gradient(180deg, var(--blue), var(--blue-deep)); color:#f2f6fa;
+    border-radius:20px; font-family:inherit; font-size:.9rem;
+    box-shadow:0 3px 0 rgba(40,70,105,.4); min-height:44px;
+    -webkit-tap-highlight-color:transparent; transition:transform .25s ease;
+  }
+  .thread:hover{ transform:translateY(-2px); }
+  .thread:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .thread.glint{ background:linear-gradient(180deg, #e9c25a, #c9962e); color:#46392c; }
+  .thread-note{
+    margin:.5rem auto 0; max-width:34ch; font-style:italic; font-size:.9rem; line-height:1.5;
+    color:var(--ink-soft); min-height:1.5em; opacity:0; transition:opacity .8s ease;
+  }
+  .thread-note.show{ opacity:1; }
+  .note{ text-align:center; padding:1rem 1.4rem 1.5rem; }
+  .note p{ margin:.3rem auto; max-width:44ch; line-height:1.6; color:var(--ink-soft); font-size:.95rem; }
+  .note p b{ color:var(--ink); font-weight:400; }
+  .unlock{
+    display:none; margin:1rem auto 0; padding:.9rem 1.1rem; max-width:44ch;
+    background:#fff8e2; border:1px solid var(--gold); border-radius:10px;
+    color:var(--ink); line-height:1.6; font-size:.98rem;
+  }
+  .unlock.show{ display:block; }
+  .reset{
+    margin:1rem auto 0; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font-family:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+    min-height:44px; padding:.4rem .8rem;
+  }
+  .reset:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:6px; }
+</style>
+</head>
+<body>
+<p class="kicker">The Sixth Piggie · A bonus clue at the sharing cloth</p>
+<main class="card">
+  <div class="intro">
+    <h1>The cloth, hung out after the sharing.</h1>
+    <p>After the feast was shared, someone hung the tablecloth on the line
+    to air — and stitched a small picture into its corner while it dried.
+    Not in the middle of the picture, where everyone looks. At the edge,
+    where only someone tidying up would notice.</p>
+    <p class="bonus">A bonus, not a sixth clue: the five clues already open
+    Mallow's door. This one is only for readers who linger after the sharing.</p>
+  </div>
+
+  <div class="scene" aria-label="The sharing cloth and its basket">
+    <p class="line-note">🧺 on the line, in the evening light 🧺<br>one cloth, one basket — and three small things kept</p>
+    <div class="cloth-wrap">
+      <h2>The sharing cloth</h2>
+      <p class="line" aria-hidden="true">— — — — — — —</p>
+      <div class="cloth" id="cloth">
+        <button class="piggie-btn" type="button" id="piggieBtn" aria-pressed="false">
+          🐷 stitched small, at the cloth's edge
+          <span class="small" id="piggieSmall">a little piggie, embroidered — not painted, not printed</span>
+        </button>
+        <p class="hem" id="hem">
+          <span class="unstitched">the hem is plain, for now — its stitching waits at the very edge</span>
+          <span class="stitched">“Room for one more, always.” — stitched in the same small, careful hand as the brook's line</span>
+        </p>
+      </div>
+
+      <div class="basket">
+        <h3>Her basket, left beside the line</h3>
+        <div class="basket-row" role="group" aria-label="Things kept in the basket">
+          <button class="keepsake" type="button" id="featherBtn" aria-pressed="false">
+            🪶 a feather
+            <span class="small" id="featherSmall">light as a thought, kept — not thrown away</span>
+          </button>
+          <button class="keepsake" type="button" id="blossomBtn" aria-pressed="false">
+            🌸 a fallen blossom
+            <span class="small" id="blossomSmall">fallen, not picked — kept because it fell where she sat</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="found-note" id="foundNote" aria-live="polite"></p>
+    </div>
+
+    <button class="thread" type="button" id="thread" aria-pressed="false">🧵 The blue thread, at the cloth's corner</button>
+    <p class="thread-note" id="threadNote" aria-live="polite">The same blue as the feast napkin, the thread on the well's lowest stone, the thread in Hazel's unfinished pear, the ribbon on the tea party's little chair, and the ribbon on the brook's apart stone. Six clues, one colour, one small guest — and this cloth is her keepsake.</p>
+  </div>
+
+  <div class="note">
+    <p id="shareNote">Touch the stitched piggie, the feather, and the
+    blossom — in any order, at your own pace. Nothing here is a test, and
+    nothing is hidden behind a hurry.</p>
+    <div class="unlock" id="unlock" aria-live="polite">
+      🧵 The hem's stitching appears, in the small careful hand:
+      <i>“Room for one more, always.”</i> The cloth folds itself small —
+      a pocket square, soft as the sharing — and slips into the keepsake
+      beside Mallow's chapter, for any reader who has a little while.
+      The five-clue door stands open either way; this cloth is simply
+      proof that someone was thinking of her, even while everyone else
+      was counting to five.
+    </div>
+    <button class="reset" type="button" id="reset">Hang the cloth again</button>
+  </div>
+</main>
+<script>
+  const cloth = document.getElementById('cloth');
+  const piggieBtn = document.getElementById('piggieBtn');
+  const piggieSmall = document.getElementById('piggieSmall');
+  const featherBtn = document.getElementById('featherBtn');
+  const featherSmall = document.getElementById('featherSmall');
+  const blossomBtn = document.getElementById('blossomBtn');
+  const blossomSmall = document.getElementById('blossomSmall');
+  const foundNote = document.getElementById('foundNote');
+  const thread = document.getElementById('thread');
+  const threadNote = document.getElementById('threadNote');
+  const unlock = document.getElementById('unlock');
+  const shareNote = document.getElementById('shareNote');
+  const seen = { piggie: false, feather: false, blossom: false };
+
+  function checkAll() {
+    if (seen.piggie && seen.feather && seen.blossom) {
+      cloth.classList.add('hem-read');
+      unlock.classList.add('show');
+      shareNote.innerHTML = 'All three kept things are noticed, and the hem speaks. <b>The cloth folds into a pocket square for the keepsake.</b> The brook door was already open — this is only extra room.';
+    }
+  }
+
+  piggieBtn.addEventListener('click', () => {
+    if (seen.piggie) return;
+    seen.piggie = true;
+    piggieBtn.classList.add('found');
+    piggieBtn.setAttribute('aria-pressed', 'true');
+    piggieSmall.textContent = 'noticed — stitched small, on purpose, at the edge';
+    foundNote.textContent = 'The stitched piggie is small because she was never meant to be counted — only kept, at the edge of the picture.';
+    foundNote.classList.add('show');
+    checkAll();
+  });
+
+  featherBtn.addEventListener('click', () => {
+    if (seen.feather) return;
+    seen.feather = true;
+    featherBtn.classList.add('found');
+    featherBtn.setAttribute('aria-pressed', 'true');
+    featherSmall.textContent = 'lifted — it floats a moment, then settles back, kept';
+    foundNote.textContent = 'The feather is light as a thought, and thoughts like hers are kept, not thrown away.';
+    foundNote.classList.add('show');
+    checkAll();
+  });
+
+  blossomBtn.addEventListener('click', () => {
+    if (seen.blossom) return;
+    seen.blossom = true;
+    blossomBtn.classList.add('found');
+    blossomBtn.setAttribute('aria-pressed', 'true');
+    blossomSmall.textContent = 'opened — a fallen blossom, still soft, still kept';
+    foundNote.textContent = 'The blossom was never picked. It fell where she sat, and someone kept it for exactly that reason.';
+    foundNote.classList.add('show');
+    checkAll();
+  });
+
+  thread.addEventListener('click', () => {
+    const on = thread.classList.toggle('glint');
+    threadNote.classList.toggle('show', on);
+    thread.setAttribute('aria-pressed', String(on));
+    thread.textContent = on ? '🧵 The blue thread — glinting at the cloth\'s corner' : '🧵 The blue thread, at the cloth\'s corner';
+  });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    seen.piggie = false; seen.feather = false; seen.blossom = false;
+    cloth.classList.remove('hem-read');
+    piggieBtn.classList.remove('found');
+    piggieBtn.setAttribute('aria-pressed', 'false');
+    piggieSmall.textContent = 'a little piggie, embroidered — not painted, not printed';
+    featherBtn.classList.remove('found');
+    featherBtn.setAttribute('aria-pressed', 'false');
+    featherSmall.textContent = 'light as a thought, kept — not thrown away';
+    blossomBtn.classList.remove('found');
+    blossomBtn.setAttribute('aria-pressed', 'false');
+    blossomSmall.textContent = 'fallen, not picked — kept because it fell where she sat';
+    foundNote.classList.remove('show');
+    foundNote.textContent = '';
+    unlock.classList.remove('show');
+    shareNote.innerHTML = 'Touch the stitched piggie, the feather, and the blossom — in any order, at your own pace. Nothing here is a test, and nothing is hidden behind a hurry.';
+  });
+</script>
+</body>
+</html>

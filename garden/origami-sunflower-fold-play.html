@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fold a Sunflower — an Origami play experiment</title>
+<style>
+  :root{
+    --paper:#f2ede3; --paper-deep:#e9e0cf; --peach:#f8d7c4;
+    --pink:#ee7b89; --pink-soft:#f6c3b8; --blue:#9ab6e0;
+    --ink:#1f2a33; --gold:#c9a227; --crease:#8b9096;
+    --leaf:#6f9e5f; --leaf-deep:#4f7d43; --petal:#f7c948; --thread:#b3402e;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(1200px 500px at 20% -5%, #fdf8ec 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 20%, #eef3f8 0%, transparent 55%),
+      #f7f2e9;
+    display:flex; flex-direction:column; align-items:center; gap:1.1rem;
+  }
+  header{text-align:center; max-width:34rem}
+  h1{font-size:clamp(1.7rem,5vw,2.4rem); margin:.2rem 0 .3rem; letter-spacing:.01em}
+  .sub{font-style:italic; color:#5a6460; margin:0; line-height:1.5}
+  .tag{font-family:system-ui,sans-serif; font-size:.72rem; letter-spacing:.14em;
+    text-transform:uppercase; color:#8a7a5c}
+  /* ---------- naming ---------- */
+  .names{display:flex; gap:.5rem; justify-content:center; align-items:center; flex-wrap:wrap}
+  .names span{font-family:system-ui,sans-serif; font-size:.9rem; color:#5a6460}
+  .names button{
+    font-family:system-ui,sans-serif; font-size:.95rem; cursor:pointer;
+    border:1.5px solid #cfc4a8; background:#fffdf7; color:var(--ink);
+    padding:.55rem .9rem; border-radius:999px; min-height:44px;
+  }
+  .names button.picked{background:#fdf3d8; border-color:var(--gold)}
+  /* ---------- the sheet ---------- */
+  .stage{perspective:1200px; width:min(430px,88vw); margin-top:.2rem}
+  .sheet{
+    position:relative; width:100%; aspect-ratio:1/1; overflow:hidden;
+    background:
+      linear-gradient(160deg, #fbf7ee 0%, var(--paper) 55%, var(--paper-deep) 100%);
+    border-radius:6px;
+    box-shadow:0 1px 0 #fff inset, 0 18px 40px rgba(31,42,51,.22),
+      0 2px 8px rgba(31,42,51,.12);
+    cursor:pointer; touch-action:manipulation;
+  }
+  .sheet::after{ /* fibre whisper */
+    content:""; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background-image:repeating-linear-gradient(0deg, transparent 0 5px, rgba(120,100,70,.025) 5px 6px);
+  }
+  /* ---------- flaps (real 3D folds) ---------- */
+  .flap{position:absolute; transform-style:preserve-3d; z-index:1;
+    transition:transform .7s cubic-bezier(.34,1.2,.4,1)}
+  .flap .face{position:absolute; inset:0; backface-visibility:hidden}
+  .flap .front{background:linear-gradient(150deg,#fbf7ee,var(--paper-deep))}
+  .flap .back{background:linear-gradient(150deg,#fde9dc,var(--peach))}
+  .tuck{top:0; left:0; width:42%; height:42%;
+    clip-path:polygon(0 0,100% 0,0 100%); transform-origin:100% 0%}
+  .tuck .back{transform:rotate3d(1,1,0,180deg)}
+  .tuck.folded{transform:rotate3d(1,1,0,180deg)}
+  .waterL{top:0; left:0; bottom:0; width:22%; transform-origin:100% 50%}
+  .waterL .back{transform:rotateY(180deg)}
+  .waterL.folded{transform:rotateY(180deg)}
+  .waterR{top:0; right:0; bottom:0; width:22%; transform-origin:0% 50%}
+  .waterR .back{transform:rotateY(180deg)}
+  .waterR.folded{transform:rotateY(-180deg)}
+  .breathe{top:0; left:0; right:0; height:30%; transform-origin:50% 100%}
+  .breathe .back{transform:rotateX(180deg)}
+  .breathe.folded{transform:rotateX(180deg)}
+  /* ---------- the growing sunflower (drawn on the paper, above the flaps) ---------- */
+  .garden{position:absolute; inset:0; width:100%; height:100%; z-index:2; pointer-events:none}
+  .garden .stem{transform-origin:200px 340px; transform:scaleY(0); transition:transform .8s ease}
+  .garden .leafL,.garden .leafR{opacity:0; transition:opacity .6s ease}
+  .garden .bud{opacity:0; transition:opacity .5s ease}
+  .garden .petal{opacity:0; transform-origin:200px 150px; transform:scale(.3) rotate(0deg); transition:opacity .45s ease, transform .45s cubic-bezier(.34,1.4,.4,1)}
+  .garden .centre{opacity:0; transition:opacity .5s ease}
+  .garden .soil{opacity:.9}
+  .s1 .stem{transform:scaleY(.45)}
+  .s2 .stem{transform:scaleY(.75)}
+  .s2 .leafL,.s2 .leafR{opacity:1}
+  .s3 .stem,.s4 .stem{transform:scaleY(1)}
+  .s3 .leafL,.s3 .leafR,.s4 .leafL,.s4 .leafR{opacity:1}
+  .s3 .bud,.s4 .bud{opacity:1}
+  .s4 .bud{opacity:0}
+  .s4 .centre{opacity:1}
+  .b1 .p1,.b1 .p2{opacity:1; transform:scale(1) rotate(0deg)}
+  .b2 .p1,.b2 .p2,.b2 .p3,.b2 .p4{opacity:1; transform:scale(1) rotate(0deg)}
+  .b3 .petal{opacity:1; transform:scale(1) rotate(0deg)}
+  /* ---------- creases + season map ---------- */
+  .creases{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:3}
+  .creases line,.creases path{stroke:var(--crease); stroke-width:1.6;
+    fill:none; stroke-dasharray:5 5; opacity:0; transition:opacity .5s, stroke .6s}
+  .s1 .c-tuck,.s2 .c-tuck,.s3 .c-tuck,.s4 .c-tuck{opacity:.6}
+  .s2 .c-water,.s3 .c-water,.s4 .c-water{opacity:.6}
+  .s3 .c-breathe,.s4 .c-breathe{opacity:.6}
+  .s4 .c-bloom{opacity:.6}
+  .map{opacity:0; transition:opacity .8s}
+  .map text{font-family:system-ui,sans-serif; font-size:13px; fill:#7a6420; font-style:italic}
+  .map circle{fill:var(--gold)}
+  .map path{stroke:var(--gold); stroke-width:2; stroke-dasharray:2 6; fill:none}
+  .unfolded .map{opacity:1}
+  .unfolded .creases line,.unfolded .creases path{
+    stroke:var(--gold); stroke-dasharray:none; opacity:.9;
+    filter:drop-shadow(0 0 3px rgba(201,162,39,.8))}
+  .unfolded .flap{opacity:.35}
+  /* ---------- Pipkin, the guide ---------- */
+  .guide{display:flex; gap:.7rem; align-items:center; max-width:34rem; min-height:64px}
+  .guide svg{flex:0 0 auto; width:58px; height:58px;
+    filter:drop-shadow(0 4px 6px rgba(31,42,51,.2))}
+  .bubble{
+    background:#fffdf7; border:1.5px solid #e3d9c2; border-radius:14px;
+    padding:.55rem .9rem; font-style:italic; color:#4c5750; line-height:1.45;
+    position:relative; min-height:44px; display:flex; align-items:center;
+  }
+  .bubble::before{
+    content:""; position:absolute; left:-9px; top:50%; width:14px; height:14px;
+    background:#fffdf7; border-left:1.5px solid #e3d9c2; border-bottom:1.5px solid #e3d9c2;
+    transform:translateY(-50%) rotate(45deg);
+  }
+  .bubble b{color:var(--ink); font-style:normal}
+  /* ---------- controls ---------- */
+  .status{font-style:italic; color:#5a6460; min-height:1.4em; text-align:center; max-width:34rem}
+  .steps{display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center; max-width:34rem}
+  .steps button,.actions button{
+    font-family:system-ui,sans-serif; font-size:.95rem; cursor:pointer;
+    border:1.5px solid #cfc4a8; background:#fffdf7; color:var(--ink);
+    padding:.65rem .9rem; border-radius:999px; min-height:44px; min-width:48px;
+    transition:background .2s, border-color .2s;
+  }
+  .steps button:hover,.actions button:hover{border-color:var(--pink)}
+  .steps button.done{background:#fdeef0; border-color:var(--pink)}
+  .steps button.done::after{content:" · done"; color:var(--pink); font-size:.8rem}
+  .steps button.blooming{background:#fdf3d8; border-color:var(--gold)}
+  .actions{display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center}
+  .actions button.primary{background:var(--ink); color:#fff; border-color:var(--ink)}
+  .actions button:disabled{opacity:.4; cursor:default}
+  footer{max-width:34rem; text-align:center; color:#7a7568; font-size:.9rem; line-height:1.6}
+  footer b{color:var(--ink)}
+  @media (prefers-reduced-motion: reduce){
+    .flap,.garden .stem,.garden .leafL,.garden .leafR,.garden .bud,.garden .petal,.garden .centre{transition:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <p class="tag">Storeybrook · Origami play · experiment</p>
+  <h1>Fold a Sunflower</h1>
+  <p class="sub">Four folds, one season. Tuck her in, water her, breathe once
+  slow — then three gentle taps, and she opens. Finish all four, then unfold
+  it and read the season in the creases.</p>
+</header>
+
+<div class="names" aria-label="Name the sunflower">
+  <span>Name her:</span>
+  <button data-name="Sunny" class="picked">Sunny</button>
+  <button data-name="Goldie">Goldie</button>
+  <button data-name="Tallulah">Tallulah</button>
+</div>
+
+<div class="stage">
+  <div class="sheet" id="sheet" role="button" tabindex="0"
+       aria-label="Paper sheet. Activate to fold the next fold, or tap the bud."
+       title="Tap to fold the next fold">
+    <div class="flap tuck" id="flapTuck" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+    <div class="flap waterL" id="flapWaterL" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+    <div class="flap waterR" id="flapWaterR" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+    <div class="flap breathe" id="flapBreathe" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+
+    <svg class="garden" viewBox="0 0 400 400" aria-hidden="true">
+      <!-- one red thread, stitched along the bottom of the sheet -->
+      <path d="M 30 372 C 90 360, 150 380, 200 370 S 320 360, 372 372"
+        fill="none" stroke="#b3402e" stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round"/>
+      <!-- soil -->
+      <ellipse class="soil" cx="200" cy="348" rx="86" ry="14" fill="#cbb28a"/>
+      <ellipse class="soil" cx="200" cy="344" rx="70" ry="10" fill="#b99a6e"/>
+      <!-- stem, leaves, bud, bloom -->
+      <path class="stem" d="M 200 344 C 196 280, 204 220, 200 158"
+        fill="none" stroke="#4f7d43" stroke-width="7" stroke-linecap="round"/>
+      <path class="leafL" d="M 199 268 C 168 258, 146 236, 142 214 C 168 218, 190 236, 199 258 Z"
+        fill="#6f9e5f"/>
+      <path class="leafR" d="M 201 292 C 232 282, 254 260, 258 238 C 232 242, 210 260, 201 282 Z"
+        fill="#6f9e5f"/>
+      <path class="bud" d="M 200 118 C 182 132, 178 156, 200 168 C 222 156, 218 132, 200 118 Z"
+        fill="#7fae62" stroke="#4f7d43" stroke-width="2"/>
+      <g class="petals">
+        <path class="petal p1" d="M 200 150 L 172 108 L 200 96 L 216 118 Z" fill="#f7c948"/>
+        <path class="petal p2" d="M 200 150 L 228 108 L 200 96 L 184 118 Z" fill="#f9d976"/>
+        <path class="petal p3" d="M 200 150 L 152 132 L 158 104 L 186 122 Z" fill="#f7c948"/>
+        <path class="petal p4" d="M 200 150 L 248 132 L 242 104 L 214 122 Z" fill="#f9d976"/>
+        <path class="petal p5" d="M 200 150 L 158 168 L 172 140 L 192 148 Z" fill="#f7c948"/>
+        <path class="petal p6" d="M 200 150 L 242 168 L 228 140 L 208 148 Z" fill="#f9d976"/>
+      </g>
+      <circle class="centre" cx="200" cy="150" r="26" fill="#8a5a2b"/>
+      <circle class="centre" cx="192" cy="144" r="3" fill="#6b4420"/>
+      <circle class="centre" cx="208" cy="142" r="3" fill="#6b4420"/>
+      <circle class="centre" cx="200" cy="158" r="3" fill="#6b4420"/>
+      <circle class="centre" cx="212" cy="156" r="3" fill="#6b4420"/>
+      <circle class="centre" cx="188" cy="156" r="3" fill="#6b4420"/>
+    </svg>
+
+    <svg class="creases" viewBox="0 0 400 400" aria-hidden="true">
+      <line class="c-tuck" x1="0" y1="0" x2="168" y2="168" />
+      <line class="c-water" x1="88" y1="0" x2="88" y2="400" />
+      <line class="c-water" x1="312" y1="0" x2="312" y2="400" />
+      <path class="c-breathe" d="M 40 120 Q 200 150 360 120" />
+      <path class="c-bloom" d="M 200 150 L 186 92" />
+      <path class="c-bloom" d="M 200 150 L 214 92" />
+      <path class="c-bloom" d="M 200 150 L 152 118" />
+      <path class="c-bloom" d="M 200 150 L 248 118" />
+      <g class="map">
+        <path d="M 60 330 C 130 300, 180 250, 200 200 S 210 130, 200 96" />
+        <circle cx="60" cy="330" r="5"/><circle cx="140" cy="268" r="5"/>
+        <circle cx="186" cy="206" r="5"/><circle cx="200" cy="150" r="5"/>
+        <text x="52" y="352">tuck</text><text x="132" y="288">water</text>
+        <text x="178" y="226">breath</text><text x="212" y="140">bloom</text>
+        <text x="120" y="386">the season, kept in creases</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div class="guide" aria-live="polite">
+  <!-- Pipkin, canonical: round teal-green creature, mint belly, sprout with pink bud -->
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="56" r="36" fill="#79b8a6"/>
+    <ellipse cx="50" cy="70" rx="22" ry="16" fill="#cfe8d8"/>
+    <circle cx="16" cy="52" r="9" fill="#79b8a6"/>
+    <circle cx="84" cy="52" r="9" fill="#79b8a6"/>
+    <path d="M 50 22 C 50 14, 50 10, 50 6" stroke="#4f7d43" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="50" cy="6" r="5" fill="#ee7b89"/>
+    <circle cx="38" cy="52" r="4.5" fill="#1f2a33"/><circle cx="62" cy="52" r="4.5" fill="#1f2a33"/>
+    <circle cx="39.5" cy="50.5" r="1.5" fill="#fff"/><circle cx="63.5" cy="50.5" r="1.5" fill="#fff"/>
+    <circle cx="28" cy="62" r="3" fill="#f6c3b8" opacity=".8"/>
+    <circle cx="72" cy="62" r="3" fill="#f6c3b8" opacity=".8"/>
+    <path d="M 44 64 Q 50 69 56 64" stroke="#1f2a33" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="38" cy="94" rx="7" ry="4" fill="#79b8a6"/>
+    <ellipse cx="62" cy="94" rx="7" ry="4" fill="#79b8a6"/>
+  </svg>
+  <p class="bubble"><b>Pipkin:</b> <span id="pipkinLine">A flat square of watercolour paper — and a seed to tuck in.</span></p>
+</div>
+
+<p class="status" id="status" aria-live="polite">A flat square of watercolour paper. Name her, then tuck her in.</p>
+
+<nav class="steps" aria-label="Folds">
+  <button data-fold="1">1 · Tuck — <i>sprout</i></button>
+  <button data-fold="2">2 · Water — <i>leaves</i></button>
+  <button data-fold="3">3 · Breathe — <i>bud</i></button>
+  <button data-fold="4">4 · Tap ×3 — <i>bloom</i></button>
+</nav>
+
+<div class="actions">
+  <button class="primary" id="nextBtn">Fold the next one</button>
+  <button id="unfoldBtn" disabled>Unfold it — see the season</button>
+  <button id="resetBtn">Start again</button>
+</div>
+
+<footer>
+  <p><b>How it plays.</b> Every fold is failure-free: a tap out of order or a
+  double tap only rustles softly and nothing moves; tapping a fold jumps
+  straight to it — no fold can be broken, only peeked under. The bloom is
+  three gentle taps, the way the book opens her, and Pipkin only ever says
+  his own lines. When she is open, unfolding lays the sheet flat again, but
+  every crease stays behind in gold: a map of the season. From the Origami
+  play seed in the garden's design notes; paper, peach underside and one red
+  thread, in the Storeybrook Origami manner. Fold design from the Saedo Grok
+  lane (dispatch dsp_1afd409ee11345c7, 2026-11-15); the keepsake line is the
+  lane's, in the book's cadence — not book canon.</p>
+</footer>
+
+<script>
+(function(){
+  var sheet = document.getElementById('sheet');
+  var status = document.getElementById('status');
+  var pipkinLine = document.getElementById('pipkinLine');
+  var nextBtn = document.getElementById('nextBtn');
+  var unfoldBtn = document.getElementById('unfoldBtn');
+  var resetBtn = document.getElementById('resetBtn');
+  var stepBtns = document.querySelectorAll('.steps button');
+  var nameBtns = document.querySelectorAll('.names button');
+  var step = 0, bloomTaps = 0, unfolded = false, name = 'Sunny';
+  var pipkinLines = [
+    'A flat square of watercolour paper — and a seed to tuck in.',
+    'Wee!',
+    'That tickles!',
+    'Again! Again!',
+    'I grew again, did you see?'
+  ];
+  var audioCtx = null;
+  function rustle(){
+    try{
+      if (navigator.vibrate) navigator.vibrate(10);
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      var dur = 0.18, buf = audioCtx.createBuffer(1, audioCtx.sampleRate * dur, audioCtx.sampleRate);
+      var data = buf.getChannelData(0);
+      for (var i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+      var src = audioCtx.createBufferSource(); src.buffer = buf;
+      var filter = audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.value = 2800;
+      var gain = audioCtx.createGain(); gain.gain.value = 0.12;
+      src.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination); src.start();
+    }catch(e){ /* sound is garnish; the fold is the thing */ }
+  }
+  function plink(freq){
+    try{
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      var osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.14, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+    }catch(e){ /* sound is garnish; the tap is the thing */ }
+  }
+  var tapNotes = [740, 900, 1060];
+  function statusText(){
+    if (unfolded) return 'Flat again — and every crease glows gold: tuck, water, breath, bloom. And the garden grew, with room between the petals for the light.';
+    if (step === 0) return 'A flat square of watercolour paper. Name her, then tuck ' + name + ' in.';
+    if (step === 1) return 'Tucked in — ' + name + ' is a sprout. Now water.';
+    if (step === 2) return 'Watered — two leaves reach out. Now one slow breath.';
+    if (step === 3) return 'Breathed — a bud, closed tight. Now three gentle taps.';
+    if (bloomTaps === 0) return 'Tap the bud — one…';
+    if (bloomTaps === 1) return 'One tap — the bud stirs. Two…';
+    if (bloomTaps === 2) return 'Two taps — she is listening. Three…';
+    return 'She opens! Three taps, one sunflower. Unfold her to see the season.';
+  }
+  function render(){
+    sheet.classList.remove('s1','s2','s3','s4','b1','b2','b3');
+    if (step > 0) sheet.classList.add('s' + step);
+    if (step === 4 && bloomTaps > 0) sheet.classList.add('b' + bloomTaps);
+    document.getElementById('flapTuck').classList.toggle('folded', step >= 1 && !unfolded);
+    document.getElementById('flapWaterL').classList.toggle('folded', step >= 2 && !unfolded);
+    document.getElementById('flapWaterR').classList.toggle('folded', step >= 2 && !unfolded);
+    document.getElementById('flapBreathe').classList.toggle('folded', step >= 3 && !unfolded);
+    sheet.classList.toggle('unfolded', unfolded);
+    stepBtns.forEach(function(b, i){
+      var n = i + 1;
+      b.classList.toggle('done', step > n || (n === 4 && step === 4 && bloomTaps === 3));
+      b.classList.toggle('blooming', n === 4 && step === 4 && bloomTaps > 0 && bloomTaps < 3);
+    });
+    nextBtn.disabled = step === 4 && bloomTaps === 3;
+    nextBtn.textContent = step < 3 ? 'Fold the next one'
+      : (step === 3 ? 'Tap the bud (0/3)' : (bloomTaps < 3 ? 'Tap the bud (' + bloomTaps + '/3)' : 'All folded'));
+    unfoldBtn.disabled = !(step === 4 && bloomTaps === 3);
+    pipkinLine.textContent = pipkinLines[step];
+    status.textContent = statusText();
+  }
+  function foldTo(n){
+    if (n === step && n !== 4) return;
+    if (n < step) { step = n; bloomTaps = 0; }
+    else if (n === 4 && step === 4) { bloomTap(); return; }
+    else step = Math.max(0, Math.min(4, n));
+    if (step === 4 && bloomTaps > 0 && n !== 4) bloomTaps = 0;
+    unfolded = false;
+    rustle();
+    render();
+  }
+  function bloomTap(){
+    if (step !== 4 || bloomTaps >= 3 || unfolded) return;
+    bloomTaps += 1;
+    plink(tapNotes[bloomTaps - 1]);
+    render();
+  }
+  function advance(){
+    if (unfolded) return;
+    if (step < 3) foldTo(step + 1);
+    else if (step === 3) { step = 4; bloomTaps = 1; unfolded = false; plink(tapNotes[0]); render(); }
+    else bloomTap();
+  }
+  nextBtn.addEventListener('click', advance);
+  sheet.addEventListener('click', advance);
+  sheet.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance(); }
+  });
+  stepBtns.forEach(function(b){
+    b.addEventListener('click', function(){ foldTo(parseInt(b.getAttribute('data-fold'), 10)); });
+  });
+  nameBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      name = b.getAttribute('data-name');
+      nameBtns.forEach(function(x){ x.classList.toggle('picked', x === b); });
+      render();
+    });
+  });
+  unfoldBtn.addEventListener('click', function(){
+    if (!(step === 4 && bloomTaps === 3)) return;
+    unfolded = true; rustle(); render();
+  });
+  resetBtn.addEventListener('click', function(){ step = 0; bloomTaps = 0; unfolded = false; render(); });
+  render();
+})();
+</script>
+</body>
+</html>

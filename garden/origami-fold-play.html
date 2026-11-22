@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fold a Piggie — an Origami play experiment</title>
+<style>
+  :root{
+    --paper:#f2ede3; --paper-deep:#e9e0cf; --peach:#f8d7c4;
+    --pink:#ee7b89; --pink-soft:#f6c3b8; --blue:#9ab6e0;
+    --ink:#1f2a33; --gold:#c9a227; --crease:#8b9096;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(1200px 500px at 20% -5%, #fdf8ec 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 20%, #eef3f8 0%, transparent 55%),
+      #f7f2e9;
+    display:flex; flex-direction:column; align-items:center; gap:1.1rem;
+  }
+  header{text-align:center; max-width:34rem}
+  h1{font-size:clamp(1.7rem,5vw,2.4rem); margin:.2rem 0 .3rem; letter-spacing:.01em}
+  .sub{font-style:italic; color:#5a6460; margin:0; line-height:1.5}
+  .tag{font-family:system-ui,sans-serif; font-size:.72rem; letter-spacing:.14em;
+    text-transform:uppercase; color:#8a7a5c}
+  /* ---------- the sheet ---------- */
+  .stage{perspective:1200px; width:min(430px,88vw); margin-top:.4rem}
+  .sheet{
+    position:relative; width:100%; aspect-ratio:1/1; overflow:hidden;
+    background:
+      linear-gradient(160deg, #fbf7ee 0%, var(--paper) 55%, var(--paper-deep) 100%);
+    border-radius:6px;
+    box-shadow:0 1px 0 #fff inset, 0 18px 40px rgba(31,42,51,.22),
+      0 2px 8px rgba(31,42,51,.12);
+    cursor:pointer; touch-action:manipulation;
+  }
+  .sheet::after{ /* fibre whisper */
+    content:""; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background-image:repeating-linear-gradient(0deg, transparent 0 5px, rgba(120,100,70,.025) 5px 6px);
+  }
+  .guide-dot{
+    position:absolute; width:12px; height:12px; border-radius:50%;
+    background:var(--pink); box-shadow:0 0 0 3px rgba(238,123,137,.25);
+  }
+  .guide-dot.centre{left:50%; top:50%; transform:translate(-50%,-50%)}
+  .guide-dot.mid{left:50%; top:66.6%; transform:translate(-50%,-50%)}
+  /* ---------- flaps (real 3D folds) ---------- */
+  .flap{position:absolute; transform-style:preserve-3d;
+    transition:transform .7s cubic-bezier(.34,1.2,.4,1)}
+  .flap .face{position:absolute; inset:0; backface-visibility:hidden}
+  .flap .front{background:linear-gradient(150deg,#fbf7ee,var(--paper-deep))}
+  .flap .back{background:linear-gradient(150deg,#fde9dc,var(--peach))}
+  .ear{top:0; right:0; width:50%; height:50%;
+    clip-path:polygon(0 0,100% 0,100% 100%); transform-origin:0% 0%}
+  .ear .back{transform:rotate3d(1,1,0,180deg)}
+  .ear.folded{transform:rotate3d(1,1,0,180deg)}
+  .blanket{left:0; right:0; bottom:0; height:33.4%; transform-origin:50% 0}
+  .blanket .back{transform:rotateX(180deg)}
+  .blanket.folded{transform:rotateX(180deg)}
+  /* ---------- snout pinch ---------- */
+  .snout{
+    position:absolute; left:50%; top:50%; width:24%; height:24%;
+    transform:translate(-50%,-50%);
+    border:2px dashed rgba(139,144,150,.55); border-radius:8px;
+    transition:all .5s ease; background:transparent;
+  }
+  .snout::before,.snout::after{content:""; position:absolute; top:50%;
+    width:9px; height:13px; border-radius:50%; background:var(--ink);
+    opacity:0; transition:opacity .4s; transform:translateY(-50%)}
+  .snout::before{left:26%} .snout::after{right:26%}
+  .snout.pinched{
+    background:var(--pink-soft); border-style:solid; border-color:var(--pink);
+    box-shadow:0 10px 18px rgba(31,42,51,.28), inset 0 -6px 0 rgba(238,123,137,.35);
+    transform:translate(-50%,-50%) scale(1.12);
+  }
+  .snout.pinched::before,.snout.pinched::after{opacity:1}
+  /* ---------- tail spiral ---------- */
+  .tail{position:absolute; right:4%; top:16%; width:26%; height:26%;
+    transform:rotate(-8deg)}
+  .tail path{fill:none; stroke:var(--pink); stroke-width:5; stroke-linecap:round;
+    stroke-dasharray:100; stroke-dashoffset:100; transition:stroke-dashoffset .8s ease}
+  .tail.curled path{stroke-dashoffset:0}
+  /* ---------- creases + journey map ---------- */
+  .creases{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+  .creases line,.creases path,.creases rect{stroke:var(--crease); stroke-width:1.6;
+    fill:none; stroke-dasharray:5 5; opacity:0; transition:opacity .5s, stroke .6s}
+  .s1 .c-ear,.s2 .c-ear,.s3 .c-ear,.s4 .c-ear{opacity:.6}
+  .s2 .c-blanket,.s3 .c-blanket,.s4 .c-blanket{opacity:.6}
+  .s3 .c-snout,.s4 .c-snout{opacity:.6}
+  .s4 .c-tail{opacity:.6}
+  .map{opacity:0; transition:opacity .8s}
+  .map text{font-family:system-ui,sans-serif; font-size:13px; fill:#7a6420; font-style:italic}
+  .map circle{fill:var(--gold)}
+  .map path{stroke:var(--gold); stroke-width:2; stroke-dasharray:2 6; fill:none}
+  .unfolded .map{opacity:1}
+  .unfolded .creases line,.unfolded .creases path,.unfolded .creases rect{
+    stroke:var(--gold); stroke-dasharray:none; opacity:.9;
+    filter:drop-shadow(0 0 3px rgba(201,162,39,.8))}
+  /* ---------- the finished piggie ---------- */
+  .piggie{
+    position:absolute; left:50%; top:46%; width:52%;
+    transform:translate(-50%,-50%) scale(.7); opacity:0;
+    transition:opacity .7s ease, transform .7s cubic-bezier(.34,1.4,.4,1);
+    pointer-events:none; filter:drop-shadow(0 12px 10px rgba(31,42,51,.25));
+  }
+  .s4 .piggie{opacity:1; transform:translate(-50%,-50%) scale(1)}
+  .unfolded .piggie{opacity:0; transform:translate(-50%,-50%) scale(.7)}
+  /* ---------- controls ---------- */
+  .status{font-style:italic; color:#5a6460; min-height:1.4em; text-align:center}
+  .steps{display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center; max-width:34rem}
+  .steps button,.actions button{
+    font-family:system-ui,sans-serif; font-size:.95rem; cursor:pointer;
+    border:1.5px solid #cfc4a8; background:#fffdf7; color:var(--ink);
+    padding:.65rem .9rem; border-radius:999px; min-height:44px;
+    transition:background .2s, border-color .2s;
+  }
+  .steps button:hover,.actions button:hover{border-color:var(--pink)}
+  .steps button.done{background:#fdeef0; border-color:var(--pink)}
+  .steps button.done::after{content:" · done"; color:var(--pink); font-size:.8rem}
+  .actions{display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center}
+  .actions button.primary{background:var(--ink); color:#fff; border-color:var(--ink)}
+  .actions button:disabled{opacity:.4; cursor:default}
+  footer{max-width:34rem; text-align:center; color:#7a7568; font-size:.9rem; line-height:1.6}
+  footer b{color:var(--ink)}
+</style>
+</head>
+<body>
+<header>
+  <p class="tag">Storeybrook · Origami play · experiment</p>
+  <h1>Fold a Piggie</h1>
+  <p class="sub">Four folds, one piggie. Tap the sheet — or a fold below — and
+  the paper folds itself. Finish all four, then unfold it and read the
+  journey in the creases.</p>
+</header>
+
+<div class="stage">
+  <div class="sheet" id="sheet" role="button" tabindex="0"
+       aria-label="Paper sheet. Activate to fold the next fold."
+       title="Tap to fold the next fold">
+    <span class="guide-dot centre" aria-hidden="true"></span>
+    <span class="guide-dot mid" aria-hidden="true"></span>
+
+    <div class="flap ear" id="flapEar" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+    <div class="flap blanket" id="flapBlanket" aria-hidden="true">
+      <div class="face front"></div><div class="face back"></div>
+    </div>
+
+    <div class="snout" id="snout" aria-hidden="true"></div>
+
+    <svg class="tail" id="tail" viewBox="0 0 100 100" aria-hidden="true">
+      <path pathLength="100"
+        d="M 88 8 C 60 4, 30 12, 26 34 C 23 52, 36 66, 52 64
+           C 64 62, 70 50, 62 42 C 56 36, 46 40, 48 48" />
+    </svg>
+
+    <svg class="creases" viewBox="0 0 400 400" aria-hidden="true">
+      <line class="c-ear" x1="200" y1="0" x2="400" y2="200" />
+      <line class="c-blanket" x1="0" y1="267" x2="400" y2="267" />
+      <rect class="c-snout" x="152" y="152" width="96" height="96" rx="8" />
+      <path class="c-tail" d="M 352 64 C 320 60, 292 76, 292 100 C 292 118, 306 128, 318 122" />
+      <g class="map">
+        <path d="M 60 330 C 130 300, 180 250, 230 210 S 320 120, 350 80" />
+        <circle cx="60" cy="330" r="5"/><circle cx="160" cy="272" r="5"/>
+        <circle cx="232" cy="208" r="5"/><circle cx="300" cy="140" r="5"/>
+        <circle cx="350" cy="80" r="5"/>
+        <text x="52" y="352">market</text><text x="150" y="292">home</text>
+        <text x="222" y="230">feast</text><text x="292" y="162">brook</text>
+        <text x="312" y="72">home again</text>
+      </g>
+    </svg>
+
+    <svg class="piggie" viewBox="0 0 200 180" aria-hidden="true">
+      <ellipse cx="100" cy="166" rx="52" ry="8" fill="rgba(31,42,51,.14)"/>
+      <polygon points="58,62 44,18 92,40" fill="#f6c3b8" stroke="#ee7b89" stroke-width="2" stroke-linejoin="round"/>
+      <polygon points="142,62 156,18 108,40" fill="#f6c3b8" stroke="#ee7b89" stroke-width="2" stroke-linejoin="round"/>
+      <polygon points="100,42 52,78 58,132 100,152 142,132 148,78" fill="#fdf3e3" stroke="#e9c9a8" stroke-width="2" stroke-linejoin="round"/>
+      <ellipse cx="100" cy="112" rx="30" ry="22" fill="#ee7b89"/>
+      <ellipse cx="90" cy="112" rx="4.5" ry="6.5" fill="#1f2a33"/>
+      <ellipse cx="110" cy="112" rx="4.5" ry="6.5" fill="#1f2a33"/>
+      <circle cx="78" cy="82" r="5" fill="#1f2a33"/><circle cx="122" cy="82" r="5" fill="#1f2a33"/>
+      <path d="M 148 96 C 168 92, 178 104, 172 118 C 167 129, 154 130, 152 120"
+        fill="none" stroke="#ee7b89" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+  </div>
+</div>
+
+<p class="status" id="status" aria-live="polite">A flat square of watercolour paper. Begin with the ear.</p>
+
+<nav class="steps" aria-label="Folds">
+  <button data-fold="1">1 · Ear — <i>went to market</i></button>
+  <button data-fold="2">2 · Blanket — <i>stayed home</i></button>
+  <button data-fold="3">3 · Snout — <i>had roast meef</i></button>
+  <button data-fold="4">4 · Tail — <i>had none</i></button>
+</nav>
+
+<div class="actions">
+  <button class="primary" id="nextBtn">Fold the next one</button>
+  <button id="unfoldBtn" disabled>Unfold it — see the journey</button>
+  <button id="resetBtn">Start again</button>
+</div>
+
+<footer>
+  <p><b>How it plays.</b> Every fold is failure-free: a wild drag simply
+  springs back, and tapping a fold jumps straight to it — no fold can be
+  broken, only peeked under. When the piggie is complete, unfolding lays the
+  sheet flat again, but every crease stays behind in gold: a map of the
+  journey home. From the Origami play seed in the garden's design notes;
+  paper, peach underside and one red thread, in the Storeybrook Origami
+  manner.</p>
+</footer>
+
+<script>
+(function(){
+  var sheet = document.getElementById('sheet');
+  var status = document.getElementById('status');
+  var nextBtn = document.getElementById('nextBtn');
+  var unfoldBtn = document.getElementById('unfoldBtn');
+  var resetBtn = document.getElementById('resetBtn');
+  var stepBtns = document.querySelectorAll('.steps button');
+  var step = 0, unfolded = false;
+  var lines = [
+    'A flat square of watercolour paper. Begin with the ear.',
+    'One ear folded — she is off to market. Now the blanket.',
+    'Tucked in at home, blanket up. Now the snout.',
+    'The snout has sniffed the roast meef. One fold left: the tail.',
+    'She stands! Four folds, one piggie. Unfold her to see the journey.',
+    'Flat again — and every crease glows gold: market, home, feast, brook, home again.'
+  ];
+  var audioCtx = null;
+  function rustle(){
+    try{
+      if (navigator.vibrate) navigator.vibrate(10);
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      var dur = 0.18, buf = audioCtx.createBuffer(1, audioCtx.sampleRate * dur, audioCtx.sampleRate);
+      var data = buf.getChannelData(0);
+      for (var i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+      var src = audioCtx.createBufferSource(); src.buffer = buf;
+      var filter = audioCtx.createBiquadFilter(); filter.type = 'bandpass'; filter.frequency.value = 2800;
+      var gain = audioCtx.createGain(); gain.gain.value = 0.12;
+      src.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination); src.start();
+    }catch(e){ /* sound is garnish; the fold is the thing */ }
+  }
+  function render(){
+    sheet.classList.remove('s1','s2','s3','s4');
+    if (step > 0) sheet.classList.add('s' + step);
+    document.getElementById('flapEar').classList.toggle('folded', step >= 1 && !unfolded);
+    document.getElementById('flapBlanket').classList.toggle('folded', step >= 2 && !unfolded);
+    document.getElementById('snout').classList.toggle('pinched', step >= 3 && !unfolded);
+    document.getElementById('tail').classList.toggle('curled', step >= 4 && !unfolded);
+    sheet.classList.toggle('unfolded', unfolded);
+    stepBtns.forEach(function(b, i){
+      b.classList.toggle('done', step >= i + 1);
+    });
+    nextBtn.disabled = step >= 4;
+    nextBtn.textContent = step >= 4 ? 'All folded' : 'Fold the next one';
+    unfoldBtn.disabled = step < 4;
+    status.textContent = unfolded ? lines[5] : lines[step];
+  }
+  function foldTo(n){
+    if (n === step) return;
+    unfolded = false;
+    step = Math.max(0, Math.min(4, n));
+    rustle();
+    render();
+  }
+  nextBtn.addEventListener('click', function(){ foldTo(step + 1); });
+  sheet.addEventListener('click', function(){ if (step < 4) foldTo(step + 1); });
+  sheet.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (step < 4) foldTo(step + 1); }
+  });
+  stepBtns.forEach(function(b){
+    b.addEventListener('click', function(){ foldTo(parseInt(b.getAttribute('data-fold'), 10)); });
+  });
+  unfoldBtn.addEventListener('click', function(){
+    if (step < 4) return;
+    unfolded = true; rustle(); render();
+  });
+  resetBtn.addEventListener('click', function(){ step = 0; unfolded = false; render(); });
+  render();
+})();
+</script>
+</body>
+</html>
