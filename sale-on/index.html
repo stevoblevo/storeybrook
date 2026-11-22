@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="zine">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SALE-ON — every Saelion game, $99.99 in SALEON</title>
+<meta name="description" content="The whole Saelion game shelf on one sale page. Every game $99.99 — payable only in SALEON tokens.">
+<!--
+  SALE-ON v0.1 — staged draft, not published. Built 2026-11-16 on Sven's voice brief:
+  all the games on one hypermetapunk sale page, funk/jazz feel, every game $99.99,
+  payable only in SALEON (pump.fun, Solana).
+  Kit: Hypermetapunk 0.2.0 pinned snapshot inlined below (project/tokens.css whole +
+  project/components/bundle.css whole, minus its Google Fonts @import — no external
+  assets on this page; the kit's local font fallbacks apply). Zine is the lead theme.
+  TOKEN LINK: Sven supplies the pump.fun URL later. It lives in exactly ONE place —
+  the SALEON_PUMPFUN_URL const in the script at the end of this file. The hero button
+  and every card's token line read from it.
+  Games + links: ~/workspace/saelion-showcase/REGISTRY.md (live tier), plus the
+  2026-11-16 gh.io launches (Bambi, origami sunflower, greater bespoke).
+-->
+<style>
+/* Hypermetapunk 0.2.0 — tokens (pinned snapshot, project/tokens.css) */
+/* Hypermetapunk — generated from tokens.json */
+:root, [data-theme="dusk"] {
+  --void: #0b0618;
+  --paper: #0b0618;
+  --surface: #160d2e;
+  --surface-raised: #211543;
+  --page: #211543;
+  --line: #3d2c70;
+  --ink: #f7f2ff;
+  --ink-muted: #c9bdf0;
+  --accent: #ff6fb5;
+  --accent-soft: rgba(255, 111, 181, 0.16);
+  --on-accent: #14061f;
+  --cue: #05ffa1;
+  --on-cue: #04140c;
+  --link: #7fe9ff;
+  --focus: #e8ff00;
+  --chrome-1: #fdfdff;
+  --chrome-2: #c9d6ff;
+  --chrome-3: #7f7fd5;
+  --chrome-4: #ff71ce;
+  --chrome-5: #01cdfe;
+  --wave-abyss: #06030f;
+  --wave-indigo: #1b0f3a;
+  --wave-violet: #3d1663;
+  --wave-magenta: #ff2e88;
+  --wave-tangerine: #ffb86b;
+  --wave-sun: #fffb96;
+  --wave-cyan: #01cdfe;
+  --wave-mint: #05ffa1;
+  --punk-acid: #e8ff00;
+  --punk-orange: #ff5a00;
+  --punk-magenta: #ff00a8;
+  --punk-ink: #0d0d12;
+  --slap: #ff2e88;
+  --punk-paper: #f4efe3;
+  --punk-tape: rgba(255, 235, 150, 0.78);
+  --scrawl: #ff71ce;
+  --shadow-slap: 4px 4px 0 #0d0d12;
+  --shadow-glow: 0 0 28px rgba(255, 46, 136, 0.45);
+  --shadow-float: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+[data-theme="zine"] {
+  --void: #f4efe3;
+  --paper: #f4efe3;
+  --surface: #e9e2cf;
+  --surface-raised: #fffdf6;
+  --page: #fffdf6;
+  --line: #c9c0a8;
+  --ink: #0d0d12;
+  --ink-muted: #46404d;
+  --accent: #c2006a;
+  --accent-soft: rgba(194, 0, 106, 0.1);
+  --on-accent: #ffffff;
+  --cue: #006a46;
+  --on-cue: #ffffff;
+  --link: #0050a8;
+  --focus: #ff5a00;
+  --chrome-1: #7a7a92;
+  --chrome-2: #34344a;
+  --chrome-3: #0d0d12;
+  --chrome-4: #4a4a66;
+  --chrome-5: #0d0d12;
+  --wave-abyss: #f4efe3;
+  --wave-indigo: #eee2f2;
+  --wave-violet: #f6cfe6;
+  --wave-magenta: #ff9bcb;
+  --wave-tangerine: #ffcf9e;
+  --wave-sun: #fff3a6;
+  --wave-cyan: #01a5d4;
+  --wave-mint: #00c27a;
+  --punk-acid: #e8ff00;
+  --punk-orange: #ff5a00;
+  --punk-magenta: #ff00a8;
+  --punk-ink: #0d0d12;
+  --slap: #0d0d12;
+  --punk-paper: #fffdf6;
+  --punk-tape: rgba(255, 230, 140, 0.85);
+  --scrawl: #c2006a;
+  --shadow-slap: 4px 4px 0 #0d0d12;
+  --shadow-glow: 0 0 28px rgba(255, 46, 136, 0.45);
+  --shadow-float: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+[data-theme="contrast"] {
+  --void: #000000;
+  --paper: #000000;
+  --surface: #0b0b0b;
+  --surface-raised: #141414;
+  --page: #141414;
+  --line: #ffffff;
+  --ink: #ffffff;
+  --ink-muted: #e8e8e8;
+  --accent: #e8ff00;
+  --accent-soft: rgba(232, 255, 0, 0.18);
+  --on-accent: #000000;
+  --cue: #05ffa1;
+  --on-cue: #000000;
+  --link: #7fe9ff;
+  --focus: #e8ff00;
+  --chrome-1: #ffffff;
+  --chrome-2: #ffffff;
+  --chrome-3: #e8e8e8;
+  --chrome-4: #ffffff;
+  --chrome-5: #e8ff00;
+  --wave-abyss: #000000;
+  --wave-indigo: #000000;
+  --wave-violet: #111111;
+  --wave-magenta: #333333;
+  --wave-tangerine: #777777;
+  --wave-sun: #ffffff;
+  --wave-cyan: #ffffff;
+  --wave-mint: #ffffff;
+  --punk-acid: #e8ff00;
+  --punk-orange: #ffffff;
+  --punk-magenta: #ffffff;
+  --punk-ink: #000000;
+  --slap: #ffffff;
+  --punk-paper: #ffffff;
+  --punk-tape: rgba(255, 255, 255, 0.9);
+  --scrawl: #e8ff00;
+  --shadow-slap: 4px 4px 0 #0d0d12;
+  --shadow-glow: 0 0 28px rgba(255, 46, 136, 0.45);
+  --shadow-float: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 112px;
+  --r-sm: 4px;
+  --r-md: 10px;
+  --r-lg: 18px;
+  --r-pill: 999px;
+  --z-art: 0;
+  --z-content: 1;
+  --z-slap: 3;
+  --z-sticky: 40;
+  --z-overlay: 80;
+  --dur-snap: 180ms;
+  --dur-base: 320ms;
+  --dur-drift: 3.2s;
+  --dur-sheen: 7s;
+  --dur-ticker: 28s;
+  --ease-snap: cubic-bezier(0.2, 1.4, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --bp-small: 600px;
+  --bp-medium: 900px;
+  --bp-large: 1280px;
+  --size-tap: 44px;
+  --size-measure: 66ch;
+  --size-container: 1180px;
+  --op-grain: 0.24;
+  --op-scanline: 0.08;
+  --border-slap: 3px;
+  --border-hair: 1px;
+  --border-focus: 3px;
+  --tex-grid: 64px;
+  --tex-halftone: 1.1px;
+  --tex-misreg: 2.5px;
+  --tex-tilt: 6deg;
+  --font-display: "Archivo Black", "Arial Black", Impact, sans-serif;
+  --font-condensed: "Archivo Narrow", "Arial Narrow", sans-serif;
+  --font-sans: Archivo, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, Menlo, monospace;
+  --font-hand: "Permanent Marker", "Marker Felt", cursive;
+}
+.hmp-display-xl { font-family: var(--font-display); font-size: 112px; line-height: 0.9; letter-spacing: -0.01em; }
+.hmp-display-l { font-family: var(--font-display); font-size: 72px; line-height: 0.95; }
+.hmp-display-m { font-family: var(--font-display); font-size: 40px; line-height: 1; }
+.hmp-title { font-family: var(--font-sans); font-size: 22px; line-height: 1.25; font-weight: 700; }
+.hmp-lede { font-family: var(--font-sans); font-size: 20px; line-height: 1.5; }
+.hmp-body { font-family: var(--font-sans); font-size: 17px; line-height: 1.6; }
+.hmp-small { font-family: var(--font-sans); font-size: 14px; line-height: 1.45; }
+.hmp-label { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; letter-spacing: 0.16em; }
+.hmp-scrawl-text { font-family: var(--font-hand); font-size: 22px; line-height: 1.2; }
+
+/* Hypermetapunk 0.2.0 — components (pinned snapshot, project/components/bundle.css, @import removed) */
+/* Hypermetapunk 0.2.0 — component styles. Lifted from "Hypermetapunk Kit v0" (storeybrook/show-tell/bespoke,
+   1 Nov 2026), parents Storeybrook × Depthfield: hyperreal dusk surfaces slapped with punk print culture.
+   Class names keep the kit's (hmp-chrome, hmp-gridfloor, hmp-sticker, hmp-stamp, hmp-tape, hmp-scrawl, hmp-misreg,
+   hmp-grain) so the first hosts can move over without renaming. Family tasks H2 and H3. */
+
+/* ---------- hooks: the look's defaults; a theme may reset them ---------- */
+:root {
+  --hmp-display: var(--font-display);
+  --hmp-ui: var(--font-sans);
+  --hmp-grain-op: var(--op-grain, 0.24);
+  --hmp-glow: var(--shadow-glow);
+  --hmp-slap: 4px 4px 0 var(--slap);
+  --hmp-band: linear-gradient(180deg, var(--wave-abyss) 0%, var(--wave-indigo) 34%, var(--wave-violet) 52%, var(--wave-magenta) 72%, var(--wave-tangerine) 90%, var(--wave-sun) 108%);
+  --hmp-chrome: linear-gradient(180deg, var(--chrome-1) 0%, var(--chrome-2) 32%, var(--chrome-3) 50%, #eaf6ff 54%, var(--chrome-4) 76%, var(--chrome-5) 100%);
+  --hmp-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-theme="zine"] { --hmp-glow: 0 0 0 transparent; --hmp-grain-op: 0.28; }
+[data-theme="contrast"] { --hmp-glow: 0 0 0 transparent; --hmp-grain-op: 0; --hmp-chrome: linear-gradient(var(--ink), var(--ink)); }
+
+/* ---------- the page ---------- */
+.hmp-body { margin: 0; min-height: 100vh; background: var(--void); color: var(--ink); font: 400 17px/1.6 var(--hmp-ui); -webkit-font-smoothing: antialiased; }
+:where(.hmp-body) a { color: var(--link); }   /* :where keeps links from outranking a .hmp-btn or .hmp-sticker that is a link */
+.hmp-body ::selection { background: var(--punk-acid); color: var(--punk-ink); }
+.hmp-body :focus-visible { outline: var(--border-focus) solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+.hmp-display-xl { font-size: clamp(34px, 7.6vw + 4px, 106px); }
+.hmp-display-l { font-size: clamp(40px, 5vw + 12px, 76px); }
+.hmp-display-m { font-size: clamp(28px, 2.4vw + 14px, 44px); }
+.hmp-display-xl, .hmp-display-l, .hmp-display-m { text-transform: uppercase; text-wrap: balance; margin: 0; }
+.hmp-label { text-transform: uppercase; color: var(--ink-muted); margin: 0; }
+.hmp-lede { max-width: var(--size-measure); }
+
+/* ---------- Chrome: liquid-metal type for one display line ---------- */
+.hmp-chrome {
+  background: var(--hmp-chrome); background-size: 100% 220%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  /* plan P3: the magenta plate is slipped for good — chrome type is misregistered, permanently */
+  filter: drop-shadow(0 2px 0 var(--wave-abyss)) drop-shadow(5px 3px 0 var(--punk-magenta)) drop-shadow(0 0 22px color-mix(in srgb, var(--wave-magenta) 35%, transparent));
+  animation: hmp-sheen var(--dur-sheen) ease-in-out infinite;
+}
+@keyframes hmp-sheen { 0%, 100% { background-position: 50% 0%; } 50% { background-position: 50% 62%; } }
+[data-theme="zine"] .hmp-chrome { filter: drop-shadow(5px 5px 0 var(--punk-magenta)); animation: none; }
+/* plan P1: the sun and type can overlap. A solid ground-coloured keyline keeps
+   every glyph separate from the white sun without flattening the composition. */
+[data-theme="contrast"] .hmp-chrome {
+  color: var(--ink); background: none; filter: none; animation: none;
+  -webkit-text-stroke: 0.08em var(--void); paint-order: stroke fill;
+  text-shadow: 2px 0 var(--void), -2px 0 var(--void), 0 2px var(--void), 0 -2px var(--void), 2px 2px var(--void), -2px -2px var(--void), 2px -2px var(--void), -2px 2px var(--void);
+}
+@media (forced-colors: active) { [data-theme] .hmp-chrome { color: CanvasText; background: Canvas; filter: none; text-shadow: none; -webkit-text-stroke: 0; } }
+
+/* ---------- Sun: the banded disc at the horizon ---------- */
+.hmp-sun {
+  display: block; position: relative; overflow: hidden; width: var(--sun, 320px); aspect-ratio: 1; border-radius: 50%;
+  background: linear-gradient(180deg, var(--wave-sun) 0%, var(--wave-tangerine) 42%, var(--wave-magenta) 78%, var(--chrome-4) 100%);
+  box-shadow: 0 0 90px 26px color-mix(in srgb, var(--chrome-4) 45%, transparent);
+  -webkit-mask-image: linear-gradient(180deg, #000 0 52%, transparent 52% 55%, #000 55% 64%, transparent 64% 68%, #000 68% 76%, transparent 76% 81%, #000 81% 88%, transparent 88% 94%, #000 94%);
+  mask-image: linear-gradient(180deg, #000 0 52%, transparent 52% 55%, #000 55% 64%, transparent 64% 68%, #000 68% 76%, transparent 76% 81%, #000 81% 88%, transparent 88% 94%, #000 94%);
+}
+/* plan P3: a strip of tape slapped across the sun's face; the round clip keeps its ends on the art */
+.hmp-sun::after { content: ""; position: absolute; left: -4%; right: -4%; top: 29%; height: 13%; background: var(--punk-tape); rotate: -4deg; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18); }
+[data-theme="zine"] .hmp-sun { box-shadow: none; background: var(--punk-magenta); }
+[data-theme="contrast"] .hmp-sun { box-shadow: none; background: var(--ink); }
+
+/* ---------- GridFloor: the horizon band and a grid that runs toward you ---------- */
+/* plan P3: hard toner bands step down the horizon — a ruled print line every few pixels over the band */
+.hmp-horizon { position: relative; overflow: hidden; isolation: isolate; background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.115) 0 2px, transparent 2px 5px), var(--hmp-band); color: #fff; }
+.hmp-horizon > .hmp-sun { position: absolute; left: 50%; bottom: 42%; translate: -50% 0; z-index: -1; }   /* its base on the horizon: the top of the grid floor */
+.hmp-gridfloor {
+  position: absolute; left: -50%; right: -50%; bottom: 0; height: 42%; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(color-mix(in srgb, var(--wave-cyan) 55%, transparent) 2px, transparent 2px), linear-gradient(90deg, color-mix(in srgb, var(--wave-magenta) 45%, transparent) 2px, transparent 2px);
+  background-size: var(--tex-grid) var(--tex-grid); transform: perspective(320px) rotateX(63deg); transform-origin: top center;
+  animation: hmp-drift var(--dur-drift) linear infinite;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 86%, transparent); mask-image: linear-gradient(180deg, transparent, #000 22%, #000 86%, transparent);
+}
+@keyframes hmp-drift { to { background-position: 0 var(--tex-grid), 0 var(--tex-grid); } }
+/* plan P3: a torn hole in the floor — the ground shows through (the void in Dusk, paper in Zine, none in High contrast) */
+.hmp-gridfloor::after { content: ""; position: absolute; left: 60%; bottom: 16%; width: 150px; height: 58px; background: var(--void); rotate: -3deg; clip-path: polygon(4% 22%, 18% 6%, 38% 14%, 55% 2%, 74% 12%, 92% 4%, 100% 30%, 94% 58%, 99% 82%, 80% 95%, 58% 88%, 36% 100%, 16% 90%, 2% 72%, 8% 45%); }
+[data-theme="contrast"] .hmp-gridfloor::after { content: none; }
+[data-theme="zine"] .hmp-horizon { color: var(--punk-ink); }
+[data-theme="zine"] .hmp-gridfloor { background-image: linear-gradient(var(--punk-ink) 1.5px, transparent 1.5px), linear-gradient(90deg, var(--punk-ink) 1.5px, transparent 1.5px); opacity: 0.35; }
+[data-theme="contrast"] .hmp-horizon { background: var(--void); color: var(--ink); }
+[data-theme="contrast"] .hmp-gridfloor { background-image: linear-gradient(var(--ink) 1px, transparent 1px), linear-gradient(90deg, var(--ink) 1px, transparent 1px); opacity: 0.5; }
+
+/* ---------- Sticker: a slap tag. Text on any sticker is photocopy black ---------- */
+.hmp-sticker {
+  display: inline-block; position: relative; z-index: var(--z-slap); padding: 0.42em 0.8em; border: var(--border-slap) solid var(--punk-ink); border-radius: var(--r-sm);
+  background: var(--punk-acid); color: var(--punk-ink); box-shadow: var(--hmp-slap);
+  font: 400 clamp(13px, 0.4vw + 11px, 16px)/1.15 var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; text-decoration: none; white-space: nowrap;
+  rotate: var(--tilt, -2.5deg); transition: rotate var(--dur-snap) var(--ease-snap), scale var(--dur-snap) var(--ease-snap);
+}
+.hmp-sticker--orange { background: var(--punk-orange); --tilt: 2deg; }
+.hmp-sticker--magenta { background: var(--punk-magenta); --tilt: 1.5deg; }
+.hmp-sticker--mint { background: var(--wave-mint); --tilt: -1.5deg; }
+.hmp-sticker--cyan { background: var(--wave-cyan); --tilt: 2.5deg; }
+.hmp-sticker--round { border-radius: 50%; padding: 1.1em 0.9em; text-align: center; white-space: normal; line-height: 1; }
+/* plan P3: a sticker whose corner has lifted off the page */
+.hmp-sticker--peeled { border-bottom-right-radius: 14px; }
+.hmp-sticker--peeled::after { content: ""; position: absolute; right: -3px; bottom: -3px; width: 15px; height: 15px; border-radius: 0 0 14px 0; pointer-events: none; background: linear-gradient(315deg, transparent 46%, rgba(13, 13, 18, 0.35) 50%, rgba(255, 255, 255, 0.55) 56%, transparent 74%); }
+a.hmp-sticker:hover, button.hmp-sticker:hover, .hmp-sticker--live:hover { rotate: calc(var(--tilt, -2.5deg) * -0.6); scale: 1.06; }
+button.hmp-sticker { cursor: pointer; }
+[data-theme="contrast"] .hmp-sticker { background: var(--void); color: var(--ink); border-color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+
+/* ---------- Stamp: a rubber mark of approval or warning ---------- */
+.hmp-stamp {
+  display: inline-block; padding: 0.25em 0.7em; border: var(--border-slap) double currentColor; border-radius: var(--r-sm);
+  color: var(--accent); font: 700 13px/1.2 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; rotate: var(--tilt, -6deg); opacity: 0.94;
+}
+[data-theme="zine"] .hmp-stamp { mix-blend-mode: multiply; }
+.hmp-stamp--cue { color: var(--cue); }
+
+/* ---------- Tape: a strip of masking tape over a corner ---------- */
+/* plan P3: every strip's ends are torn, never cut square */
+.hmp-tape { position: absolute; z-index: var(--z-slap); width: 88px; height: 27px; background: var(--punk-tape); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22); pointer-events: none; clip-path: polygon(3% 14%, 6% 0, 94% 4%, 97% 0, 100% 20%, 98% 80%, 100% 100%, 95% 92%, 5% 100%, 2% 90%, 0 76%, 1% 30%); }
+.hmp-tape--tl { left: -24px; top: 2px; rotate: -38deg; }
+.hmp-tape--tr { right: -24px; top: 2px; rotate: 38deg; }
+/* a card taped at the top gives its first line room under the tape */
+.hmp-card:has(> .hmp-tape--tl, > .hmp-tape--tr, > .hmp-tape--top) { padding-top: calc(var(--space-6) + 20px); }
+.hmp-tape--bl { left: -18px; bottom: 10px; rotate: 38deg; }
+.hmp-tape--br { right: -18px; bottom: 10px; rotate: -38deg; }
+.hmp-tape--top { left: 50%; top: -12px; translate: -50% 0; rotate: -2deg; }
+/* plan P3: one long strip across the whole artwork — the sun, the grid, a picture; never the words */
+.hmp-tape--cross { left: 4%; top: 15%; width: min(420px, 55%); height: clamp(26px, 2.6vw, 52px); rotate: -4deg; }
+
+/* ---------- Scrawl: marker notes in the margin, by the people who made the page ---------- */
+.hmp-scrawl { margin: 0; color: var(--scrawl); font: 400 var(--scrawl-size, 20px)/1.25 var(--font-hand); rotate: var(--tilt, -3deg); max-width: 26ch; }
+.hmp-scrawl--cyan { color: var(--link); --tilt: 2deg; }
+.hmp-scrawl small { display: block; font-size: 0.75em; opacity: 0.9; }
+
+/* ---------- Misregister: two print plates that slipped ---------- */
+.hmp-misreg { text-shadow: var(--tex-misreg) 0 0 var(--wave-cyan), calc(-1 * var(--tex-misreg)) 0 0 var(--punk-magenta); transition: text-shadow var(--dur-snap) var(--ease-snap); }
+.hmp-misreg:hover, a:focus-visible .hmp-misreg { text-shadow: calc(2 * var(--tex-misreg)) 1px 0 var(--wave-cyan), calc(-2 * var(--tex-misreg)) -1px 0 var(--punk-magenta); }
+[data-theme="contrast"] .hmp-misreg { text-shadow: none; }
+
+/* ---------- Grain: photocopy grain and halftone over art and paper ---------- */
+.hmp-grain { position: relative; }
+.hmp-grain::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2; background-image: var(--hmp-noise); opacity: var(--hmp-grain-op); mix-blend-mode: overlay; }
+.hmp-halftone { background-image: radial-gradient(circle at center, color-mix(in srgb, var(--ink) 30%, transparent) var(--tex-halftone), transparent calc(var(--tex-halftone) + 0.25px)); background-size: 7px 7px; }
+
+/* ---------- Button: slapped on, pressed in ---------- */
+.hmp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--size-tap); padding: 10px 20px; box-sizing: border-box;
+  border: var(--border-slap) solid var(--punk-ink); border-radius: var(--r-md); background: var(--punk-acid); color: var(--punk-ink);
+  font: 400 15px/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; cursor: pointer;
+  box-shadow: var(--hmp-slap); transition: translate var(--dur-snap) var(--ease-snap), box-shadow var(--dur-snap) var(--ease-snap);
+}
+.hmp-btn:hover { translate: -1px -1px; box-shadow: 6px 6px 0 var(--slap); }
+.hmp-btn:active { translate: 3px 3px; box-shadow: 1px 1px 0 var(--slap); }
+.hmp-btn--accent { background: var(--accent); color: var(--on-accent); }
+.hmp-btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); box-shadow: none; font-family: var(--font-mono); font-weight: 700; text-transform: none; letter-spacing: 0.02em; }
+.hmp-btn--ghost:hover { border-color: var(--accent); box-shadow: var(--hmp-glow); translate: none; }
+.hmp-btn--sm { min-height: 36px; padding: 6px 14px; font-size: 13px; }
+.hmp-btn[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--punk-ink); }
+[data-theme="contrast"] .hmp-btn { background: var(--ink); color: var(--void); border-color: var(--ink); box-shadow: none; }
+[data-theme="contrast"] .hmp-btn--ghost { background: var(--void); color: var(--ink); }
+
+/* ---------- Card: a sheet torn from a zine, taped over the art; or neon glass ---------- */
+.hmp-card { position: relative; padding: var(--space-6) var(--space-5) var(--space-7); background: var(--punk-paper); color: var(--punk-ink); box-shadow: var(--hmp-slap), var(--shadow-float); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 94% 100%, 86% calc(100% - 7px), 72% 100%, 58% calc(100% - 9px), 41% 100%, 27% calc(100% - 6px), 12% 100%, 0 calc(100% - 8px)); }
+:where(.hmp-card) a { color: var(--link); }
+/* a paper card prints with Zine's inks in every theme: neon signals are tuned for the void, not for paper */
+.hmp-card:not(.hmp-card--glass) { --accent: #c2006a; --on-accent: #ffffff; --cue: #006a46; --on-cue: #ffffff; --link: #0050a8; --scrawl: #c2006a; --focus: #ff5a00; }
+[data-theme="contrast"] .hmp-card:not(.hmp-card--glass) { --accent: #e8ff00; --on-accent: #000000; --cue: #05ffa1; --on-cue: #000000; --link: #7fe9ff; --scrawl: #e8ff00; --focus: #e8ff00; }   /* High contrast cards are black, not paper: keep its own inks */
+.hmp-card h3, .hmp-card .hmp-title { margin: 0 0 var(--space-2); font: 400 22px/1.15 var(--font-display); text-transform: uppercase; }
+.hmp-card--glass { background: color-mix(in srgb, var(--surface-raised) 86%, transparent); color: var(--ink); border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); border-radius: var(--r-lg); box-shadow: var(--hmp-glow), var(--shadow-float); clip-path: none; padding-bottom: var(--space-6); -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4); }
+:where(.hmp-card--glass) a { color: var(--link); }
+[data-theme="contrast"] .hmp-card { background: var(--void); color: var(--ink); border: 2px solid var(--ink); box-shadow: none; clip-path: none; }
+
+/* ---------- Door: a lit arch that goes somewhere (from Depthfield) ---------- */
+.hmp-door { display: inline-grid; justify-items: center; gap: var(--space-2); color: inherit; text-decoration: none; }
+.hmp-door__arch { position: relative; width: var(--door-w, 76px); height: calc(var(--door-w, 76px) * 1.7); border-radius: 999px 999px 6px 6px; border: 2px solid var(--door-c, var(--wave-mint)); background: linear-gradient(180deg, color-mix(in srgb, var(--door-c, var(--wave-mint)) 22%, transparent), transparent 70%); box-shadow: 0 0 18px color-mix(in srgb, var(--door-c, var(--wave-mint)) 40%, transparent), inset 0 0 22px color-mix(in srgb, var(--door-c, var(--wave-mint)) 25%, transparent); transition: box-shadow var(--dur-base) var(--ease-out), translate var(--dur-base) var(--ease-out); }
+.hmp-door__arch::after { content: ""; position: absolute; right: 18%; top: 56%; width: 6px; height: 6px; border-radius: 50%; background: var(--door-c, var(--wave-mint)); }
+.hmp-door:hover .hmp-door__arch, .hmp-door:focus-visible .hmp-door__arch { translate: 0 -4px; box-shadow: 0 0 34px color-mix(in srgb, var(--door-c, var(--wave-mint)) 70%, transparent), inset 0 0 30px color-mix(in srgb, var(--door-c, var(--wave-mint)) 45%, transparent); }
+.hmp-door__cap { font: 700 13px/1.3 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; }
+[data-theme="zine"] .hmp-door__arch { --door-c: var(--punk-ink); box-shadow: 4px 4px 0 var(--punk-ink); background: var(--punk-paper); }
+[data-theme="contrast"] .hmp-door__arch { --door-c: var(--ink); box-shadow: none; background: none; }
+
+/* ---------- Ticker: one line of news that runs; it stops for you ---------- */
+.hmp-ticker { position: relative; overflow: hidden; border-block: var(--border-slap) solid var(--punk-ink); background: var(--punk-acid); color: var(--punk-ink); font: 700 14px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+.hmp-ticker__track { display: flex; width: max-content; gap: 2.4em; padding: 0.7em 1.2em; animation: hmp-tick var(--dur-ticker) linear infinite; }
+.hmp-ticker__track > * { white-space: nowrap; }
+.hmp-ticker__track > * + *::before { content: "✶"; margin-right: 2.4em; }
+.hmp-ticker:hover .hmp-ticker__track, .hmp-ticker:focus-within .hmp-ticker__track, .hmp-ticker.is-paused .hmp-ticker__track { animation-play-state: paused; }
+@keyframes hmp-tick { to { translate: -50% 0; } }
+.hmp-ticker--magenta { background: var(--punk-magenta); }
+[data-theme="contrast"] .hmp-ticker { background: var(--void); color: var(--ink); border-color: var(--ink); }
+
+/* ---------- reduced motion: nothing drifts, shines or runs ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hmp-chrome, .hmp-gridfloor { animation: none; }
+  .hmp-ticker__track { animation: none; flex-wrap: wrap; width: auto; }
+  .hmp-ticker__track > [aria-hidden="true"] { display: none; }
+  .hmp-sticker, .hmp-btn, .hmp-door__arch, .hmp-misreg { transition: none; }
+}
+html.hmp-still .hmp-chrome, html.hmp-still .hmp-gridfloor { animation: none; }
+html.hmp-still .hmp-ticker__track { animation: none; flex-wrap: wrap; width: auto; }
+html.hmp-still .hmp-ticker__track > [aria-hidden="true"] { display: none; }
+
+/* ---------- Taste: the page check's report ---------- */
+.hmp-taste { position: fixed; right: 12px; bottom: 12px; z-index: var(--z-overlay); max-width: min(420px, calc(100vw - 24px)); max-height: 60vh; overflow: auto; padding: 12px 16px; background: var(--surface-raised); color: var(--ink); border: 2px solid var(--punk-ink); box-shadow: var(--hmp-slap); font: 400 14px/1.45 var(--font-sans); }
+.hmp-taste summary { cursor: pointer; font: 700 13px/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; }
+.hmp-taste li { margin: 8px 0; }
+.hmp-taste small { display: block; color: var(--ink-muted); }
+
+/* plan P2: accent controls are regular buttons and a labelled native colour input. */
+.hmp-accents { margin: 0 0 var(--space-6); padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); color: var(--ink); }
+.hmp-accents legend { padding: 0 8px; font: 700 16px/1.3 var(--font-mono); }
+.hmp-accents__row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.hmp-accents .hmp-btn { min-height: 44px; }
+.hmp-accent-swatch { width: 18px; height: 18px; flex: 0 0 auto; border: 1px solid currentColor; border-radius: 50%; background: var(--swatch); }
+.hmp-accents label { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; }
+.hmp-accents input[type="color"] { width: 48px; height: 44px; padding: 3px; background: var(--surface-raised); border: 1px solid var(--ink); cursor: pointer; }
+.hmp-accents__status { margin: 12px 0 0; color: var(--ink-muted); font-size: 14px; }
+
+
+/* ---------- SALE-ON page layer (hand-made; the kit above is untouched) ---------- */
+.so-wrap { max-width: var(--size-container); margin: 0 auto; padding: 0 var(--space-4); }
+.so-hero { padding: var(--space-8) 0 var(--space-7); text-align: center; }
+.so-hero .hmp-lede { margin-inline: auto; }
+.so-hero .hmp-sun { --sun: clamp(150px, 34vw, 300px); }
+.so-stickers { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; margin-top: var(--space-5); }
+.so-themes { display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: center; margin-top: var(--space-5); }
+.so-scrawls { display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); justify-content: center; margin-top: var(--space-6); padding: 0 var(--space-4); }
+.so-band { padding: var(--space-7) 0; }
+.so-band-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3) var(--space-4); margin-bottom: var(--space-5); }
+.so-grid { display: grid; gap: var(--space-6) var(--space-5); grid-template-columns: 1fr; }
+@media (min-width: 680px) { .so-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1080px) { .so-grid { grid-template-columns: 1fr 1fr 1fr; } }
+.so-card { display: flex; flex-direction: column; }
+.so-card .hmp-title { font-family: var(--font-display); text-transform: uppercase; font-size: 23px; line-height: 1.12; }
+.so-card p { margin: 0 0 var(--space-3); }
+.so-price { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-2) 0 var(--space-4); }
+.so-price-big { font-family: var(--font-display); font-size: 34px; line-height: 1; }
+.so-price s { opacity: 0.55; font-size: 20px; }
+.so-card .so-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.so-soon { font-family: var(--font-mono); font-weight: 700; font-size: 14px; }
+.so-token { border-block: var(--border-slap) solid var(--punk-ink); background: var(--surface); padding: var(--space-6) 0; }
+.so-token-in { display: grid; gap: var(--space-4); align-items: center; }
+@media (min-width: 820px) { .so-token-in { grid-template-columns: 1.2fr 1fr; } }
+.so-token p { margin: 0 0 var(--space-3); }
+.so-fray { display: flex; gap: var(--space-4); align-items: flex-start; margin-top: var(--space-5); }
+.so-fray svg { flex: 0 0 auto; }
+.so-fray-balloon { position: relative; background: var(--punk-paper); color: var(--punk-ink); border: var(--border-slap) solid var(--punk-ink); border-radius: var(--r-md); box-shadow: var(--hmp-slap); padding: var(--space-3) var(--space-4); max-width: 46ch; }
+.so-fray-balloon p { margin: 0; }
+.so-fray-balloon .hmp-label { color: var(--ink-muted); }
+button.so-fray-btn { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; text-align: left; }
+footer { padding: var(--space-7) 0 var(--space-8); }
+footer .so-wrap { display: grid; gap: var(--space-4); }
+.so-foot-links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); font-family: var(--font-mono); font-weight: 700; font-size: 14px; }
+</style>
+</head>
+<body class="hmp-body">
+
+<div class="hmp-ticker" aria-label="Sale terms">
+  <div class="hmp-ticker__track">
+    <span>Sale-on — every game $99.99</span><span>Payable only in Saleon</span><span>No dollars at the till</span><span>Jazz all night</span><span>Solos on every shelf</span>
+    <span aria-hidden="true">Sale-on — every game $99.99</span><span aria-hidden="true">Payable only in Saleon</span><span aria-hidden="true">No dollars at the till</span><span aria-hidden="true">Jazz all night</span><span aria-hidden="true">Solos on every shelf</span>
+  </div>
+</div>
+
+<header class="hmp-horizon hmp-grain so-hero">
+  <span class="hmp-sun" aria-hidden="true"></span>
+  <div class="hmp-gridfloor" aria-hidden="true"></div>
+  <div class="so-wrap">
+    <p class="hmp-label">Saelion presents · the whole shelf · one night only, every night</p>
+    <h1 class="hmp-display-xl hmp-chrome">Sale-On</h1>
+    <p class="hmp-lede">Every game we've got, out on the stall and priced to move: <strong>$99.99 each</strong> — but the till doesn't take dollars. It takes <strong>SALEON</strong>, the little token on pump.fun, and nothing else.</p>
+    <div class="so-stickers">
+      <span class="hmp-sticker">All games $99.99</span>
+      <span class="hmp-sticker hmp-sticker--orange">Pay in Saleon only</span>
+      <span class="hmp-sticker hmp-sticker--magenta hmp-sticker--peeled">Hyper meta funk</span>
+    </div>
+    <div class="so-scrawls">
+      <p class="hmp-scrawl">jazz jazz! every card a solo</p>
+      <p class="hmp-scrawl hmp-scrawl--cyan">the price is theatre, darling — the games are real</p>
+    </div>
+    <div class="so-themes" role="group" aria-label="Print theme">
+      <button class="hmp-btn hmp-btn--sm" data-set-theme="zine" aria-pressed="true">Zine</button>
+      <button class="hmp-btn hmp-btn--sm" data-set-theme="dusk" aria-pressed="false">Dusk</button>
+      <button class="hmp-btn hmp-btn--sm" data-set-theme="contrast" aria-pressed="false">Contrast</button>
+    </div>
+
+    <div class="so-fray">
+      <button class="so-fray-btn" id="fray" aria-label="Fray the paper fox — tap for another tip">
+        <svg width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="Fray, a small origami fox">
+          <polygon points="10,6 26,20 12,26" fill="#ff5a00" stroke="#0d0d12" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="62,6 46,20 60,26" fill="#ff5a00" stroke="#0d0d12" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="12,24 60,24 36,66" fill="#f4efe3" stroke="#0d0d12" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="12,24 36,66 36,24" fill="#ffb86b" opacity="0.65"/>
+          <circle cx="27" cy="38" r="2.6" fill="#0d0d12"/>
+          <circle cx="45" cy="38" r="2.6" fill="#0d0d12"/>
+          <polygon points="31,52 41,52 36,59" fill="#0d0d12"/>
+        </svg>
+      </button>
+      <div class="so-fray-balloon">
+        <p class="hmp-label">Fray, stall guide — tap the fox</p>
+        <p id="fray-line">Welcome to the stall. Everything's $99.99, everything's payable in SALEON, and every card below opens a real game.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="so-token" aria-labelledby="token-h">
+  <div class="so-wrap so-token-in">
+    <div>
+      <p class="hmp-label">The only money we take</p>
+      <h2 class="hmp-display-m" id="token-h">Pay only in <span class="hmp-misreg">Saleon</span></h2>
+      <p>SALEON is our token on <strong>pump.fun</strong>, riding the Solana chain. Sven minted it and holds it; this stall is where it spends. Dollars are for other shops — here, the token is the ticket.</p>
+      <p><span class="hmp-stamp">Solana ✦ pump.fun</span> <span class="hmp-stamp hmp-stamp--cue">Creator-held</span></p>
+    </div>
+    <div>
+      <!-- TOKEN PLACEHOLDER: the href is set from SALEON_PUMPFUN_URL (one const, end of file). -->
+      <p><a class="hmp-btn hmp-btn--accent" id="saleon-buy" href="#" aria-disabled="true">Get SALEON on pump.fun — link lands here</a></p>
+      <p class="hmp-small">The pump.fun link isn't public yet — Sven drops it in, and this button lights up. Until then the games below are all live and free to open; the sale is the show.</p>
+    </div>
+  </div>
+</section>
+
+<main>
+  <section class="so-band" aria-labelledby="setlist-h">
+    <div class="so-wrap">
+      <div class="so-band-head">
+        <h2 class="hmp-display-l" id="setlist-h">The set list</h2>
+        <span class="hmp-sticker hmp-sticker--mint">Tonight's games</span>
+        <p class="hmp-scrawl">seven solos, no filler</p>
+      </div>
+      <div class="so-grid">
+
+        <article class="hmp-card">
+          <span class="hmp-tape hmp-tape--tl" aria-hidden="true"></span>
+          <h3 class="hmp-title">This Little Piggie Had Roast Meef</h3>
+          <p>The storybook that grows with you — Pipkin at your side, roast meef on the table, and doors that keep opening: listening fixes, narrator shelves, room to breathe, and El Phantea's Tea Letters.</p>
+          <p class="so-price"><span class="so-price-big"><s>$99.99</s></span> <span class="hmp-sticker hmp-sticker--mint">Saleon only</span></p>
+          <p class="so-actions"><a class="hmp-btn" href="https://saelion.co/piggie">Play it</a></p>
+        </article>
+
+        <article class="hmp-card">
+          <span class="hmp-tape hmp-tape--tr" aria-hidden="true"></span>
+          <h3 class="hmp-title">Reignfawn</h3>
+          <p>A lantern valley you ride at dusk with Anna and the fawn. Build the village, gather peach pits, read the valley's moods — seasons, night and day all play together.</p>
+          <p class="so-price"><span class="so-price-big"><s>$99.99</s></span> <span class="hmp-sticker hmp-sticker--orange">Saleon only</span></p>
+          <p class="so-actions"><a class="hmp-btn" href="https://saelion.co/reignfawn">Play it</a></p>
+        </article>
+
+        <article class="hmp-card">
+          <span class="hmp-tape hmp-tape--tl" aria-hidden="true"></span>
+          <h3 class="hmp-title">AndSo</h3>
+          <p>Sae(lion)'s beautiful build at saelion.co — a game that listens back, with a read-aloud picker and a world that rewards a second look.</p>
+          <p class="so-price"><span class="so-price-big"><s>$99.99</s></span> <span class="hmp-sticker hmp-sticker--cyan">Saleon only</span></p>
+          <p class="so-actions"><a class="hmp-btn" href="https://saelion.co/and-so">Play it</a></p>
+        </article>
+
+        <article class="hmp-card">
+          <span class="hmp-tape hmp-tape--tr" aria-hidden="true"></span>
+          <h3 class="hmp-title">Bambi</h3>
+          <p>Felix Salten's original novel — public domain, retold in our own words, no one else's film anywhere near it. A Storeybrook play-and-listen book: the fawn's whole life, spread by spread.</p>
+          <p class="so-price"><span class="so-price-big"><s>$99.99</s></span> <span class="hmp-sticker hmp-sticker--magenta">Saleon only</span></p>
+          <p class="so-actions"><a class="hmp-btn" href="https://stevoblevo.github.io/storeybrook/bambi/">Play it</a></p>
+        </article>
+
+        <article class="hmp-card">
+          <span class="hmp-tape hmp-tape--tl" aria-hidden="true"></span>
+          <h3 class="hmp-title">Origami Sunflower</h3>
+          <p>A fold-play from the Piggie garden: one paper sunflower through sprout, leaves, bud and bloom, Pipkin guiding, the season kept as gold creases when you unfold.</p>
+          <p class="so-price"><span class="so-price-big"><s>$99.99</s></span> <span class="hmp-sticker hmp-sticker--mint">Saleon only</span></p>
+          <p class="so-actions"><a class="hmp-btn" href="https://stevoblevo.github.io/storeybrook/experiments/origami-sunflower/origami-sunflower-fold-play-kit-v2.html">Play it</a></p>
+        </article>
+
+        <article class="hmp-card">
+          <span class="hmp-tape hmp-tape--tr" aria-hidden="true"></span>
+          <h3 class="hmp-title">kk</h3>
+          <p>One of the saelion.co worlds behind a very small door. Knock, go in, see what's keeping.</p>
+          <p class="so-price"><span class="so-price-big"><s>$99.99</s></span> <span class="hmp-sticker hmp-sticker--orange">Saleon only</span></p>
+          <p class="so-actions"><a class="hmp-btn" href="https://saelion.co/kk">Play it</a></p>
+        </article>
+
+        <article class="hmp-card">
+          <span class="hmp-tape hmp-tape--tl" aria-hidden="true"></span>
+          <h3 class="hmp-title">bespoke.gig — Greater Bespoke</h3>
+          <p>Not a game — a whole marketplace stall that wandered onto the set list and refused to leave. Strange work finds its people: post a gig, find a maker, watch it get made.</p>
+          <p class="so-price"><span class="so-price-big"><s>$99.99</s></span> <span class="hmp-sticker hmp-sticker--cyan">Saleon only</span></p>
+          <p class="so-actions"><a class="hmp-btn" href="https://stevoblevo.github.io/storeybrook/bespoke-greater/">Play it</a></p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="so-band" aria-labelledby="encore-h" style="padding-top:0">
+    <div class="so-wrap">
+      <div class="so-band-head">
+        <h2 class="hmp-display-l" id="encore-h">The encore</h2>
+        <span class="hmp-sticker">Still in the studio</span>
+        <p class="hmp-scrawl hmp-scrawl--cyan">same price when they land. promise.</p>
+      </div>
+      <div class="so-grid">
+
+        <article class="hmp-card">
+          <span class="hmp-tape hmp-tape--top" aria-hidden="true"></span>
+          <h3 class="hmp-title">Queso Hades — Cheese Royale</h3>
+          <p>Cheese fighters in a gothic underworld kitchen, Pinky coaching from the corner. Built and ripening — its public door isn't open yet, so there's no link to sell you. Yet.</p>
+          <p class="so-price"><span class="so-price-big"><s>$99.99</s></span> <span class="hmp-sticker hmp-sticker--magenta">Saleon only</span></p>
+          <p class="so-actions"><span class="hmp-stamp">In the studio</span> <span class="so-soon">door opens soon</span></p>
+        </article>
+
+        <article class="hmp-card">
+          <span class="hmp-tape hmp-tape--top" aria-hidden="true"></span>
+          <h3 class="hmp-title">Anewgam — Circle of Else</h3>
+          <p>One dream, many ways. The big world is still being built behind the curtain — when its door is chosen, it takes its place on the set list at the same $99.99.</p>
+          <p class="so-price"><span class="so-price-big"><s>$99.99</s></span> <span class="hmp-sticker hmp-sticker--orange">Saleon only</span></p>
+          <p class="so-actions"><span class="hmp-stamp">In the studio</span> <span class="so-soon">door opens soon</span></p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="so-wrap">
+    <p class="hmp-label">Colophon</p>
+    <p class="hmp-small">SALE-ON v0.1 — a staged draft, printed 2026-11-16 with a pinned Hypermetapunk 0.2.0 snapshot (Zine leads; Dusk and Contrast ride along). Prices are theatre: every game is $99.99, payable only in SALEON, and every game above is live and free to open today. SALEON's pump.fun link lands here when Sven drops it in.</p>
+    <nav class="so-foot-links" aria-label="The family">
+      <a href="https://saelion.co/">saelion.co</a>
+      <a href="https://stevoblevo.github.io/storeybrook/">Storeybrook — the paper</a>
+      <a href="https://stevoblevo.github.io/storeybrook/show-tell/">Show &amp; Tell</a>
+      <a href="https://stevoblevo.github.io/depthfield/">Depthfield — the night twin</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   SALEON TOKEN LINK — the ONE place it lives.
+   Sven supplies the pump.fun URL (or contract address) later:
+   paste it between the quotes and the hero button lights up.
+   ============================================================ */
+const SALEON_PUMPFUN_URL = "";
+
+(function () {
+  var buy = document.getElementById("saleon-buy");
+  if (buy && SALEON_PUMPFUN_URL) {
+    buy.href = SALEON_PUMPFUN_URL;
+    buy.removeAttribute("aria-disabled");
+    buy.textContent = "Get SALEON on pump.fun";
+  }
+
+  /* print themes: Zine leads, Dusk and Contrast ride along */
+  var root = document.documentElement;
+  document.querySelectorAll("[data-set-theme]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      root.setAttribute("data-theme", btn.getAttribute("data-set-theme"));
+      document.querySelectorAll("[data-set-theme]").forEach(function (b) {
+        b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+      });
+    });
+  });
+
+  /* Fray's tips — tap the fox */
+  var tips = [
+    "Welcome to the stall. Everything's $99.99, everything's payable in SALEON, and every card below opens a real game.",
+    "The dollars are struck through because the till won't take them. Tokens only — that's the whole joke, and it's not a joke.",
+    "Start with Piggie if you want a story, Reignfawn if you want a valley, Queso if you want a fight. Queso's door isn't open yet. Patience.",
+    "Jazz rule: if a card looks quiet, tap it anyway. The solos are in the corners."
+  ];
+  var i = 0, line = document.getElementById("fray-line");
+  document.getElementById("fray").addEventListener("click", function () {
+    i = (i + 1) % tips.length;
+    line.textContent = tips[i];
+  });
+})();
+</script>
+</body>
+</html>
