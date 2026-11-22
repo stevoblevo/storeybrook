@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sixth Piggie · Clue at the Feast</title>
+<style>
+  :root{
+    --cream:#f7efe0; --cream-deep:#eedfc2; --ink:#46392c; --ink-soft:#8a7a64;
+    --blue:#5b7fa6; --blue-deep:#3f6288; --pear:#e8d9a0; --pear-deep:#c9a94f;
+    --copper:#b0713f; --gold:#c9962e; --bread:#d9a45b; --crust:#9a6a33;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(900px 420px at 50% -10%, #fdf8ec 0%, transparent 60%),
+      linear-gradient(180deg, #f3e8d2 0%, #e2cfae 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  .card{
+    width:min(580px, 100%); background:var(--cream); border-radius:10px;
+    box-shadow:0 2px 0 #d8c49a, 0 18px 44px rgba(120,85,40,.30);
+    overflow:hidden; position:relative;
+  }
+  .intro{ padding:1.6rem 1.6rem 0.4rem; text-align:center; }
+  .intro h1{ font-size:1.35rem; margin:.2rem 0 .4rem; font-weight:400; }
+  .intro p{ margin:0 auto; max-width:42ch; line-height:1.6; color:var(--ink-soft); font-size:.98rem; }
+  /* ---------- the table ---------- */
+  .table{
+    margin:1.4rem 1.2rem 0; padding:1.4rem 1rem 1.2rem; position:relative;
+    background:linear-gradient(180deg, #fffaf0, var(--cream-deep));
+    border:2px solid #e0cda4; border-radius:14px;
+    box-shadow:inset 0 0 0 6px rgba(255,255,255,.35);
+  }
+  .table::before{
+    content:""; position:absolute; left:8px; right:8px; top:8px; bottom:8px;
+    border:1px dashed rgba(160,130,80,.45); border-radius:10px; pointer-events:none;
+  }
+  .row{ display:flex; justify-content:space-around; align-items:flex-end; gap:.4rem; position:relative; z-index:1; }
+  .place{ text-align:center; font-size:.72rem; letter-spacing:.08em; color:var(--ink-soft); }
+  .plate{
+    width:64px; height:64px; margin:0 auto .3rem; border-radius:50%;
+    background:#fffdf6; border:3px solid #e8dcc0;
+    box-shadow:0 4px 0 rgba(140,110,60,.25), inset 0 -8px 12px rgba(230,210,170,.6);
+    display:flex; align-items:center; justify-content:center; font-size:1.4rem;
+  }
+  .plate.small{ width:52px; height:52px; font-size:1.1rem; }
+  /* the bread basket, partly hiding the sixth place */
+  .basket{
+    width:118px; padding:.5rem .4rem .6rem; text-align:center;
+    background:linear-gradient(180deg, var(--bread), #c98f3e);
+    border-radius:8px 8px 22px 22px; border:2px solid var(--crust);
+    box-shadow:0 6px 0 rgba(120,80,30,.35);
+    transform:rotate(-2deg);
+  }
+  .basket .loaf{ font-size:1.5rem; letter-spacing:.15em; line-height:1.1; }
+  .basket span{ display:block; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:#6b4a22; margin-top:.2rem; }
+  .sixth{ position:relative; }
+  .sixth .veil{
+    position:absolute; left:50%; top:-14px; transform:translateX(-50%) rotate(3deg);
+    font-size:.68rem; letter-spacing:.1em; color:var(--ink-soft);
+    background:rgba(247,239,224,.9); padding:.1rem .4rem; border-radius:8px; white-space:nowrap;
+  }
+  /* ---------- the sixth place: plate, napkin, pear moons ---------- */
+  .sixth-place{
+    margin:1.3rem auto 0; padding:1.1rem 1rem 1rem; max-width:360px; text-align:center;
+    background:rgba(255,253,246,.7); border:1px solid #e0cda4; border-radius:12px;
+    position:relative; z-index:1;
+  }
+  .sixth-place h2{ font-size:.8rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 .9rem; font-weight:400; }
+  .pears{ display:flex; justify-content:center; gap:.45rem; margin:.2rem 0 .9rem; }
+  .moon{
+    width:46px; height:46px; border:0; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    background:radial-gradient(circle at 38% 32%, #fdf3c8, var(--pear) 55%, var(--pear-deep));
+    box-shadow:0 3px 0 rgba(160,125,40,.35); cursor:pointer; font-size:1rem; color:#7a5c1e;
+    -webkit-tap-highlight-color:transparent; transition:opacity .9s ease, transform .9s ease;
+    min-width:46px; min-height:46px;
+  }
+  .moon:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .moon.gone{ opacity:0; transform:translateY(8px) scale(.7); pointer-events:none; }
+  .napkin{
+    display:block; margin:0 auto; padding:.8rem 1.1rem; border:0; cursor:pointer;
+    background:linear-gradient(180deg, var(--blue), var(--blue-deep)); color:#f2f6fa;
+    border-radius:4px; font-family:inherit; font-size:1rem; letter-spacing:.04em;
+    box-shadow:0 4px 0 rgba(40,70,105,.4);
+    -webkit-tap-highlight-color:transparent; transition:transform .25s ease;
+    min-height:48px;
+  }
+  .napkin:hover, .napkin:focus-visible{ transform:translateY(-2px); }
+  .napkin:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .hem{
+    margin:.9rem auto 0; max-width:34ch; font-style:italic; font-size:1.05rem; line-height:1.5;
+    min-height:1.6em; opacity:0; transition:opacity .8s ease;
+  }
+  .hem.show{ opacity:1; }
+  .hem::before, .hem::after{ content:"✦"; color:var(--gold); padding:0 .4em; font-style:normal; }
+  .note{ text-align:center; padding:1rem 1.4rem 1.5rem; }
+  .note p{ margin:.3rem auto; max-width:44ch; line-height:1.6; color:var(--ink-soft); font-size:.95rem; }
+  .note p b{ color:var(--ink); font-weight:400; }
+  .unlock{
+    display:none; margin:1rem auto 0; padding:.9rem 1.1rem; max-width:44ch;
+    background:#fff8e2; border:1px solid var(--gold); border-radius:10px;
+    color:var(--ink); line-height:1.6; font-size:.98rem;
+  }
+  .unlock.show{ display:block; }
+  .reset{
+    margin:1rem auto 0; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font-family:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+    min-height:44px; padding:.4rem .8rem;
+  }
+  .reset:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:6px; }
+</style>
+</head>
+<body>
+<p class="kicker">The Sixth Piggie · A clue at the feast</p>
+<main class="card">
+  <div class="intro">
+    <h1>The table is set for five.</h1>
+    <p>Five plates, five piggies, the bread basket in the middle — and, tucked
+    at the far end where nobody counts, one more place. Nobody names it.
+    Nobody needs to. Tap gently, and see what the feast quietly keeps.</p>
+  </div>
+
+  <div class="table" aria-label="The feast table">
+    <div class="row" aria-hidden="true">
+      <div class="place"><div class="plate">🍽️</div>one</div>
+      <div class="place"><div class="plate">🍽️</div>two</div>
+      <div class="basket"><div class="loaf">🍞 🥖</div><span>bread basket</span></div>
+      <div class="place"><div class="plate">🍽️</div>four</div>
+      <div class="place"><div class="plate">🍽️</div>five</div>
+    </div>
+    <div class="sixth-place">
+      <h2>The far end of the table</h2>
+      <div class="pears" role="group" aria-label="Pear cut into thin moons">
+        <button class="moon" type="button" aria-label="Pear moon one">◐</button>
+        <button class="moon" type="button" aria-label="Pear moon two">◐</button>
+        <button class="moon" type="button" aria-label="Pear moon three">◐</button>
+        <button class="moon" type="button" aria-label="Pear moon four">◐</button>
+        <button class="moon" type="button" aria-label="Pear moon five">◐</button>
+      </div>
+      <button class="napkin" type="button" id="napkin" aria-pressed="false">🟦 Folded blue napkin — lift the hem</button>
+      <p class="hem" id="hem" aria-live="polite">Leave a little room.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <p id="feastNote">Tap a pear moon, and watch the feast the way the pictures do:
+    <b>one moon quietly disappears</b> — and nobody minds at all.</p>
+    <div class="unlock" id="unlock" aria-live="polite">
+      🕯️ The sixth place is kept. A small plate, a folded blue napkin, and room
+      left beside the rhyme — <b>for someone the pictures have always known.</b>
+      Somewhere beneath a willow, a kettle is already on.
+    </div>
+    <button class="reset" type="button" id="reset">Lay the table again</button>
+  </div>
+</main>
+<script>
+  const moons = [...document.querySelectorAll('.moon')];
+  const napkin = document.getElementById('napkin');
+  const hem = document.getElementById('hem');
+  const unlock = document.getElementById('unlock');
+  const note = document.getElementById('feastNote');
+  let moonGone = false, hemShown = false;
+
+  function check(){
+    if (moonGone && hemShown){
+      unlock.classList.add('show');
+      note.innerHTML = 'One moon gone, one hem lifted — <b>the clue is complete.</b> The feast goes on, a little roomier than before.';
+    } else {
+      unlock.classList.remove('show');
+    }
+  }
+  moons.forEach((m, i) => m.addEventListener('click', () => {
+    if (moonGone) return;
+    m.classList.add('gone');
+    moonGone = true;
+    note.innerHTML = 'One pear moon quietly disappears during the feast. <b>Nobody names it. Nobody counts.</b> That is the clue.';
+    check();
+  }));
+  napkin.addEventListener('click', () => {
+    hemShown = !hemShown;
+    hem.classList.toggle('show', hemShown);
+    napkin.setAttribute('aria-pressed', String(hemShown));
+    napkin.textContent = hemShown ? '🟦 Folded blue napkin — hem lifted' : '🟦 Folded blue napkin — lift the hem';
+    if (hemShown && !moonGone) note.innerHTML = 'Stitched along the hem, in the smallest thread: <b>“Leave a little room.”</b> Now try a pear moon.';
+    check();
+  });
+  document.getElementById('reset').addEventListener('click', () => {
+    moons.forEach(m => m.classList.remove('gone'));
+    moonGone = false; hemShown = false;
+    hem.classList.remove('show');
+    napkin.setAttribute('aria-pressed', 'false');
+    napkin.textContent = '🟦 Folded blue napkin — lift the hem';
+    note.innerHTML = 'Tap a pear moon, and watch the feast the way the pictures do: <b>one moon quietly disappears</b> — and nobody minds at all.';
+    check();
+  });
+</script>
+</body>
+</html>

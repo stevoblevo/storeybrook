@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tea Letter № 1 — Margo's Dusk-Rose</title>
+<style>
+  :root{
+    --paper:#fdf6e7; --paper-edge:#f3e6c8; --ink:#3a2c22; --ink-soft:#6b563e;
+    --saffron:#e8a33d; --plum:#7d4a6b; --teal:#5f8f86; --brass:#b08a3e;
+    --rose:#c96f7e;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(1200px 500px at 50% -10%, #ffe9b8 0%, transparent 60%),
+      linear-gradient(180deg, #f7ead0 0%, #eeddc0 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  /* ---------- the card ---------- */
+  .card{
+    width:min(560px, 100%); background:var(--paper); border-radius:6px;
+    box-shadow:0 2px 0 var(--paper-edge), 0 18px 44px rgba(90,60,20,.28);
+    overflow:hidden; position:relative;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(120,90,40,.025) 0 2px, transparent 2px 7px);
+  }
+  /* striped awning + scallops */
+  .awning{
+    height:74px; position:relative;
+    background:repeating-linear-gradient(90deg,
+      var(--saffron) 0 56px, #fbf1dc 56px 112px,
+      var(--plum) 112px 168px, #fbf1dc 168px 224px,
+      var(--teal) 224px 280px, #fbf1dc 280px 336px);
+    box-shadow:inset 0 -10px 18px rgba(90,60,20,.22);
+  }
+  .awning::after{
+    content:""; position:absolute; left:0; right:0; bottom:-14px; height:16px;
+    background:radial-gradient(circle at 28px 0, transparent 26px, var(--paper) 27px);
+    background-size:56px 16px; background-repeat:repeat-x;
+  }
+  .card-body{ padding:2.2rem 2rem 1.6rem; text-align:center; }
+  h1{
+    margin:.2rem 0 0; font-size:1.55rem; font-weight:400; line-height:1.25;
+  }
+  h1 em{ color:var(--rose); font-style:italic; }
+  .to-line{ margin:.55rem 0 0; color:var(--ink-soft); font-style:italic; }
+  /* ---------- the three baskets ---------- */
+  .baskets{
+    display:flex; gap:.9rem; justify-content:center; margin:1.6rem 0 .4rem;
+  }
+  .basket{
+    flex:1; max-width:130px; border:0; background:none; cursor:pointer;
+    padding:.4rem .2rem .7rem; border-radius:10px;
+    -webkit-tap-highlight-color:transparent; transition:transform .25s ease;
+  }
+  .basket:hover, .basket:focus-visible{ transform:translateY(-3px); }
+  .basket.bounce{ animation:bounce .5s ease; }
+  @keyframes bounce{ 30%{ transform:translateY(-9px) rotate(-2deg) } }
+  .basket .tub{
+    height:64px; border-radius:8px 8px 18px 18px; position:relative; overflow:hidden;
+    box-shadow:inset 0 -8px 0 rgba(0,0,0,.12);
+    background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.22) 0 5px, transparent 5px 11px);
+  }
+  .basket .tub::before{
+    content:"● ● ●"; position:absolute; top:6px; left:0; right:0;
+    font-size:1rem; letter-spacing:.35em; color:rgba(255,255,255,.9);
+  }
+  .basket.saffron .tub{ background-color:var(--saffron); }
+  .basket.plum .tub{ background-color:var(--plum); }
+  .basket.teal .tub{ background-color:var(--teal); }
+  .basket span{ display:block; margin-top:.45rem; font-size:.78rem; color:var(--ink-soft); }
+  .whisper{ min-height:1.4em; font-style:italic; color:var(--plum); margin:.2rem 0 0; }
+  /* ---------- the paper twist ---------- */
+  .twist-wrap{ margin:1.4rem auto 0; max-width:400px; }
+  .twist{
+    width:100%; border:1px solid #d8c79a; border-radius:4px; cursor:pointer;
+    background:linear-gradient(180deg, #fffaf0, #f6ead0);
+    padding:1rem 1.1rem; font:inherit; color:var(--ink);
+    box-shadow:0 3px 10px rgba(90,60,20,.18);
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .3s ease;
+  }
+  .twist:hover{ transform:rotate(-.6deg) translateY(-1px); }
+  .staple{
+    display:block; width:34px; height:9px; margin:0 auto .7rem; border-radius:4px;
+    background:linear-gradient(180deg, #d9b95e, var(--brass));
+    box-shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+  .twist .fold-label{ font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); }
+  .twist .fold-teaser{ display:block; margin-top:.3rem; font-style:italic; }
+  .note{
+    max-height:0; overflow:hidden; opacity:0;
+    transition:max-height .7s ease, opacity .7s ease, margin .7s ease;
+  }
+  .note.open{ max-height:340px; opacity:1; margin-top:1.1rem; }
+  .note p{
+    margin:0; font-size:1.18rem; line-height:1.65; text-align:left;
+    font-family:"Segoe Script","Bradley Hand","Comic Sans MS",cursive;
+  }
+  .note .sig{ text-align:right; margin-top:.8rem; font-family:Georgia,serif; font-style:italic; color:var(--ink-soft); }
+  .hint{ margin-top:.7rem; font-size:.8rem; color:var(--ink-soft); }
+  /* ---------- the unlock ---------- */
+  .unlock{
+    margin:1.6rem -2rem -1.6rem; padding:1rem 2rem 1.2rem;
+    background:#f3e6c8; border-top:1px dashed #cbb27e;
+    font-size:.92rem; line-height:1.55; opacity:.45;
+    transition:opacity .8s ease;
+  }
+  .unlock.lit{ opacity:1; }
+  .unlock b{ color:var(--plum); }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .kicker, .hint{ display:none; }
+    .card{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="kicker">El Phantea's Tea Letters · № 1 of 6</div>
+
+  <main class="card">
+    <div class="awning" aria-hidden="true"></div>
+    <div class="card-body">
+      <h1>From Margo's stall,<br>with <em>the last pinch of dusk-rose</em></h1>
+      <p class="to-line">For El Phantea, the pocket elephant — to be opened at tea.</p>
+
+      <div class="baskets" role="group" aria-label="Three market baskets">
+        <button class="basket saffron" type="button" data-whisper="Saffron baskets, stacked high in the morning sun.">
+          <span class="tub" aria-hidden="true"></span><span>Saffron</span>
+        </button>
+        <button class="basket plum" type="button" data-whisper="Plum baskets — mind the good tablecloth.">
+          <span class="tub" aria-hidden="true"></span><span>Plum</span>
+        </button>
+        <button class="basket teal" type="button" data-whisper="Soft teal baskets, from the far cart.">
+          <span class="tub" aria-hidden="true"></span><span>Teal</span>
+        </button>
+      </div>
+      <p class="whisper" id="whisper" aria-live="polite">Tap a basket, then unfold the twist.</p>
+
+      <div class="twist-wrap">
+        <button class="twist" type="button" id="twist" aria-expanded="false" aria-controls="note">
+          <span class="staple" aria-hidden="true"></span>
+          <span class="fold-label">A folded paper twist, stapled in brass</span>
+          <span class="fold-teaser">Tap to unfold ↓</span>
+        </button>
+        <div class="note" id="note">
+          <p>“Brought you the last pinch of dusk-rose from the far cart — mind
+          you don't spill it on the good tablecloth, or the pattern will
+          start telling stories back.”</p>
+          <p class="sig">— Margo</p>
+        </div>
+        <p class="hint" id="hint">Tap again to fold it away. Nothing here can be spilled.</p>
+      </div>
+
+      <div class="unlock" id="unlock">
+        🫖 <b>Unlocks at El Phantea's tea party:</b> a new blend — dusk-rose
+        and oat-straw, already measured into the porcelain trunk.
+      </div>
+    </div>
+  </main>
+
+<script>
+  const twist = document.getElementById('twist');
+  const note = document.getElementById('note');
+  const teaser = twist.querySelector('.fold-teaser');
+  const unlock = document.getElementById('unlock');
+  twist.addEventListener('click', () => {
+    const open = note.classList.toggle('open');
+    twist.setAttribute('aria-expanded', open);
+    teaser.textContent = open ? 'Tap to fold it away ↑' : 'Tap to unfold ↓';
+    if (open) unlock.classList.add('lit');
+  });
+  const whisper = document.getElementById('whisper');
+  document.querySelectorAll('.basket').forEach(b => {
+    b.addEventListener('click', () => {
+      whisper.textContent = b.dataset.whisper;
+      b.classList.remove('bounce'); void b.offsetWidth; b.classList.add('bounce');
+    });
+  });
+</script>
+</body>
+</html>

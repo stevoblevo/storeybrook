@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tea Letter № 2 — Wee's Hoofprints</title>
+<style>
+  :root{
+    --river:#dcebf0; --river-deep:#bcd9e2; --paper:#f4fafb; --ink:#2f3d42;
+    --ink-soft:#5d767e; --pink:#e89aa6; --pink-deep:#c96f7e; --gold:#c9962e;
+    --stone:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(1000px 480px at 50% -10%, #eaf6f8 0%, transparent 60%),
+      linear-gradient(180deg, #dcebf0 0%, #c3dde6 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  /* ---------- the card ---------- */
+  .card{
+    width:min(560px, 100%); background:var(--paper); border-radius:10px;
+    box-shadow:0 2px 0 #d7e8ec, 0 18px 44px rgba(50,90,105,.28);
+    overflow:hidden; position:relative;
+  }
+  /* the brook, winding across the top of the card */
+  .brook{
+    height:150px; position:relative; overflow:hidden;
+    background:linear-gradient(180deg, var(--river-deep) 0%, var(--river) 55%, #eef7f9 100%);
+  }
+  .brook::before, .brook::after{
+    content:""; position:absolute; left:-20px; right:-20px; height:26px;
+    border-radius:50%; border:2px solid rgba(255,255,255,.55); border-bottom:0;
+  }
+  .brook::before{ top:26px; transform:rotate(-2deg); }
+  .brook::after{ top:78px; transform:rotate(1.5deg); opacity:.6; }
+  .brook .bank{
+    position:absolute; left:0; right:0; bottom:0; height:22px;
+    background:linear-gradient(180deg, #cfe3c0, #b8d3a4);
+    border-top:2px dashed rgba(255,255,255,.7);
+  }
+  /* ---------- the stones ---------- */
+  .stones{
+    position:absolute; left:0; right:0; bottom:14px; height:110px;
+  }
+  .stone{
+    position:absolute; border:0; cursor:pointer; padding:0;
+    background:var(--stone); border-radius:50%;
+    box-shadow:0 4px 0 rgba(90,130,145,.25), 0 8px 14px rgba(50,90,105,.25),
+      inset 0 -6px 10px rgba(180,210,220,.6);
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .25s ease, box-shadow .25s ease;
+    font-size:1.5rem; line-height:1; color:var(--pink-deep);
+  }
+  .stone:hover, .stone:focus-visible{ transform:translateY(-3px) scale(1.04); }
+  .stone.stepped{
+    background:#fdf3e3; box-shadow:0 1px 0 rgba(90,130,145,.25), 0 3px 8px rgba(50,90,105,.2),
+      inset 0 0 0 3px rgba(201,150,46,.55);
+  }
+  .stone:nth-child(1){ left:4%;  bottom:8px;  width:74px; height:52px; }
+  .stone:nth-child(2){ left:20%; bottom:42px; width:66px; height:48px; }
+  .stone:nth-child(3){ left:37%; bottom:12px; width:78px; height:54px; }
+  .stone:nth-child(4){ left:54%; bottom:48px; width:64px; height:46px; }
+  .stone:nth-child(5){ left:69%; bottom:14px; width:76px; height:52px; }
+  .stone:nth-child(6){ left:85%; bottom:44px; width:62px; height:46px; }
+  /* Wee, hopping */
+  .wee{
+    position:absolute; width:34px; height:34px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #ffd9de, var(--pink) 70%);
+    box-shadow:0 3px 6px rgba(50,90,105,.35);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.05rem; pointer-events:none;
+    transition:left .45s cubic-bezier(.3,-.4,.4,1.4), bottom .45s cubic-bezier(.3,-.4,.4,1.4);
+    z-index:2;
+  }
+  .wee::before{ content:"🐷"; }
+  .wee.hop{ animation:hop .45s ease; }
+  @keyframes hop{ 40%{ transform:translateY(-26px) scale(1.1); } }
+  /* ---------- the letter ---------- */
+  .card-body{ padding:1.9rem 2rem 1.6rem; text-align:center; }
+  h1{ margin:.2rem 0 0; font-size:1.5rem; font-weight:400; line-height:1.3; }
+  h1 em{ color:var(--pink-deep); font-style:italic; }
+  .to-line{ margin:.55rem 0 0; color:var(--ink-soft); font-style:italic; }
+  .hoofprints{
+    margin:1.3rem auto .2rem; font-size:1.15rem; letter-spacing:.5em; color:var(--ink-soft);
+    user-select:none;
+  }
+  .hoofprints .smudge{ color:var(--pink-deep); filter:blur(.4px); opacity:.75; }
+  .note{
+    margin:1rem auto 0; max-width:430px; text-align:left;
+    font-family:"Segoe Script","Bradley Hand","Comic Sans MS",cursive;
+    font-size:1.18rem; line-height:1.65;
+  }
+  .note .sig{ text-align:right; margin-top:.7rem; font-family:Georgia,serif; font-style:italic; color:var(--ink-soft); }
+  .whisper{ min-height:1.4em; font-style:italic; color:var(--ink-soft); margin:1rem 0 0; }
+  .rhyme{
+    margin:1.2rem auto 0; padding:.9rem 1.1rem; border:1px dashed #b7d2da; border-radius:8px;
+    background:#eef7f9; font-size:1.05rem; line-height:1.6; opacity:.4;
+    transition:opacity .8s ease;
+  }
+  .rhyme.lit{ opacity:1; }
+  .rhyme b{ color:var(--pink-deep); }
+  .again{
+    margin-top:1.1rem; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+  }
+  .unlock{
+    margin:1.6rem -2rem -1.6rem; padding:1rem 2rem 1.2rem;
+    background:#dcebf0; border-top:1px dashed #a9cbd6;
+    font-size:.92rem; line-height:1.55; opacity:.45;
+    transition:opacity .8s ease;
+  }
+  .unlock.lit{ opacity:1; }
+  .unlock b{ color:var(--pink-deep); }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .kicker, .whisper, .again{ display:none; }
+    .card{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="kicker">El Phantea's Tea Letters · № 2 of 6</div>
+
+  <main class="card">
+    <div class="brook" aria-label="The brook, with six stepping stones">
+      <div class="stones" id="stones">
+        <button class="stone" type="button" data-n="1" aria-label="First stepping stone">·</button>
+        <button class="stone" type="button" data-n="2" aria-label="Second stepping stone">·</button>
+        <button class="stone" type="button" data-n="3" aria-label="Third stepping stone">·</button>
+        <button class="stone wet" type="button" data-n="4" aria-label="Fourth stepping stone, the wet one">·</button>
+        <button class="stone" type="button" data-n="5" aria-label="Fifth stepping stone">·</button>
+        <button class="stone" type="button" data-n="6" aria-label="Sixth stepping stone">·</button>
+      </div>
+      <div class="wee" id="wee" aria-hidden="true"></div>
+      <div class="bank" aria-hidden="true"></div>
+    </div>
+
+    <div class="card-body">
+      <h1>From Wee, by hoofprint,<br><em>with one sock wet</em></h1>
+      <p class="to-line">For El Phantea — hello from the wet side of the brook.</p>
+
+      <p class="hoofprints" aria-hidden="true">🐾 🐾 🐾 🐾 🐾 🐾 <span class="smudge">🐾</span></p>
+      <p style="margin:.1rem 0 0; font-size:.8rem; color:var(--ink-soft);">Six neat trot marks — and one smudged extra, for excitement.</p>
+
+      <div class="note">
+        <p>“I hopped the brook stones twice today and only got one sock wet;
+        the stones said tell the elephant hello from their wet side.”</p>
+        <p class="sig">— Wee</p>
+      </div>
+
+      <p class="whisper" id="whisper" aria-live="polite">Tap the stones, in order, and hop Wee across.</p>
+
+      <div class="rhyme" id="rhyme">
+        🎵 <b>One stone, two stone, three stone, four —<br>mind the sock and mind the door.</b>
+      </div>
+      <button class="again" type="button" id="again" hidden>Hop again ↻</button>
+
+      <div class="unlock" id="unlock">
+        🫖 <b>Unlocks in the book:</b> a short skipping rhyme the narration
+        hums later, whenever the stones are crossed — and the wet sock is
+        remembered fondly, never scolded.
+      </div>
+    </div>
+  </main>
+
+<script>
+  const stones = [...document.querySelectorAll('.stone')];
+  const wee = document.getElementById('wee');
+  const whisper = document.getElementById('whisper');
+  const rhyme = document.getElementById('rhyme');
+  const unlock = document.getElementById('unlock');
+  const again = document.getElementById('again');
+  let next = 1;
+
+  // Park Wee on the near bank, left of stone 1.
+  function park(){
+    wee.style.left = '2%'; wee.style.bottom = '22px';
+  }
+  function placeOn(stone){
+    const r = stone.getBoundingClientRect();
+    const brook = stone.closest('.brook').getBoundingClientRect();
+    wee.style.left = (r.left - brook.left + r.width/2 - 17) + 'px';
+    wee.style.bottom = (brook.bottom - r.top - r.height/2 - 17) + 'px';
+  }
+  park();
+
+  stones.forEach(stone => {
+    stone.addEventListener('click', () => {
+      const n = +stone.dataset.n;
+      if (n !== next) {
+        whisper.textContent = n < next
+          ? 'Already hopped that one — onward!'
+          : 'One stone at a time, like Wee does.';
+        return;
+      }
+      stone.classList.add('stepped');
+      wee.classList.remove('hop'); void wee.offsetWidth; wee.classList.add('hop');
+      placeOn(stone);
+      if (stone.classList.contains('wet')) {
+        whisper.textContent = 'Splish! One sock wet — and Wee giggles, and hops on.';
+      } else if (n === 6) {
+        whisper.textContent = 'Across! Twice, and only one sock wet.';
+        rhyme.classList.add('lit');
+        unlock.classList.add('lit');
+        again.hidden = false;
+      } else {
+        whisper.textContent = ['One stone…','Two stone…','Three stone…','Four stone…','Five stone…'][n - 1] + ' steady as you go.';
+      }
+      next++;
+    });
+  });
+
+  again.addEventListener('click', () => {
+    stones.forEach(s => s.classList.remove('stepped'));
+    next = 1; park();
+    rhyme.classList.remove('lit');
+    unlock.classList.remove('lit');
+    again.hidden = true;
+    whisper.textContent = 'Tap the stones, in order, and hop Wee across.';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tea Letter № 9 — Pipkin Writes</title>
+<!--
+  Tea Letter № 9 — Pipkin writes, in footprints.
+  Design: Grok lane, dispatch dsp_133d8d81a9c64c84, result_ref ef798246…
+  (brief: hidden_files/grok-brief-tea-letter-09-pipkin-2026-11-21.md).
+  Sae's flags on the lane's answer, applied in this build:
+  (1) Letter text kept: eight small footprints hopping across the card to one
+      pressed sprout, and his two lines, verbatim — "I grew again, did you
+      see?" / "Wee!" No invented words anywhere: the tap whispers are his
+      other two lines ("That tickles!", "Again! Again!"), and the third tap
+      re-uses "I grew again, did you see?" — all four of his lines, whole.
+  (2) The lane's "appears for a breath then fades" hides the line on a timer
+      — the family's rule since № 7 is that a whisper stays until the next
+      tap. Each tap's line persists.
+  (3) The lane's "the sequence simply restarts after any pause" is vague —
+      the cycle is explicit now: taps run 1 → 2 → 3 → 1, the third tap
+      quivers the bud (closed, never opening — the lane's own risk, built in)
+      and lights the unlock, a fourth tap starts the cycle again harmlessly,
+      and the reset is a dedicated button.
+  (4) The lane's "growth in spacing" contradicts its own risk note
+      (footprints child-sized, bud closed — do not place him at his sequel
+      stage). Footprint spacing stays even; the growth lives in the words,
+      not the prints.
+  (5) The unlock is grounded: the lane said "the garden square in the book"
+      — the first book has no sunflower square. It is the sequel's garden
+      square (Wee's Own Square, ch3), and the footnote says so.
+  (6) The pressed sprout is close kin to Letter № 6's pressed leaf; held
+      apart by the pink bud (his own), the mint leaf-border, and the teal
+      wash — and the sprout is the letter's signature, not decoration.
+  Pipkin's body is not drawn here, on purpose: the footprints and the sprout
+  ARE Pipkin on this card, and no stand-in is risked.
+-->
+<style>
+  :root{
+    --cream:#fbf7ec; --cream-deep:#f3ecd8; --paper:#fffdf6; --ink:#3f6f60;
+    --ink-soft:#7fa396; --teal:#79b8a6; --teal-deep:#4e8a78; --mint:#cfe8d8;
+    --mint-deep:#a9d6bd; --bud:#e89bb0; --bud-deep:#d97b96; --heart:#e87a92;
+    --leaf:#8fc7ae;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(1000px 480px at 50% -10%, #fdfaf0 0%, transparent 60%),
+      linear-gradient(180deg, #f3ecd8 0%, #e2d9bd 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  /* ---------- the card: cream paper, one wash of morning light ---------- */
+  .card{
+    width:min(560px, 100%); background:var(--paper); border-radius:8px;
+    box-shadow:0 2px 0 #ddd2b8, 0 18px 44px rgba(70,90,75,.28);
+    overflow:hidden; position:relative;
+    border:2px solid rgba(121,184,166,.5);
+    outline:1px solid rgba(121,184,166,.3); outline-offset:-6px;
+    background-image:
+      radial-gradient(220px 120px at 18% 22%, rgba(255,255,255,.6) 0%, transparent 70%),
+      radial-gradient(260px 140px at 82% 78%, rgba(207,232,216,.35) 0%, transparent 70%);
+  }
+  /* ---------- the scene: eight footprints hopping to the pressed sprout ---------- */
+  .scene{
+    height:210px; position:relative; overflow:hidden;
+    background:linear-gradient(180deg, rgba(121,184,166,.16) 0%, rgba(121,184,166,.07) 55%, rgba(207,232,216,.35) 100%);
+    border-bottom:1px dashed rgba(121,184,166,.45);
+  }
+  .scene .trail{
+    position:absolute; left:0; right:0; top:0; bottom:0; width:100%; height:100%;
+  }
+  .scene .trail ellipse{ fill:var(--teal); opacity:.85; }
+  .scene .trail ellipse:nth-child(even){ opacity:.7; }
+  /* the pressed sprout: the only tap target, lower right, ≥44px */
+  .sprout{
+    position:absolute; right:26px; bottom:18px; width:96px; height:96px;
+    border:0; background:none; cursor:pointer; padding:0;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .sprout:focus-visible{ outline:3px solid var(--teal-deep); outline-offset:4px; border-radius:12px; }
+  .sprout svg{ width:96px; height:96px; overflow:visible; }
+  .sprout .plant{ transform-origin:50% 92%; }
+  .sprout.hop .plant{ animation:hop .45s ease-in-out 1; }
+  @keyframes hop{ 0%{ transform:translateY(0); } 35%{ transform:translateY(-14px) rotate(-3deg); } 70%{ transform:translateY(0) rotate(2deg); } 100%{ transform:translateY(0); } }
+  .sprout .bud{ transform-origin:50% 30%; }
+  .sprout.quiver .bud{ animation:quiver .5s ease-in-out 1; }
+  @keyframes quiver{ 0%,100%{ transform:rotate(0); } 25%{ transform:rotate(-7deg); } 60%{ transform:rotate(6deg); } }
+  /* three hearts that drift up on every tap */
+  .heart{
+    position:absolute; right:52px; bottom:104px; font-size:15px; color:var(--heart);
+    opacity:0; pointer-events:none; line-height:1;
+  }
+  .heart.h2{ right:66px; font-size:12px; }
+  .heart.h3{ right:38px; font-size:12px; }
+  .heart.rise{ animation:rise 1.1s ease-out 1; }
+  .heart.h2.rise{ animation-duration:1.3s; }
+  .heart.h3.rise{ animation-duration:1s; }
+  @keyframes rise{ 0%{ opacity:0; transform:translateY(0) scale(.7); } 25%{ opacity:1; } 100%{ opacity:0; transform:translateY(-46px) scale(1.05); } }
+  .scene-label{
+    position:absolute; left:20px; top:14px; font-size:.8rem; font-style:italic;
+    color:var(--ink-soft); max-width:220px; line-height:1.5;
+  }
+  /* ---------- the letter ---------- */
+  .card-body{ padding:1.9rem 2rem 1.6rem; text-align:center; position:relative; }
+  h1{ margin:.2rem 0 0; font-size:1.5rem; font-weight:400; line-height:1.3; }
+  h1 em{ color:var(--teal-deep); font-style:italic; }
+  .to-line{ margin:.55rem 0 0; color:var(--ink-soft); font-style:italic; }
+  .note{
+    margin:1rem auto 0; max-width:430px; text-align:left;
+    font-family:"Segoe Script","Bradley Hand","Comic Sans MS",cursive;
+    font-size:1.25rem; line-height:1.7; color:var(--teal-deep);
+  }
+  .note .sig{ text-align:right; margin-top:.7rem; }
+  .note .sig svg{ width:44px; height:22px; vertical-align:middle; }
+  .whisper{ min-height:1.4em; font-style:italic; color:var(--ink-soft); margin:1rem 0 0; }
+  .again{
+    margin-top:1.1rem; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+  }
+  .unlock{
+    margin:1.6rem -2rem -1.6rem; padding:1rem 2rem 1.2rem;
+    background:var(--cream); border-top:1px dashed #ddd2b8;
+    font-size:.92rem; line-height:1.55; opacity:.45;
+    transition:opacity .8s ease;
+  }
+  .unlock.lit{ opacity:1; }
+  .unlock b{ color:var(--teal-deep); }
+  .footnote{
+    margin:1.6rem -2rem -1.6rem; padding:.8rem 2rem 1rem;
+    border-top:1px dashed #ddd2b8;
+    font-size:.78rem; color:var(--ink-soft); line-height:1.5;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .sprout.hop .plant, .sprout.quiver .bud, .heart.rise{ animation:none !important; }
+    .heart.rise{ opacity:1; }
+    .unlock{ transition:none !important; }
+  }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .kicker, .whisper, .again{ display:none; }
+    .card{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="kicker">El Phantea's Tea Letters · № 9 — Pipkin writes</div>
+
+  <main class="card">
+    <!-- The scene: eight footprints hop across the morning light to the pressed sprout. -->
+    <div class="scene" id="scene" aria-label="Eight small footprints hop across the card and end at one pressed sprout.">
+      <svg class="trail" viewBox="0 0 560 210" preserveAspectRatio="none" aria-hidden="true">
+        <ellipse cx="36" cy="150" rx="9" ry="6" transform="rotate(-18 36 150)" />
+        <ellipse cx="86" cy="122" rx="9" ry="6" transform="rotate(14 86 122)" />
+        <ellipse cx="136" cy="146" rx="9" ry="6" transform="rotate(-16 136 146)" />
+        <ellipse cx="186" cy="118" rx="9" ry="6" transform="rotate(12 186 118)" />
+        <ellipse cx="236" cy="142" rx="9" ry="6" transform="rotate(-14 236 142)" />
+        <ellipse cx="286" cy="116" rx="9" ry="6" transform="rotate(10 286 116)" />
+        <ellipse cx="336" cy="140" rx="9" ry="6" transform="rotate(-12 336 140)" />
+        <ellipse cx="386" cy="118" rx="9" ry="6" transform="rotate(8 386 118)" />
+      </svg>
+      <span class="heart h1" id="heart1" aria-hidden="true">&#10084;</span>
+      <span class="heart h2" id="heart2" aria-hidden="true">&#10084;</span>
+      <span class="heart h3" id="heart3" aria-hidden="true">&#10084;</span>
+      <button class="sprout" type="button" id="sprout" aria-label="The pressed sprout. Tap it and Pipkin hops.">
+        <svg viewBox="0 0 96 96" aria-hidden="true">
+          <g class="plant" id="plant">
+            <path d="M48,92 C48,72 48,58 48,44" stroke="#4e8a78" stroke-width="3.4" fill="none" stroke-linecap="round" />
+            <path d="M48,66 C36,62 28,52 28,40 C40,42 48,52 48,66 Z" fill="#8fc7ae" stroke="#4e8a78" stroke-width="1.6" />
+            <path d="M48,66 C60,62 68,52 68,40 C56,42 48,52 48,66 Z" fill="#a9d6bd" stroke="#4e8a78" stroke-width="1.6" />
+            <g class="bud" id="bud">
+              <path d="M48,44 C40,36 40,26 48,20 C56,26 56,36 48,44 Z" fill="#e89bb0" stroke="#d97b96" stroke-width="1.8" />
+              <path d="M48,44 C44,36 44,28 48,22" stroke="#d97b96" stroke-width="1.2" fill="none" />
+            </g>
+          </g>
+          <ellipse cx="48" cy="92" rx="16" ry="3.4" fill="#cfe8d8" opacity=".8" />
+        </svg>
+      </button>
+      <p class="scene-label">Eight small footprints, hopping — and one pressed sprout, kept.</p>
+    </div>
+
+    <div class="card-body">
+      <h1>From Pipkin, <em>in footprints</em></h1>
+      <p class="to-line">For the reader who has been hopping alongside &mdash; written in eight small footprints and one pressed sprout.</p>
+
+      <div class="note">
+        <p>&ldquo;I grew again, did you see?<br>Wee!&rdquo;</p>
+        <p class="sig" aria-label="Signed with two small footprints">
+          <svg viewBox="0 0 44 22" aria-hidden="true">
+            <ellipse cx="13" cy="12" rx="8" ry="5.4" transform="rotate(-16 13 12)" fill="#79b8a6" />
+            <ellipse cx="31" cy="9" rx="8" ry="5.4" transform="rotate(12 31 9)" fill="#79b8a6" />
+          </svg>
+        </p>
+      </div>
+
+      <p class="whisper" id="whisper" aria-live="polite">Tap the pressed sprout &mdash; Pipkin hops.</p>
+
+      <button class="again" type="button" id="again" hidden>Hop again &#8635;</button>
+
+      <div class="unlock" id="unlock">
+        &#127793; <b>Unlocks in the book:</b> on a later visit to the
+        sequel&rsquo;s garden square, the sprout beside the sunflower carries
+        one very faint pink bud that was not there on first reading &mdash;
+        only a margin detail, no text, no new scene.
+      </div>
+
+      <div class="footnote">№ 9 &middot; Pipkin writes &mdash; open to every
+      reader, since he hops beside the reader from the first page. He writes
+      in footprints; the two lines are his own words, all four of them kept
+      whole across the card. The bud stays closed &mdash; the bloom is the
+      sequel&rsquo;s, not this letter&rsquo;s.</div>
+    </div>
+  </main>
+
+<script>
+  var sprout = document.getElementById('sprout');
+  var bud = document.getElementById('bud');
+  var hearts = [document.getElementById('heart1'), document.getElementById('heart2'), document.getElementById('heart3')];
+  var whisper = document.getElementById('whisper');
+  var unlock = document.getElementById('unlock');
+  var again = document.getElementById('again');
+
+  /* Three beats in the family's grammar, cycling 1 -> 2 -> 3 -> 1: his hop
+     with hearts, his own lines as the whisper (each stays until the next
+     tap — nothing fades on a timer), and on the third the bud quivers but
+     stays closed, lighting the unlock. No wrong tap, no timer, nothing
+     scolding; the reset is a dedicated button. */
+  var lines = ['That tickles!', 'Again! Again!', 'I grew again, did you see?'];
+  var taps = 0;
+  function restartAnim(el, cls) {
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+  }
+  sprout.addEventListener('click', function () {
+    taps++;
+    var beat = ((taps - 1) % 3) + 1;
+    restartAnim(sprout, 'hop');
+    hearts.forEach(function (h) { restartAnim(h, 'rise'); });
+    if (beat === 3) {
+      restartAnim(sprout, 'quiver');
+      unlock.classList.add('lit');
+    }
+    whisper.textContent = lines[beat - 1];
+    again.hidden = false;
+  });
+
+  again.addEventListener('click', function () {
+    taps = 0;
+    sprout.classList.remove('hop');
+    sprout.classList.remove('quiver');
+    hearts.forEach(function (h) { h.classList.remove('rise'); });
+    unlock.classList.remove('lit');
+    again.hidden = true;
+    whisper.textContent = 'Tap the pressed sprout — Pipkin hops.';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tea Letter № 7 — Mallow Writes Back</title>
+<!--
+  Tea Letter № 7 — a REWARD letter, not a clue.
+  Design: Grok lane, dispatch dsp_a69bc1c0a448495d, result_ref da299181…
+  (brief: hidden_files/grok-brief-tea-letter-07-mallow-2026-11-19.md).
+  Sae's flags on the lane's answer, applied in this build:
+  (1) Letter text kept near-verbatim, split into two short paragraphs.
+  (2) The lane's "soft grey paper with a faint crinkle" repeats Letter № 6's
+      river-grey crinkled paper too closely, so Mallow's paper is warmed:
+      dusk willow-grey, violet dusk in the scene, willow-green accents,
+      pebble-beige ink; the corner motif is a pressed pear-slice, not a leaf.
+  (3) The lane's single moth tap is kept (it suits Mallow's quietness) but
+      strengthened to the family's grammar: the tap also raises the steam,
+      lights the fireflies and lights the unlock panel, and the reset is a
+      dedicated button — the lane's "tap anywhere else to fade the line"
+      would hide behaviour where a reader cannot see it.
+  (4) Unlock kept as the lane wrote it: the keepsake reverse's seventh cup
+      gains the margin note "Mallow left this one for you."
+  (5) The lane's risk, built not just noted: the page GATES on the hidden
+      chapter's flag (piggie-sixth-mallow-found, set by
+      sixth-piggie-06-mallows-little-while.html). Without it the veiled
+      state shows and the letter stays hidden, so a reader who stumbles
+      here early learns nothing about the willow room. Safe default if
+      storage is unavailable: veiled. On saelion.co the flag carries
+      across pages; a standalone file:// preview may not share storage
+      with the hidden chapter, so the proof screenshots show both states.
+-->
+<style>
+  :root{
+    --dusk:#efece6; --dusk-deep:#e2ddd4; --paper:#f6f3ec; --ink:#5a5348;
+    --ink-soft:#8d8577; --willow:#7d9b57; --willow-deep:#5d7a42;
+    --gold:#c9962e; --mallow-grey:#8a8a92; --night:#3d3a4a; --night-deep:#2e2b38;
+    --pebble:#b9b2a4; --steam:#f4f1ea;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(1000px 480px at 50% -10%, #f4f1ea 0%, transparent 60%),
+      linear-gradient(180deg, #e9e6de 0%, #d8d3cd 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  /* ---------- the card: dusk willow-grey paper ---------- */
+  .card{
+    width:min(560px, 100%); background:var(--paper); border-radius:8px;
+    box-shadow:0 2px 0 #cfc9ba, 0 18px 44px rgba(70,60,75,.28);
+    overflow:hidden; position:relative;
+    background-image:
+      radial-gradient(220px 120px at 18% 22%, rgba(255,255,255,.5) 0%, transparent 70%),
+      radial-gradient(260px 140px at 82% 78%, rgba(190,185,170,.26) 0%, transparent 70%),
+      radial-gradient(180px 100px at 70% 18%, rgba(255,255,255,.32) 0%, transparent 70%);
+  }
+  /* ---------- the willow room at dusk ---------- */
+  .room{
+    height:210px; position:relative; overflow:hidden;
+    background:linear-gradient(180deg, var(--night-deep) 0%, var(--night) 55%, #6b5d4f 100%);
+  }
+  .room .willow{
+    position:absolute; top:0; left:0; right:0; height:80px; pointer-events:none;
+  }
+  .room .willow path{ stroke:var(--willow); stroke-width:1.6; fill:none; opacity:.85; }
+  .room .willow ellipse{ fill:var(--willow); opacity:.7; }
+  .pebble{
+    position:absolute; left:50%; bottom:34px; transform:translateX(-50%);
+    width:150px; height:26px; border-radius:50%;
+    background:radial-gradient(ellipse at 50% 35%, #cfc8b8 0%, var(--pebble) 60%, #9d9684 100%);
+    box-shadow:0 6px 14px rgba(0,0,0,.35);
+  }
+  .kettle{
+    position:absolute; left:50%; bottom:52px; transform:translateX(-50%);
+    width:96px; height:74px;
+  }
+  .steam{
+    position:absolute; left:50%; bottom:118px; transform:translateX(-50%);
+    width:34px; height:52px; opacity:0; transition:opacity 1.2s ease;
+    background:radial-gradient(ellipse at 50% 80%, rgba(244,241,234,.85) 0%, rgba(244,241,234,0) 70%);
+    border-radius:50%; filter:blur(2px); pointer-events:none;
+  }
+  .steam.up{ opacity:.9; }
+  .moth{
+    position:absolute; left:50%; top:50px; transform:translateX(-50%);
+    width:64px; height:48px; border:0; background:none; cursor:pointer; padding:0;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .moth:focus-visible{ outline:3px solid var(--gold); outline-offset:4px; border-radius:8px; }
+  .moth svg{ width:64px; height:48px; overflow:visible; }
+  .moth .wing-l, .moth .wing-r{ transform-box:fill-box; transition:transform .3s ease; }
+  .moth .wing-l{ transform-origin:100% 50%; }
+  .moth .wing-r{ transform-origin:0% 50%; }
+  .moth.flutter .wing-l{ animation:flutter-l .55s ease-in-out 2; }
+  .moth.flutter .wing-r{ animation:flutter-r .55s ease-in-out 2; }
+  @keyframes flutter-l{ 0%,100%{ transform:rotate(0deg); } 50%{ transform:rotate(-24deg); } }
+  @keyframes flutter-r{ 0%,100%{ transform:rotate(0deg); } 50%{ transform:rotate(24deg); } }
+  .fly{
+    position:absolute; width:5px; height:5px; border-radius:50%;
+    background:#ffe9a8; opacity:.12; transition:opacity 1.4s ease;
+    box-shadow:0 0 8px rgba(255,233,168,.9); pointer-events:none;
+  }
+  .fly:nth-child(1){ left:16%; top:52%; transition-delay:.2s; }
+  .fly:nth-child(2){ left:82%; top:44%; transition-delay:.6s; }
+  .fly:nth-child(3){ left:70%; top:66%; transition-delay:1s; }
+  .room.lit .fly{ opacity:1; }
+  .cups{
+    position:absolute; left:0; right:0; bottom:8px; height:26px;
+    display:flex; justify-content:center; gap:9px; align-items:flex-end;
+  }
+  .cup{
+    width:26px; height:20px; border-radius:3px 3px 10px 10px; position:relative;
+    box-shadow:inset 0 -4px 6px rgba(0,0,0,.18), 0 3px 6px rgba(0,0,0,.3);
+  }
+  .cup::after{
+    content:""; position:absolute; right:-6px; top:5px; width:9px; height:9px;
+    border:2px solid currentColor; border-left:0; border-radius:0 50% 50% 0; opacity:.7;
+  }
+  .cup:nth-child(1){ background:#b7c4a8; color:#8a9a76; }
+  .cup:nth-child(2){ background:#d9b8a6; color:#b98f7a; }
+  .cup:nth-child(3){ background:#a8b8c4; color:#7e96a6; }
+  .cup:nth-child(4){ background:#e0cfa8; color:#bfa468; }
+  .cup:nth-child(5){ background:#c4a8b8; color:#9a7a8e; }
+  .cup:nth-child(6){ background:#b8b8b0; color:#8e8e84; }
+  .cup.chipped::before{
+    content:""; position:absolute; left:4px; top:-7px; width:18px; height:1px;
+    background:var(--gold); transform:rotate(-14deg);
+  }
+  .cup .chip-note{
+    position:absolute; left:50%; top:-16px; transform:translateX(-50%);
+    font-size:.62rem; font-style:italic; color:#e8ddc2; white-space:nowrap; opacity:0;
+    transition:opacity 1s ease;
+  }
+  .room.lit .cup .chip-note{ opacity:1; }
+  /* ---------- the veil: the letter is still on its way ---------- */
+  .veil{
+    padding:3.2rem 2rem 3rem; text-align:center;
+  }
+  .veil .env{ font-size:2.6rem; display:block; margin-bottom:1rem; opacity:.75; }
+  .veil h1{ margin:.2rem 0 0; font-size:1.45rem; font-weight:400; line-height:1.35; }
+  .veil p{ margin:.9rem auto 0; max-width:380px; color:var(--ink-soft); font-style:italic; line-height:1.6; }
+  .veil .sprig{ margin-top:1.4rem; color:var(--willow-deep); font-size:1.3rem; letter-spacing:.4em; }
+  /* ---------- the letter ---------- */
+  .card-body{ padding:1.9rem 2rem 1.6rem; text-align:center; position:relative; }
+  h1{ margin:.2rem 0 0; font-size:1.5rem; font-weight:400; line-height:1.3; }
+  h1 em{ color:var(--willow-deep); font-style:italic; }
+  .to-line{ margin:.55rem 0 0; color:var(--ink-soft); font-style:italic; }
+  .pear{
+    position:absolute; top:1.1rem; right:1.4rem; width:34px; height:34px;
+    transform:rotate(18deg);
+  }
+  .pear-note{ margin:1.1rem 0 0; font-size:.8rem; color:var(--ink-soft); }
+  .note{
+    margin:1rem auto 0; max-width:430px; text-align:left;
+    font-family:"Segoe Script","Bradley Hand","Comic Sans MS",cursive;
+    font-size:1.18rem; line-height:1.65;
+  }
+  .note .sig{ text-align:right; margin-top:.7rem; font-family:Georgia,serif; font-style:italic; color:var(--ink-soft); }
+  .whisper{ min-height:1.4em; font-style:italic; color:var(--ink-soft); margin:1rem 0 0; }
+  .again{
+    margin-top:1.1rem; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+  }
+  .unlock{
+    margin:1.6rem -2rem -1.6rem; padding:1rem 2rem 1.2rem;
+    background:var(--dusk); border-top:1px dashed #b9b2a2;
+    font-size:.92rem; line-height:1.55; opacity:.45;
+    transition:opacity .8s ease;
+  }
+  .unlock.lit{ opacity:1; }
+  .unlock b{ color:var(--willow-deep); }
+  .footnote{
+    margin:1.6rem -2rem -1.6rem; padding:.8rem 2rem 1rem;
+    border-top:1px dashed #d5cfc2;
+    font-size:.78rem; color:var(--ink-soft); line-height:1.5;
+  }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .kicker, .whisper, .again{ display:none; }
+    .card{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="kicker">El Phantea's Tea Letters · № 7 — a reward letter</div>
+
+  <main class="card">
+    <!-- Veiled state: shown unless the reader has found Mallow. -->
+    <div class="veil" id="veil">
+      <span class="env" aria-hidden="true">✉️</span>
+      <h1>This letter is still on its way</h1>
+      <p>It arrives for readers who have sat a little while under the willow.
+      Open <i>Mallow&rsquo;s Little While</i> first, and the door stays open afterwards.</p>
+      <div class="sprig" aria-hidden="true">🌿 🌿 🌿</div>
+    </div>
+
+    <!-- The letter itself: hidden until the Mallow-found flag is set. -->
+    <div id="letterContent" hidden>
+      <div class="room" id="room" aria-label="The willow room at dusk: a kettle on a flat pebble, six mismatched cups, and a moth settled on the lid.">
+        <svg class="willow" viewBox="0 0 560 80" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M40,0 C60,34 44,52 66,78" />
+          <path d="M120,0 C104,28 124,50 108,76" />
+          <path d="M520,0 C500,34 516,52 494,78" />
+          <path d="M452,0 C468,28 448,50 464,76" />
+          <ellipse cx="66" cy="78" rx="7" ry="3" />
+          <ellipse cx="108" cy="76" rx="7" ry="3" />
+          <ellipse cx="494" cy="78" rx="7" ry="3" />
+          <ellipse cx="464" cy="76" rx="7" ry="3" />
+        </svg>
+        <span class="fly" aria-hidden="true"></span>
+        <span class="fly" aria-hidden="true"></span>
+        <span class="fly" aria-hidden="true"></span>
+        <span class="steam" id="steam" aria-hidden="true"></span>
+        <button class="moth" type="button" id="moth" aria-label="The moth on the kettle. Tap it gently.">
+          <svg viewBox="0 0 64 48" aria-hidden="true">
+            <path d="M32,8 C30,4 28,2 26,1" stroke="#8a7f70" stroke-width="1.4" fill="none" />
+            <path d="M32,8 C34,4 36,2 38,1" stroke="#8a7f70" stroke-width="1.4" fill="none" />
+            <g class="wing-l"><path d="M31,20 C20,4 4,6 8,20 C10,29 24,29 31,24 Z" fill="#a89a86" /></g>
+            <g class="wing-r"><path d="M33,20 C44,4 60,6 56,20 C54,29 40,29 33,24 Z" fill="#a89a86" /></g>
+            <ellipse cx="32" cy="26" rx="3" ry="11" fill="#6b5d4f" />
+            <circle cx="32" cy="14" r="3.4" fill="#6b5d4f" />
+          </svg>
+        </button>
+        <svg class="kettle" viewBox="0 0 120 90" aria-hidden="true">
+          <path d="M28,44 C28,30 40,22 60,22 C80,22 92,30 92,44 L92,66 C92,76 82,82 60,82 C38,82 28,76 28,66 Z" fill="#4a4438" />
+          <path d="M28,44 L12,34 L16,30 L30,38 Z" fill="#4a4438" />
+          <path d="M92,40 C104,38 106,52 94,56" stroke="#4a4438" stroke-width="5" fill="none" />
+          <path d="M46,22 C46,14 74,14 74,22 Z" fill="#5d564a" />
+          <circle cx="60" cy="13" r="4" fill="#6b5d4f" />
+          <ellipse cx="60" cy="48" rx="26" ry="12" fill="#5d564a" opacity=".55" />
+        </svg>
+        <div class="pebble" aria-hidden="true"></div>
+        <div class="cups" aria-hidden="true">
+          <span class="cup"></span>
+          <span class="cup"></span>
+          <span class="cup chipped"><span class="chip-note">the chipped one — string tied</span></span>
+          <span class="cup"></span>
+          <span class="cup"></span>
+          <span class="cup"></span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <svg class="pear" viewBox="0 0 34 34" aria-hidden="true">
+          <path d="M17,4 C24,10 28,18 24,26 C21,31 13,31 10,26 C6,18 10,10 17,4 Z" fill="#e8d9a8" stroke="#c9a86a" stroke-width="1.2" />
+          <circle cx="15" cy="20" r="1.6" fill="#8a6a3e" />
+          <circle cx="19" cy="23" r="1.6" fill="#8a6a3e" />
+        </svg>
+        <h1>From Mallow, <em>under the willow</em></h1>
+        <p class="to-line">For El Phantea — written slowly, in pencil, on dusk-grey paper.</p>
+        <p class="pear-note">One pear, cut into thin moons — pressed flat at the corner, still sweet.</p>
+
+        <div class="note">
+          <p>&ldquo;El Phantea, the kettle is on the flat pebble and the moth has
+          settled on the lid again. I set out the six cups and tied a length
+          of string around the one with the small chip so it would not be
+          forgotten.&rdquo;</p>
+          <p>&ldquo;The reader sat down while I thought, and the evening had room
+          for both of us. For whenever you have a little while.&rdquo;</p>
+          <p class="sig">&mdash; Mallow</p>
+        </div>
+
+        <p class="whisper" id="whisper" aria-live="polite">Tap the moth on the kettle &mdash; gently. It has settled for the evening.</p>
+
+        <button class="again" type="button" id="again" hidden>Let the moth settle &#8635;</button>
+
+        <div class="unlock" id="unlock">
+          &#129754; <b>Unlocks in the book:</b> the keepsake reverse of the hidden
+          chapter &mdash; the seventh cup, already waiting there, now carries a
+          faint margin note in pebble-beige: &ldquo;Mallow left this one for you.&rdquo;
+        </div>
+
+        <div class="footnote">№ 7 &middot; a reward letter &mdash; it arrives after Mallow is
+        found, and this page veils itself until then. The bundle of six stands
+        complete; this one waits under the willow.</div>
+      </div>
+    </div>
+  </main>
+
+<script>
+  var FOUND_KEY = 'piggie-sixth-mallow-found';
+  var veil = document.getElementById('veil');
+  var letter = document.getElementById('letterContent');
+  var room = document.getElementById('room');
+  var moth = document.getElementById('moth');
+  var steam = document.getElementById('steam');
+  var whisper = document.getElementById('whisper');
+  var unlock = document.getElementById('unlock');
+  var again = document.getElementById('again');
+
+  /* The gate: only readers who found Mallow see the letter. Safe default
+     (storage unavailable, flag absent) is veiled. */
+  var found = false;
+  try { found = !!localStorage.getItem(FOUND_KEY); } catch (e) { found = false; }
+  if (found) {
+    veil.hidden = true;
+    letter.hidden = false;
+  }
+
+  var settled = false;
+  moth.addEventListener('click', function () {
+    if (settled) {
+      whisper.textContent = 'It stays until the steam cools. The kettle remembers the evening.';
+      return;
+    }
+    settled = true;
+    moth.classList.add('flutter');
+    steam.classList.add('up');
+    room.classList.add('lit');
+    unlock.classList.add('lit');
+    again.hidden = false;
+    whisper.textContent = 'It stays until the steam cools. The kettle remembers the evening.';
+    setTimeout(function () { moth.classList.remove('flutter'); }, 1200);
+  });
+
+  again.addEventListener('click', function () {
+    settled = false;
+    steam.classList.remove('up');
+    room.classList.remove('lit');
+    unlock.classList.remove('lit');
+    again.hidden = true;
+    whisper.textContent = 'Tap the moth on the kettle — gently. It has settled for the evening.';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Whole Garden — a shelf of what's growing</title>
+<style>
+  :root{
+    --paper:#f7f1e2; --paper2:#fffdf6; --ink:#2e2a24; --ink-soft:#5c554a;
+    --green:#4a7a5c; --green-deep:#33543f; --gold:#b98a2f; --blue:#5b7d9a;
+    --rose:#c96f7a; --line:#ddd2b8; --chip:#efe6cf;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif; font-size:17px; line-height:1.55;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:20px 18px 48px}
+  header{text-align:center;padding:8px 0 4px}
+  header h1{font-size:1.7rem;line-height:1.2;margin:10px 0 4px;font-weight:600}
+  header .sub{color:var(--ink-soft);font-style:italic;margin:0 0 6px}
+  .pipkin{display:block;margin:0 auto}
+  .rule{border:0;border-top:2px solid var(--line);margin:18px 0}
+  .rule.gold{border-top-color:var(--gold)}
+  h2{font-size:1.25rem;margin:26px 0 4px;color:var(--green-deep)}
+  h2 .count{font-size:.8rem;color:var(--ink-soft);font-weight:400}
+  .lede{color:var(--ink-soft);margin:0 0 12px;font-size:.98rem}
+  .card{
+    display:block;background:var(--paper2);border:1px solid var(--line);
+    border-radius:14px;padding:14px 16px;margin:10px 0;text-decoration:none;color:inherit;
+    box-shadow:0 1px 0 rgba(46,42,36,.06);
+  }
+  a.card:hover,a.card:focus-visible{border-color:var(--gold);outline:2px solid var(--gold);outline-offset:1px}
+  .card .t{font-size:1.08rem;font-weight:600;line-height:1.3}
+  .card .d{color:var(--ink-soft);font-size:.95rem;margin-top:3px}
+  .tag{
+    display:inline-block;font-family:system-ui,-apple-system,sans-serif;font-size:.72rem;
+    letter-spacing:.04em;text-transform:uppercase;font-weight:700;
+    background:var(--chip);color:var(--green-deep);border-radius:999px;
+    padding:2px 9px;margin-left:8px;vertical-align:2px;white-space:nowrap;
+  }
+  .tag.live{background:#dcebd8;color:#2f5b34}
+  .tag.exp{background:#e3e9f2;color:#3d5a76}
+  .tag.quiet{background:#efe4ea;color:#7a4a56}
+  .tag.doc{background:#ece7db;color:var(--ink-soft)}
+  .start{display:flex;gap:10px;flex-wrap:wrap}
+  .start .card{flex:1 1 240px}
+  .note{
+    background:#f2e9d2;border:1px dashed var(--gold);border-radius:12px;
+    padding:12px 14px;font-size:.95rem;color:var(--ink-soft);margin:14px 0;
+  }
+  .note b{color:var(--ink)}
+  footer{margin-top:30px;color:var(--ink-soft);font-size:.9rem;text-align:center}
+  footer .small{font-size:.82rem}
+  @media (min-width:680px){
+    .wrap{max-width:720px;padding:28px 24px 64px}
+    header h1{font-size:2rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <!-- Pipkin, canon-true: round teal-green creature, mint belly, leaf sprout with a pink bud, side ears, cheek spots, two little feet. -->
+  <svg class="pipkin" width="96" height="104" viewBox="0 0 96 104" role="img" aria-label="Pipkin, the garden's guide">
+    <ellipse cx="48" cy="98" rx="26" ry="5" fill="#d8cdb2"/>
+    <ellipse cx="16" cy="52" rx="9" ry="12" fill="#79b8a6"/>
+    <ellipse cx="80" cy="52" rx="9" ry="12" fill="#79b8a6"/>
+    <circle cx="48" cy="56" r="34" fill="#79b8a6"/>
+    <ellipse cx="48" cy="70" rx="20" ry="16" fill="#cfe8d8"/>
+    <path d="M48 24 C 44 12, 52 8, 48 2 C 56 8, 54 16, 48 24 Z" fill="#5da271"/>
+    <circle cx="48" cy="6" r="5" fill="#e89bb0"/>
+    <circle cx="36" cy="52" r="4.5" fill="#2e2a24"/><circle cx="37.5" cy="50.5" r="1.5" fill="#fff"/>
+    <circle cx="60" cy="52" r="4.5" fill="#2e2a24"/><circle cx="61.5" cy="50.5" r="1.5" fill="#fff"/>
+    <circle cx="30" cy="62" r="4" fill="#f2c9c0" opacity=".8"/>
+    <circle cx="66" cy="62" r="4" fill="#f2c9c0" opacity=".8"/>
+    <path d="M42 64 Q 48 69 54 64" stroke="#2e2a24" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="36" cy="90" rx="7" ry="4" fill="#5da271"/>
+    <ellipse cx="60" cy="90" rx="7" ry="4" fill="#5da271"/>
+  </svg>
+  <h1>The Whole Garden</h1>
+  <p class="sub">A shelf of everything growing around <i>This Little Piggie Had Roast Meef</i> —<br>one door into every telling, clue, letter and fold-play so far.</p>
+</header>
+
+<hr class="rule gold">
+
+<section aria-label="Start here">
+  <h2>Start here</h2>
+  <p class="lede">Two doors first: the book as it lives today, and the newest telling of the sequel.</p>
+  <div class="start">
+    <a class="card" href="https://saelion.co/piggie">
+      <span class="t">The book, live<span class="tag live">Live · saelion.co</span></span>
+      <span class="d">Doors I–IX — the Listening Fix, the Narrator Shelf, Room to Breathe and Everfallen, with the credits song waiting at the end.</span>
+    </a>
+    <a class="card" href="garden-sequel-chapters-v0.8.html">
+      <span class="t">Planted a Garden — v0.8<span class="tag live">Latest telling</span></span>
+      <span class="d">Fifteen page-chapters, one growing season. Pipkin remembers the market, blooms with the sunflower, and holds the ribbon high for the golden seed.</span>
+    </a>
+  </div>
+</section>
+
+<section aria-label="The sequel">
+  <h2>The sequel — <i>Planted a Garden</i> <span class="count">the same five toes, counted again across a growing season</span></h2>
+  <p class="lede">Each telling is a whole book; the newest carries everything the earlier ones learned. Nothing here is published — these are staged for Sven's eye.</p>
+  <a class="card" href="garden-sequel-chapters-v0.7.html">
+    <span class="t">v0.7 — Pipkin Blooms With<span class="tag">Staged</span></span>
+    <span class="d">On a return visit he keeps the bloom's rhythm while you were away — one of the three taps is his.</span>
+  </a>
+  <a class="card" href="garden-sequel-chapters-v0.6.html">
+    <span class="t">v0.6 — Pipkin Remembers<span class="tag">Staged</span></span>
+    <span class="d">The two packets chosen at the market are already waiting in the square at chapter six, for a confirming tap.</span>
+  </a>
+  <a class="card" href="garden-sequel-chapters-v0.5.html">
+    <span class="t">v0.5 — El Phantea crosses over<span class="tag">Staged</span></span>
+    <span class="d">Found in the first book, she is here from the cover; new readers wake her in Margo's spare teacup.</span>
+  </a>
+  <a class="card" href="garden-sequel-chapters-v0.4.html">
+    <span class="t">v0.4 — two games rethought<span class="tag">Staged</span></span>
+    <span class="d">First Water becomes a swelling-ring catch; the Dry Week becomes a five-stone journey to the well.</span>
+  </a>
+  <a class="card" href="garden-sequel-chapters-v0.3.html">
+    <span class="t">v0.3 — a painting for every page<span class="tag">Staged</span></span>
+    <span class="d">The open book: painting on the left page, verse and game on the right, spine down the middle.</span>
+  </a>
+  <a class="card" href="garden-sequel-chapters-v0.2.html">
+    <span class="t">v0.2 — sound, voicing and the gap review<span class="tag">Staged</span></span>
+    <span class="d">The book's own tone family, baked George narration, and the six-voice audition for the narrator's chair.</span>
+  </a>
+  <a class="card" href="garden-sequel-chapters-v0.1.html">
+    <span class="t">v0.1 — the full-season draft<span class="tag">Staged</span></span>
+    <span class="d">Fifteen page-chapters first laid out, turn by turn, from market to home by the brook.</span>
+  </a>
+  <a class="card" href="garden-sequel-proto.html">
+    <span class="t">The first square — Wee's Own Square<span class="tag exp">Prototype</span></span>
+    <span class="d">Where it began: name a sunflower, plant her, tend her through five stages, keep her seeds in a named tin.</span>
+  </a>
+  <a class="card" href="garden-sequel-next-year.html">
+    <span class="t">Next Year's Square<span class="tag exp">Standalone</span></span>
+    <span class="d">Last year's tin, lent forward: tuck up to three seeds into a new square. The tin is never spent, only lent.</span>
+  </a>
+  <a class="card" href="minimal-view-garden.html">
+    <span class="t">The garden's bedtime view<span class="tag exp">Prototype</span></span>
+    <span class="d">Six quiet pages, one season — one painting, one verse, any tap turns the page, the crescent moon is the only way out.</span>
+  </a>
+  <a class="card" href="garden-narration/auditions.html">
+    <span class="t">The narrator auditions<span class="tag exp">Listen</span></span>
+    <span class="d">Six voices for the sequel's single narrator — Wikitoria, Bill, Lily, Megan, Thomas, Brian — waiting on Sven's ear.</span>
+  </a>
+</section>
+
+<section aria-label="The grown Pipkin experiments">
+  <h2>Grown Pipkin — the experiment file <span class="count">where new slices are tried before they fold in</span></h2>
+  <p class="lede">Remembers, Blooms With and Reaches have folded into the sequel proper. Guides — the First Water pouring demo — still waits here for Sven's word.</p>
+  <a class="card" href="garden-sequel-grown-pipkin-v0.2.html">
+    <span class="t">Grown Pipkin v0.2 — Blooms With<span class="tag exp">Experiment</span></span>
+    <span class="d">All four slices in one file: Guides, Remembers, Reaches, and the Bloom carry.</span>
+  </a>
+  <a class="card" href="garden-sequel-grown-pipkin-v0.1.html">
+    <span class="t">Grown Pipkin v0.1 — the first three<span class="tag exp">Experiment</span></span>
+    <span class="d">Guides, Remembers and Reaches as they were first built, before the Bloom slice joined them.</span>
+  </a>
+  <a class="card" href="garden-v0.5-experiment-lookphoto.html">
+    <span class="t">Dreamwalk look-and-photo<span class="tag exp">Experiment</span></span>
+    <span class="d">While Dreamwalk runs, the painting leans in; at the keepsake, the dream presses Copy on the rhyme. The lane says neither folds in — Sven decides.</span>
+  </a>
+</section>
+
+<section aria-label="The Sixth Piggie">
+  <h2>The Sixth Piggie — the quiet corner <span class="count">for the gardener's eye only</span></h2>
+  <p class="lede">Five clues, one per chapter, tied by a blue thread — and the hidden chapter they open. Listed plainly here because this shelf is Sven's; a public shelf would veil them and let the hunt do its own work.</p>
+  <a class="card" href="sixth-piggie-01-feast.html">
+    <span class="t">Clue 1 — the feast's sixth place<span class="tag quiet">Quiet</span></span>
+    <span class="d">Five plates, and one more tucked behind the bread basket. A pear moon disappears; the napkin hem reads <i>“Leave a little room.”</i></span>
+  </a>
+  <a class="card" href="sixth-piggie-02-market.html">
+    <span class="t">Clue 2 — prints by the well<span class="tag quiet">Quiet</span></span>
+    <span class="d">Six small prints cross the damp patch — five to market, one turning aside toward the thyme.</span>
+  </a>
+  <a class="card" href="sixth-piggie-03-cottage.html">
+    <span class="t">Clue 3 — the hollow in the cushion<span class="tag quiet">Quiet</span></span>
+    <span class="d">Behind the mending basket, the window-seat cushion keeps one shallow hollow, as if someone small sat there a little while.</span>
+  </a>
+  <a class="card" href="sixth-piggie-04-tea.html">
+    <span class="t">Clue 4 — the tea party's sixth chair<span class="tag quiet">Quiet</span></span>
+    <span class="d">A tablecloth hem hangs a little longer on one side than it should. Behind it, a small chair — and a cup already poured, still warm.</span>
+  </a>
+  <a class="card" href="sixth-piggie-05-brook.html">
+    <span class="t">Clue 5 — the stone apart<span class="tag quiet">Quiet</span></span>
+    <span class="d">One stone apart beneath the willow, dry, with a blue ribbon and two close-set hoofmarks. Touch it, and the door opens.</span>
+  </a>
+  <a class="card" href="sixth-piggie-06-mallows-little-while.html">
+    <span class="t">The hidden chapter — Mallow's Little While<span class="tag quiet">Quiet</span></span>
+    <span class="d">Mallow, soft-grey with one ear folded forward: <i>“You can sit down while I think.”</i> Six fireflies, one moth, tea for whoever is still thinking.</span>
+  </a>
+  <a class="card" href="sixth-piggie-bonus-sharing-cloth.html">
+    <span class="t">Bonus — the sharing cloth<span class="tag quiet">Quiet</span></span>
+    <span class="d">The embroidered piggie at the cloth's edge, her basket holding a feather and a fallen blossom. <i>“Room for one more, always.”</i></span>
+  </a>
+</section>
+
+<section aria-label="Tea Letters">
+  <h2>El Phantea's Tea Letters <span class="count">postcards from a pocket elephant — six of six, one that arrives afterwards, one from the postmistress herself, and now one in footprints</span></h2>
+  <p class="lede">Each letter is a tap-to-unfold postcard in the ic.lov manner, and each unlocks a tiny interaction in the book. The bundle is complete — and one more waits under the willow for readers who have found Mallow, and now the postmistress herself has written back, and Pipkin has written in footprints.</p>
+  <a class="card" href="tea-letter-01-margo.html">
+    <span class="t">1 · Margo — dusk-rose<span class="tag">Letter</span></span>
+    <span class="d">Three baskets under a striped awning, and a paper twist of the good rose. Mind the tablecloth.</span>
+  </a>
+  <a class="card" href="tea-letter-02-wee.html">
+    <span class="t">2 · Wee — the hoofprint letter<span class="tag">Letter</span></span>
+    <span class="d">Six neat trot marks and one smudged extra. Hop the brook stones; mind the sock and mind the door.</span>
+  </a>
+  <a class="card" href="tea-letter-03-rocco.html">
+    <span class="t">3 · Rocco — the feast note<span class="tag">Letter</span></span>
+    <span class="d">The quiet end of the bone, which makes a decent spoon — and keeps tea warm two minutes longer.</span>
+  </a>
+  <a class="card" href="tea-letter-04-hazel.html">
+    <span class="t">4 · Hazel — the cottage letter<span class="tag">Letter</span></span>
+    <span class="d">A half-open door, lamplight on moss-green steps, and three thyme seeds — one for the sill, one for the soup, one to keep.</span>
+  </a>
+  <a class="card" href="tea-letter-05-clove.html">
+    <span class="t">5 · Clove — the lavender bells<span class="tag">Letter</span></span>
+    <span class="d">Three silver bells, each tap ringing softer than the last, until the steam stands up straight.</span>
+  </a>
+  <a class="card" href="tea-letter-06-brook.html">
+    <span class="t">6 · The brook stones — the world's own letter<span class="tag">Letter</span></span>
+    <span class="d">Written by water on crinkled grey paper: the middle stone is kept warm for small feet.</span>
+  </a>
+  <a class="card" href="tea-letter-07-mallow.html">
+    <span class="t">7 · Mallow writes back — a reward letter<span class="tag quiet">Quiet</span></span>
+    <span class="d">The kettle is on the flat pebble and the moth has settled on the lid again. It arrives only after Mallow is found — the page veils itself until then.</span>
+  </a>
+  <a class="card" href="tea-letter-08-elphantea.html">
+    <span class="t">8 · El Phantea writes back — the postmistress's own letter<span class="tag">Letter</span></span>
+    <span class="d">The dusk-rose blend, the smallest cup first, and her own question: one lump, or two? Open to every reader — she delivers to all.</span>
+  </a>
+  <a class="card" href="tea-letter-09-pipkin.html">
+    <span class="t">9 · Pipkin writes — in footprints<span class="tag">Letter</span></span>
+    <span class="d">Eight small footprints hopping to one pressed sprout. Tap it and he hops — "That tickles!", "Again! Again!" — and the bud quivers, still closed. Open to every reader.</span>
+  </a>
+</section>
+
+<section aria-label="Play styles">
+  <h2>Play styles — Origami &amp; the Minimal View</h2>
+  <p class="lede">Two ways of playing the same garden: fold it, or sit quietly in it.</p>
+  <a class="card" href="origami-sunflower-fold-play-kit-v2.html">
+    <span class="t">Origami sunflower — kit build, mobile pass<span class="tag live">Live on Storeybrook too</span></span>
+    <span class="d">The sunflower as origami on the real Storeybrook kit (v1.1.0, pinned): tuck, water, breathe, three gentle taps to bloom. Phone-first.</span>
+  </a>
+  <a class="card" href="origami-sunflower-fold-play-kit.html">
+    <span class="t">Origami sunflower — kit build<span class="tag">Staged</span></span>
+    <span class="d">The same fold-play rebuilt on the kit snapshot — the proof that the kit is the source of truth.</span>
+  </a>
+  <a class="card" href="origami-sunflower-fold-play.html">
+    <span class="t">Origami sunflower — hand-rolled<span class="tag exp">Prototype</span></span>
+    <span class="d">The first sunflower fold-play, warm and hand-made, before the kit rebuild.</span>
+  </a>
+  <a class="card" href="origami-fold-play.html">
+    <span class="t">Origami piggie — the first fold-play<span class="tag exp">Prototype</span></span>
+    <span class="d">Fold the paper piggie through the rhyme — ear, blanket, snout, tail — then unfold her into a golden map of the journey home.</span>
+  </a>
+  <a class="card" href="minimal-view.html">
+    <span class="t">Minimal view — the first book at bedtime<span class="tag exp">Prototype</span></span>
+    <span class="d">One painting, one verse, nothing else. Any tap turns the page; the faded crescent moon is the only way out.</span>
+  </a>
+</section>
+
+<section aria-label="For the gardener">
+  <h2>For the gardener <span class="count">the plan, the seeds, the audits</span></h2>
+  <p class="lede">Where the garden stands, what the lanes said, and what was checked by eye.</p>
+  <a class="card" href="PLAN.md">
+    <span class="t">The living plan<span class="tag doc">Note</span></span>
+    <span class="d">Every strand, every telling, every open call — the garden's own record.</span>
+  </a>
+  <a class="card" href="DESIGN-SEEDS.md">
+    <span class="t">Design seeds — the Saedo round<span class="tag doc">Note</span></span>
+    <span class="d">Four lanes, four briefs: the Sixth Piggie, the sequel outline, Origami &amp; Minimal View, the Tea Letters.</span>
+  </a>
+  <a class="card" href="KIT-PRACTICE.md">
+    <span class="t">Kit practice<span class="tag doc">Note</span></span>
+    <span class="d">The kit is the source of truth; builds inline a pinned snapshot; the colophon stamps the version.</span>
+  </a>
+  <a class="card" href="PAINTING-AUDIT.md">
+    <span class="t">The painting audit<span class="tag doc">Note</span></span>
+    <span class="d">All fifteen sequel paintings actually viewed and logged — 15/15 pass, zero regenerations.</span>
+  </a>
+  <a class="card" href="sequel-gap-review.md">
+    <span class="t">The sequel gap review<span class="tag doc">Note</span></span>
+    <span class="d">What v1 lacked, and what v2 set out to fix — the diagnosis behind the sound, the type and the paintings.</span>
+  </a>
+</section>
+
+<div class="note">
+  <b>Staged, not published.</b> Everything on this shelf lives in the studio
+  until Sven's word moves it — the live book is the only door already on
+  saelion.co. The Sixth Piggie clues are listed plainly here for the
+  gardener; a public shelf would veil them. The autumn cottage painting is
+  © Anelyn (@AnetteElbeck on X) wherever it appears in the books.
+</div>
+
+<hr class="rule">
+
+<footer>
+  <p>What's still open, for Sven's eye and ear:<br>
+  the Fold playtest of v0.8 · the narrator ranking · whether Guides folds in next ·<br>
+  Next Year's Square, standalone or folded · the look-and-photo touches · the Door VI reconciliation.</p>
+  <p class="small">Built 2026-11-18, heartbeat run. One file, no scripts, no outside calls —<br>
+  it only opens doors that are already here.</p>
+</footer>
+
+</div>
+</body>
+</html>

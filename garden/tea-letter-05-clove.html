@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tea Letter № 5 — Clove's Three Bells</title>
+<style>
+  :root{
+    --lav:#efe8f4; --lav-deep:#ddd0e8; --paper:#fdfbf6; --ink:#463f52;
+    --ink-soft:#8a8196; --silver:#b9bec9; --silver-deep:#8f96a6;
+    --goat:#f2ede2; --goat-deep:#d8cfba; --steam:#9aa3b5; --gold:#c9a86a;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(900px 420px at 50% -10%, #f4eefb 0%, transparent 60%),
+      linear-gradient(180deg, #e9e1f2 0%, #d3c8e2 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  /* ---------- the card: lavender, silver bells ---------- */
+  .card{
+    width:min(560px, 100%); background:var(--paper); border-radius:10px;
+    box-shadow:0 2px 0 #c9bcd6, 0 18px 44px rgba(90,70,120,.30);
+    overflow:hidden; position:relative;
+    border:10px solid var(--lav);
+    outline:1px dashed #c4b6d4; outline-offset:-6px;
+  }
+  /* ---------- the market-lane scene ---------- */
+  .scene{
+    height:250px; position:relative; overflow:hidden;
+    background:linear-gradient(180deg, #cfc2e4 0%, #e6dcf0 55%, #f3ecda 100%);
+  }
+  .scene svg.bg{ position:absolute; inset:0; width:100%; height:100%; }
+  /* the bells, hung from a silver string */
+  .bells{
+    position:absolute; left:0; right:0; top:26px; display:flex; gap:26px;
+    justify-content:center; align-items:flex-start;
+  }
+  .bell-btn{
+    border:0; background:none; cursor:pointer; padding:0; position:relative;
+    -webkit-tap-highlight-color:transparent; transition:transform .3s ease;
+  }
+  .bell-btn:focus-visible{ outline:3px solid var(--gold); outline-offset:4px; border-radius:50%; }
+  .bell-btn svg{ width:78px; height:96px; overflow:visible; display:block; }
+  .bell-btn .string{ stroke:var(--silver-deep); stroke-width:2; }
+  .bell-btn .dome{ fill:url(#silverGrad); stroke:var(--silver-deep); stroke-width:2; }
+  .bell-btn .clapper{ fill:var(--gold); transition:transform .2s ease; transform-origin:39px 84px; }
+  .bell-btn.ringing .clapper{ animation:swing .7s ease-in-out; }
+  .bell-btn.ringing{ animation:sway .7s ease-in-out; }
+  .bell-btn.rung{ opacity:.75; }
+  @keyframes swing{ 0%,100%{ transform:rotate(0); } 25%{ transform:rotate(14deg); } 75%{ transform:rotate(-14deg); } }
+  @keyframes sway{ 0%,100%{ transform:rotate(0); } 25%{ transform:rotate(4deg); } 75%{ transform:rotate(-4deg); } }
+  .bell-btn .thread-loop{
+    fill:none; stroke:var(--gold); stroke-width:2; stroke-dasharray:4 3;
+  }
+  .ring-note{
+    position:absolute; left:50%; top:-6px; transform:translateX(-50%);
+    font-size:1.5rem; color:var(--silver-deep); opacity:0; pointer-events:none;
+  }
+  .bell-btn.ringing .ring-note{ animation:floatNote 1.4s ease forwards; }
+  @keyframes floatNote{
+    0%{ opacity:0; transform:translateX(-50%) translateY(8px) scale(.7); }
+    25%{ opacity:1; }
+    100%{ opacity:0; transform:translateX(-50%) translateY(-26px) scale(1.15); }
+  }
+  .bell-btn:nth-child(2) .ring-note{ font-size:1.2rem; }
+  .bell-btn:nth-child(3) .ring-note{ font-size:.95rem; }
+  /* the teapot, waiting below; its steam stands straight when the tea is ready */
+  .teapot{
+    position:absolute; left:50%; bottom:18px; transform:translateX(-50%);
+    width:110px; height:84px; opacity:.6; transition:opacity .8s ease;
+  }
+  .teapot.ready{ opacity:1; }
+  .teapot .steam-wavy{ transition:opacity .8s ease; }
+  .teapot .steam-straight{ opacity:0; transition:opacity .8s ease; }
+  .teapot.ready .steam-wavy{ opacity:0; }
+  .teapot.ready .steam-straight{ opacity:1; }
+  /* ---------- the letter ---------- */
+  .card-body{ padding:1.9rem 2rem 1.6rem; text-align:center; position:relative; z-index:2; }
+  h1{ margin:.2rem 0 0; font-size:1.5rem; font-weight:400; line-height:1.3; }
+  h1 em{ color:#7a6a92; font-style:italic; }
+  .to-line{ margin:.55rem 0 0; color:var(--ink-soft); font-style:italic; }
+  .note{
+    margin:1.1rem auto 0; max-width:430px; text-align:left;
+    font-family:"Segoe Script","Bradley Hand","Comic Sans MS",cursive;
+    font-size:1.18rem; line-height:1.65;
+  }
+  .note .sig{ text-align:right; margin-top:.7rem; font-family:Georgia,serif; font-style:italic; color:var(--ink-soft); }
+  .whisper{ min-height:1.4em; font-style:italic; color:var(--ink-soft); margin:1rem 0 0; }
+  .hum{
+    margin:1.2rem auto 0; padding:.9rem 1.1rem; border:1px dashed #c4b6d4; border-radius:8px;
+    background:#f3eef9; font-size:1.02rem; line-height:1.6; opacity:.4;
+    transition:opacity .8s ease;
+  }
+  .hum.lit{ opacity:1; }
+  .hum b{ color:#7a6a92; }
+  .hum .notes{ font-size:1.4rem; letter-spacing:.3em; }
+  .again{
+    margin-top:1.1rem; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+  }
+  .unlock{
+    margin:1.6rem -2rem -1.6rem; padding:1rem 2rem 1.2rem;
+    background:var(--lav); border-top:1px dashed #c4b6d4;
+    font-size:.92rem; line-height:1.55; opacity:.45;
+    transition:opacity .8s ease;
+  }
+  .unlock.lit{ opacity:1; }
+  .unlock b{ color:#7a6a92; }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .kicker, .whisper, .again{ display:none; }
+    .card{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="kicker">El Phantea's Tea Letters · № 5 of 6</div>
+
+  <main class="card">
+    <div class="scene" aria-label="Clove the goat's market lane, three silver bells above a little teapot">
+      <svg class="bg" viewBox="0 0 560 250" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="silverGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#e8ecf2"/>
+            <stop offset="55%" stop-color="#c3c9d6"/>
+            <stop offset="100%" stop-color="#9aa1b2"/>
+          </linearGradient>
+        </defs>
+        <!-- market-lane awning edge and a small goat -->
+        <rect x="0" y="196" width="560" height="54" fill="#e6dcc4"/>
+        <rect x="0" y="196" width="560" height="6" fill="#c9b98f"/>
+        <!-- Clove, peeking from the lane -->
+        <g>
+          <ellipse cx="452" cy="196" rx="52" ry="34" fill="#f2ede2" stroke="#d8cfba" stroke-width="2"/>
+          <ellipse cx="452" cy="182" rx="30" ry="26" fill="#f2ede2" stroke="#d8cfba" stroke-width="2"/>
+          <path d="M430 164 Q 424 140 412 136 M474 164 Q 480 140 492 136" fill="none" stroke="#c9b98f" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="426" cy="168" rx="10" ry="7" fill="#f2ede2" stroke="#d8cfba" stroke-width="1.5"/>
+          <ellipse cx="478" cy="168" rx="10" ry="7" fill="#f2ede2" stroke="#d8cfba" stroke-width="1.5"/>
+          <circle cx="444" cy="180" r="3" fill="#463f52"/>
+          <circle cx="460" cy="180" r="3" fill="#463f52"/>
+          <path d="M446 192 Q 452 197 458 192" fill="none" stroke="#8a8196" stroke-width="2" stroke-linecap="round"/>
+          <path d="M452 194 q -4 8 0 12 q 4 -4 0 -12" fill="#d8cfba"/>
+        </g>
+        <!-- a sprig of lavender by the lane -->
+        <path d="M96 196 Q 100 160 96 138" fill="none" stroke="#7a6a92" stroke-width="2"/>
+        <ellipse cx="96" cy="132" rx="7" ry="14" fill="#9a8ab5"/>
+        <ellipse cx="88" cy="148" rx="5" ry="9" fill="#b3a4cc" transform="rotate(-20 88 148)"/>
+        <ellipse cx="104" cy="148" rx="5" ry="9" fill="#b3a4cc" transform="rotate(20 104 148)"/>
+      </svg>
+
+      <div class="bells">
+        <button class="bell-btn" type="button" aria-label="First silver bell. Tap to ring it.">
+          <svg viewBox="0 0 78 96" aria-hidden="true">
+            <line class="string" x1="39" y1="0" x2="39" y2="18"/>
+            <path class="dome" d="M14 78 Q 14 34 39 34 Q 64 34 64 78 Q 64 84 58 84 L 20 84 Q 14 84 14 78 Z"/>
+            <circle class="clapper" cx="39" cy="88" r="6"/>
+          </svg>
+          <span class="ring-note" aria-hidden="true">♪</span>
+        </button>
+        <button class="bell-btn" type="button" aria-label="Second silver bell. Tap to ring it, softer than the first.">
+          <svg viewBox="0 0 78 96" aria-hidden="true">
+            <line class="string" x1="39" y1="0" x2="39" y2="18"/>
+            <path class="dome" d="M14 78 Q 14 34 39 34 Q 64 34 64 78 Q 64 84 58 84 L 20 84 Q 14 84 14 78 Z"/>
+            <circle class="clapper" cx="39" cy="88" r="6"/>
+          </svg>
+          <span class="ring-note" aria-hidden="true">♪</span>
+        </button>
+        <button class="bell-btn" type="button" aria-label="Third silver bell, with a real thread loop. Tap to ring it, softest of all.">
+          <svg viewBox="0 0 78 96" aria-hidden="true">
+            <line class="string" x1="39" y1="0" x2="39" y2="18"/>
+            <ellipse class="thread-loop" cx="39" cy="10" rx="7" ry="9"/>
+            <path class="dome" d="M14 78 Q 14 34 39 34 Q 64 34 64 78 Q 64 84 58 84 L 20 84 Q 14 84 14 78 Z"/>
+            <circle class="clapper" cx="39" cy="88" r="6"/>
+          </svg>
+          <span class="ring-note" aria-hidden="true">♪</span>
+        </button>
+      </div>
+
+      <svg class="teapot" id="teapot" viewBox="0 0 110 84" aria-hidden="true">
+        <path class="steam-wavy" d="M50 26 Q 44 16 50 8 Q 56 0 50 -6" fill="none" stroke="#9aa3b5" stroke-width="2" stroke-linecap="round"/>
+        <path class="steam-wavy" d="M64 26 Q 58 16 64 8" fill="none" stroke="#9aa3b5" stroke-width="2" stroke-linecap="round"/>
+        <path class="steam-straight" d="M50 26 L 50 0 M64 26 L 64 0" fill="none" stroke="#9aa3b5" stroke-width="2" stroke-linecap="round"/>
+        <path d="M30 34 Q 30 28 44 28 L 74 28 Q 88 28 88 40 Q 88 62 66 62 L 42 62 Q 30 62 30 50 Z" fill="#fdfbf6" stroke="#8f96a6" stroke-width="2"/>
+        <path d="M30 40 Q 18 38 18 50 Q 18 58 28 56" fill="none" stroke="#8f96a6" stroke-width="2"/>
+        <rect x="82" y="38" width="10" height="14" rx="3" fill="none" stroke="#8f96a6" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <div class="card-body">
+      <h1>From Clove the goat, in the market lane,<br><em>where the bells ring softer</em></h1>
+      <p class="to-line">For El Phantea — three rings, and the tea is ready.</p>
+
+      <div class="note">
+        <p>“Bells ring softer when the tea is ready; I counted three rings
+        before the steam stood up straight.”</p>
+        <p class="sig">— Clove 🐐</p>
+      </div>
+
+      <p class="whisper" id="whisper" aria-live="polite">Tap each silver bell — the first rings bright, the next softer, the last softest of all. The third bell wears a little thread loop.</p>
+
+      <div class="hum" id="hum">
+        <span class="notes" aria-hidden="true">♪ &nbsp;♩ &nbsp;♪</span><br>
+        <b>El Phantea's pouring hum:</b> three soft notes, each gentler than
+        the last — the sound the narration will hum whenever she pours.
+      </div>
+      <button class="again" type="button" id="again" hidden>Ring the bells again ↻</button>
+
+      <div class="unlock" id="unlock">
+        🔔 <b>Unlocks in the book:</b> a gentle three-note hum the narration
+        uses whenever El Phantea pours — never a chime that startles, always
+        the sound of tea being ready.
+      </div>
+    </div>
+  </main>
+
+<script>
+  const bellBtns = Array.from(document.querySelectorAll('.bell-btn'));
+  const teapot = document.getElementById('teapot');
+  const whisper = document.getElementById('whisper');
+  const hum = document.getElementById('hum');
+  const unlock = document.getElementById('unlock');
+  const again = document.getElementById('again');
+  let rung = 0;
+  const lines = [
+    'One ring, bright and clear — two more to go.',
+    'Two rings, softer now — one more, the softest.',
+    'Three rings, soft as breath — look, the steam stands up straight. The tea is ready.'
+  ];
+
+  bellBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('rung')) return;
+      btn.classList.add('rung', 'ringing');
+      rung += 1;
+      whisper.textContent = lines[rung - 1];
+      setTimeout(() => btn.classList.remove('ringing'), 750);
+      if (rung === 3) {
+        teapot.classList.add('ready');
+        hum.classList.add('lit');
+        unlock.classList.add('lit');
+        again.hidden = false;
+      }
+    });
+  });
+
+  again.addEventListener('click', () => {
+    rung = 0;
+    bellBtns.forEach((b) => b.classList.remove('rung', 'ringing'));
+    teapot.classList.remove('ready');
+    hum.classList.remove('lit');
+    unlock.classList.remove('lit');
+    again.hidden = true;
+    whisper.textContent = 'Tap each silver bell — the first rings bright, the next softer, the last softest of all. The third bell wears a little thread loop.';
+  });
+</script>
+</body>
+</html>

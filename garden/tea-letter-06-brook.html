@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tea Letter № 6 — The Brook Stones Write Back</title>
+<style>
+  :root{
+    --grey:#e8e6e0; --grey-deep:#d5d2ca; --paper:#f4f2ec; --ink:#3d4348;
+    --ink-soft:#7a8288; --river:#c8dbe2; --river-deep:#a8c6d0;
+    --moss-dull:#8a9a6a; --moss-bright:#4f9e3f; --gold:#c9962e; --leaf:#7d9b57;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(1000px 480px at 50% -10%, #f0efea 0%, transparent 60%),
+      linear-gradient(180deg, #e8e6e0 0%, #d0d8da 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  /* ---------- the card: paper that dried crinkled ---------- */
+  .card{
+    width:min(560px, 100%); background:var(--paper); border-radius:8px;
+    box-shadow:0 2px 0 #cfccc2, 0 18px 44px rgba(70,85,90,.28);
+    overflow:hidden; position:relative;
+    background-image:
+      radial-gradient(220px 120px at 18% 22%, rgba(255,255,255,.55) 0%, transparent 70%),
+      radial-gradient(260px 140px at 82% 78%, rgba(190,190,175,.28) 0%, transparent 70%),
+      radial-gradient(180px 100px at 70% 18%, rgba(255,255,255,.35) 0%, transparent 70%);
+  }
+  /* ---------- the brook ---------- */
+  .brook{
+    height:190px; position:relative; overflow:hidden; cursor:pointer;
+    background:linear-gradient(180deg, var(--river-deep) 0%, var(--river) 55%, #eef4f5 100%);
+  }
+  .brook::before, .brook::after{
+    content:""; position:absolute; left:-20px; right:-20px; height:26px;
+    border-radius:50%; border:2px solid rgba(255,255,255,.6); border-bottom:0;
+  }
+  .brook::before{ top:30px; transform:rotate(-2deg); }
+  .brook::after{ top:96px; transform:rotate(1.5deg); opacity:.6; }
+  .brook .bank{
+    position:absolute; left:0; right:0; bottom:0; height:20px;
+    background:linear-gradient(180deg, #cfe3c0, #b8d3a4);
+    border-top:2px dashed rgba(255,255,255,.7);
+  }
+  .ripple{
+    position:absolute; width:14px; height:14px; border:2px solid rgba(255,255,255,.9);
+    border-radius:50%; pointer-events:none; transform:translate(-50%,-50%);
+    animation:ripple 1s ease-out forwards;
+  }
+  @keyframes ripple{ to{ width:90px; height:90px; opacity:0; } }
+  /* ---------- the stones ---------- */
+  .stones{ position:absolute; left:0; right:0; bottom:16px; height:120px; }
+  .stone{
+    position:absolute; border:0; cursor:pointer; padding:0;
+    background:#fdfcf8; border-radius:50%;
+    box-shadow:0 4px 0 rgba(90,130,145,.25), 0 8px 14px rgba(50,90,105,.25),
+      inset 0 -6px 10px rgba(180,210,220,.6);
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .25s ease, box-shadow .25s ease;
+    min-width:56px; min-height:44px;
+  }
+  .stone:hover, .stone:focus-visible{ transform:translateY(-3px) scale(1.04); }
+  .stone:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .stone:nth-child(1){ left:3%;  bottom:10px; width:74px; height:52px; }
+  .stone:nth-child(2){ left:21%; bottom:48px; width:66px; height:48px; }
+  .stone:nth-child(3){ left:40%; bottom:14px; width:82px; height:56px; }
+  .stone:nth-child(4){ left:60%; bottom:50px; width:66px; height:48px; }
+  .stone:nth-child(5){ left:80%; bottom:14px; width:70px; height:50px; }
+  .stone .moss{
+    position:absolute; left:50%; top:18%; transform:translateX(-50%);
+    width:34px; height:16px; border-radius:50%;
+    background:var(--moss-dull); opacity:.65;
+    transition:background .8s ease, opacity .8s ease, box-shadow .8s ease;
+  }
+  .stone.warm{ box-shadow:0 1px 0 rgba(90,130,145,.25), 0 3px 8px rgba(50,90,105,.2), inset 0 0 0 3px rgba(201,150,46,.55); }
+  .stone.warm .moss{
+    background:var(--moss-bright); opacity:1;
+    box-shadow:0 0 18px rgba(79,158,63,.65);
+  }
+  .stone .warmth{
+    position:absolute; left:50%; bottom:-22px; transform:translateX(-50%);
+    font-size:.72rem; font-style:italic; color:#8a6a1e; opacity:0;
+    transition:opacity .8s ease; white-space:nowrap;
+  }
+  .stone.warm .warmth{ opacity:1; }
+  /* ---------- the letter ---------- */
+  .card-body{ padding:1.9rem 2rem 1.6rem; text-align:center; position:relative; }
+  h1{ margin:.2rem 0 0; font-size:1.5rem; font-weight:400; line-height:1.3; }
+  h1 em{ color:#5d7a72; font-style:italic; }
+  .to-line{ margin:.55rem 0 0; color:var(--ink-soft); font-style:italic; }
+  .leaf{
+    position:absolute; top:1.1rem; right:1.4rem; font-size:1.6rem;
+    transform:rotate(18deg); transition:transform .8s ease; transform-origin:bottom left;
+  }
+  .leaf.lifted{ transform:rotate(-8deg) translateY(-4px); }
+  .leaf-note{ margin:1.1rem 0 0; font-size:.8rem; color:var(--ink-soft); }
+  .note{
+    margin:1rem auto 0; max-width:430px; text-align:left;
+    font-family:"Segoe Script","Bradley Hand","Comic Sans MS",cursive;
+    font-size:1.18rem; line-height:1.65;
+  }
+  .note .sig{ text-align:right; margin-top:.7rem; font-family:Georgia,serif; font-style:italic; color:var(--ink-soft); }
+  .whisper{ min-height:1.4em; font-style:italic; color:var(--ink-soft); margin:1rem 0 0; }
+  .again{
+    margin-top:1.1rem; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+  }
+  .unlock{
+    margin:1.6rem -2rem -1.6rem; padding:1rem 2rem 1.2rem;
+    background:var(--grey); border-top:1px dashed #b9b6ac;
+    font-size:.92rem; line-height:1.55; opacity:.45;
+    transition:opacity .8s ease;
+  }
+  .unlock.lit{ opacity:1; }
+  .unlock b{ color:#5d7a72; }
+  @media print{
+    body{ background:#fff; padding:0; }
+    .kicker, .whisper, .again{ display:none; }
+    .card{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="kicker">El Phantea's Tea Letters · № 6 of 6</div>
+
+  <main class="card">
+    <div class="brook" id="brook" aria-label="The brook, with five stepping stones. Tap the water to ripple it, tap a stone to feel it.">
+      <div class="stones" id="stones">
+        <button class="stone" type="button" aria-label="First stepping stone"><span class="moss" aria-hidden="true"></span><span class="warmth" aria-hidden="true">warm</span></button>
+        <button class="stone" type="button" aria-label="Second stepping stone"><span class="moss" aria-hidden="true"></span><span class="warmth" aria-hidden="true">warm</span></button>
+        <button class="stone" type="button" aria-label="Middle stepping stone, the warm one"><span class="moss" aria-hidden="true"></span><span class="warmth" aria-hidden="true">warm, kept for small feet</span></button>
+        <button class="stone" type="button" aria-label="Fourth stepping stone"><span class="moss" aria-hidden="true"></span><span class="warmth" aria-hidden="true">warm</span></button>
+        <button class="stone" type="button" aria-label="Fifth stepping stone"><span class="moss" aria-hidden="true"></span><span class="warmth" aria-hidden="true">warm</span></button>
+      </div>
+      <div class="bank" aria-hidden="true"></div>
+    </div>
+
+    <div class="card-body">
+      <span class="leaf" id="leaf" aria-hidden="true">🍃</span>
+      <h1>From the brook stones themselves,<br><em>written by water</em></h1>
+      <p class="to-line">For El Phantea — the paper dried crinkled, like all water-letters do.</p>
+      <p class="leaf-note">One pressed leaf, glued at the corner, still smelling faintly of rain.</p>
+
+      <div class="note">
+        <p>“We keep the middle one warm for small feet; tell Pipkin the
+        green moss is his step now.”</p>
+        <p class="sig">— The Brook Stones</p>
+      </div>
+
+      <p class="whisper" id="whisper" aria-live="polite">Tap the water to ripple it. Then tap the stones, one by one, and feel which one the brook kept warm.</p>
+
+      <button class="again" type="button" id="again" hidden>Let the water settle ↻</button>
+
+      <div class="unlock" id="unlock">
+        🍃 <b>Unlocks in the book:</b> the hop-home page's stepping-stone
+        illustration changes — the moss on Pipkin's stone a brighter green,
+        forever, on every reread. Nothing is awarded. The world simply answers.
+      </div>
+    </div>
+  </main>
+
+<script>
+  const brook = document.getElementById('brook');
+  const stones = [...document.querySelectorAll('.stone')];
+  const whisper = document.getElementById('whisper');
+  const unlock = document.getElementById('unlock');
+  const again = document.getElementById('again');
+  const leaf = document.getElementById('leaf');
+  const middle = stones[2];
+  let found = false;
+
+  brook.addEventListener('click', (e) => {
+    if (e.target.closest('.stone')) return;
+    const r = brook.getBoundingClientRect();
+    const dot = document.createElement('span');
+    dot.className = 'ripple';
+    dot.style.left = (e.clientX - r.left) + 'px';
+    dot.style.top = (e.clientY - r.top) + 'px';
+    brook.appendChild(dot);
+    setTimeout(() => dot.remove(), 1050);
+  });
+
+  stones.forEach((stone, i) => {
+    stone.addEventListener('click', () => {
+      if (stone === middle) {
+        if (!found) {
+          found = true;
+          stone.classList.add('warm');
+          leaf.classList.add('lifted');
+          unlock.classList.add('lit');
+          again.hidden = false;
+          whisper.textContent = 'Warm — the middle stone, kept for small feet. Look: its moss is greener already.';
+        } else {
+          whisper.textContent = 'Still warm. The brook keeps it so, for Pipkin.';
+        }
+      } else {
+        const coolLines = {
+          0: 'Cool and smooth — not this one.',
+          1: 'Cool, with a little splash — keep feeling.',
+          3: 'Cool and steady — the warm one is waiting.',
+          4: 'Cool and quiet — try the middle.'
+        };
+        whisper.textContent = found
+          ? 'Cool and smooth — the warm one is the middle stone, kept for small feet.'
+          : (coolLines[i] || 'Cool and smooth — not this one.');
+      }
+    });
+  });
+
+  again.addEventListener('click', () => {
+    found = false;
+    middle.classList.remove('warm');
+    leaf.classList.remove('lifted');
+    unlock.classList.remove('lit');
+    again.hidden = true;
+    whisper.textContent = 'Tap the water to ripple it. Then tap the stones, one by one, and feel which one the brook kept warm.';
+  });
+</script>
+</body>
+</html>

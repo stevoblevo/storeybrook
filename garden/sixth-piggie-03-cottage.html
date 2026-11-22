@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sixth Piggie · Clue at Hazel's Cottage</title>
+<style>
+  :root{
+    --cream:#f7efe0; --cream-deep:#eedfc2; --ink:#46392c; --ink-soft:#8a7a64;
+    --blue:#5b7fa6; --blue-deep:#3f6288; --gold:#c9962e;
+    --sage:#7d9b76; --sage-deep:#5d7a57; --linen:#efe6d2; --rose:#c98a7a;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:2rem 1rem 3rem; color:var(--ink);
+    font-family:Georgia,Palatino,"Times New Roman",serif;
+    background:
+      radial-gradient(900px 420px at 50% -10%, #fdf8ec 0%, transparent 60%),
+      linear-gradient(180deg, #f3e8d2 0%, #e2cfae 100%);
+  }
+  .kicker{
+    position:absolute; top:1.1rem; left:0; right:0; text-align:center;
+    font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  .card{
+    width:min(580px, 100%); background:var(--cream); border-radius:10px;
+    box-shadow:0 2px 0 #d8c49a, 0 18px 44px rgba(120,85,40,.30);
+    overflow:hidden; position:relative;
+  }
+  .intro{ padding:1.6rem 1.6rem 0.4rem; text-align:center; }
+  .intro h1{ font-size:1.35rem; margin:.2rem 0 .4rem; font-weight:400; }
+  .intro p{ margin:0 auto; max-width:42ch; line-height:1.6; color:var(--ink-soft); font-size:.98rem; }
+  /* ---------- the window seat ---------- */
+  .scene{
+    margin:1.4rem 1.2rem 0; padding:0 0 1.2rem; position:relative;
+    background:linear-gradient(180deg, #fffaf0, var(--cream-deep));
+    border:2px solid #e0cda4; border-radius:14px;
+    box-shadow:inset 0 0 0 6px rgba(255,255,255,.35); overflow:hidden;
+  }
+  .wall{
+    padding:1.1rem 1.1rem 0; display:flex; gap:1rem; align-items:flex-start; flex-wrap:wrap;
+  }
+  .window{
+    flex:1 1 220px; background:linear-gradient(180deg, #dce8ee, #eef3e8);
+    border:3px solid #8a7a64; border-radius:8px; padding:.8rem; text-align:center;
+    position:relative; overflow:hidden; min-height:150px;
+  }
+  .window .curtain{
+    position:absolute; top:0; right:0; width:52%; height:100%;
+    background:repeating-linear-gradient(90deg, #e8c9a8 0 18px, #d9b58e 18px 36px);
+    border-left:2px solid #b08d5f; transition:transform .8s ease; transform-origin:right;
+  }
+  .window .curtain.lifted{ transform:translateX(58%) rotate(-4deg); }
+  .window .sky{ font-size:.85rem; color:#5d6b5a; line-height:1.5; }
+  .window .shadow{
+    display:block; margin:.5rem auto 0; font-size:1.6rem; opacity:0;
+    transition:opacity 1s ease; transform:rotate(-12deg);
+  }
+  .window .shadow.shown{ opacity:.85; }
+  .window .shadow-note{
+    font-size:.8rem; font-style:italic; color:#5d6b5a; opacity:0; transition:opacity 1s ease;
+  }
+  .window .shadow-note.shown{ opacity:1; }
+  .basket-col{ flex:0 0 150px; text-align:center; }
+  .mending{
+    display:block; margin:0 auto; padding:.8rem 1rem; border:0; cursor:pointer;
+    background:linear-gradient(180deg, #d9b58e, #c49a6c); color:#46392c;
+    border:2px dashed #8a6a42; border-radius:6px; font-family:inherit; font-size:.95rem;
+    box-shadow:0 4px 0 rgba(140,100,50,.4); min-height:48px;
+    -webkit-tap-highlight-color:transparent; transition:transform .5s ease, opacity .5s ease;
+  }
+  .mending:hover{ transform:translateY(-2px); }
+  .mending:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .mending.moved{ transform:translateY(10px) rotate(4deg); opacity:.6; }
+  .basket-col p{ margin:.5rem 0 0; font-size:.8rem; line-height:1.5; color:var(--ink-soft); }
+  /* ---------- the cushion ---------- */
+  .seat{
+    margin:1.2rem 1.1rem 0; padding:1rem 1rem 1.1rem; position:relative; text-align:center;
+    background:linear-gradient(180deg, var(--linen), #e2d3b4);
+    border:1px solid #c9b586; border-radius:12px;
+  }
+  .seat h2{ font-size:.8rem; letter-spacing:.22em; text-transform:uppercase; color:#6b5a3e; margin:0 0 .9rem; font-weight:400; }
+  .cushion{
+    display:block; margin:0 auto; padding:1rem 1.2rem; border:0; cursor:pointer; width:min(340px, 100%);
+    background:linear-gradient(180deg, #e9dcc0, #d9c49a); color:var(--ink);
+    border:2px solid #a08c66; border-radius:14px; font-family:inherit; font-size:1rem; line-height:1.5;
+    box-shadow:0 5px 0 rgba(140,115,70,.4); min-height:56px;
+    -webkit-tap-highlight-color:transparent; transition:transform .6s ease, box-shadow .6s ease;
+  }
+  .cushion:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .cushion.settled{ transform:translateY(4px) rotate(-1.5deg); box-shadow:0 1px 0 rgba(140,115,70,.4); }
+  .cushion .hollow{ display:block; font-size:.85rem; color:var(--ink-soft); margin-top:.3rem; }
+  .cushion.dim{ opacity:.45; }
+  .pear{
+    display:block; margin:1rem auto 0; padding:.5rem .9rem; border:0; cursor:pointer;
+    background:linear-gradient(180deg, var(--blue), var(--blue-deep)); color:#f2f6fa;
+    border-radius:20px; font-family:inherit; font-size:.9rem;
+    box-shadow:0 3px 0 rgba(40,70,105,.4); min-height:44px;
+    -webkit-tap-highlight-color:transparent; transition:transform .25s ease;
+  }
+  .pear:hover{ transform:translateY(-2px); }
+  .pear:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+  .pear.glint{ background:linear-gradient(180deg, #e9c25a, #c9962e); color:#46392c; }
+  .pear-note{
+    margin:.5rem auto 0; max-width:30ch; font-style:italic; font-size:.9rem; line-height:1.5;
+    color:var(--ink-soft); min-height:1.5em; opacity:0; transition:opacity .8s ease;
+  }
+  .pear-note.show{ opacity:1; }
+  .note{ text-align:center; padding:1rem 1.4rem 1.5rem; }
+  .note p{ margin:.3rem auto; max-width:44ch; line-height:1.6; color:var(--ink-soft); font-size:.95rem; }
+  .note p b{ color:var(--ink); font-weight:400; }
+  .unlock{
+    display:none; margin:1rem auto 0; padding:.9rem 1.1rem; max-width:44ch;
+    background:#fff8e2; border:1px solid var(--gold); border-radius:10px;
+    color:var(--ink); line-height:1.6; font-size:.98rem;
+  }
+  .unlock.show{ display:block; }
+  .reset{
+    margin:1rem auto 0; border:0; background:none; cursor:pointer; color:var(--ink-soft);
+    font-family:inherit; font-size:.85rem; text-decoration:underline; text-underline-offset:3px;
+    min-height:44px; padding:.4rem .8rem;
+  }
+  .reset:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:6px; }
+</style>
+</head>
+<body>
+<p class="kicker">The Sixth Piggie · A clue at Hazel's cottage</p>
+<main class="card">
+  <div class="intro">
+    <h1>Behind the mending basket, a hollow.</h1>
+    <p>Hazel's window seat is the quietest place in the book. The kettle sings,
+    the curtains stir, and nobody sits down to count who has been sitting
+    there. Move the basket, and settle the cushion the way a small guest
+    would have left it.</p>
+  </div>
+
+  <div class="scene" aria-label="Hazel's cottage window seat">
+    <div class="wall">
+      <div class="window">
+        <div class="curtain" id="curtain" aria-hidden="true"></div>
+        <p class="sky">the garden, through Hazel's window<br>late light, and the thyme by the gate</p>
+        <span class="shadow" id="shadow" aria-hidden="true">🐰</span>
+        <p class="shadow-note" id="shadowNote">a little ear-shaped shadow, just outside</p>
+      </div>
+      <div class="basket-col">
+        <button class="mending" type="button" id="mending" aria-pressed="false">🧺 The mending basket — set it aside</button>
+        <p>wool, a needle, and a pear half-embroidered in blue thread</p>
+      </div>
+    </div>
+
+    <div class="seat">
+      <h2>The window seat</h2>
+      <button class="cushion" type="button" id="cushion" aria-pressed="false">
+        🛋️ The cushion on the window seat
+        <span class="hollow" id="hollow">plump, and waiting — or is it?</span>
+      </button>
+      <button class="pear" type="button" id="pear" aria-pressed="false">🧵 A blue thread, trailing from an unfinished embroidered pear</button>
+      <p class="pear-note" id="pearNote" aria-live="polite">The same blue as the feast napkin, and the thread on the well's lowest stone. Unfinished — like someone meant to come back to it.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <p id="seatNote">Set the mending basket aside first — the cushion is behind
+    it, the way small things are. Then touch the cushion.</p>
+    <div class="unlock" id="unlock" aria-live="polite">
+      🛋️ The cushion keeps one shallow hollow, as if someone small sat there
+      a little while and then slipped out to the garden. The curtain lifts,
+      and outside — just for a moment — a little ear-shaped shadow passes
+      the window. Nobody names her. That is the clue.
+    </div>
+    <button class="reset" type="button" id="reset">Sit at the window again</button>
+  </div>
+</main>
+<script>
+  const mending = document.getElementById('mending');
+  const cushion = document.getElementById('cushion');
+  const hollow = document.getElementById('hollow');
+  const curtain = document.getElementById('curtain');
+  const shadow = document.getElementById('shadow');
+  const shadowNote = document.getElementById('shadowNote');
+  const pear = document.getElementById('pear');
+  const pearNote = document.getElementById('pearNote');
+  const unlock = document.getElementById('unlock');
+  const note = document.getElementById('seatNote');
+  let basketMoved = false, cushionSettled = false;
+
+  function check(){
+    if (basketMoved && cushionSettled){
+      unlock.classList.add('show');
+      note.innerHTML = 'Basket aside, cushion settled — <b>the clue is complete.</b> The kettle keeps singing, and the seat keeps its hollow.';
+    } else {
+      unlock.classList.remove('show');
+    }
+  }
+  mending.addEventListener('click', () => {
+    basketMoved = !basketMoved;
+    mending.classList.toggle('moved', basketMoved);
+    mending.setAttribute('aria-pressed', String(basketMoved));
+    mending.textContent = basketMoved ? '🧺 The mending basket — set aside' : '🧺 The mending basket — set it aside';
+    cushion.classList.toggle('dim', !basketMoved);
+    if (basketMoved && !cushionSettled) note.innerHTML = 'Behind the basket: <b>a cushion with one shallow hollow.</b> Touch it, and its corner settles.';
+    if (!basketMoved && !cushionSettled) note.innerHTML = 'Set the mending basket aside first — the cushion is behind it, the way small things are. Then touch the cushion.';
+    check();
+  });
+  cushion.addEventListener('click', () => {
+    if (!basketMoved){
+      note.innerHTML = 'The cushion is still behind the mending basket. <b>Set the basket aside first</b>, and it will be waiting.';
+      return;
+    }
+    cushionSettled = true;
+    cushion.classList.add('settled');
+    cushion.setAttribute('aria-pressed', 'true');
+    hollow.textContent = 'one shallow hollow — as if someone small sat here a little while';
+    curtain.classList.add('lifted');
+    shadow.classList.add('shown');
+    shadowNote.classList.add('shown');
+    if (!unlock.classList.contains('show')) note.innerHTML = 'The cushion settles, the curtain lifts — and outside, <b>a little ear-shaped shadow</b> passes the window. Just for a moment.';
+    check();
+  });
+  pear.addEventListener('click', () => {
+    const on = pear.classList.toggle('glint');
+    pearNote.classList.toggle('show', on);
+    pear.setAttribute('aria-pressed', String(on));
+    pear.textContent = on ? '🧵 A blue thread — glinting from the unfinished pear' : '🧵 A blue thread, trailing from an unfinished embroidered pear';
+  });
+  document.getElementById('reset').addEventListener('click', () => {
+    basketMoved = false; cushionSettled = false;
+    mending.classList.remove('moved');
+    cushion.classList.remove('settled');
+    cushion.classList.add('dim');
+    curtain.classList.remove('lifted');
+    shadow.classList.remove('shown');
+    shadowNote.classList.remove('shown');
+    mending.setAttribute('aria-pressed', 'false');
+    cushion.setAttribute('aria-pressed', 'false');
+    mending.textContent = '🧺 The mending basket — set it aside';
+    hollow.textContent = 'plump, and waiting — or is it?';
+    note.innerHTML = 'Set the mending basket aside first — the cushion is behind it, the way small things are. Then touch the cushion.';
+    check();
+  });
+  cushion.classList.add('dim');
+</script>
+</body>
+</html>
