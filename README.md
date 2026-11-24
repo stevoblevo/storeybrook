@@ -1,6 +1,6 @@
 # Storeybrook
 
-A light-first design system for storybook pages and little games. Its pieces are watercolor paper, pages that turn, stories read aloud, a brook of stepping stones, nougats that fly into a jar, and a creature that grows. It has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk) built on one set of token names, 32 components (guardians and a taste check among them), and a behavior bundle exposed as `window.Storeybrook` (1.3.2). It is the daylight counterpart to [Depthfield](https://github.com/stevoblevo/depthfield).
+A light-first design system for storybook pages and little games. Its pieces are watercolor paper, pages that turn, stories read aloud, a brook of stepping stones, nougats that fly into a jar, and a creature that grows. It has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk) built on one set of token names, 33 components (guardians, a taste check and the pets among them), and a behavior bundle exposed as `window.Storeybrook` (1.4.0). It is the daylight counterpart to [Depthfield](https://github.com/stevoblevo/depthfield).
 
 This repo is a read-only export of the Storeybrook design system (index format v3) from its Claude artifact:
 <https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe>
@@ -26,7 +26,8 @@ project/
   tokens.json                All tokens (six looks as color themes, type, spacing, radius, …) as lists
   components/
     bundle.js                One classic script that assigns window.Storeybrook
-    paper.js                 The paper add-on (Storeybrook.pen and Folded): load it after bundle.js
+    paper.js                 The paper add-on (Storeybrook.pen, its sun, and Folded): load it after bundle.js
+    pets.js                  The pets add-on (Storeybrook.pets: the seven day pets, the shared save, a canvas painter)
     bundle.css               Component styles and the six looks' hooks
     index.d.ts               Types, as documentation of the API
     <Component>/README.md    Usage guidelines (first sentence = summary)
@@ -66,7 +67,7 @@ project/
 
 - **Seven pets.** One waits in each look, and Saelion arrives for whoever finds the other six. Each is found by doing the thing that look is for: tap Saelion on the front page, wake the sleeper at bedtime, turn the slate to its last page, grab the nougats in the comic, walk three stones in the level maker, and press the seal on the album. The pet you choose walks with you in the corner, and the pet book lists all seven with a hint for each one still hidden.
 - **Play it for me.** The adventure plays itself in seven steps, about 45 seconds, finding every pet on the way. Any touch, key or wheel hands it back. `?autoplay` starts it from a link, which is how the home-screen shortcut works. It never starts on its own.
-- **Shared with Depthfield.** Both sites save to one `localStorage` key, `crossing:pets` (`sb:` and `df:` ids), on the same origin. The pet book counts Depthfield's five night pets, and finding all seven here puts Saelion in Depthfield's night sky.
+- **Shared with Depthfield and Hypermetapunk.** The three sites save to one `localStorage` key, `crossing:pets` (`sb:`, `df:` and `hmp:` ids), on the same origin. The pets' data and the save live in the kit since 1.4 (`project/components/pets.js`, `Storeybrook.pets`; family task F9), and the showcase uses them. The pet book counts Depthfield's five night pets and Hypermetapunk's five dusk pets, seventeen across the three, and finding all seven here puts Saelion in Depthfield's night sky.
 
 ### Taste
 
@@ -83,3 +84,10 @@ The showcase updates the brook once per changed scene, and mirror windows preloa
 `node tests/reader/logic.cjs` and `node tests/showcase/scroll.cjs` cover deterministic behavior. Real audible Safari quality must be reviewed on a device with its available voices.
 
 Versioned runtime files live under `v/1.3.2/`; `v/index.json` records their SHA-256 hashes. The original 1.3.0 runtime and the 1.3.1 candidate remain unchanged. 1.3.2 also resets a paused speech engine when stopping, so the next Play can start normally.
+
+## 1.4.0 the pets and the sun
+
+- **Pets** (`project/components/pets.js`, an add-on loaded after `bundle.js`): `Storeybrook.pets` holds the seven day pets as data with `has`, `find`, `count` and `total` over the shared `crossing:pets` save, the same contract as Depthfield's and Hypermetapunk's pets (family F9). `pets.draw(ctx, id, { x, y, size, t, beat, look, still, alpha })` paints a pet on canvas in a look's own inks and lets it dance to the beat with a swing. The showcase takes its pets from it and counts Hypermetapunk's dusk pets.
+- **The sun in the pen**: `Storeybrook.pen(look).sun(ctx, { x, y, r, t, still, alpha })` paints a watercolour sun in Meta Daylight, a moon in Knight Night, and its own sun in each other look. The fold light the pen called `sun` in 1.3 is `light` now; `sun[0]` to `sun[2]` still read it.
+- `node tests/pets/logic.cjs` checks the contract and keeps the pets' ink table in step with `tokens.json` and `bundle.css`; `node tests/pets/browser.cjs` (Chromium or WebKit) checks the pet book, `draw` and the sun.
+- Versioned runtime files live under `v/1.4.0/`, which now include `pets.js`; earlier versions are unchanged.

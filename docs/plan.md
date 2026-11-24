@@ -4,7 +4,7 @@ Owner: Bleve. Last updated 6 Nov 2026 by Sae(lion). Work that crosses the family
 
 ## Where things stand
 
-- `main` is **Storeybrook 1.3.2**: 32 components, six looks, 16 brand-book chapters. 1.2 (Guardian and Taste) was merged 3 Nov from `claude/storeybrook-1-2`; 1.3 adds paper (`components/paper.js`: the Pen and Folded). 1.3.2 improves Reader voice controls, stopped speech recovery, and showcase loading; older runtime snapshots remain under `v/`.
+- `main` is **Storeybrook 1.3.2**: 32 components, six looks, 16 brand-book chapters. 1.2 (Guardian and Taste) was merged 3 Nov from `claude/storeybrook-1-2`; 1.3 adds paper (`components/paper.js`: the Pen and Folded). 1.3.2 improves Reader voice controls, stopped speech recovery, and showcase loading; older runtime snapshots remain under `v/`. 1.4.0 (task S7, branch `claude/S7-pets-sun`) adds Pets (`components/pets.js`: the day pets as data and on canvas, family F9) and the sun in the pen; 33 components.
 - The showcase (`index.html`) gives each look a scene and hides seven pets along the brook; "Play it for me" runs the adventure.
 - Consumers: AND SO (all six looks as `sb-*` skins, on a fork of the 1.0 bundle), the Malachi sites (a 1.0 copy), Reignfawn (its own origami, daylight, knight, ink and comix looks).
 
@@ -31,3 +31,4 @@ Origami today is folded-paper styling for editors and settings: 45° stones, dog
 | S4 | Mirror windows show Guardian and Taste states across the six devices | Screenshot | S | open | open |
 | S5 | Keep showcase scrolling responsive and mirror previews useful while loading | One brook layout per scene transition at most; early preview load with readable fallback | S | Sae(lion) | done (1.3.2; source `76f7573`, Chromium/WebKit gate `edb94b0`) |
 | S6 | Reader quality and explicit voice choice | Browser-available quality hints, saved choice, late voice enumeration, natural pace, cancellation/error regressions | S | Sae(lion) | done (1.3.2; source `76f7573`, Chromium/WebKit gate `edb94b0`; audible device review remains separate) |
+| S7 | The day pets as part of the kit (family F9) and a sun in the pen: `components/pets.js` (`Storeybrook.pets`: the seven as data, `has`, `find`, `count`, `total` over the shared `crossing:pets` save, and `draw`, which dances a pet to the beat with a swing), the showcase on it with Hypermetapunk's dusk pets counted, and `pen(look).sun(ctx, o)` in every look (1.4.0) | `tests/pets/logic.cjs` and `tests/pets/browser.cjs` pass; the Pets preview shows all seven dancing in three looks and still; the Pen preview shows the sun in all six looks | M | Claude | doing (branch `claude/S7-pets-sun`) |

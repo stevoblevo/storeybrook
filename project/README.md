@@ -1,6 +1,6 @@
 Storeybrook is a light-first kit for storybook pages and little games: watercolor paper, pages that turn, stories read aloud, a brook of stepping stones to walk, nougats that fly into a jar, and a creature that grows. It is the daylight counterpart to Depthfield. Where Depthfield is a dark scene with a quiet HUD, Storeybrook is a book on a table with a game folded inside it.
 
-The system has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk), one set of token names that every look fills, thirty-two components with live previews, a behavior bundle (`window.Storeybrook`), drawn icons, the creature and the nougat as art, and the rules below. This page is the short version. The sections after it go deep: paper, looks, color, type, layout, motion, iconography, writing, sound and reading aloud, rewards and progression, devices, accessibility, code, governance, play, and taste.
+The system has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk), one set of token names that every look fills, thirty-three components with live previews, a behavior bundle (`window.Storeybrook`), drawn icons, the creature and the nougat as art, and the rules below. This page is the short version. The sections after it go deep: paper, looks, color, type, layout, motion, iconography, writing, sound and reading aloud, rewards and progression, devices, accessibility, code, governance, play, and taste.
 
 ## Principles
 
@@ -115,5 +115,5 @@ Load `tokens.css`, `components/bundle.css` and `components/bundle.js`; set the l
 ## Iconography
 
 - Use the Storeybrook set (Icons): 24px grid, 2px round strokes, drawn in `currentColor`. In code call `Storeybrook.icon(name, size)` or put `data-sb-icon="name"` on an empty element.
-- The creature (Creature) and the nougat and jar (Nougat) are drawn by the bundle (`creatureSVG`, `nougatSVG`, `jarSVG`) so they take the look's inks. The files here are Meta Daylight renders for reference.
+- The creature (Creature) and the nougat and jar (Nougat) are drawn by the bundle (`creatureSVG`, `nougatSVG`, `jarSVG`) so they take the look's inks. The files here are Meta Daylight renders for reference. On canvas, `Storeybrook.pets.draw` paints the seven pets in the same inks (Pets), and the pen paints the sun (Pen).
 - Storeybrook has no mark yet: set its name in `display-l`.

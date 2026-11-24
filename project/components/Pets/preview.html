@@ -1,0 +1,42 @@
+<!-- @dsCard group="Play" height=700 -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Pets</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DynaPuff:wdth,wght@75..100,400..700&family=Alegreya:ital,wght@0,400..800;1,400..800&family=Andika:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400..700&family=IM+Fell+English:ital@0;1&family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<style>html,body{margin:0}body.sb-body{min-height:0;background:var(--paper);color:var(--ink);font-family:var(--sb-story)}.pv{padding:16px 20px;box-sizing:border-box;display:grid;gap:10px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;font:500 13px/1.35 var(--sb-ui);color:var(--ink-muted)}.bar .sb-btn{min-height:40px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--gamboge);opacity:.25;flex:none}
+.stage{margin:0;border-radius:6px;overflow:hidden;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line)}.stage canvas{display:block;width:100%;height:clamp(104px,24vw,150px)}
+.stage figcaption{font:600 12px/1.3 var(--sb-ui);color:var(--ink-muted);padding:6px 10px;background:var(--surface)}
+.lbl{margin:6px 0 0;font:600 13px/1.3 var(--sb-ui);color:var(--ink-muted)}#still{height:120px}#ladder{height:180px}canvas.flat{display:block;width:100%}</style></head>
+<body class="sb-body">
+<div class="pv">
+<div class="bar"><button class="sb-btn sb-btn--secondary sb-btn--sm" type="button" id="beat" aria-pressed="true">Stop the beat</button><span class="dot" id="dot" aria-hidden="true"></span><span id="note">A made-up beat at 112 a minute. Each pet dances its own way, long-short, a little behind the beat.</span></div>
+<figure class="stage" data-theme="daylight"><canvas aria-label="The seven day pets dancing in Meta Daylight, under a watercolour sun"></canvas><figcaption>Meta Daylight</figcaption></figure>
+<figure class="stage" data-theme="knight"><canvas aria-label="The seven day pets dancing in Knight Night, under the moon"></canvas><figcaption>Knight Night</figcaption></figure>
+<figure class="stage" data-theme="comix"><canvas aria-label="The seven day pets dancing in Comix, under a printed sun"></canvas><figcaption>Comix</figcaption></figure>
+<p class="lbl">Still, in this look</p>
+<canvas class="flat" id="still" aria-label="The seven day pets standing still"></canvas>
+<p class="lbl" id="ladder-lbl">Saelion at 24, 40, 64, 96 and 160 px</p>
+<canvas class="flat" id="ladder" aria-label="Saelion drawn at five sizes"></canvas>
+</div>
+<script src="../paper.js"></script><script src="../pets.js"></script>
+<script>(function(){var S=window.Storeybrook;if(!S||!S.pets)return;var pets=S.pets,ids=pets.list.map(function(p){return p.id;});
+var on=true,bpm=112,per=60/bpm,btn=document.getElementById('beat'),dot=document.getElementById('dot'),note=document.getElementById('note');
+var calm=matchMedia('(prefers-reduced-motion: reduce)');if(calm.matches)note.textContent='Your device asks for less motion, so the pets hold still. They dance when it does not.';
+btn.addEventListener('click',function(){on=!on;btn.textContent=on?'Stop the beat':'Play the beat';btn.setAttribute('aria-pressed',String(on));});
+function fit(c){var r=c.getBoundingClientRect(),k=Math.min(2,devicePixelRatio||1),W=Math.round(r.width*k),H=Math.round(r.height*k);if(c.width!==W||c.height!==H){c.width=W;c.height=H;}var g=c.getContext('2d');g.setTransform(k,0,0,k,0,0);return{g:g,w:r.width,h:r.height};}
+function look(el){var t=el.closest('[data-theme]');return t?t.getAttribute('data-theme'):'daylight';}
+var stages=[].slice.call(document.querySelectorAll('.stage canvas')).map(function(c){return{c:c,look:look(c)};});
+function ground(g,lk,W,H){if(S.pen){S.pen(lk).ground(g,{w:W,h:H});}else{g.clearRect(0,0,W,H);}}
+function frame(now){var t=now/1000,b=on?Math.exp(-(t%per)*7):0;dot.style.opacity=on&&!calm.matches?String(.25+.75*b):'.25';
+stages.forEach(function(s){var f=fit(s.c),g=f.g,W=f.w,H=f.h,n=ids.length,r=Math.min(20,H*.14),room=r*2.6+8,step=Math.min((W-room)/(n+.4),H*.95),size=Math.min(H*.74,step*1.05);
+ground(g,s.look,W,H);if(S.pen)S.pen(s.look).sun(g,{x:W-r*1.7,y:r*1.7,r:r,t:t});
+ids.forEach(function(id,i){pets.draw(g,id,{x:(W-room)/2+(i-(n-1)/2)*step,y:H*.55,size:size,t:t,beat:b,look:s.look});});});
+var lk=document.documentElement.getAttribute('data-theme')||'daylight',st=fit(document.getElementById('still')),g=st.g;
+ground(g,lk,st.w,st.h);ids.forEach(function(id,i){pets.draw(g,id,{x:st.w/2+(i-3)*Math.min(st.w/7.4,110),y:st.h*.5,size:Math.min(st.h*.8,st.w/8),look:lk,still:true});});
+var ld=fit(document.getElementById('ladder')),q=ld.g,sizes=[24,40,64,96,160],gap=Math.max(18,ld.w/40),x=24;ground(q,lk,ld.w,ld.h);
+while(sizes.length>2&&sizes.reduce(function(a,b){return a+b+gap;},24)>ld.w)sizes.pop();
+var lt='Saelion at '+sizes.join(', ').replace(/, (\d+)$/,' and $1')+' px',lb=document.getElementById('ladder-lbl');if(lb.textContent!==lt)lb.textContent=lt;
+sizes.forEach(function(sz){pets.draw(q,'saelion',{x:x+sz/2,y:ld.h-8-sz/2,size:sz,look:lk,still:true});x+=sz+gap;});
+requestAnimationFrame(frame);}
+requestAnimationFrame(frame);})();</script></body></html>

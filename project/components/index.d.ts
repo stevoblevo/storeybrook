@@ -1,4 +1,4 @@
-/* Storeybrook 1.3.2 — types as documentation. Components are HTML + bundle.css classes (prefixed sb-); behaviors are
+/* Storeybrook 1.4.0 — types as documentation. Components are HTML + bundle.css classes (prefixed sb-); behaviors are
    window.Storeybrook. Each <Comp>Props names the markup contract a page provides; the functions are the JS API. */
 
 export type LookId = 'daylight' | 'knight' | 'inkblot' | 'comix' | 'origami' | 'skein';
@@ -112,14 +112,20 @@ declare global { interface Window { Storeybrook: StoreybrookApi } }
 /** Events on window, as CustomEvent detail: sb:ready {version, theme, density}, sb:theme {theme}, sb:density {density}, sb:back {},
     sb:read {state, progress?, voice?}, sb:nougat {count, delta, reason?}, sb:unlock {id, name}, sb:step {id, index},
     sb:creature {form, stage}, sb:page {index, count}, sb:drawer {open, id}, sb:dialog {open, id}, sb:sound {on},
-    and since 1.2 sb:guardian {kind, label, on} or {kind, label, asleep}, sb:taste {findings, look}. */
+    and since 1.2 sb:guardian {kind, label, on} or {kind, label, asleep}, sb:taste {findings, look}; since 1.4 (pets.js) sb:pet {id, name, kit}. */
 
 /* paper.js, an add-on loaded after bundle.js (plan O1 and O3) */
 type PaperShape = 'mountain' | 'pine' | 'crane' | 'stone' | 'boat' | 'deer' | { tris: Array<[number[], number[], number[], string?]>; stock?: string; tags?: Record<string, string> };
 interface FoldOptions { x?: number; y?: number; size?: number; stock?: string; color?: string | number[]; tags?: Record<string, string>; open?: number; flip?: boolean; rot?: number; shadow?: boolean; lineWidth?: number; }
+/** still defaults to true under reduced motion and in Ink Blot */
+interface SunOptions { x?: number; y?: number; r?: number; t?: number; still?: boolean; alpha?: number; }
 interface RangeOptions { x?: number; y?: number; width?: number; height?: number; peaks?: number; seed?: number; stock?: string; cap?: boolean | string; depth?: number; open?: number; }
 interface StoreybrookPen {
-  look: string; version: string; inks: Record<string, [number, number, number]>; sun: [number, number, number];
+  look: string; version: string; inks: Record<string, [number, number, number]>;
+  /** the direction the folds are lit from (called sun in 1.3) */
+  light: [number, number, number];
+  /** 1.4: paints the look's sun (a moon in Knight Night); sun[0..2] still read the light, for 1.3 code */
+  sun: ((ctx: CanvasRenderingContext2D, opts?: SunOptions) => void) & { readonly 0: number; readonly 1: number; readonly 2: number };
   crease: number; shadow: number; grain: number; shapes: string[];
   rgb(name: string, alpha?: number): string; stock(name: string): [number, number, number];
   material(ctx: CanvasRenderingContext2D, kind?: 'fibre' | 'grain' | 'halftone' | 'stipple' | 'knit' | 'mat'): CanvasPattern;
@@ -134,3 +140,24 @@ interface StoreybrookPaper {
   looks: StoreybrookLook[];
   paperVersion: string;
 }
+
+/* pets.js, an add-on loaded after bundle.js (plan S7; family F9: the same contract in Depthfield and Hypermetapunk) */
+export type PetId = 'egg' | 'kit' | 'octopus' | 'bunny' | 'sprite' | 'pixie' | 'saelion';
+interface StoreybrookPet { id: PetId; name: string; line: string; how: string; where: string; look: LookId | null; o: CreatureOptions; }
+/** still defaults to true under reduced motion and in Ink Blot (e-ink); look defaults to 'daylight' */
+interface PetDrawOptions { x?: number; y?: number; size?: number; t?: number; beat?: number; look?: LookId; still?: boolean; alpha?: number; }
+/** localStorage['crossing:pets'] on stevoblevo.github.io, shared by the family */
+interface CrossingPetsSave { found?: Record<string, number>; active?: { sb?: string; df?: string; hmp?: string }; }
+interface StoreybrookPets {
+  kit: 'sb'; key: 'crossing:pets'; version: string; list: StoreybrookPet[];
+  /** id with or without the 'sb:' prefix */
+  has(id: string): boolean;
+  /** true if newly found: writes found['sb:' + id] = Date.now(); never changes active */
+  find(id: string): boolean;
+  count(): number;
+  /** found per kit from the same save, capped at 7, 5 and 5: 17 in all */
+  total(): { sb: number; df: number; hmp: number; all: number };
+  /** centred on x, y; size in CSS px; beat 0..1 jumps to 1 on each beat; false while the picture is still being made */
+  draw(ctx: CanvasRenderingContext2D, id: string, opts?: PetDrawOptions): boolean;
+}
+interface StoreybrookPetsAddon { pets: StoreybrookPets; }

@@ -455,9 +455,9 @@
   ],
   "lastChange": {
     "by": "Bleve",
-    "at": "2026-11-03T21:30:00Z",
+    "at": "2026-11-24T03:50:00Z",
     "via": "Claude",
-    "note": "Storeybrook 1.3: paper. The Pen (Storeybrook.pen: a look's inks, paper stocks and folded shapes for canvas) and Folded (the same folds in the page) in components/paper.js, an add-on; paper and fold tokens; Storeybrook.looks as data. Plan O1 to O3."
+    "note": "Storeybrook 1.4: the pets and the sun. Pets (Storeybrook.pets in components/pets.js, an add-on: the seven day pets as data over the shared crossing:pets save, and a canvas painter that dances them to the beat; family F9) and pen.sun (the sun on paper in every look, a moon at night; the fold light is pen.light). Plan S7."
   },
   "layout": "files",
   "libraries": [],
