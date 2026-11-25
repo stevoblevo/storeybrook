@@ -36,7 +36,7 @@ From the repository root, save this as `scratch.html` and run `python3 -m http.s
 </html>
 ```
 
-The [1.5.0 runtime](v/1.5.0/) is the current release; every earlier one stays where it was, byte for byte. The [version manifest](v/index.json) records SHA-256 hashes. See the [Reader](project/components/Reader/README.md) for browser voice controls and the [Button](project/components/Button/README.md) for the markup contract.
+The [1.5.0 runtime](v/1.5.0/) is the current release; every earlier one stays where it was, byte for byte. Each version also keeps its own showcase: open `v/1.5.0/` for the page as it shipped, running on that version's runtime, and `v/1.4.0/` or `v/1.3.2/` for the ones before it. The [version manifest](v/index.json) records SHA-256 hashes. See the [Reader](project/components/Reader/README.md) for browser voice controls and the [Button](project/components/Button/README.md) for the markup contract.
 
 ## Draw with it on canvas
 
@@ -150,5 +150,6 @@ Versioned runtime files live under `v/1.3.2/`; `v/index.json` records their SHA-
 - **Taste** no longer counts a control inside closed `<details>`, so the showcase passes its own check with the voice options shut.
 - `node tests/plate/browser.cjs` (Chromium or WebKit) makes the six plates from one drawing, checks that the source is never changed and that the Plate page does not scroll sideways at 390 px.
 - Versioned runtime files live under `v/1.5.0/`, which now include `plate.js`; earlier versions are unchanged.
+- **Versioned showcases**: `tools/release.py` now freezes `index.html`, with the styles, scripts and mirror page it loads, under `v/<version>/` (new `tools/landing.py`). The showcases of 1.3.2 and 1.4.0 are back-filled from history into their folders; no file that was already there is changed. `node tests/landing/browser.cjs` opens every frozen showcase.
 
 </details>
