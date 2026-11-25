@@ -31,7 +31,11 @@ jobs:
           node tests/reader/logic.cjs
           node tests/showcase/scroll.cjs
           node --check project/components/bundle.js
+          node --check project/components/paper.js
+          node --check project/components/pets.js
+          node --check project/components/plate.js
           node --check site/showcase.js
+          node tests/pets/logic.cjs
       - run: npm install --no-save --ignore-scripts playwright@1.56.1
       - name: Install official WebKit test runtime
         if: matrix.browser == 'webkit'
@@ -41,7 +45,11 @@ jobs:
         env:
           BROWSER: ${{ matrix.browser }}
           CHROME_BIN: /usr/bin/google-chrome
-        run: node tests/reader/browser.cjs
+        run: |
+          node tests/reader/browser.cjs
+          node tests/pets/browser.cjs
+          node tests/plate/browser.cjs
+          node tests/landing/browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

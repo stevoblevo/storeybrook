@@ -1,27 +1,29 @@
-/* Storeybrook Paper 1.3.0 · folded paper for canvas and the page. An add-on: load it after bundle.js.
+/* Storeybrook Paper 1.5.0 · folded paper for canvas and the page. An add-on: load it after bundle.js.
      <script src="components/bundle.js"></script><script src="components/paper.js"></script>
    Storeybrook.pen(look)   a look's resolved inks, its paper stocks and materials, and a pen that draws shapes as folded
-                           paper lit from one direction (plan O1; the Storeybrook half of family task F4).
+                           paper lit from one direction (plan O1; the Storeybrook half of family task F4), and since 1.4
+                           pen.sun(ctx, o): the look's sun on paper, a moon in Knight Night (plan S7).
    Storeybrook.folded(el)  the same folds as an SVG figure in the page, which folds itself on reveal (plan O3).
-   Storeybrook.looks       the six looks as data: { id, name, light, motion, print }.
-   No dependencies, no network. Reduced motion and Ink Blot draw the finished fold at once. Budget: 28 KB. */
+   Storeybrook.looks       the six looks as data: { id, name, light, motion, print, mood }. mood (1.5, family F10) is what a look
+                           rewards in play: 'still' (day looks), 'impact' (print looks) or 'lit' (night looks).
+   No dependencies, no network. Reduced motion and Ink Blot draw the finished fold at once, and a still sun. Budget: 44 KB. */
 (function (w, d) {
   'use strict';
   var S = w.Storeybrook;
   if (!S || S.pen) return;
-  var VERSION = '1.3.0';
+  var VERSION = '1.5.0';
 
   var LOOKS = [
-    { id: 'daylight', name: 'Meta Daylight', light: true, motion: true, print: false },
-    { id: 'knight', name: 'Knight Night', light: false, motion: true, print: false },
-    { id: 'inkblot', name: 'Ink Blot', light: true, motion: false, print: true },
-    { id: 'comix', name: 'Comix', light: true, motion: true, print: false },
-    { id: 'origami', name: 'Origami', light: true, motion: true, print: false },
-    { id: 'skein', name: 'Skein silk', light: true, motion: true, print: false }
+    { id: 'daylight', name: 'Meta Daylight', light: true, motion: true, print: false, mood: 'still' },
+    { id: 'knight', name: 'Knight Night', light: false, motion: true, print: false, mood: 'lit' },
+    { id: 'inkblot', name: 'Ink Blot', light: true, motion: false, print: true, mood: 'still' },
+    { id: 'comix', name: 'Comix', light: true, motion: true, print: false, mood: 'impact' },
+    { id: 'origami', name: 'Origami', light: true, motion: true, print: false, mood: 'still' },
+    { id: 'skein', name: 'Skein silk', light: true, motion: true, print: false, mood: 'still' }
   ];
   var IDS = LOOKS.map(function (l) { return l.id; });
   var INKS = ['paper', 'surface', 'page', 'ink', 'ink-muted', 'line', 'accent', 'cue', 'art-line', 'art-light', 'art-shade', 'art-stone', 'art-water',
-    'wash-sky', 'wash-rose', 'wash-sun', 'wash-meadow', 'wash-brook', 'paper-kami', 'paper-washi', 'paper-kraft', 'paper-foil'];
+    'wash-sky', 'wash-rose', 'wash-sun', 'wash-meadow', 'wash-brook', 'paper-kami', 'paper-washi', 'paper-kraft', 'paper-foil', 'gamboge', 'copper', 'tag-sun'];
   var STOCKS = ['kami', 'washi', 'kraft', 'foil'];
   /* how each look lays its paper: outline strength, crease strength, the material over each facet, tone steps */
   var STYLE = {
@@ -38,7 +40,8 @@
   function mul(a, k) { return [a[0] * k, a[1] * k, a[2] * k]; }
   function css(c, a) { c = c || [0, 0, 0]; return 'rgba(' + Math.round(clamp(c[0], 0, 255)) + ',' + Math.round(clamp(c[1], 0, 255)) + ',' + Math.round(clamp(c[2], 0, 255)) + ',' + (a == null ? 1 : +(+a).toFixed(3)) + ')'; }
   function rand(seed) { var s = (seed >>> 0) || 1; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
-  function reduced(look) { try { return look === 'inkblot' || w.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  var MQ = null; /* asked once: the sun reads it every frame */
+  function reduced(look) { try { MQ = MQ || w.matchMedia('(prefers-reduced-motion: reduce)'); return look === 'inkblot' || MQ.matches; } catch (e) { return false; } }
 
   /* ---------- resolving a look's inks: any CSS colour, through one pixel ---------- */
   var px1;
@@ -116,7 +119,7 @@
   }
   /* facets(P, tris, o) -> { faces: [{pts, fill, lam, foil}], creases: [{a, b, c}], edges: [{a, b}] } in pixels */
   function facets(P, tris, o) {
-    var st = STYLE[P.look] || STYLE.daylight, faces = [], edges = {}, hi = P.inks['art-light'] || [255, 255, 255], L = P.sun;
+    var st = STYLE[P.look] || STYLE.daylight, faces = [], edges = {}, hi = P.inks['art-light'] || [255, 255, 255], L = P.light;
     tris.forEach(function (t, i) {
       var n = normal(t[0], t[1], t[2]), lam = Math.max(0, n[0] * L[0] + n[1] * L[1] + n[2] * L[2]);
       var stock = (t[3] && o.tags && o.tags[t[3]]) || o.stock, foil = stock === 'foil', base = stockRGB(P, stock, t[3] ? null : o.color), q = lam;
@@ -155,7 +158,7 @@
     var F = facets(P, tris, o), st = F.style, s = o.size || 100, lw = o.lineWidth || Math.max(1, s / 80), open = o.open == null ? 1 : clamp(o.open, 0, 1);
     var line = P.inks['art-line'] || [40, 40, 40];
     if (o.shadow !== false && P.shadow > 0 && !st.mono && F.faces.length) {
-      var L = P.sun, h = Math.hypot(L[0], L[1]) || 1, off = s * 0.08 * open / Math.max(0.35, Math.tan(Math.asin(clamp(L[2], 0, 0.99)))), dx = -L[0] / h * off, dy = -L[1] / h * off;
+      var L = P.light, h = Math.hypot(L[0], L[1]) || 1, off = s * 0.08 * open / Math.max(0.35, Math.tan(Math.asin(clamp(L[2], 0, 0.99)))), dx = -L[0] / h * off, dy = -L[1] / h * off;
       var minx = 1e9, miny = 1e9, maxx = -1e9, maxy = -1e9;
       tris.forEach(function (t) { for (var k = 0; k < 3; k++) { minx = Math.min(minx, t[k][0]); miny = Math.min(miny, t[k][1]); maxx = Math.max(maxx, t[k][0]); maxy = Math.max(maxy, t[k][1]); } });
       var pad = Math.ceil(off + 4), cw = Math.ceil(maxx - minx + pad * 2), ch = Math.ceil(maxy - miny + pad * 2);
@@ -204,6 +207,172 @@
     return tris;
   }
 
+  /* ---------- the sun: gamboge on paper, a moon in Knight Night (plan S7). Static parts are painted once per look and size step ---------- */
+  var SUNB = [16, 24, 36, 54, 80, 120, 180, 270, 400], TAU = Math.PI * 2, NONE = {}, SEED = { daylight: 11, knight: 23, inkblot: 37, comix: 41, origami: 53, skein: 67 };
+  function sheet(R, ext) { var c = d.createElement('canvas'), s = Math.ceil(ext * R) * 2 + 2; c.width = c.height = s; return { c: c, g: c.getContext('2d'), m: s / 2, e: s / 2 / R }; }
+  /* a slightly irregular round: three slow waves on the radius, so the edge reads as painted, not compassed */
+  function blob(g, cx, cy, R, seed, k) {
+    var r = rand(seed), a = r() * 7, b = r() * 7, c = r() * 7, i, th, rr;
+    g.beginPath();
+    for (i = 0; i <= 120; i++) {
+      th = i / 120 * TAU; rr = R * (1 + k * (0.028 * Math.sin(3 * th + a) + 0.016 * Math.sin(5 * th + b) + 0.007 * Math.sin(9 * th + c)));
+      if (i) g.lineTo(cx + Math.cos(th) * rr, cy + Math.sin(th) * rr); else g.moveTo(cx + Math.cos(th) * rr, cy + Math.sin(th) * rr);
+    }
+    g.closePath();
+  }
+  /* a soft wash bleeding into the paper: overlapping radial pools, then a faint tide line where the water stopped */
+  function halo(S, R, col, a, reach, tide, r) {
+    var g = S.g, m = S.m, i, cx, cy, rr, gr;
+    for (i = 0; i < 5; i++) {
+      cx = m + (r() - 0.5) * R * 0.3; cy = m + (r() - 0.5) * R * 0.3; rr = R * reach * (0.78 + r() * 0.3);
+      gr = g.createRadialGradient(cx, cy, R * 0.6, cx, cy, rr); gr.addColorStop(0, css(col, a)); gr.addColorStop(0.45, css(col, a * 0.5)); gr.addColorStop(1, css(col, 0));
+      g.fillStyle = gr; g.fillRect(0, 0, S.c.width, S.c.height);
+    }
+    if (tide) { g.lineWidth = Math.max(1, R * 0.03); g.strokeStyle = css(tide, a * 0.3); blob(g, m, m, R * reach * 0.66, 97, 1.6); g.stroke(); }
+  }
+  /* the disc: a wash that thins in the middle and pools its pigment at the edge, granulates in the tooth, with one back-run */
+  function painted(P, S, R, base, rim, light, seed, mottle) {
+    var g = S.g, m = S.m, r = rand(seed + 5), i, a, u, rr, n, gr, sz;
+    g.save(); blob(g, m, m, R, seed, 1); g.fillStyle = css(base, 0.88); g.fill(); g.clip();
+    gr = g.createRadialGradient(m - R * 0.2, m - R * 0.22, 0, m, m, R * 1.02);
+    gr.addColorStop(0, css(light, 0.66)); gr.addColorStop(0.5, css(light, 0.3)); gr.addColorStop(0.84, css(light, 0));
+    g.fillStyle = gr; g.fillRect(0, 0, S.c.width, S.c.height);
+    [[0.3, 0.12], [0.15, 0.2], [0.06, 0.36]].forEach(function (s) { blob(g, m, m, R, seed, 1); g.lineWidth = R * s[0]; g.strokeStyle = css(rim, s[1]); g.stroke(); });
+    for (i = 0; i < (mottle || 0); i++) { /* maria on the moon: darker pools with harder fringes */
+      a = r() * TAU; u = Math.sqrt(r()) * 0.55; blob(g, m + Math.cos(a) * R * u, m + Math.sin(a) * R * u, R * (0.12 + r() * 0.2), seed + 20 + i, 3);
+      g.fillStyle = css(rim, 0.13 + r() * 0.12); g.fill(); g.lineWidth = Math.max(0.6, R * 0.012); g.strokeStyle = css(rim, 0.12); g.stroke();
+    }
+    n = Math.min(1800, Math.round(R * R * 0.14)); sz = Math.max(0.7, R * 0.013);
+    for (i = 0; i < n; i++) { a = r() * TAU; u = Math.sqrt(r()); rr = R * u; g.fillStyle = css(rim, 0.05 + 0.25 * u * u * u * r()); g.fillRect(m + Math.cos(a) * rr, m + Math.sin(a) * rr, sz * (0.6 + r()), sz * (0.6 + r())); }
+    blob(g, m + R * 0.26, m + R * 0.2, R * 0.3, seed + 9, 2.5); g.fillStyle = css(light, 0.12); g.fill(); g.lineWidth = Math.max(0.6, R * 0.014); g.strokeStyle = css(rim, 0.1); g.stroke();
+    g.globalAlpha = 0.45; g.fillStyle = material(P, g, 'grain'); g.fillRect(0, 0, S.c.width, S.c.height);
+    g.restore();
+    blob(g, m, m, R * 1.012, seed, 1); g.lineWidth = Math.max(1, R * 0.05); g.strokeStyle = css(base, 0.12); g.stroke();
+  }
+  /* pencil rays: two or three light passes, a little bowed, with the graphite broken by the paper's tooth */
+  function pencil(S, R, n, r0, long, short, col, which, r) {
+    var g = S.g, m = S.m, i, k, th, c, s, a, b, wob, lw = Math.max(0.7, R * 0.021);
+    g.lineCap = 'round';
+    for (i = 0; i < n; i++) {
+      th = (i + (r() - 0.5) * 0.25) / n * TAU - Math.PI / 2; a = R * r0; b = R * (i % 2 ? short : long) * (0.94 + r() * 0.12); wob = (r() - 0.5) * R * 0.06;
+      if (i % 2 !== which) continue;
+      c = Math.cos(th); s = Math.sin(th);
+      for (k = 0; k < 3; k++) {
+        var o = (k - 1) * lw * 0.7; g.strokeStyle = css(col, [0.42, 0.56, 0.24][k]); g.lineWidth = lw * [0.8, 1, 0.7][k];
+        g.beginPath(); g.moveTo(m + c * a - s * o, m + s * a + c * o); g.quadraticCurveTo(m + c * (a + b) / 2 - s * (o + wob), m + s * (a + b) / 2 + c * (o + wob), m + c * b - s * o * 0.4, m + s * b + c * o * 0.4); g.stroke();
+      }
+    }
+    g.globalCompositeOperation = 'destination-out'; g.fillStyle = 'rgba(0,0,0,0.5)';
+    for (i = Math.round(R * R * 0.06); i > 0; i--) g.fillRect(r() * S.c.width, r() * S.c.height, lw * 0.8, lw * 0.8);
+    g.globalCompositeOperation = 'source-over';
+  }
+  function sparkles(S, R, n, col, off, r) { /* four-point twinkles, spread round the moon */
+    var g = S.g, m = S.m, i, a, u, x, y, l, q;
+    g.fillStyle = css(col, 0.8);
+    for (i = 0; i < n; i++) {
+      a = (i + off + r() * 0.5) / n * TAU; u = R * (1.4 + r() * 0.9); x = m + Math.cos(a) * u; y = m + Math.sin(a) * u; l = Math.max(2.5, R * (0.06 + r() * 0.06)); q = l * 0.16;
+      g.beginPath(); g.moveTo(x, y - l * 1.3); g.quadraticCurveTo(x + q, y - q, x + l, y); g.quadraticCurveTo(x + q, y + q, x, y + l * 1.3); g.quadraticCurveTo(x - q, y + q, x - l, y); g.quadraticCurveTo(x - q, y - q, x, y - l * 1.3); g.fill();
+    }
+  }
+  function stipple(S, R, from, to, n, p, col, r) { /* ink dots scattered at random, as many as p(d, x, y) asks for */
+    var g = S.g, m = S.m, i, a, u, x, y, sz = Math.max(0.6, R * 0.011);
+    g.fillStyle = css(col);
+    for (i = 0; i < n; i++) {
+      a = r() * TAU; u = Math.sqrt(from * from + r() * (to * to - from * from)); x = Math.cos(a) * u; y = Math.sin(a) * u;
+      if (r() < p(u, x, y)) { g.beginPath(); g.arc(m + x * R, m + y * R, sz * (0.7 + r() * 0.6), 0, TAU); g.fill(); }
+    }
+  }
+  function dots(S, R, from, to, step, rot, size, col) { /* print dots on a rotated grid, sized by size(d, x, y) in R units */
+    var g = S.g, m = S.m, c = Math.cos(rot), s = Math.sin(rot), n = Math.ceil(to * R / step), i, j, x, y, rr, q;
+    g.fillStyle = css(col);
+    for (i = -n; i <= n; i++) for (j = -n; j <= n; j++) {
+      x = (i * c - j * s) * step; y = (i * s + j * c) * step; rr = Math.hypot(x, y) / R;
+      if (rr < from || rr > to) continue;
+      q = size(rr, x / R, y / R) * step * 0.5; if (q < 0.35) continue;
+      g.beginPath(); g.arc(m + x, m + y, q, 0, TAU); g.fill();
+    }
+  }
+  function sunArt(P, R) {
+    var L = P.look, I = P.inks, seed = SEED[L] || 11, r = rand(seed), i, th, a, b, g, m, lw;
+    var gam = I.gamboge || I['wash-sun'] || [212, 146, 15], line = I['art-line'] || [40, 40, 40], light = I['art-light'] || [255, 255, 255];
+    var wsun = I['wash-sun'] || gam, deep = I['tag-sun'] || mul(gam, 0.6), shade = I['art-shade'] || [0, 0, 0];
+    var A = { halo: sheet(R, 2.8), rays: [sheet(R, 2.1), sheet(R, 2.1)], disc: sheet(R, 1.45), mode: 'breathe' };
+    if (L === 'knight') { /* the moon: the same wash in pale washi, cool at its rim, with maria; sparkles instead of rays */
+      var stone = I['art-stone'] || [90, 100, 120], pale = mix(light, wsun, 0.1);
+      halo(A.halo, R, light, 0.1, 2.5, null, r); halo(A.halo, R, I['wash-sky'] || stone, 0.22, 1.9, null, r);
+      sparkles(A.rays[0], R, 3, light, 0, r); sparkles(A.rays[1], R, 3, light, 0.5, r);
+      painted(P, A.disc, R, pale, mix(light, stone, 0.6), light, seed, 5); A.mode = 'twinkle';
+    } else if (L === 'inkblot') { /* ink: a white disc in a brush outline, stippled on its shade side, wedge rays */
+      stipple(A.halo, R, 1.12, 2, Math.round(R * R * 0.7), function (u) { return 0.3 * Math.pow(Math.max(0, 1 - (u - 1.12) / 0.88), 2.6); }, [0, 0, 0], r);
+      for (i = 0; i < 12; i++) {
+        g = A.rays[i % 2].g; m = A.rays[i % 2].m; th = i / 12 * TAU - Math.PI / 2 + (r() - 0.5) * 0.08; a = R * 1.22; b = R * (i % 2 ? 1.55 : 1.8);
+        g.fillStyle = '#000'; g.beginPath(); g.moveTo(m + Math.cos(th - 0.07) * a, m + Math.sin(th - 0.07) * a); g.lineTo(m + Math.cos(th) * b, m + Math.sin(th) * b); g.lineTo(m + Math.cos(th + 0.07) * a, m + Math.sin(th + 0.07) * a); g.closePath(); g.fill();
+      }
+      g = A.disc.g; m = A.disc.m; blob(g, m, m, R, seed, 1); g.fillStyle = '#fff'; g.fill();
+      g.save(); g.clip(); stipple(A.disc, R, 0, 1.05, Math.round(R * R * 0.9), function (u, x, y) { return Math.max(0, Math.min(0.5, (x * 0.7 + y * 0.7 - 0.1) * 0.45)); }, [0, 0, 0], r); g.restore();
+      g.lineJoin = 'round'; g.strokeStyle = '#000'; blob(g, m, m, R, seed, 1); g.lineWidth = Math.max(1.5, R * 0.07); g.stroke();
+      blob(g, m, m, R * 1.008, seed + 1, 1.1); g.lineWidth = Math.max(0.6, R * 0.018); g.globalAlpha = 0.5; g.stroke(); g.globalAlpha = 1;
+    } else if (L === 'comix') { /* print: a flat yellow disc, a heavy line, a burst of spikes and Ben-Day dots fading out */
+      dots(A.halo, R, 1.05, 2.6, Math.max(3, R * 0.13), 0.26, function (d) { return 0.95 * Math.pow(Math.max(0, 1 - (d - 1.05) / 1.55), 1.1); }, gam);
+      lw = Math.max(1.2, R * 0.05);
+      for (i = 0; i < 14; i++) {
+        g = A.rays[i % 2].g; m = A.rays[i % 2].m; th = i / 14 * TAU - Math.PI / 2; a = R * 0.9; b = R * (i % 2 ? 1.5 : 1.86);
+        g.beginPath(); g.moveTo(m + Math.cos(th - 0.16) * a, m + Math.sin(th - 0.16) * a); g.lineTo(m + Math.cos(th) * b, m + Math.sin(th) * b); g.lineTo(m + Math.cos(th + 0.16) * a, m + Math.sin(th + 0.16) * a); g.closePath();
+        g.fillStyle = css(gam); g.fill(); g.lineJoin = 'miter'; g.lineWidth = lw; g.strokeStyle = css(line); g.stroke();
+      }
+      g = A.disc.g; m = A.disc.m; blob(g, m, m, R, seed, 0.4); g.fillStyle = css(gam); g.fill();
+      g.save(); g.clip(); dots(A.disc, R, 0, 1.1, Math.max(2.4, R * 0.1), 0.26, function (d, x, y) { return Math.max(0, Math.min(0.9, (x * 0.75 + y * 0.66 - 0.05) * 1.1)); }, mix(gam, I.accent || [200, 0, 100], 0.42)); g.restore();
+      g.lineCap = 'round'; g.strokeStyle = '#fff'; g.lineWidth = Math.max(1.5, R * 0.08); g.beginPath(); g.arc(m, m, R * 0.66, Math.PI * 1.08, Math.PI * 1.38); g.stroke();
+      blob(g, m, m, R, seed, 0.4); g.lineWidth = Math.max(1.5, R * 0.085); g.strokeStyle = css(line); g.stroke();
+    } else if (L === 'origami') { /* papercraft: a pleated rosette of facets and folded kite rays, each lit from the pen's sun */
+      halo(A.halo, R, wsun, 0.18, 2.1, null, r);
+      var kami = I['paper-kami'] || gam, disc = [], cz = R * 0.6, N = 12, v = [];
+      for (i = 0; i < N; i++) { th = i / N * TAU - Math.PI / 2; a = R * (i % 2 ? 0.94 : 1.02); v.push([A.disc.m + Math.cos(th) * a, A.disc.m + Math.sin(th) * a, i % 2 ? R * 0.2 : 0]); }
+      for (i = 0; i < N; i++) disc.push([[A.disc.m, A.disc.m, cz], v[i], v[(i + 1) % N]]);
+      for (i = 0; i < 12; i++) {
+        var S2 = A.rays[i % 2], mm = S2.m, ra = R * 0.9, rb = R * (i % 2 ? 1.5 : 1.78), mid = (ra + rb) * 0.42;
+        th = i / 12 * TAU - Math.PI / 2 + Math.PI / 12;
+        var b1 = [mm + Math.cos(th - 0.13) * ra, mm + Math.sin(th - 0.13) * ra, 0], b2 = [mm + Math.cos(th + 0.13) * ra, mm + Math.sin(th + 0.13) * ra, 0];
+        var tip = [mm + Math.cos(th) * rb, mm + Math.sin(th) * rb, 0], sp = [mm + Math.cos(th) * mid, mm + Math.sin(th) * mid, R * 0.16];
+        drawFaces(P, S2.g, [[b1, tip, sp], [sp, tip, b2], [b1, sp, b2]], { stock: i % 2 ? 'gamboge' : 'paper-kami', color: i % 2 ? gam : kami, size: R * 1.2 });
+      }
+      drawFaces(P, A.disc.g, disc, { color: gam, stock: 'gamboge', size: R * 2 });
+    } else if (L === 'skein') { /* knitted: rows of stitches in gamboge silk, a running stitch round the edge, stitched rays */
+      var copper = I.copper || I.accent || deep, knit = mix(gam, copper, 0.45);
+      halo(A.halo, R, wsun, 0.3, 2.2, null, r);
+      g = A.halo.g; m = A.halo.m; g.setLineDash([R * 0.09, R * 0.07]); g.lineCap = 'round'; g.lineWidth = Math.max(1, R * 0.03); g.strokeStyle = css(copper, 0.4); blob(g, m, m, R * 1.62, seed + 3, 0.8); g.stroke(); g.setLineDash([]);
+      lw = Math.max(1, R * 0.034);
+      for (i = 0; i < 12; i++) {
+        g = A.rays[i % 2].g; m = A.rays[i % 2].m; th = i / 12 * TAU - Math.PI / 2; a = R * 1.2; b = R * (i % 2 ? 1.5 : 1.72);
+        g.lineCap = 'round'; g.lineWidth = lw; g.strokeStyle = css(copper, 0.9); g.setLineDash([R * 0.08, R * 0.055]);
+        g.beginPath(); g.moveTo(m + Math.cos(th) * a, m + Math.sin(th) * a); g.lineTo(m + Math.cos(th) * b, m + Math.sin(th) * b); g.stroke(); g.setLineDash([]);
+        var tx = m + Math.cos(th) * (b + R * 0.08), ty = m + Math.sin(th) * (b + R * 0.08), q = R * 0.05;
+        g.beginPath(); g.moveTo(tx - q, ty - q); g.lineTo(tx + q, ty + q); g.moveTo(tx + q, ty - q); g.lineTo(tx - q, ty + q); g.stroke();
+      }
+      g = A.disc.g; m = A.disc.m; blob(g, m, m, R, seed, 0.8); g.fillStyle = css(mix(gam, wsun, 0.3)); g.fill();
+      g.save(); g.clip();
+      var rh = R * 0.15, cw = R * 0.12, row, x, y;
+      g.lineCap = 'round'; g.lineJoin = 'round'; g.lineWidth = Math.max(0.8, R * 0.03);
+      for (row = 0, y = m - R * 1.05; y < m + R * 1.1; y += rh, row++) for (x = m - R * 1.1 + (row % 2) * cw * 0.5; x < m + R * 1.1; x += cw) {
+        g.strokeStyle = css(knit, 0.42 + 0.18 * ((row + Math.round(x / cw)) % 2)); g.beginPath(); g.moveTo(x - cw * 0.42, y - rh * 0.4); g.quadraticCurveTo(x - cw * 0.12, y + rh * 0.2, x, y + rh * 0.42); g.quadraticCurveTo(x + cw * 0.12, y + rh * 0.2, x + cw * 0.42, y - rh * 0.4); g.stroke();
+      }
+      g.globalAlpha = 0.35; g.fillStyle = material(P, g, 'grain'); g.fillRect(0, 0, A.disc.c.width, A.disc.c.height); g.restore();
+      g.setLineDash([R * 0.1, R * 0.065]); g.lineCap = 'round'; g.lineWidth = Math.max(1, R * 0.04); g.strokeStyle = css(copper, 0.85); blob(g, m, m, R * 0.88, seed, 0.8); g.stroke(); g.setLineDash([]);
+      g.lineWidth = Math.max(0.8, R * 0.02); g.strokeStyle = css(line, 0.35); blob(g, m, m, R, seed, 0.8); g.stroke();
+    } else { /* Meta Daylight: gamboge laid wet on north-light paper, pencil rays */
+      halo(A.halo, R, wsun, 0.42, 2.5, mix(wsun, gam, 0.5), r);
+      pencil(A.rays[0], R, 10, 1.22, 1.72, 1.46, line, 0, rand(seed + 1)); pencil(A.rays[1], R, 10, 1.22, 1.72, 1.46, line, 1, rand(seed + 1));
+      painted(P, A.disc, R, mix(gam, wsun, 0.18), mix(gam, deep, 0.42), mix(light, wsun, 0.3), seed, 0);
+    }
+    return A;
+  }
+  function sheetAt(ctx, S, x, y, r, a, s, rot) {
+    if (!S || a <= 0.004) return;
+    var e = S.e * r * s;
+    if (!rot && a >= 1) { ctx.drawImage(S.c, x - e, y - e, e * 2, e * 2); return; }
+    ctx.save(); ctx.globalAlpha *= Math.min(1, a); ctx.translate(x, y); if (rot) ctx.rotate(rot); ctx.drawImage(S.c, -e, -e, e * 2, e * 2); ctx.restore();
+  }
+
   /* ---------- the pen ---------- */
   var CACHE = {};
   function pen(look, opt) {
@@ -220,7 +389,8 @@
     var az = num('tex-fold-light', 135) * Math.PI / 180, el = num('tex-fold-elevation', 48) * Math.PI / 180;
     var P = {
       look: look, version: VERSION, inks: inks,
-      sun: [Math.cos(el) * Math.cos(az), -Math.cos(el) * Math.sin(az), Math.sin(el)],
+      /* the light the folds are lit from (1.3 called it sun; since 1.4 sun paints the sun, and sun[0..2] still read this) */
+      light: [Math.cos(el) * Math.cos(az), -Math.cos(el) * Math.sin(az), Math.sin(el)],
       crease: num('tex-fold-crease', 0.5), shadow: num('tex-fold-shadow', 0.32), grain: num('tex-fold-grain', 0.1),
       rgb: function (name, a) { return css(inks[name] || toRGB(name), a); },
       stock: function (name) { return stockRGB(P, name); },
@@ -237,8 +407,27 @@
         if (look !== 'inkblot') { ctx.globalAlpha = look === 'knight' ? 0.25 : 0.5; ctx.fillStyle = material(P, ctx, 'grain'); ctx.fillRect(0, 0, W, H); }
         ctx.restore();
       },
-      shapes: Object.keys(SHAPES)
+      /* sun(ctx, { x, y, r, t, still, alpha }) paints the look's sun centred on x, y (plan S7): a gamboge wash that pools at its
+         edge, a halo bleeding into the paper and pencil rays that breathe; a moon in Knight Night, ink in Ink Blot, print in Comix,
+         paper in Origami, knitting in Skein silk. Deterministic in t; the painted parts are cached, so a frame costs four images */
+      sun: function (ctx, o) {
+        o = o || NONE;
+        var r = +o.r > 0 ? +o.r : 40, x = +o.x || 0, y = +o.y || 0, still = o.still != null ? !!o.still : reduced(look), t = still ? 0 : +o.t || 0;
+        var need = r * Math.min(3, w.devicePixelRatio || 1), bi = 0, A, br, sw;
+        while (bi < SUNB.length - 1 && SUNB[bi] < need) bi++;
+        A = P._sun[bi] || (P._sun[bi] = sunArt(P, SUNB[bi]));
+        br = Math.sin(TAU * t / 6.5); sw = 0.018 * Math.sin(TAU * t / 13);
+        ctx.save(); ctx.globalAlpha *= o.alpha == null ? 1 : clamp(+o.alpha, 0, 1);
+        ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+        sheetAt(ctx, A.halo, x, y, r, A.mode === 'twinkle' ? 0.86 + 0.14 * br : 1, 1 + 0.02 * br, 0);
+        if (A.mode === 'twinkle') { sheetAt(ctx, A.rays[0], x, y, r, still ? 1 : 0.5 + 0.5 * br, 1, 0); sheetAt(ctx, A.rays[1], x, y, r, still ? 1 : 0.5 - 0.5 * br, 1, 0); }
+        else { sheetAt(ctx, A.rays[0], x, y, r, 1, 1 + 0.045 * br, sw); sheetAt(ctx, A.rays[1], x, y, r, 1, 1 - 0.045 * br, -sw); }
+        sheetAt(ctx, A.disc, x, y, r, 1, 1, 0);
+        ctx.restore();
+      },
+      shapes: Object.keys(SHAPES), _sun: []
     };
+    P.sun[0] = P.light[0]; P.sun[1] = P.light[1]; P.sun[2] = P.light[2];
     p.remove(); CACHE[look] = P; return P;
   }
   pen.shapes = SHAPES;
@@ -275,7 +464,7 @@
       var tris = place(sh, oo), F = facets(P, tris, oo), st = F.style, line = P.inks['art-line'] || [40, 40, 40];
       var svg = svgEl('svg', { viewBox: '0 0 200 200', 'aria-hidden': 'true', focusable: 'false' });
       if (!st.mono) {
-        var L = P.sun, h = Math.hypot(L[0], L[1]) || 1, off = 7, sg = svgEl('g', { 'class': 'sb-folded__shadow', fill: css(P.inks['art-shade'] || [0, 0, 0]), opacity: P.shadow, transform: 'translate(' + (-L[0] / h * off).toFixed(1) + ' ' + (-L[1] / h * off).toFixed(1) + ')', style: '--n:' + F.faces.length });
+        var L = P.light, h = Math.hypot(L[0], L[1]) || 1, off = 7, sg = svgEl('g', { 'class': 'sb-folded__shadow', fill: css(P.inks['art-shade'] || [0, 0, 0]), opacity: P.shadow, transform: 'translate(' + (-L[0] / h * off).toFixed(1) + ' ' + (-L[1] / h * off).toFixed(1) + ')', style: '--n:' + F.faces.length });
         F.faces.forEach(function (f) { sg.appendChild(svgEl('polygon', { points: pts(f.pts) })); });
         svg.appendChild(sg);
       }

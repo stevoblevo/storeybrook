@@ -213,6 +213,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 76px; }
 .sc-petrow__tag { font: 400 0.85rem/1 var(--sb-ui); color: var(--ink-muted); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
 .sc-petbook__count { margin: 0 0 var(--space-3); color: var(--ink-muted); }
 .sc-petbook__night { margin: var(--space-5) 0 0; color: var(--ink-muted); }
+.sc-petbook__dusk { margin-top: var(--space-2); }
 
 /* autoplay: a slip at the top while the book plays itself */
 .sc-auto { position: fixed !important; z-index: var(--z-overlay) !important; left: 50%; transform: translateX(-50%); top: calc(max(10px, env(safe-area-inset-top, 0px)) + 66px);

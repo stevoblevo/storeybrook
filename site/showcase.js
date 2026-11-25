@@ -169,7 +169,7 @@
   if (restart) restart.addEventListener('click', function () {
     S.unlocks.list().forEach(function (id) { if (/^look-/.test(id)) S.unlocks.lock(id); });
     S.rewards.set(0); S.unlocks.paint();
-    var sv = save(); if (sv.found) Object.keys(sv.found).forEach(function (k) { if (/^sb:/.test(k)) delete sv.found[k]; });
+    var sv = save(); if (sv.found && typeof sv.found === 'object') Object.keys(sv.found).forEach(function (k) { if (/^sb:/.test(k)) delete sv.found[k]; });
     if (sv.active) delete sv.active.sb; put(sv);
     if (petEl) petEl.hidden = true; paintPets();
     visited = {}; current = null;
@@ -177,23 +177,14 @@
     S.toast('<span>The book is new again.</span>', { ms: 2200 });
   });
 
-  /* ---------- the adventure: a pet in every look, shared with Depthfield through one save ---------- */
-  var PKEY = 'crossing:pets', NIGHT = 5;
-  var PETS = [
-    { id: 'egg', name: 'The egg', look: 'daylight', o: { form: 'saelion', stage: 0 }, line: 'Saelion left it on the porch stone.', how: 'Tap Saelion on the front page.' },
-    { id: 'kit', name: 'Kit', look: 'knight', o: { form: 'saelion', stage: 1 }, line: 'It woke up by candlelight.', how: 'Wake the sleeper at bedtime.' },
-    { id: 'octopus', name: 'Octopus', look: 'inkblot', o: { form: 'octopus' }, line: 'It was waiting on the last page.', how: 'Turn the slate to its last page.' },
-    { id: 'bunny', name: 'Bunny', look: 'comix', o: { form: 'bunny', mood: 'surprised' }, line: 'The heist needed an accomplice.', how: 'Grab the nougats in the comic.' },
-    { id: 'sprite', name: 'Sprite', look: 'origami', o: { form: 'saelion', stage: 3 }, line: 'It grew while you walked.', how: 'Walk three stones in the level maker.' },
-    { id: 'pixie', name: 'Pixie', look: 'skein', o: { form: 'pixie' }, line: 'It was pressed into the album.', how: 'Press the seal on the album.' },
-    { id: 'saelion', name: 'Saelion', look: null, o: { form: 'saelion', stage: 4, hide: 'chimera' }, line: 'All grown, and she knows the way.', how: 'Find the other six first.' }
-  ];
+  /* ---------- the adventure: a pet in every look, shared with Depthfield and Hypermetapunk through one save ----------
+     plan S7: the pets' data, has and find live in the kit now (components/pets.js, Storeybrook.pets) */
+  var SP = S.pets || { key: 'crossing:pets', list: [], has: function () { return false; }, find: function () { return false; }, count: function () { return 0; }, total: function () { return { sb: 0, df: 0, hmp: 0, all: 0 }; } };
+  var PKEY = SP.key, NIGHT = 5, DUSK = 5, PETS = SP.list;
   function pet(id) { return PETS.filter(function (p) { return p.id === id; })[0]; }
-  function save() { try { return JSON.parse(localStorage.getItem(PKEY)) || {}; } catch (e) { return {}; } }
+  function save() { try { var v = JSON.parse(localStorage.getItem(PKEY)); return v && typeof v === 'object' ? v : {}; } catch (e) { return {}; } }
   function put(s) { try { localStorage.setItem(PKEY, JSON.stringify(s)); } catch (e) {} }
-  function has(id) { var s = save(); return !!(s.found && s.found['sb:' + id]); }
-  function found() { return PETS.filter(function (p) { return has(p.id); }).length; }
-  function nightFound() { var f = save().found || {}; return Object.keys(f).filter(function (k) { return /^df:/.test(k); }).length; }
+  function has(id) { return SP.has(id); }
   function opts(p) { return Object.assign({ form: 'saelion', stage: 4, mood: 'happy', hide: 'plain' }, p.o); }
   function mini(p, hide) { return '<span class="sc-mini sb-creature' + (hide ? ' is-hidden' : '') + '" aria-hidden="true">' + S.creatureSVG(opts(p)) + '</span>'; }
   var petEl = $('#pet'), petApi = null, book = $('#petbook');
@@ -218,15 +209,17 @@
       }).join('');
       S.mountIcons(list);
     }
-    var c = $('#petbook-count'); if (c) c.textContent = found() + ' of ' + PETS.length + ' pets found. Tap a found pet and it walks with you.';
-    var n = nightFound(), nl = $('#petbook-night');
+    var all = SP.total(), c = $('#petbook-count'); if (c) c.textContent = all.sb + ' of ' + PETS.length + ' pets found. Tap a found pet and it walks with you.';
+    var n = all.df, nl = $('#petbook-night');
     if (nl) nl.innerHTML = 'Night pets from Depthfield: ' + n + ' of ' + NIGHT + '. ' + (has('saelion') ? 'Saelion is in its night sky now, drawn in stars. ' : 'Find all seven here and something appears in its night sky. ') +
       '<a class="sb-ink-link" href="https://stevoblevo.github.io/depthfield/' + (has('saelion') ? '?theme=contrast' : '') + '">' + (n < NIGHT ? 'Find the night pets' : 'Visit them') + '</a>.';
+    var k = all.hmp, dl = $('#petbook-dusk');
+    if (dl) dl.innerHTML = 'Dusk pets from Hypermetapunk: ' + k + ' of ' + DUSK + '. ' +
+      '<a class="sb-ink-link" href="https://stevoblevo.github.io/hypermetapunk/">' + (k < DUSK ? 'Find the dusk pets' : 'Visit them') + '</a>. Across the three: ' + all.all + ' of ' + (PETS.length + NIGHT + DUSK) + '.';
   }
   function findPet(id) {
-    if (has(id)) return false;
-    var s = save(); s.found = s.found || {}; s.active = s.active || {};
-    s.found['sb:' + id] = Date.now(); s.active.sb = id; put(s);
+    if (!SP.find(id)) return false;
+    var s = save(); s.active = s.active || {}; s.active.sb = id; put(s);
     paintPets(); hop(petEl);
     var p = pet(id);
     S.toast('<span class="sc-mini sb-creature" style="width:46px;height:46px;flex:none">' + S.creatureSVG(opts(p)) + '</span><span><b>' + p.name + '</b> joined you. ' + p.line + '</span>', { ms: 3400 });

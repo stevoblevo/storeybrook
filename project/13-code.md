@@ -8,6 +8,7 @@
 | `components/bundle.css` | every component, prefixed `sb-`; the look hooks; reduced-motion, forced-colors and print rules; the Google Fonts import |
 | `components/bundle.js` | one classic script, no dependencies, no network: `window.Storeybrook` |
 | `components/index.d.ts` | the markup contracts (`<Comp>Props`) and the JS API, as types |
+| `components/paper.js`, `components/pets.js` | add-ons, loaded after `bundle.js` by the pages that use them: the pen and its sun, the pets (below) |
 
 Load them in that order, set `data-theme` on `<html>` (and `class="sb-root"` for the fluid root size), give `<body>` `sb-body sb-no-js`, and call `Storeybrook.init()` at the end of the body.
 
@@ -61,7 +62,7 @@ Every function is typed in `index.d.ts`.
 
 ## Events
 
-Events arrive on `window` as `sb:<name>` with a `detail`: `ready`, `theme`, `density`, `back`, `read`, `nougat`, `unlock`, `step`, `creature`, `page`, `drawer`, `dialog`, `sound`, and since 1.2 `guardian` (`{kind, label, on}` or `{kind, label, asleep}`) and `taste` (`{findings, look}`).
+Events arrive on `window` as `sb:<name>` with a `detail`: `ready`, `theme`, `density`, `back`, `read`, `nougat`, `unlock`, `step`, `creature`, `page`, `drawer`, `dialog`, `sound`, and since 1.2 `guardian` (`{kind, label, on}` or `{kind, label, asleep}`) and `taste` (`{findings, look}`), and since 1.4 `pet` (`{id, name, kit}`, from `pets.js`, when a pet is found for the first time).
 
 ```js
 addEventListener('sb:nougat', e => console.log(e.detail.count, e.detail.reason));
@@ -69,7 +70,7 @@ addEventListener('sb:nougat', e => console.log(e.detail.count, e.detail.reason))
 
 ## Storage
 
-Local storage: `sb:theme`, `sb:density`, `sb:voice`, `sb:rate`, `sb:nougats`, `sb:unlocks`. Session storage: `sb:sound` (this visit only). Every read and write is wrapped: with storage blocked (a private window, an embedded frame) the page works and simply forgets.
+Local storage: `sb:theme`, `sb:density`, `sb:voice`, `sb:rate`, `sb:nougats`, `sb:unlocks`, and `crossing:pets`, which the three kits share (see Pets). Session storage: `sb:sound` (this visit only). Every read and write is wrapped: with storage blocked (a private window, an embedded frame) the page works and simply forgets.
 
 ## Progressive enhancement
 
@@ -97,5 +98,12 @@ Put `data-sb="daylight"` (or another look) on any panel and it becomes a Storeyb
 
 ## Paper, an add-on
 
-`components/paper.js` is loaded after `bundle.js` by pages that draw folded paper (Pen, Folded). It adds `Storeybrook.pen(look)`, `Storeybrook.folded(el)` and `Storeybrook.looks` and changes nothing else, so a page that draws no paper does not pay for it. Its budget is 28 KB. Canvas code asks the pen for colours by token name (`P.rgb('art-shade')`), never by hex value, so one drawing works in all six looks. The paper stocks (`paper-kami`, `paper-washi`, `paper-kraft`, `paper-foil`) and the fold light (`tex-fold-light`, `tex-fold-elevation`, `tex-fold-crease`, `tex-fold-shadow`, `tex-fold-grain`) are tokens like any other.
+`components/paper.js` is loaded after `bundle.js` by pages that draw folded paper (Pen, Folded). It adds `Storeybrook.pen(look)`, `Storeybrook.folded(el)` and `Storeybrook.looks` and changes nothing else, so a page that draws no paper does not pay for it. Its budget is 44 KB (28 KB until 1.4, which added `pen.sun`, the sun in every look). Canvas code asks the pen for colours by token name (`P.rgb('art-shade')`), never by hex value, so one drawing works in all six looks. The paper stocks (`paper-kami`, `paper-washi`, `paper-kraft`, `paper-foil`) and the fold light (`tex-fold-light`, `tex-fold-elevation`, `tex-fold-crease`, `tex-fold-shadow`, `tex-fold-grain`) are tokens like any other.
 
+## Plate, an add-on
+
+`components/plate.js` (1.5) is loaded after `paper.js` by pages that make plates. It adds `Storeybrook.plate(look, source, opts)`, which takes one canvas of flat fills on transparency and returns a new canvas of the same size in the look's material, and the family's two helpers, `Storeybrook.tint` and `Storeybrook.edges`. It reads its colours from the look's pen, never from hex values, and never changes the source. A material is a process over the one drawing, with one accent per look placed in the emptiest corner. Its budget is 16 KB. A plate of 320 px a side takes a few milliseconds: make it once and keep the canvas, and do not make plates in an animation frame.
+
+## Pets, an add-on
+
+`components/pets.js` (1.4) is loaded after `bundle.js` by pages that keep or draw the day pets. It adds `Storeybrook.pets`, Storeybrook's side of the family's crossing pets: the seven as data, `has`, `find`, `count` and `total` over the one save every kit shares (`localStorage['crossing:pets']`, ids prefixed `sb:`, `df:` and `hmp:`), and `draw(ctx, id, opts)`, which paints a pet on canvas and lets it dance to the beat. It reads no CSS: the creature's inks for each look are a table in the file, checked against `tokens.json` and `bundle.css` by `tests/pets/logic.cjs`, so a Depthfield or Hypermetapunk page can draw a day pet without Storeybrook's stylesheets. Its budget is 24 KB.

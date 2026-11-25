@@ -1,0 +1,42 @@
+<!-- @dsCard group="Play" height=760 -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Plate</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DynaPuff:wdth,wght@75..100,400..700&family=Alegreya:ital,wght@0,400..800;1,400..800&family=Andika:ital,wght@0,400;0,700;1,400&family=Bangers&display=swap">
+<style>html,body{margin:0}body.sb-body{min-height:0;background:var(--paper);color:var(--ink);font-family:var(--sb-story)}.pv{padding:18px 22px;box-sizing:border-box}canvas{display:block;width:100%;height:auto;border-radius:4px}.top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;align-items:start}.src{border:3px dashed var(--line);border-radius:4px;touch-action:none;cursor:crosshair;background:var(--page)}.row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:10px}.row p,.cap{margin:4px 0 0;font:500 12px/1.35 var(--sb-ui);color:var(--ink-muted)}.row p{text-align:center}.lbl{margin:14px 0 0;font:600 13px/1.3 var(--sb-ui);color:var(--ink-muted)}.bar{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}.sw{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);padding:0;cursor:pointer}.sw[aria-pressed="true"]{outline:3px solid var(--focus);outline-offset:2px}@media(max-width:560px){.top{grid-template-columns:1fr}.row{grid-template-columns:repeat(3,minmax(0,1fr))}}</style></head>
+<body class="sb-body">
+<div class="pv">
+<div class="top">
+  <div>
+    <canvas id="src" class="src" width="480" height="480" role="img" aria-label="The drawing: a seal on a rock balancing a star, in flat colours. Tap or drag on it to add to the drawing."></canvas>
+    <div class="bar" role="group" aria-label="Brush colour"><button class="sw" style="background:#f2c14e" data-c="#f2c14e" aria-pressed="true" aria-label="Yellow"></button><button class="sw" style="background:#d95f6a" data-c="#d95f6a" aria-pressed="false" aria-label="Red"></button><button class="sw" style="background:#3f4a5a" data-c="#3f4a5a" aria-pressed="false" aria-label="Slate"></button><button class="sb-btn sb-btn--quiet sb-btn--sm" id="again" type="button">Start the drawing over</button></div>
+    <p class="cap">The one drawing: flat fills, nothing else. Pick a brush, then tap or drag on it.</p>
+  </div>
+  <div><div id="big"></div><p class="cap" id="bigcap" aria-live="polite"></p></div>
+</div>
+<p class="lbl">The same drawing, every look</p>
+<div class="row" id="looks"></div>
+</div>
+<script src="../paper.js"></script>
+<script src="../plate.js"></script>
+<script>(function(){var S=window.Storeybrook;if(!S||!S.plate)return;
+function drawSeal(g, W, H) { var s = Math.min(W, H), ox = (W - s) / 2, oy = (H - s) / 2; function X(v) { return ox + v * s; } function Y(v) { return oy + v * s; } g.save(); g.lineJoin = 'round'; g.fillStyle = '#3f4a5a'; g.beginPath(); g.moveTo(X(.2), Y(.93)); g.quadraticCurveTo(X(.24), Y(.8), X(.4), Y(.8)); g.lineTo(X(.78), Y(.79)); g.quadraticCurveTo(X(.9), Y(.82), X(.9), Y(.93)); g.closePath(); g.fill(); g.fillStyle = '#4d6f8c'; g.beginPath(); g.moveTo(X(.72), Y(.76)); g.quadraticCurveTo(X(.86), Y(.7), X(.9), Y(.6)); g.quadraticCurveTo(X(.86), Y(.7), X(.94), Y(.74)); g.quadraticCurveTo(X(.86), Y(.8), X(.74), Y(.82)); g.closePath(); g.fill(); g.beginPath(); g.moveTo(X(.74), Y(.74)); g.quadraticCurveTo(X(.84), Y(.66), X(.88), Y(.56)); g.quadraticCurveTo(X(.92), Y(.68), X(.8), Y(.8)); g.closePath(); g.fill(); g.fillStyle = '#6b8fae'; g.beginPath(); g.moveTo(X(.8), Y(.81)); g.bezierCurveTo(X(.72), Y(.58), X(.66), Y(.36), X(.52), Y(.25)); g.bezierCurveTo(X(.44), Y(.19), X(.36), Y(.2), X(.3), Y(.25)); g.bezierCurveTo(X(.26), Y(.29), X(.28), Y(.34), X(.34), Y(.36)); g.bezierCurveTo(X(.38), Y(.5), X(.36), Y(.7), X(.42), Y(.82)); g.closePath(); g.fill(); g.fillStyle = '#c9dbe8'; g.beginPath(); g.moveTo(X(.36), Y(.38)); g.bezierCurveTo(X(.48), Y(.46), X(.56), Y(.64), X(.58), Y(.81)); g.lineTo(X(.42), Y(.82)); g.bezierCurveTo(X(.36), Y(.7), X(.39), Y(.5), X(.36), Y(.38)); g.closePath(); g.fill(); g.fillStyle = '#4d6f8c'; g.beginPath(); g.moveTo(X(.42), Y(.56)); g.quadraticCurveTo(X(.3), Y(.62), X(.22), Y(.76)); g.quadraticCurveTo(X(.34), Y(.74), X(.46), Y(.66)); g.closePath(); g.fill(); g.fillStyle = '#1f2a37'; g.beginPath(); g.arc(X(.295), Y(.262), s * .017, 0, 7); g.fill(); g.beginPath(); g.arc(X(.42), Y(.265), s * .014, 0, 7); g.fill(); g.fillStyle = '#f2c14e'; g.beginPath(); for (var i = 0; i < 10; i++) { var a = -Math.PI / 2 + i * Math.PI / 5 + .2, r = (i % 2 ? .034 : .078) * s; g.lineTo(X(.25) + Math.cos(a) * r, Y(.135) + Math.sin(a) * r); } g.closePath(); g.fill(); g.restore(); }
+var src=document.getElementById('src'),sg=src.getContext('2d'),colour='#f2c14e',last=null,timer=0;
+function reset(){sg.clearRect(0,0,src.width,src.height);drawSeal(sg,src.width,src.height);}
+function look(){var v=document.documentElement.getAttribute('data-theme');return S.plate.media[v]?v:'daylight';}
+function put(host,c,label){c.setAttribute('role','img');c.setAttribute('aria-label',label);host.textContent='';host.appendChild(c);}
+var cells=S.looks.map(function(l){var wrap=document.createElement('div'),box=document.createElement('div'),p=document.createElement('p'),m=S.plate.media[l.id];p.textContent=l.name+': '+m.name.toLowerCase();wrap.appendChild(box);wrap.appendChild(p);document.getElementById('looks').appendChild(wrap);return{box:box,look:l,m:m};});
+function draw(){var id=look(),m=S.plate.media[id],name=(S.looks.filter(function(l){return l.id===id;})[0]||{}).name;
+put(document.getElementById('big'),S.plate(id,src),'The seal as '+m.name.toLowerCase()+', in '+name);
+document.getElementById('bigcap').textContent=name+': '+m.name.toLowerCase()+'. Its accent is '+m.accent+'.';
+var small=document.createElement('canvas');small.width=small.height=240;small.getContext('2d').drawImage(src,0,0,240,240);
+cells.forEach(function(c){put(c.box,S.plate(c.look.id,small),'The seal as '+c.m.name.toLowerCase()+', in '+c.look.name);});}
+function soon(){clearTimeout(timer);timer=setTimeout(draw,90);}
+function at(e){var r=src.getBoundingClientRect();return[(e.clientX-r.left)*src.width/r.width,(e.clientY-r.top)*src.height/r.height];}
+function dab(a,b){sg.strokeStyle=colour;sg.fillStyle=colour;sg.lineWidth=26;sg.lineCap='round';sg.beginPath();sg.arc(b[0],b[1],13,0,7);sg.fill();if(a[0]!==b[0]||a[1]!==b[1]){sg.beginPath();sg.moveTo(a[0],a[1]);sg.lineTo(b[0],b[1]);sg.stroke();}}/* a tap paints a dot: a stroke of no length paints nothing */
+src.addEventListener('pointerdown',function(e){src.setPointerCapture(e.pointerId);last=at(e);dab(last,last);soon();});
+src.addEventListener('pointermove',function(e){if(!last)return;var p=at(e);dab(last,p);last=p;soon();});
+['pointerup','pointercancel'].forEach(function(n){src.addEventListener(n,function(){last=null;});});
+Array.prototype.forEach.call(document.querySelectorAll('.sw'),function(b){b.addEventListener('click',function(){colour=b.getAttribute('data-c');src.style.borderColor=colour;src.style.borderStyle='solid';Array.prototype.forEach.call(document.querySelectorAll('.sw'),function(x){x.setAttribute('aria-pressed',String(x===b));});});});
+document.getElementById('again').addEventListener('click',function(){reset();draw();});
+reset();draw();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
+new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></body></html>

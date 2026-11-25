@@ -18,6 +18,7 @@ Run the build after any change under `project/` and commit what it writes. Befor
 - Mark code that belongs to a task with a short comment naming it (`/* plan O1: … */`).
 - `project/` is exported from the Claude artifact. Work done here lands in `project/` and is carried back to the artifact at release (family task F8). Never re-export over `project/` without diffing first.
 - Never replace a published build; add a version. Never delete another agent's branch or work; it can all be useful.
+- The showcase is part of a release. `tools/release.py` freezes `index.html` and the `site/` files it loads under `v/<version>/`, so every version keeps its own address (`/v/1.5.0/`). After a release, a change to `index.html`, `site/showcase.*`, `site/mirror.html`, `site/hooks.css` or `site/immersive.js` needs a new version; the release tool refuses to rewrite a frozen page. `tools/landing.py --rev <revision> --version <x.y.z>` back-fills a showcase from history.
 - `site/immersive.js`, `site/app.*` and `docs.html` are shared with Depthfield and Hypermetapunk: change them in all three or not at all.
 - Words follow `project/08-writing.md`: sentence case, real names for things, no slogans. Run `Storeybrook.taste()` on a page you made.
 - `show-tell/` and `bespoke-v5/` are other projects hosted here for now; their own rules and tests live in those folders. Do not mix design-system changes with them in one commit.
