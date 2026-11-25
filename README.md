@@ -4,7 +4,7 @@
 
 A light-first design system for illustrated stories, read-aloud pages and small games. Watercolor paper, stepping stones and a growing creature share the same six looks.
 
-It is the day half of Bleve's toolkit family, beside Depthfield (night) and Hypermetapunk (dusk): six looks on one set of token names, 33 components, a behavior bundle exposed as `window.Storeybrook`, and two add-ons for canvas, the paper pen and the day pets.
+It is the day half of Bleve's toolkit family, beside Depthfield (night) and Hypermetapunk (dusk): six looks on one set of token names, 34 components, a behavior bundle exposed as `window.Storeybrook`, and three add-ons for canvas: the paper pen, the plate and the day pets.
 
 **Meta Daylight · Knight Night · Ink Blot · Comix · Origami · Skein silk**
 
@@ -25,9 +25,9 @@ From the repository root, save this as `scratch.html` and run `python3 -m http.s
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Storeybrook example</title>
-  <link rel="stylesheet" href="v/1.4.0/tokens.css">
-  <link rel="stylesheet" href="v/1.4.0/bundle.css">
-  <script src="v/1.4.0/bundle.js"></script>
+  <link rel="stylesheet" href="v/1.5.0/tokens.css">
+  <link rel="stylesheet" href="v/1.5.0/bundle.css">
+  <script src="v/1.5.0/bundle.js"></script>
 </head>
 <body class="sb-body">
   <a class="sb-btn sb-btn--primary" href="#chapter">Turn the page</a>
@@ -36,14 +36,15 @@ From the repository root, save this as `scratch.html` and run `python3 -m http.s
 </html>
 ```
 
-The [1.4.0 runtime](v/1.4.0/) is the current release; every earlier one stays where it was, byte for byte. The [version manifest](v/index.json) records SHA-256 hashes. See the [Reader](project/components/Reader/README.md) for browser voice controls and the [Button](project/components/Button/README.md) for the markup contract.
+The [1.5.0 runtime](v/1.5.0/) is the current release; every earlier one stays where it was, byte for byte. The [version manifest](v/index.json) records SHA-256 hashes. See the [Reader](project/components/Reader/README.md) for browser voice controls and the [Button](project/components/Button/README.md) for the markup contract.
 
 ## Draw with it on canvas
 
-Two add-ons load after `bundle.js`, only if a page needs them.
+Three add-ons load after `bundle.js`, only if a page needs them.
 
-- **The paper pen** (`v/1.4.0/paper.js`): `Storeybrook.looks` lists the six looks as data, and `Storeybrook.pen(look)` gives a look's inks, paper stocks and materials, folds any shape as paper lit from one side, and paints a different sun in each look. Folded does the same in the page, without canvas. See [Pen](project/components/Pen/README.md) and [Folded](project/components/Folded/README.md).
-- **The day pets** (`v/1.4.0/pets.js`): `Storeybrook.pets` holds the seven pets found in the showcase, their place in the family's shared save, and `draw(ctx, id, o)`, which paints each one in a look's inks and lets it dance to a beat. See [Pets](project/components/Pets/README.md).
+- **The paper pen** (`v/1.5.0/paper.js`): `Storeybrook.looks` lists the six looks as data, each with the mood it rewards in play (still, impact or lit), and `Storeybrook.pen(look)` gives a look's inks, paper stocks and materials, folds any shape as paper lit from one side, and paints a different sun in each look. Folded does the same in the page, without canvas. See [Pen](project/components/Pen/README.md) and [Folded](project/components/Folded/README.md).
+- **The plate** (`v/1.5.0/plate.js`, after `paper.js`): `Storeybrook.plate(look, source)` takes one canvas of flat fills and returns it in the look's material: a wash, lamplight, brush ink, print, cut paper or cross-stitch, each with one accent. Depthfield and Hypermetapunk make plates from the same source canvas. See [Plate](project/components/Plate/README.md).
+- **The day pets** (`v/1.5.0/pets.js`): `Storeybrook.pets` holds the seven pets found in the showcase, their place in the family's shared save, and `draw(ctx, id, o)`, which paints each one in a look's inks and lets it dance to a beat. See [Pets](project/components/Pets/README.md).
 
 ## Project notes
 
@@ -76,6 +77,7 @@ project/
   components/
     bundle.js                One classic script that assigns window.Storeybrook
     paper.js                 The paper add-on (Storeybrook.pen, its sun, and Folded): load it after bundle.js
+    plate.js                 The plate add-on (Storeybrook.plate: one drawing in each look's material; load it after paper.js)
     pets.js                  The pets add-on (Storeybrook.pets: the seven day pets, the shared save, a canvas painter)
     bundle.css               Component styles and the six looks' hooks
     index.d.ts               Types, as documentation of the API
@@ -140,5 +142,13 @@ Versioned runtime files live under `v/1.3.2/`; `v/index.json` records their SHA-
 - **The sun in the pen**: `Storeybrook.pen(look).sun(ctx, { x, y, r, t, still, alpha })` paints a watercolour sun in Meta Daylight, a moon in Knight Night, and its own sun in each other look. The fold light the pen called `sun` in 1.3 is `light` now; `sun[0]` to `sun[2]` still read it.
 - `node tests/pets/logic.cjs` checks the contract and keeps the pets' ink table in step with `tokens.json` and `bundle.css`; `node tests/pets/browser.cjs` (Chromium or WebKit) checks the pet book, `draw` and the sun.
 - Versioned runtime files live under `v/1.4.0/`, which now include `pets.js`; earlier versions are unchanged.
+
+## 1.5.0 the plate and the moods
+
+- **Plate** (`project/components/plate.js`, an add-on loaded after `paper.js`): `Storeybrook.plate(look, source, { word, seed, font })` makes one drawing in each look's material, with one accent per look, and puts the accent in the emptiest corner. `Storeybrook.tint` and `Storeybrook.edges` are the two helpers the family shares (family F9, the Storeybrook half).
+- **Moods**: every entry of `Storeybrook.looks` carries `mood`: `still` for the day looks, `impact` for Comix, `lit` for Knight Night (family F10). A game reads it to choose what a look rewards.
+- **Taste** no longer counts a control inside closed `<details>`, so the showcase passes its own check with the voice options shut.
+- `node tests/plate/browser.cjs` (Chromium or WebKit) makes the six plates from one drawing, checks that the source is never changed and that the Plate page does not scroll sideways at 390 px.
+- Versioned runtime files live under `v/1.5.0/`, which now include `plate.js`; earlier versions are unchanged.
 
 </details>

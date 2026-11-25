@@ -1,4 +1,4 @@
-/* Storeybrook 1.4.0 — types as documentation. Components are HTML + bundle.css classes (prefixed sb-); behaviors are
+/* Storeybrook 1.5.0 — types as documentation. Components are HTML + bundle.css classes (prefixed sb-); behaviors are
    window.Storeybrook. Each <Comp>Props names the markup contract a page provides; the functions are the JS API. */
 
 export type LookId = 'daylight' | 'knight' | 'inkblot' | 'comix' | 'origami' | 'skein';
@@ -133,7 +133,8 @@ interface StoreybrookPen {
   range(ctx: CanvasRenderingContext2D, opts?: RangeOptions): unknown;
   ground(ctx: CanvasRenderingContext2D, opts?: { w?: number; h?: number }): void;
 }
-interface StoreybrookLook { id: string; name: string; light: boolean; motion: boolean; print: boolean; }
+/** mood (1.5, family F10): what the look rewards in play. Day looks reward stillness, print looks impact and tempo, night looks a light source. */
+interface StoreybrookLook { id: string; name: string; light: boolean; motion: boolean; print: boolean; mood: 'still' | 'impact' | 'lit'; }
 interface StoreybrookPaper {
   pen(look?: string | Element, opts?: { fresh?: boolean }): StoreybrookPen;
   folded(el: Element, opts?: { shape?: PaperShape; stock?: string; color?: string; tags?: Record<string, string>; label?: string; reveal?: boolean }): { el: Element; render(): void; refold(): void; set(o: object): void; destroy(): void } | null;
@@ -161,3 +162,15 @@ interface StoreybrookPets {
   draw(ctx: CanvasRenderingContext2D, id: string, opts?: PetDrawOptions): boolean;
 }
 interface StoreybrookPetsAddon { pets: StoreybrookPets; }
+
+/* plate.js, an add-on loaded after bundle.js and paper.js (1.5; family F9, the Storeybrook half: the same call in Depthfield and Hypermetapunk) */
+interface StoreybrookMedium { id: 'wash' | 'lamplight' | 'ink' | 'print' | 'paper' | 'stitch'; name: string; accent: string; }
+interface StoreybrookPlateAddon {
+  /** One drawing, made in the look's material. source is a canvas of flat fills on transparency; a new canvas of the same size comes back.
+      word: the Comix sound word ('' for none). seed: where the wash blooms and the stipple falls. font: the sound word's font stack. */
+  plate: ((look: string | Element, source: HTMLCanvasElement, opts?: { word?: string; seed?: number; font?: string }) => HTMLCanvasElement) & { media: Record<string, StoreybrookMedium>; version: string };
+  /** the family's two shared helpers, the same as Depthfield's: a silhouette of the drawing in one colour, and its outlines */
+  tint(source: HTMLCanvasElement, colour: string): HTMLCanvasElement;
+  edges(source: HTMLCanvasElement, rgb: [number, number, number], gain?: number): HTMLCanvasElement;
+  plateVersion: string;
+}

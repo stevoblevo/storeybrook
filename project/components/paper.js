@@ -1,24 +1,25 @@
-/* Storeybrook Paper 1.4.0 · folded paper for canvas and the page. An add-on: load it after bundle.js.
+/* Storeybrook Paper 1.5.0 · folded paper for canvas and the page. An add-on: load it after bundle.js.
      <script src="components/bundle.js"></script><script src="components/paper.js"></script>
    Storeybrook.pen(look)   a look's resolved inks, its paper stocks and materials, and a pen that draws shapes as folded
                            paper lit from one direction (plan O1; the Storeybrook half of family task F4), and since 1.4
                            pen.sun(ctx, o): the look's sun on paper, a moon in Knight Night (plan S7).
    Storeybrook.folded(el)  the same folds as an SVG figure in the page, which folds itself on reveal (plan O3).
-   Storeybrook.looks       the six looks as data: { id, name, light, motion, print }.
+   Storeybrook.looks       the six looks as data: { id, name, light, motion, print, mood }. mood (1.5, family F10) is what a look
+                           rewards in play: 'still' (day looks), 'impact' (print looks) or 'lit' (night looks).
    No dependencies, no network. Reduced motion and Ink Blot draw the finished fold at once, and a still sun. Budget: 44 KB. */
 (function (w, d) {
   'use strict';
   var S = w.Storeybrook;
   if (!S || S.pen) return;
-  var VERSION = '1.4.0';
+  var VERSION = '1.5.0';
 
   var LOOKS = [
-    { id: 'daylight', name: 'Meta Daylight', light: true, motion: true, print: false },
-    { id: 'knight', name: 'Knight Night', light: false, motion: true, print: false },
-    { id: 'inkblot', name: 'Ink Blot', light: true, motion: false, print: true },
-    { id: 'comix', name: 'Comix', light: true, motion: true, print: false },
-    { id: 'origami', name: 'Origami', light: true, motion: true, print: false },
-    { id: 'skein', name: 'Skein silk', light: true, motion: true, print: false }
+    { id: 'daylight', name: 'Meta Daylight', light: true, motion: true, print: false, mood: 'still' },
+    { id: 'knight', name: 'Knight Night', light: false, motion: true, print: false, mood: 'lit' },
+    { id: 'inkblot', name: 'Ink Blot', light: true, motion: false, print: true, mood: 'still' },
+    { id: 'comix', name: 'Comix', light: true, motion: true, print: false, mood: 'impact' },
+    { id: 'origami', name: 'Origami', light: true, motion: true, print: false, mood: 'still' },
+    { id: 'skein', name: 'Skein silk', light: true, motion: true, print: false, mood: 'still' }
   ];
   var IDS = LOOKS.map(function (l) { return l.id; });
   var INKS = ['paper', 'surface', 'page', 'ink', 'ink-muted', 'line', 'accent', 'cue', 'art-line', 'art-light', 'art-shade', 'art-stone', 'art-water',

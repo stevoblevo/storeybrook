@@ -278,6 +278,14 @@
    "summary": "The seven day pets as data, and a canvas painter that lets each one dance to the beat: `Storeybrook.pets` is Storeybrook's side of the family's crossing pets, which Depthfield and Hypermetapunk keep under the same names."
   },
   {
+   "name": "Plate",
+   "group": "Play",
+   "height": 760,
+   "preview": "project/components/Plate/preview.html",
+   "readme": "project/components/Plate/README.md",
+   "summary": "One drawing, made in a look's material: `Storeybrook.plate(look, source)` takes a canvas of flat fills on transparency and returns the same drawing as a wash, by lamplight, in brush ink, in print, in cut paper or in cross-stitch."
+  },
+  {
    "name": "Button",
    "group": "Actions",
    "height": 190,

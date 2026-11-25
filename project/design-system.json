@@ -455,9 +455,9 @@
   ],
   "lastChange": {
     "by": "Bleve",
-    "at": "2026-11-24T03:50:00Z",
+    "at": "2026-11-25T21:30:00Z",
     "via": "Claude",
-    "note": "Storeybrook 1.4: the pets and the sun. Pets (Storeybrook.pets in components/pets.js, an add-on: the seven day pets as data over the shared crossing:pets save, and a canvas painter that dances them to the beat; family F9) and pen.sun (the sun on paper in every look, a moon at night; the fold light is pen.light). Plan S7."
+    "note": "Storeybrook 1.5: the plate and the moods. Plate (Storeybrook.plate in components/plate.js, an add-on after paper.js: one drawing made in each look's material, a wash, lamplight, brush ink, print, cut paper and cross-stitch, each with one accent; family F9) and looks[].mood (still, impact or lit; family F10). Taste no longer counts controls inside closed details."
   },
   "layout": "files",
   "libraries": [],

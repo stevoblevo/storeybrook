@@ -1,11 +1,11 @@
-/* Storeybrook 1.4.0 · behaviors for storybook pages and little games. One classic script, no dependencies.
+/* Storeybrook 1.5.0 · behaviors for storybook pages and little games. One classic script, no dependencies.
    window.Storeybrook: theme, density, nav, read (read aloud), rewards (nougats), unlocks, brook, creature, spread,
    fold, blot, drawer, dialog, toast, sound, haptic, icons, guardian, taste. Every module checks reduced motion at run time and
    wraps storage, so a page works with storage blocked and with JS off (markup stays readable). */
 (function (w, d) {
   'use strict';
   if (w.Storeybrook && w.Storeybrook.version) return;
-  var VERSION = '1.4.0';
+  var VERSION = '1.5.0';
   var THEMES = [
     { id: 'daylight', name: 'Meta Daylight', line: 'Watercolor on north-light paper' },
     { id: 'knight', name: 'Knight Night', line: 'A cobalt paper theatre by candle' },
@@ -728,7 +728,7 @@
   guardian.kinds = Object.keys(GUARD_ART);
 
   /* ---------- taste: read a page against this system's rules and the tells that make a page look generated ---------- */
-  function vis(e) { var r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; }
+  function vis(e) { var r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && (!e.checkVisibility || e.checkVisibility()); } /* 1.5: a control inside closed <details> is not on the page */
   function words(e) { var t = e.innerText; return (t == null ? e.textContent || '' : t).replace(/\s+/g, ' ').trim(); }
   function taste(opts) {
     var o = opts || {}, scope = o.scope || d.body, out = [], lk = look(), comix = lk === 'comix';
