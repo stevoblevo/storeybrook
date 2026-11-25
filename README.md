@@ -1,17 +1,57 @@
+<img src="site/icons/icon-192.png" alt="Storeybrook mark" width="84">
+
 # Storeybrook
 
-A light-first design system for storybook pages and little games. Its pieces are watercolor paper, pages that turn, stories read aloud, a brook of stepping stones, nougats that fly into a jar, and a creature that grows. It has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk) built on one set of token names, 32 components (guardians and a taste check among them), and a behavior bundle exposed as `window.Storeybrook` (1.3.2). It is the daylight counterpart to [Depthfield](https://github.com/stevoblevo/depthfield).
+A light-first design system for illustrated stories, read-aloud pages and small games. Watercolor paper, stepping stones and a growing creature share the same six looks.
 
-This repo is a read-only export of the Storeybrook design system (index format v3) from its Claude artifact:
-<https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe>
+**Meta Daylight · Knight Night · Ink Blot · Comix · Origami · Skein silk**
 
-The artifact is the source of truth. Opening that link requires access on claude.ai; everything needed to read the system is in this repo.
+[Open the showcase](https://stevoblevo.github.io/storeybrook/) · [Read the interactive docs](https://stevoblevo.github.io/storeybrook/docs.html) · [Compare the Saelion toolkits](https://saelion.co/toolkits)
 
-**Live site:** <https://stevoblevo.github.io/storeybrook/> is the showcase, one scene per look, each built for what that look is for: a front page with the brook as its map and a shelf of covers (Meta Daylight), a bedtime story read aloud (Knight Night), an e-ink slate you can print (Ink Blot), a comic (Comix), a level maker that refolds the brook (Origami), a sticker album (Skein silk), and mirror windows showing one page on six devices at once. Seven pets are hidden along the brook, and the book can play itself (<https://stevoblevo.github.io/storeybrook/?autoplay>). The docs (brand book, tokens per theme, every component running live, assets) are at <https://stevoblevo.github.io/storeybrook/docs.html>. Both are built from the system's own files.
+## Try it
 
-## Start here
+[Watch the book play itself](https://stevoblevo.github.io/storeybrook/?autoplay). To try it by hand, open the **Look** menu, refold the stepping stones in Origami, or sample a browser voice in Knight Night.
 
-Read [`project/README.md`](project/README.md) first. It is the brand book and explains how the other files fit together.
+## Use it in a page
+
+From the repository root, save this as `scratch.html` and run `python3 -m http.server 8702`. Open `http://localhost:8702/scratch.html`. No package install is needed for this example. The kit stylesheets can load web fonts; your browser uses fallback fonts when unavailable.
+
+```html
+<!doctype html>
+<html lang="en" data-theme="origami" class="sb-root">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Storeybrook example</title>
+  <link rel="stylesheet" href="v/1.3.2/tokens.css">
+  <link rel="stylesheet" href="v/1.3.2/bundle.css">
+  <script src="v/1.3.2/bundle.js"></script>
+</head>
+<body class="sb-body">
+  <a class="sb-btn sb-btn--primary" href="#chapter">Turn the page</a>
+  <h1 id="chapter">The paper valley</h1>
+</body>
+</html>
+```
+
+The [1.3.2 runtime](v/1.3.2/) includes `paper.js` for Pen and Folded; load it after `bundle.js` only if needed. The [version manifest](v/index.json) records SHA-256 hashes. See the [Reader](project/components/Reader/README.md) for browser voice controls and the [Button](project/components/Button/README.md) for the markup contract.
+
+## Project notes
+
+[Brand book](project/README.md) · [Component types](project/components/index.d.ts) · [Project plan](docs/plan.md)
+
+The [Claude artifact](https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe) is the design source of truth and may require access. The public repository and demos do not require Claude. For site development and checks, see [AGENTS.md](AGENTS.md).
+
+### The toolkit family
+
+[Depthfield](https://github.com/stevoblevo/depthfield) · [Hypermetapunk](https://github.com/stevoblevo/hypermetapunk) · [Shared toolkit contracts](https://github.com/stevoblevo/depthfield/blob/main/docs/family.md)
+
+### License
+
+The source is publicly viewable. No repository-wide license is published here; public visibility does not grant general permission to reuse or redistribute the code or artwork. Check individual notices for third-party materials, and ask the owner before reusing toolkit assets or code outside the repository.
+
+<details>
+<summary>Repository reference and maintenance notes</summary>
 
 ## Layout
 
@@ -83,3 +123,5 @@ The showcase updates the brook once per changed scene, and mirror windows preloa
 `node tests/reader/logic.cjs` and `node tests/showcase/scroll.cjs` cover deterministic behavior. Real audible Safari quality must be reviewed on a device with its available voices.
 
 Versioned runtime files live under `v/1.3.2/`; `v/index.json` records their SHA-256 hashes. The original 1.3.0 runtime and the 1.3.1 candidate remain unchanged. 1.3.2 also resets a paused speech engine when stopping, so the next Play can start normally.
+
+</details>
