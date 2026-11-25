@@ -2,14 +2,14 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Plate</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DynaPuff:wdth,wght@75..100,400..700&family=Alegreya:ital,wght@0,400..800;1,400..800&family=Andika:ital,wght@0,400;0,700;1,400&family=Bangers&display=swap">
-<style>html,body{margin:0}body.sb-body{min-height:0;background:var(--paper);color:var(--ink);font-family:var(--sb-story)}.pv{padding:18px 22px;box-sizing:border-box}canvas{display:block;width:100%;height:auto;border-radius:4px}.top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;align-items:start}.src{border:1px dashed var(--line);border-radius:4px;touch-action:none;cursor:crosshair;background:var(--page)}.row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:10px}.row p,.cap{margin:4px 0 0;font:500 12px/1.35 var(--sb-ui);color:var(--ink-muted)}.row p{text-align:center}.lbl{margin:14px 0 0;font:600 13px/1.3 var(--sb-ui);color:var(--ink-muted)}.bar{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}.sw{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);padding:0;cursor:pointer}.sw[aria-pressed="true"]{outline:3px solid var(--focus);outline-offset:2px}@media(max-width:560px){.top{grid-template-columns:1fr}.row{grid-template-columns:repeat(3,minmax(0,1fr))}}</style></head>
+<style>html,body{margin:0}body.sb-body{min-height:0;background:var(--paper);color:var(--ink);font-family:var(--sb-story)}.pv{padding:18px 22px;box-sizing:border-box}canvas{display:block;width:100%;height:auto;border-radius:4px}.top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;align-items:start}.src{border:3px dashed var(--line);border-radius:4px;touch-action:none;cursor:crosshair;background:var(--page)}.row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:10px}.row p,.cap{margin:4px 0 0;font:500 12px/1.35 var(--sb-ui);color:var(--ink-muted)}.row p{text-align:center}.lbl{margin:14px 0 0;font:600 13px/1.3 var(--sb-ui);color:var(--ink-muted)}.bar{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}.sw{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);padding:0;cursor:pointer}.sw[aria-pressed="true"]{outline:3px solid var(--focus);outline-offset:2px}@media(max-width:560px){.top{grid-template-columns:1fr}.row{grid-template-columns:repeat(3,minmax(0,1fr))}}</style></head>
 <body class="sb-body">
 <div class="pv">
 <div class="top">
   <div>
-    <canvas id="src" class="src" width="480" height="480" role="img" aria-label="The drawing: a seal on a rock balancing a star, in flat colours. Drag on it to add to the drawing."></canvas>
+    <canvas id="src" class="src" width="480" height="480" role="img" aria-label="The drawing: a seal on a rock balancing a star, in flat colours. Tap or drag on it to add to the drawing."></canvas>
     <div class="bar" role="group" aria-label="Brush colour"><button class="sw" style="background:#f2c14e" data-c="#f2c14e" aria-pressed="true" aria-label="Yellow"></button><button class="sw" style="background:#d95f6a" data-c="#d95f6a" aria-pressed="false" aria-label="Red"></button><button class="sw" style="background:#3f4a5a" data-c="#3f4a5a" aria-pressed="false" aria-label="Slate"></button><button class="sb-btn sb-btn--quiet sb-btn--sm" id="again" type="button">Start the drawing over</button></div>
-    <p class="cap">The one drawing: flat fills, nothing else. Drag on it to add to it.</p>
+    <p class="cap">The one drawing: flat fills, nothing else. Pick a brush, then tap or drag on it.</p>
   </div>
   <div><div id="big"></div><p class="cap" id="bigcap" aria-live="polite"></p></div>
 </div>
@@ -32,11 +32,11 @@ var small=document.createElement('canvas');small.width=small.height=240;small.ge
 cells.forEach(function(c){put(c.box,S.plate(c.look.id,small),'The seal as '+c.m.name.toLowerCase()+', in '+c.look.name);});}
 function soon(){clearTimeout(timer);timer=setTimeout(draw,90);}
 function at(e){var r=src.getBoundingClientRect();return[(e.clientX-r.left)*src.width/r.width,(e.clientY-r.top)*src.height/r.height];}
-function dab(a,b){sg.strokeStyle=colour;sg.fillStyle=colour;sg.lineWidth=26;sg.lineCap='round';sg.beginPath();sg.moveTo(a[0],a[1]);sg.lineTo(b[0],b[1]);sg.stroke();}
+function dab(a,b){sg.strokeStyle=colour;sg.fillStyle=colour;sg.lineWidth=26;sg.lineCap='round';sg.beginPath();sg.arc(b[0],b[1],13,0,7);sg.fill();if(a[0]!==b[0]||a[1]!==b[1]){sg.beginPath();sg.moveTo(a[0],a[1]);sg.lineTo(b[0],b[1]);sg.stroke();}}/* a tap paints a dot: a stroke of no length paints nothing */
 src.addEventListener('pointerdown',function(e){src.setPointerCapture(e.pointerId);last=at(e);dab(last,last);soon();});
 src.addEventListener('pointermove',function(e){if(!last)return;var p=at(e);dab(last,p);last=p;soon();});
 ['pointerup','pointercancel'].forEach(function(n){src.addEventListener(n,function(){last=null;});});
-Array.prototype.forEach.call(document.querySelectorAll('.sw'),function(b){b.addEventListener('click',function(){colour=b.getAttribute('data-c');Array.prototype.forEach.call(document.querySelectorAll('.sw'),function(x){x.setAttribute('aria-pressed',String(x===b));});});});
+Array.prototype.forEach.call(document.querySelectorAll('.sw'),function(b){b.addEventListener('click',function(){colour=b.getAttribute('data-c');src.style.borderColor=colour;src.style.borderStyle='solid';Array.prototype.forEach.call(document.querySelectorAll('.sw'),function(x){x.setAttribute('aria-pressed',String(x===b));});});});
 document.getElementById('again').addEventListener('click',function(){reset();draw();});
 reset();draw();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
 new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});})();</script></body></html>

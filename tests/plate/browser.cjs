@@ -47,6 +47,11 @@ const server = http.createServer(async (req, res) => { try { let p = decodeURICo
   const box = await frame.locator('#src').boundingBox(); await page.mouse.move(box.x + box.width * .7, box.y + box.height * .2); await page.mouse.down(); await page.mouse.move(box.x + box.width * .8, box.y + box.height * .3, { steps: 4 }); await page.mouse.up();
   await page.waitForTimeout(300);
   assert.notEqual(await frame.evaluate(() => document.querySelector('#big canvas').toDataURL()), first, 'the plate follows the drawing');
+  /* a tap paints a dot, and a picked colour shows on the drawing's frame (Bleve's comment, 25 Nov) */
+  const beforeTap = await frame.evaluate(() => document.querySelector('#src').toDataURL());
+  await frame.locator('.sw[data-c="#d95f6a"]').click(); assert.equal(await frame.evaluate(() => getComputedStyle(document.querySelector('#src')).borderTopColor), 'rgb(217, 95, 106)', 'the frame takes the brush colour');
+  await page.mouse.click(box.x + box.width * .15, box.y + box.height * .9); await page.waitForTimeout(250);
+  assert.notEqual(await frame.evaluate(() => document.querySelector('#src').toDataURL()), beforeTap, 'a tap paints');
   await page.setViewportSize({ width: 390, height: 844 }); await page.waitForTimeout(200);
   assert.ok(await frame.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'no sideways scroll in the preview at 390 px');
   assert.deepEqual(errors, []);
