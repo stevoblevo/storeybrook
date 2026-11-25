@@ -1,17 +1,66 @@
+<img src="site/icons/icon-192.png" alt="Storeybrook mark" width="84">
+
 # Storeybrook
 
-A light-first design system for storybook pages and little games. Its pieces are watercolor paper, pages that turn, stories read aloud, a brook of stepping stones, nougats that fly into a jar, and a creature that grows. It has six looks (Meta Daylight, Knight Night, Ink Blot, Comix, Origami, Skein silk) built on one set of token names, 33 components (guardians, a taste check and the pets among them), and a behavior bundle exposed as `window.Storeybrook` (1.4.0). It is the daylight counterpart to [Depthfield](https://github.com/stevoblevo/depthfield).
+A light-first design system for illustrated stories, read-aloud pages and small games. Watercolor paper, stepping stones and a growing creature share the same six looks.
 
-This repo is a read-only export of the Storeybrook design system (index format v3) from its Claude artifact:
-<https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe>
+It is the day half of Bleve's toolkit family, beside Depthfield (night) and Hypermetapunk (dusk): six looks on one set of token names, 33 components, a behavior bundle exposed as `window.Storeybrook`, and two add-ons for canvas, the paper pen and the day pets.
 
-The artifact is the source of truth. Opening that link requires access on claude.ai; everything needed to read the system is in this repo.
+**Meta Daylight · Knight Night · Ink Blot · Comix · Origami · Skein silk**
 
-**Live site:** <https://stevoblevo.github.io/storeybrook/> is the showcase, one scene per look, each built for what that look is for: a front page with the brook as its map and a shelf of covers (Meta Daylight), a bedtime story read aloud (Knight Night), an e-ink slate you can print (Ink Blot), a comic (Comix), a level maker that refolds the brook (Origami), a sticker album (Skein silk), and mirror windows showing one page on six devices at once. Seven pets are hidden along the brook, and the book can play itself (<https://stevoblevo.github.io/storeybrook/?autoplay>). The docs (brand book, tokens per theme, every component running live, assets) are at <https://stevoblevo.github.io/storeybrook/docs.html>. Both are built from the system's own files.
+[Open the showcase](https://stevoblevo.github.io/storeybrook/) · [Read the interactive docs](https://stevoblevo.github.io/storeybrook/docs.html) · [Compare the Saelion toolkits](https://saelion.co/toolkits)
 
-## Start here
+## Try it
 
-Read [`project/README.md`](project/README.md) first. It is the brand book and explains how the other files fit together.
+[Watch the book play itself](https://stevoblevo.github.io/storeybrook/?autoplay). To try it by hand, open the **Look** menu, refold the stepping stones in Origami, or sample a browser voice in Knight Night.
+
+## Use it in a page
+
+From the repository root, save this as `scratch.html` and run `python3 -m http.server 8702`. Open `http://localhost:8702/scratch.html`. No package install is needed for this example. The kit stylesheets can load web fonts; your browser uses fallback fonts when unavailable.
+
+```html
+<!doctype html>
+<html lang="en" data-theme="origami" class="sb-root">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Storeybrook example</title>
+  <link rel="stylesheet" href="v/1.4.0/tokens.css">
+  <link rel="stylesheet" href="v/1.4.0/bundle.css">
+  <script src="v/1.4.0/bundle.js"></script>
+</head>
+<body class="sb-body">
+  <a class="sb-btn sb-btn--primary" href="#chapter">Turn the page</a>
+  <h1 id="chapter">The paper valley</h1>
+</body>
+</html>
+```
+
+The [1.4.0 runtime](v/1.4.0/) is the current release; every earlier one stays where it was, byte for byte. The [version manifest](v/index.json) records SHA-256 hashes. See the [Reader](project/components/Reader/README.md) for browser voice controls and the [Button](project/components/Button/README.md) for the markup contract.
+
+## Draw with it on canvas
+
+Two add-ons load after `bundle.js`, only if a page needs them.
+
+- **The paper pen** (`v/1.4.0/paper.js`): `Storeybrook.looks` lists the six looks as data, and `Storeybrook.pen(look)` gives a look's inks, paper stocks and materials, folds any shape as paper lit from one side, and paints a different sun in each look. Folded does the same in the page, without canvas. See [Pen](project/components/Pen/README.md) and [Folded](project/components/Folded/README.md).
+- **The day pets** (`v/1.4.0/pets.js`): `Storeybrook.pets` holds the seven pets found in the showcase, their place in the family's shared save, and `draw(ctx, id, o)`, which paints each one in a look's inks and lets it dance to a beat. See [Pets](project/components/Pets/README.md).
+
+## Project notes
+
+[Brand book](project/README.md) · [Component types](project/components/index.d.ts) · [Project plan](docs/plan.md)
+
+The [Claude artifact](https://claude.ai/artifact/YQrpanzsuY5WPgr47GFCNe) is the design source of truth and may require access. The public repository and demos do not require Claude. For site development and checks, see [AGENTS.md](AGENTS.md).
+
+### The toolkit family
+
+[Depthfield](https://github.com/stevoblevo/depthfield) · [Hypermetapunk](https://github.com/stevoblevo/hypermetapunk) · [Shared toolkit contracts](https://github.com/stevoblevo/depthfield/blob/main/docs/family.md)
+
+### License
+
+The source is publicly viewable. No repository-wide license is published here; public visibility does not grant general permission to reuse or redistribute the code or artwork. Check individual notices for third-party materials, and ask the owner before reusing toolkit assets or code outside the repository.
+
+<details>
+<summary>Repository reference and maintenance notes</summary>
 
 ## Layout
 
@@ -91,3 +140,5 @@ Versioned runtime files live under `v/1.3.2/`; `v/index.json` records their SHA-
 - **The sun in the pen**: `Storeybrook.pen(look).sun(ctx, { x, y, r, t, still, alpha })` paints a watercolour sun in Meta Daylight, a moon in Knight Night, and its own sun in each other look. The fold light the pen called `sun` in 1.3 is `light` now; `sun[0]` to `sun[2]` still read it.
 - `node tests/pets/logic.cjs` checks the contract and keeps the pets' ink table in step with `tokens.json` and `bundle.css`; `node tests/pets/browser.cjs` (Chromium or WebKit) checks the pet book, `draw` and the sun.
 - Versioned runtime files live under `v/1.4.0/`, which now include `pets.js`; earlier versions are unchanged.
+
+</details>
