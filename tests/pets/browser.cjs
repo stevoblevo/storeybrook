@@ -11,7 +11,7 @@ const server = http.createServer(async (req, res) => { try { let p = decodeURICo
   page.on('pageerror', e => errors.push(String(e))); page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
   await page.addInitScript(() => { if (!sessionStorage.getItem('seeded')) { sessionStorage.setItem('seeded', '1'); localStorage.setItem('crossing:pets', JSON.stringify({ found: { 'df:firefly': 1, 'df:winkle': 2, 'hmp:one': 3 }, active: { df: 'firefly' } })); } });
   await page.goto(base);
-  assert.equal(await page.evaluate(() => Storeybrook.pets && Storeybrook.pets.version), '1.4.0');
+  assert.equal(await page.evaluate(() => Storeybrook.pets && Storeybrook.pets.version), '1.5.1');
   await page.locator('#front-creature').dispatchEvent('click'); /* a click event, not a tap: no full-screen request mid-test */
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('crossing:pets')));
   assert.equal(typeof saved.found['sb:egg'], 'number', 'tapping Saelion finds the egg');

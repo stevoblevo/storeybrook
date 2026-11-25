@@ -37,7 +37,7 @@ const server = http.createServer(async (req, res) => { try { let p = decodeURICo
     res.labels = [...document.querySelectorAll('canvas[role="img"]')].length;
     return res;
   });
-  assert.deepEqual(out.media, ['daylight', 'knight', 'inkblot', 'comix', 'origami', 'skein']); assert.equal(out.version, '1.5.1');
+  assert.deepEqual(out.media, ['daylight', 'knight', 'inkblot', 'comix', 'origami', 'skein']); assert.equal(out.version, '1.5.0');
   for (const [id, p] of Object.entries(out.plates)) { assert.equal(p.w, 200, id); assert.equal(p.h, 200, id); assert.ok(p.opaque > 0.99, id + ' covers its ground'); assert.ok(p.fresh && p.unique, id + ' is its own picture'); }
   assert.ok(out.sourceKept, 'the source drawing is never changed'); assert.ok(out.same, 'a plate is deterministic'); assert.ok(out.noWord, 'the sound word can be left out');
   assert.ok(out.byElement, 'an element gives its look'); assert.ok(out.helpers, 'tint and edges'); assert.equal(out.labels, 8, 'the source, the large plate and six small ones are named pictures');
