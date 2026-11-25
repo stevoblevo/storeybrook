@@ -1,5 +1,5 @@
 {
-  "latest": "1.5.0",
+  "latest": "1.5.1",
   "versions": {
     "1.3.0": {
       "tokens.css": "cdf15cfa449604179f2571c314c479afc5d51cf6d8c9ad971a398ff0f9a08c5f",
@@ -51,6 +51,21 @@
       "pets.js": "79b052c3ef23ae1bfc20b1a3d19876272b31f147d7fe2138140c7b5088acecc6",
       "plate.js": "bffc3d3722d2a1007b94f417a903d9db2bad52f00c3238268bfed200d60e23e3",
       "index.html": "15ead87e6d41eb974608fd8c8863577cf5e02ee94adc746e34f56d246918370e",
+      "site/hooks.css": "cee63ad18218cc2b18e54c418e011ce0f44e824bb6c3d426ab4bb0880fcd6264",
+      "site/immersive.js": "4ffc49752d1279855660f39cf542e258428fd354965658f1af972012788cb41a",
+      "site/mirror.html": "e165ac1561fe5cceec84198adbcb30ec813bf1d8dcee528a54dd5ecd3bdd48dc",
+      "site/showcase.css": "0dae240405ace1a6851b59acdf4350c97ff29138566433694605813229913fad",
+      "site/showcase.js": "7b10cf81abe3f0c2a95056be346573a9ae5e79021a139cc77ff8cb5477bd3bc9"
+    },
+    "1.5.1": {
+      "tokens.css": "cdf15cfa449604179f2571c314c479afc5d51cf6d8c9ad971a398ff0f9a08c5f",
+      "bundle.css": "21d8c8337c71ccb1cf9dad24a0cdb5e45723930f741c22d4bdc07b16494dd2a4",
+      "bundle.js": "600c8d864962cfc668b0143ac054df1cac85c09326791b1bbc92ca3362d377ce",
+      "index.d.ts": "1a071feff516832b7d41467b6a05a4833f23f61ff2b46c6d70e5be98b6cef082",
+      "paper.js": "9b0491c0c377217a3e0e87f631ffe387138b73edca9694f7126f8d1c173476f0",
+      "pets.js": "4abc447c88266d8bec86b7aac0f3c6676deda3e3f9676b73895fe752b3804490",
+      "plate.js": "bffc3d3722d2a1007b94f417a903d9db2bad52f00c3238268bfed200d60e23e3",
+      "index.html": "5276b18da1e700a1ab020125491220472460fc14b54c5e71fd7fd2995a9bd27f",
       "site/hooks.css": "cee63ad18218cc2b18e54c418e011ce0f44e824bb6c3d426ab4bb0880fcd6264",
       "site/immersive.js": "4ffc49752d1279855660f39cf542e258428fd354965658f1af972012788cb41a",
       "site/mirror.html": "e165ac1561fe5cceec84198adbcb30ec813bf1d8dcee528a54dd5ecd3bdd48dc",

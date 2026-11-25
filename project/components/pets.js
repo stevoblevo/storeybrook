@@ -1,4 +1,4 @@
-/* Storeybrook Pets 1.4.0 · the seven day pets, as data and on canvas. An add-on: load it after bundle.js.
+/* Storeybrook Pets 1.5.1 · the seven day pets, as data and on canvas. An add-on: load it after bundle.js.
      <script src="components/bundle.js"></script><script src="components/pets.js"></script>
    Storeybrook.pets  the family's crossing pets (family F9, plan S7): the same names in Storeybrook (sb), Depthfield (df) and
                      Hypermetapunk (hmp), saved together in localStorage['crossing:pets'] on stevoblevo.github.io:
@@ -10,7 +10,7 @@
   'use strict';
   var S = w.Storeybrook;
   if (!S || S.pets || !S.creatureSVG) return;
-  var VERSION = '1.4.0', KEY = 'crossing:pets', HOME = 'https://stevoblevo.github.io/storeybrook/', FAMILY = { sb: 7, df: 5, hmp: 5 };
+  var VERSION = '1.5.1', KEY = 'crossing:pets', HOME = 'https://stevoblevo.github.io/storeybrook/', FAMILY = { sb: 7, df: 5, hmp: 5 };
 
   /* ---------- the seven, moved here from the showcase (plan S7). look: where each one waits; o: its creatureSVG options ---------- */
   function pet(id, name, look, o, line, how) {
@@ -30,10 +30,15 @@
   LIST.forEach(function (p, i) { BY[p.id] = p; REC[p.id] = { i: i }; });
 
   /* ---------- the shared save: read, change, write back; other kits' entries are never touched ---------- */
-  var memo = {};
+  var memo = {}, pending = {};
   function read() {
     try { var raw = w.localStorage.getItem(KEY), v = raw ? JSON.parse(raw) : {}; memo = v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }
     catch (e) { /* storage blocked or unreadable: keep this visit's copy */ }
+    var keys = Object.keys(pending);
+    if (keys.length) {
+      if (!memo.found || typeof memo.found !== 'object' || Array.isArray(memo.found)) memo.found = {};
+      keys.forEach(function (k) { if (!memo.found[k]) memo.found[k] = pending[k]; });
+    }
     return memo;
   }
   function found() { var f = read().found; return f && typeof f === 'object' && !Array.isArray(f) ? f : {}; }
@@ -44,7 +49,7 @@
     var s = read(); if (!s.found || typeof s.found !== 'object' || Array.isArray(s.found)) s.found = {};
     if (s.found['sb:' + id]) return false;
     s.found['sb:' + id] = Date.now(); memo = s;
-    try { w.localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) { /* kept for this visit */ }
+    try { w.localStorage.setItem(KEY, JSON.stringify(s)); pending = {}; } catch (e) { pending['sb:' + id] = s.found['sb:' + id]; }
     try { w.dispatchEvent(new CustomEvent('sb:pet', { detail: { id: id, name: BY[id].name, kit: 'sb' } })); } catch (e) { /* old browser */ }
     return true;
   }

@@ -26,7 +26,7 @@ function memory(initial) {
 let store = memory({ 'crossing:pets': JSON.stringify({ found: { 'df:firefly': 1, 'df:winkle': 2, 'hmp:a': 3, 'hmp:b': 4 }, active: { df: 'firefly' } }) });
 let { pets, events } = run(store);
 assert.deepEqual(Object.keys(pets), ['kit', 'key', 'version', 'list', 'has', 'find', 'count', 'total', 'draw']);
-assert.equal(pets.kit, 'sb'); assert.equal(pets.key, 'crossing:pets'); assert.equal(pets.version, '1.4.0');
+assert.equal(pets.kit, 'sb'); assert.equal(pets.key, 'crossing:pets'); assert.equal(pets.version, '1.5.1');
 assert.deepEqual(Array.from(pets.list, p => p.id), ['egg', 'kit', 'octopus', 'bunny', 'sprite', 'pixie', 'saelion']);
 for (const p of pets.list) {
   assert.deepEqual(Object.keys(p), ['id', 'name', 'line', 'how', 'where', 'look', 'o']);
@@ -65,6 +65,21 @@ assert.equal(pets.count(), 0); assert.equal(pets.find('bunny'), true); assert.eq
 const blocked = { getItem() { throw new Error('blocked'); }, setItem() { throw new Error('blocked'); } };
 ({ pets } = run(blocked));
 assert.equal(pets.find('pixie'), true, 'kept for the visit'); assert.equal(pets.has('pixie'), true); assert.equal(pets.find('pixie'), false);
+
+/* Readable storage may refuse writes while other visits can still update the save. */
+store = memory({ 'crossing:pets': JSON.stringify({ found: { 'df:firefly': 1 }, active: { df: 'firefly' } }) });
+const set = store.setItem;
+store.setItem = () => { throw new Error('quota'); };
+({ pets } = run(store));
+assert.equal(pets.find('egg'), true);
+assert.equal(pets.has('egg'), true);
+assert.equal(pets.find('egg'), false);
+store.setItem = set;
+set('crossing:pets', JSON.stringify({ found: { 'df:firefly': 1, 'hmp:a': 2 }, active: { df: 'firefly' } }));
+assert.equal(pets.find('kit'), true);
+const recovered = JSON.parse(store.data['crossing:pets']);
+assert.deepEqual(Object.keys(recovered.found).sort(), ['df:firefly', 'hmp:a', 'sb:egg', 'sb:kit']);
+assert.deepEqual(recovered.active, { df: 'firefly' });
 
 /* draw never throws, and says false until it can draw */
 assert.equal(pets.draw(null, 'kit'), false);

@@ -1,5 +1,8 @@
 <img src="site/icons/icon-192.png" alt="Storeybrook mark" width="84">
 
+
+**Patch 1.5.1:** Newly found day pets stay visible when browser storage is full or temporarily unwritable. Pending discoveries are saved alongside other kits’ progress on the next successful find. [Open the 1.5.1 showcase](https://stevoblevo.github.io/storeybrook/v/1.5.1/).
+
 # Storeybrook
 
 A light-first design system for illustrated stories, read-aloud pages and small games. Watercolor paper, stepping stones and a growing creature share the same six looks.
